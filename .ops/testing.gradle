@@ -1,0 +1,15 @@
+test {
+    useJUnitPlatform {
+        systemProperties = ['junit.jupiter.extensions.autodetection.enabled': 'true']
+    }
+
+    reports {
+        html.enabled true
+        junitXml.enabled true
+    }
+}
+
+project.apply plugin: "com.adarshr.test-logger"
+testlogger {
+    theme = "mocha"
+}

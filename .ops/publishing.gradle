@@ -1,0 +1,90 @@
+def hasAndroid = project.hasProperty("android")
+
+publishing {
+    def sonatype_username = "${findProperty('sonatype_username') ?: System.getenv("sonatype_username")}"
+    def sonatype_password = "${findProperty('sonatype_password') ?: System.getenv("sonatype_password")}"
+
+    repositories {
+        maven {
+            name = "Sonatype"
+            setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = sonatype_username
+                password = sonatype_password
+            }
+        }
+
+        maven {
+            name = "SonatypeSnapshots"
+            setUrl("https://oss.sonatype.org/content/repositories/snapshots/")
+            credentials {
+                username = sonatype_username
+                password = sonatype_password
+            }
+        }
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = "sources"
+        if (hasAndroid) {
+            from(android.sourceSets["main"].java.srcDirs)
+        } else {
+            from(sourceSets["main"].allSource)
+        }
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = "javadoc"
+        from(javadoc.destinationDir)
+    }
+
+    publications {
+        maven(MavenPublication) {
+            from(components[hasAndroid ? "android" : "java"])
+            artifact(sourcesJar)
+            artifact(javadocJar)
+
+            version = git.versionName()
+
+            groupId = "com.nhaarman.bravo"
+
+            pom {
+                name = "Bravo"
+                description = "Creating modular, stable and testable Android apps"
+                url = "https://github.com/nhaarman/Bravo"
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "nhaarman"
+                        name = "Niek Haarman"
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git@github.com:nhaarman/Bravo.git'
+                    developerConnection = 'scm:git@github.com:nhaarman/Bravo.git'
+                    url = 'https://github.com/nhaarman/Bravo'
+                }
+            }
+        }
+    }
+}
+
+tasks.withType(PublishToMavenRepository) {
+    onlyIf {
+        git.versionName().contains("SNAPSHOT") && repository == publishing.repositories["SonatypeSnapshots"]
+//  ||               !git.versionName().contains("SNAPSHOT") && repository == publishing.repositories["Sonatype"]
+    }
+}
+
+signing {
+    if (findProperty("signing.keyId") != null) {
+        sign(publishing.publications["maven"])
+    }
+}

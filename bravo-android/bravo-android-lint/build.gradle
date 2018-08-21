@@ -1,0 +1,22 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+
+    id("org.jmailen.kotlinter")
+}
+
+dependencies {
+    compileOnly "com.android.tools.lint:lint-api"
+    compileOnly "com.android.tools.lint:lint-checks"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation "com.android.tools.lint:lint"
+    testImplementation "com.android.tools.lint:lint-tests"
+}
+
+jar {
+    manifest {
+        attributes("Lint-Registry-v2": "com.nhaarman.bravo.lint.BravoIssueRegistry")
+    }
+}

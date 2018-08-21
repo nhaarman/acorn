@@ -1,0 +1,74 @@
+ext.git = [
+
+        versionName            : {
+            def baseTag = git.latestTag() ?: "0.0.0"
+            def commitCount = git.numberOfCommitsSinceTag(baseTag)
+
+            def result = baseTag
+            if (commitCount != 0 || git.isDirty() || true) result += "-SNAPSHOT"
+
+            return result
+        },
+
+        commitCount            : {
+            try {
+                def stdout = new ByteArrayOutputStream()
+                exec {
+                    commandLine 'git', 'log', '--oneline'
+                    standardOutput = stdout
+                }
+
+                def commitCount = stdout.toString().split("\n").length
+                return commitCount
+            } catch (ignored) {
+                return 0
+            }
+        },
+
+        latestTag              : {
+            try {
+                def stdout = new ByteArrayOutputStream()
+                exec {
+                    commandLine 'git', 'describe', '--abbrev=0'
+                    standardOutput = stdout
+                }
+
+                def tag = stdout.toString().split("\n").first()
+                return tag
+            } catch (ignored) {
+                return "0.0.0"
+            }
+        },
+
+        numberOfCommitsSinceTag: { tagName ->
+            try {
+                def stdout = new ByteArrayOutputStream()
+                exec {
+                    commandLine 'git', 'log', "${tagName}..HEAD", '--oneline'
+                    standardOutput = stdout
+                }
+
+                def result = stdout.toString().trim()
+                if (result.empty) return 0
+
+                def commitCount = result.split("\n").length
+                return commitCount
+            } catch (ignored) {
+                return -1
+            }
+        },
+
+        isDirty                : {
+            try {
+                def stdout = new ByteArrayOutputStream()
+                exec {
+                    commandLine 'git', 'describe', '--dirty'
+                    standardOutput = stdout
+                }
+
+                return stdout.toString().split("\n").first().contains('dirty')
+            } catch (ignored) {
+                return false
+            }
+        }
+]

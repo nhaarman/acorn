@@ -1,0 +1,28 @@
+include(":bravo-core")
+include(":bravo")
+include(":bravo-android")
+include(":bravo-android-tests")
+include(":bravo-android-lint")
+
+include(":android-sandbox")
+
+include(":samples:hello-world")
+include(":samples:hello-navigation")
+
+include(":notes-app-bravo")
+include(":notes-app-bravo-android")
+//include(":notes-app-bravo-cli")
+
+include(":notes-app:aac-navigation")
+include(":notes-app:cicerone")
+include(":notes-app:conductor")
+include(":notes-app:mosby")
+
+project(":bravo-android-tests").projectDir = file("bravo-android/bravo-android-tests")
+project(":bravo-android-lint").projectDir = file("bravo-android/bravo-android-lint")
+
+project(":notes-app-bravo").projectDir = file("notes-app/bravo")
+project(":notes-app-bravo-android").projectDir = file("notes-app/bravo/android")
+//project(":notes-app-bravo-cli").projectDir = file("notes-app/bravo/cli")
+
+enableFeaturePreview("STABLE_PUBLISHING")

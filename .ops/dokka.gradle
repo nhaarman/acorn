@@ -1,0 +1,24 @@
+def hasAndroid = project.hasProperty("android")
+
+if (hasAndroid) {
+    task("javadoc", type: Javadoc) {
+        source(android.sourceSets["main"].java.srcDirs)
+        destinationDir = new File("$buildDir/javadoc")
+        failOnError = false
+
+        classpath += project.files(android.bootClasspath.join(File.pathSeparator))
+    }
+}
+
+dokka {
+    outputDirectory = javadoc.destinationDir.absolutePath
+    includeNonPublic = false
+
+    linkMapping {
+        dir = "$projectDir/src/main/java"
+        url = "https://github.com/nhaarman/bravo/blob/${git.versionName()}/${project.getName()}/src/main/java"
+        suffix = "#L"
+    }
+}
+
+javadoc.dependsOn(dokka)

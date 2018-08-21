@@ -1,0 +1,86 @@
+buildscript {
+    ext.kotlinVersion = "1.2.61"
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:3.3.0-alpha06")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("com.adarshr:gradle-test-logger-plugin:1.4.0")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
+        classpath("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
+        classpath("digital.wup:android-maven-publish:3.6.2")
+        classpath("android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha05")
+        classpath("gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.15.1")
+    }
+}
+
+plugins {
+    id("com.github.ben-manes.versions") version "0.20.0"
+    id("io.spring.dependency-management") version "1.0.6.RELEASE"
+}
+
+allprojects {
+    apply from: "$rootDir/.ops/git.gradle"
+}
+
+subprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+
+    project.apply from: "$rootDir/dependencies.gradle"
+
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            android {
+                compileSdkVersion(28)
+                defaultConfig {
+                    targetSdkVersion(28)
+
+                    versionName = git.versionName()
+                    versionCode = git.commitCount()
+
+                    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+                }
+
+                lintOptions {
+                    warningsAsErrors = true
+                    textReport = true
+
+                    ignoreTestSources true
+
+                    ignore 'ObsoleteLintCustomCheck'
+                }
+            }
+        }
+
+        if (project.hasProperty('test')) {
+            project.apply from: "$rootDir/.ops/testing.gradle"
+        }
+
+        if (project.hasProperty("dokka")) {
+            project.apply from: "$rootDir/.ops/dokka.gradle"
+        }
+
+        if (project.hasProperty("publishing")) {
+            project.apply from: "$rootDir/.ops/publishing.gradle"
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete(rootProject.buildDir)
+}
+
+wrapper {
+    gradleVersion = "4.9"
+}
+
+println("Version ${git.versionName()}")

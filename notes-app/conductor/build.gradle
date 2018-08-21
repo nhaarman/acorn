@@ -1,0 +1,42 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+
+    id("org.jmailen.kotlinter")
+}
+
+android {
+    compileSdkVersion(28)
+
+    defaultConfig {
+        minSdkVersion(21)
+    }
+}
+
+dependencies {
+    implementation("com.bluelinelabs:conductor:2.1.5")
+    implementation("com.bluelinelabs:conductor-rxlifecycle2:2.1.5")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "androidx.core:core-ktx"
+    implementation "io.arrow-kt:arrow-core"
+
+    implementation "com.android.support:design"
+    implementation "com.android.support.constraint:constraint-layout"
+    implementation "com.android.support:appcompat-v7"
+
+    implementation "io.reactivex.rxjava2:rxjava"
+    implementation "io.reactivex.rxjava2:rxkotlin"
+    implementation "io.reactivex.rxjava2:rxandroid"
+
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin"
+
+    implementation "com.squareup.sqlbrite3:sqlbrite-kotlin"
+    implementation "android.arch.persistence:db-framework"
+}
+
+androidExtensions {
+    experimental = true
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="edititem_title">Edit item</string>
+
+    <string name="edititem_save">Save</string>
+    <string name="edititem_delete">Delete</string>
+    <string name="edititem_text_hint">@string/createitem_text_hint</string>
+
+</resources>
