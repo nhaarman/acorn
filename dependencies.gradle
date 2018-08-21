@@ -1,0 +1,58 @@
+apply plugin: "io.spring.dependency-management"
+
+def androidSupportVersion = "28.0.0-rc01"
+
+dependencyManagement {
+    dependencies {
+        dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
+        dependency "com.android.support:support-annotations:$androidSupportVersion"
+        dependency "com.android.support:appcompat-v7:$androidSupportVersion"
+        dependency "com.android.support:design:$androidSupportVersion"
+        dependency "com.android.support.constraint:constraint-layout:2.0.0-alpha2"
+        dependency "com.android.support:interpolator:$androidSupportVersion"
+        dependency "androidx.core:core-ktx:0.3"
+
+        dependency "com.jakewharton.timber:timber:4.7.1"
+
+        dependency "io.reactivex.rxjava2:rxjava:2.2.0"
+        dependency "io.reactivex.rxjava2:rxkotlin:2.3.0"
+        dependency "io.reactivex.rxjava2:rxandroid:2.1.0"
+
+        dependency "com.jakewharton.rxbinding2:rxbinding-kotlin:2.1.1"
+        dependency "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.1.1"
+
+        dependency "com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0"
+        dependency "android.arch.persistence:db-framework:1.1.1"
+
+        dependency "io.arrow-kt:arrow-core:0.7.3"
+
+        dependency "com.nhaarman:expect.kt:1.0.0"
+        dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1"
+        dependency "org.junit.jupiter:junit-jupiter-api:5.2.0"
+        dependency "org.junit.jupiter:junit-jupiter-engine:5.2.0"
+
+        dependency "com.android.support.test.espresso:espresso-core:3.0.2"
+        dependency "com.android.support.test.espresso:espresso-contrib:3.0.2"
+        dependency "com.android.support.test:runner:1.0.2"
+        dependency "com.android.support.test:rules:1.0.2"
+
+        def androidToolsVersion = "26.3.0-alpha06"
+        dependency "com.android.tools.lint:lint:$androidToolsVersion"
+        dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
+        dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"
+        dependency "com.android.tools.lint:lint-tests:$androidToolsVersion"
+    }
+}
+
+allprojects { project ->
+    project.configurations.all {
+        resolutionStrategy {
+            eachDependency { dependency ->
+                if (dependency.requested.group == "com.android.support") {
+                    dependency.useVersion(androidSupportVersion)
+                }
+            }
+        }
+    }
+}

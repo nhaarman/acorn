@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="firstscene_text">Hello, first Scene!</string>
+    <string name="firstscene_button">Second Scene</string>
+
+    <string name="secondscene_text">Hello, second Scene!</string>
+    <string name="secondscene_button">First Scene</string>
+
+</resources>

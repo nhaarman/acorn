@@ -1,0 +1,37 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+
+    id("org.jmailen.kotlinter")
+}
+
+android {
+    defaultConfig {
+        minSdkVersion(21)
+    }
+}
+
+dependencies {
+    implementation project(":bravo-android")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    implementation "com.android.support:design"
+    implementation "com.android.support.constraint:constraint-layout"
+    implementation "com.android.support:appcompat-v7"
+
+    implementation "com.jakewharton.timber:timber"
+
+    debugImplementation project(":bravo-android-tests")
+    androidTestImplementation "junit:junit:4.12"
+    androidTestImplementation "com.nhaarman:expect.kt"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib"
+    androidTestImplementation "com.android.support.test:runner"
+    androidTestImplementation "com.android.support.test:rules"
+}
+
+androidExtensions {
+    experimental = true
+}

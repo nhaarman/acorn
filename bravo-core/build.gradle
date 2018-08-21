@@ -1,0 +1,16 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+
+    id("org.jetbrains.dokka")
+    id("org.gradle.maven-publish")
+    id("signing")
+
+    id("org.jmailen.kotlinter")
+}
+
+dependencies {
+    api "io.reactivex.rxjava2:rxjava"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}

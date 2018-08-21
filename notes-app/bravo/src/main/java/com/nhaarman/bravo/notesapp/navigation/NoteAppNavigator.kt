@@ -1,0 +1,46 @@
+package com.nhaarman.bravo.notesapp.navigation
+
+import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.navigation.CompositeStackNavigator
+import com.nhaarman.bravo.navigation.Navigator
+import com.nhaarman.bravo.notesapp.note.NoteItem
+import com.nhaarman.bravo.notesapp.NotesAppComponent
+
+class NoteAppNavigator(
+    private val notesAppComponent: NotesAppComponent,
+    savedState: BravoBundle?
+) : CompositeStackNavigator<Navigator.Events>(savedState),
+    PrimaryNavigator.Events,
+    CreateItemNavigator.Events {
+
+    override fun initialStack(): List<Navigator<out Navigator.Events>> {
+        return listOf(PrimaryNavigator(notesAppComponent, null))
+    }
+
+    override fun instantiateNavigator(
+        navigatorClass: Class<Navigator<*>>,
+        state: BravoBundle?
+    ): Navigator<out Navigator.Events> {
+        return when (navigatorClass) {
+            PrimaryNavigator::class.java -> PrimaryNavigator(
+                notesAppComponent,
+                state
+            )
+            CreateItemNavigator::class.java -> CreateItemNavigator(
+                null,
+                notesAppComponent,
+                state,
+                this
+            )
+            else -> error("Could not instantiate navigator for class $navigatorClass.")
+        }
+    }
+
+    override fun createItemRequested() {
+        push(CreateItemNavigator(null, notesAppComponent, null, this))
+    }
+
+    override fun created(noteItem: NoteItem) {
+        pop()
+    }
+}

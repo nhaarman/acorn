@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.nhaarman.notesapp.conductor.presentation.edititem.EditItemToolbar
+        android:id="@+id/editItemToolbar"
+        android:layout_width="0dp"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/edititem_title"
+        app:titleTextColor="#fff" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editItemToolbar">
+
+        <EditText
+            android:id="@+id/editText"
+            android:importantForAutofill="no"
+            android:background="@null"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edititem_text_hint"
+            android:imeOptions="actionDone"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            tools:ignore="UnusedAttribute"
+            tools:text="@tools:sample/lorem/random" />
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

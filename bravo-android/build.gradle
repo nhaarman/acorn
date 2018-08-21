@@ -1,0 +1,31 @@
+plugins {
+    id("com.android.library")
+    id("kotlin-android")
+
+    id("org.jetbrains.dokka-android")
+    id("digital.wup.android-maven-publish")
+    id("signing")
+
+    id("org.jmailen.kotlinter")
+}
+
+android {
+    defaultConfig {
+        minSdkVersion(21)
+    }
+}
+
+dependencies {
+    api project(":bravo")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "androidx.core:core-ktx"
+
+    implementation "com.android.support:interpolator"
+
+    compileOnly "com.jakewharton.timber:timber"
+
+    compileOnly "com.android.support:support-annotations"
+
+    lintChecks project(":bravo-android-lint")
+}

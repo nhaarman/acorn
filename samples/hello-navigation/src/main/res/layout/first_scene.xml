@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.nhaarman.bravo.samples.hellonavigation.FirstSceneView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView"
+        android:text="@string/firstscene_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <Button
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_marginBottom="48dp"
+        android:id="@+id/secondSceneButton"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_width="wrap_content"
+        android:paddingStart="100dp"
+        android:paddingEnd="100dp"
+        android:text="@string/firstscene_button"
+        android:layout_height="wrap_content" />
+
+</com.nhaarman.bravo.samples.hellonavigation.FirstSceneView>

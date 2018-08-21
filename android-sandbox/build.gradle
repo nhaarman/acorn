@@ -1,0 +1,34 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+}
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 21
+    }
+}
+
+dependencies {
+    implementation project(":bravo-android")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "androidx.core:core-ktx"
+
+    implementation "com.android.support:design"
+    implementation "com.android.support.constraint:constraint-layout"
+    implementation "com.android.support:appcompat-v7"
+
+    implementation "io.reactivex.rxjava2:rxjava"
+    implementation "io.reactivex.rxjava2:rxkotlin"
+    implementation "io.reactivex.rxjava2:rxandroid"
+
+    implementation "com.jakewharton.timber:timber"
+}
+
+androidExtensions {
+    experimental = true
+}
