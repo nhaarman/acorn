@@ -3,16 +3,16 @@ package com.nhaarman.bravo.android.presentation
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.View
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateRestorable
+import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.ContainerState.Companion.containerState
 import com.nhaarman.bravo.android.util.saveHierarchyState
-import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.RestorableContainer
 
 /**
  * A helper interface that offers default implementations for [View] state saving
  * and restoration.
  *
- * Views that implement a [StateRestorable] [Container] need to manually
+ * Views that implement a [RestorableContainer] need to manually
  * implement saving the hierarchy state. To make this easier, you can implement
  * this interface instead:
  *
@@ -24,22 +24,22 @@ import com.nhaarman.bravo.presentation.Container
  *
  * Note: Classes implementing this interface *must* also extend [View].
  */
-interface RestorableView : StateRestorable {
+interface RestorableView : RestorableContainer {
 
-    override fun saveInstanceState() = BravoBundle.bundle {
+    override fun saveInstanceState() = containerState {
         it.hierarchyState = (this as View).saveHierarchyState()
     }
 
-    override fun restoreInstanceState(bundle: BravoBundle) {
+    override fun restoreInstanceState(bundle: ContainerState) {
         bundle.hierarchyState?.let { (this as View).restoreHierarchyState(it) }
     }
 
     companion object {
 
-        private var BravoBundle.hierarchyState: SparseArray<Parcelable>?
+        private var ContainerState.hierarchyState: SparseArray<Parcelable>?
             get() = get("hierarchy_state")
             set(value) {
-                this["hierarchy_state"] = value
+                setUnchecked("hierarchy_state", value)
             }
     }
 }

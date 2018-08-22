@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.notesapp.presentation.itemlist
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.ContainerState.Companion.containerState
 import com.nhaarman.bravo.notesapp.ImmediateMainThreadExtension
 import com.nhaarman.bravo.notesapp.NoRxErrorsExtension
 import com.nhaarman.bravo.notesapp.note.MemoryNoteItemsRepository
@@ -110,11 +111,11 @@ private open class TestItemListContainer : ItemListContainer {
 
     var state = 0
 
-    override fun saveInstanceState(): BravoBundle {
-        return BravoBundle.bundle { it["state"] = 3 }
+    override fun saveInstanceState(): ContainerState {
+        return containerState { it["state"] = 3 }
     }
 
-    override fun restoreInstanceState(bundle: BravoBundle) {
+    override fun restoreInstanceState(bundle: ContainerState) {
         state = bundle["state"] ?: 0
     }
 }

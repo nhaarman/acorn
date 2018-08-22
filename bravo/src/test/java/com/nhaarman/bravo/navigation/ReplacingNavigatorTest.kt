@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.expect.expect
@@ -447,7 +447,8 @@ internal class ReplacingNavigatorTest {
         }
     }
 
-    private class TestReplacingNavigator(savedState: BravoBundle?) : ReplacingNavigator(savedState) {
+    private class TestReplacingNavigator(savedState: com.nhaarman.bravo.NavigatorState?) :
+        ReplacingNavigator(savedState) {
 
         val initialScenes = listOf(
             spy(TestScene(0)),
@@ -465,7 +466,7 @@ internal class ReplacingNavigatorTest {
             return initialSceneCreator.invoke()
         }
 
-        override fun instantiateScene(sceneClass: Class<*>, state: BravoBundle?): Scene<*> {
+        override fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
                 TestScene::class.java -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
@@ -473,14 +474,15 @@ internal class ReplacingNavigatorTest {
         }
     }
 
-    private class RestorableReplacingNavigator(savedState: BravoBundle?) : ReplacingNavigator(savedState) {
+    private class RestorableReplacingNavigator(savedState: com.nhaarman.bravo.NavigatorState?) :
+        ReplacingNavigator(savedState) {
 
         val initialScene = TestScene(0)
         override fun initialScene(): Scene<*> {
             return initialScene
         }
 
-        override fun instantiateScene(sceneClass: Class<*>, state: BravoBundle?): Scene<*> {
+        override fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
                 TestScene::class.java -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")

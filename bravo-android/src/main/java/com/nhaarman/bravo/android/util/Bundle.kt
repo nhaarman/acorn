@@ -4,17 +4,23 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import androidx.core.os.bundleOf
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.SavedState
+import com.nhaarman.bravo.SceneState
 
-fun BravoBundle.toBundle(): Bundle {
+fun SavedState.toBundle(): Bundle {
     return entries
         .filter { (_, value) -> value !is SparseArray<*> }
         .map { (key, value) ->
-            val v = if (value is BravoBundle) {
-                value.toBundle()
-            } else {
-                value
+
+            val v = when (value) {
+                is NavigatorState -> "navigator_state" to value.toBundle()
+                is SceneState -> "scene_state" to value.toBundle()
+                is ContainerState -> "container_state" to value.toBundle()
+                else -> value
             }
+
             key to v
         }
         .toTypedArray()
@@ -31,18 +37,36 @@ fun BravoBundle.toBundle(): Bundle {
         }
 }
 
-fun Bundle.toBundle(): BravoBundle = BravoBundle().also { bundle ->
+fun Bundle.toNavigatorState(): NavigatorState = NavigatorState().also { bundle ->
     keySet()
-        .forEach { key ->
-            bundle[key] = get(key).let {
-                when (it) {
-                    is Bundle -> it.toBundle()
-                    else -> it
-                }
-            }
-        }
+        .forEach { key -> bundle.setUnchecked(key, transformToBravo(get(key))) }
 }
 
-fun Bundle.getBravoBundle(key: String) = getBundle(key)?.toBundle()
+private fun Bundle.toSceneState(): SceneState = SceneState().also { bundle ->
+    keySet()
+        .forEach { key -> bundle.setUnchecked(key, transformToBravo(get(key))) }
+}
 
-fun Bundle.putBravoBundle(key: String, bundle: BravoBundle?) = putBundle(key, bundle?.toBundle())
+private fun Bundle.toContainerState(): ContainerState = ContainerState().also { bundle ->
+    keySet()
+        .forEach { key -> bundle.setUnchecked(key, transformToBravo(get(key))) }
+}
+
+private fun transformToBravo(it: Any?): Any? {
+    return when (it) {
+        is Pair<*, *> -> {
+            val (bundleKey, bundleValue) = it
+            if (bundleKey is String && bundleValue is Bundle) {
+                when (bundleKey) {
+                    "navigator_state" -> bundleValue.toNavigatorState()
+                    "scene_state" -> bundleValue.toSceneState()
+                    "container_state" -> bundleValue.toContainerState()
+                    else -> it
+                }
+            } else {
+                it
+            }
+        }
+        else -> it
+    }
+}

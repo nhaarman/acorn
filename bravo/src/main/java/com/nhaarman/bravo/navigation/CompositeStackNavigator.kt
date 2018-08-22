@@ -1,8 +1,7 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
-import com.nhaarman.bravo.StateSaveable
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
@@ -17,15 +16,15 @@ import io.reactivex.disposables.Disposable
  * to manipulate the stack. Implementers must implement [initialStack] to provide
  * the initial stack to work with.
  *
- * This Navigator implements [StateSaveable] and thus can have its state saved
+ * This Navigator implements [SaveableNavigator] and thus can have its state saved
  * and restored when necessary.
  *
  * @param savedState An optional instance that contains saved state as returned
  *                   by this class's saveInstanceState() method.
  */
 abstract class CompositeStackNavigator<E : Navigator.Events>(
-    private val savedState: BravoBundle?
-) : Navigator<E>, Navigator.Events, StateSaveable, OnBackPressListener {
+    private val savedState: NavigatorState?
+) : Navigator<E>, Navigator.Events, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the initial stack of [Navigator]s for this CompositeStackNavigator.
@@ -47,7 +46,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
      */
     abstract fun instantiateNavigator(
         navigatorClass: Class<Navigator<*>>,
-        state: BravoBundle?
+        state: NavigatorState?
     ): Navigator<out Navigator.Events>
 
     private var state by lazyVar {
@@ -188,12 +187,12 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
         return result
     }
 
-    override fun saveInstanceState(): BravoBundle {
+    override fun saveInstanceState(): NavigatorState {
         return state.navigators
-            .foldIndexed(BravoBundle()) { index, bundle, navigator ->
+            .foldIndexed(NavigatorState()) { index, bundle, navigator ->
                 bundle.also {
                     it["${index}_class"] = navigator::class.java.name
-                    it["${index}_state"] = (navigator as? StateSaveable)?.saveInstanceState()
+                    it["${index}_state"] = (navigator as? SaveableNavigator)?.saveInstanceState()
                 }
             }
             .also { it["size"] = state.navigators.size }

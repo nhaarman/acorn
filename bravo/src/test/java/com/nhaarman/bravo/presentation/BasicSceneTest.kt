@@ -1,7 +1,7 @@
 package com.nhaarman.bravo.presentation
 
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateRestorable
+import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.ContainerState.Companion.containerState
 import com.nhaarman.expect.expect
 import org.junit.jupiter.api.Test
 
@@ -52,15 +52,15 @@ class BasicSceneTest {
         val view get() = currentView
     }
 
-    private class TestView(var state: Int? = null) : Container, StateRestorable {
+    private class TestView(var state: Int? = null) : Container, RestorableContainer {
 
-        override fun saveInstanceState(): BravoBundle {
-            return BravoBundle.bundle {
+        override fun saveInstanceState(): ContainerState {
+            return containerState {
                 it["state"] = state
             }
         }
 
-        override fun restoreInstanceState(bundle: BravoBundle) {
+        override fun restoreInstanceState(bundle: ContainerState) {
             state = bundle["state"]
         }
     }

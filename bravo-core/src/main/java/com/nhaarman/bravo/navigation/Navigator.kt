@@ -1,6 +1,5 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.StateSaveable
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import io.reactivex.annotations.CheckReturnValue
@@ -33,8 +32,8 @@ import io.reactivex.disposables.Disposable
  * Navigators that are not `active` must never have Scenes in their `active`
  * state.
  *
- * Navigators may implement [StateSaveable] to indicate that their instance state
- * can be saved. When this is the case, [StateSaveable.saveInstanceState] will
+ * Navigators may implement [SaveableNavigator] to indicate that their instance state
+ * can be saved. When this is the case, [SaveableNavigator.saveInstanceState] will
  * be called at the appropriate time.
  */
 interface Navigator<E : Navigator.Events> {

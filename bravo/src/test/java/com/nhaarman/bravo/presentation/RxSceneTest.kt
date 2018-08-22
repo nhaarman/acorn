@@ -1,8 +1,9 @@
 package com.nhaarman.bravo.presentation
 
 import arrow.core.Option
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateRestorable
+import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.ContainerState.Companion.containerState
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.expect.expect
 import com.nhaarman.expect.lastValue
 import org.junit.jupiter.api.Test
@@ -62,20 +63,20 @@ class RxSceneTest {
         expect(view2.state).toBe(3)
     }
 
-    private class TestRxScene(savedState: BravoBundle? = null) : RxScene<TestView>(savedState) {
+    private class TestRxScene(savedState: SceneState? = null) : RxScene<TestView>(savedState) {
 
         val viewObservable get() = view
     }
 
-    private class TestView(var state: Int? = null) : Container, StateRestorable {
+    private class TestView(var state: Int? = null) : Container, RestorableContainer {
 
-        override fun saveInstanceState(): BravoBundle {
-            return BravoBundle.bundle {
+        override fun saveInstanceState(): ContainerState {
+            return containerState {
                 it["state"] = state
             }
         }
 
-        override fun restoreInstanceState(bundle: BravoBundle) {
+        override fun restoreInstanceState(bundle: ContainerState) {
             state = bundle["state"]
         }
     }
