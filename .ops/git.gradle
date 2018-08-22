@@ -5,7 +5,13 @@ ext.git = [
             def commitCount = git.numberOfCommitsSinceTag(baseTag)
 
             def result = baseTag
-            if (commitCount != 0 || git.isDirty()) result += ".$commitCount-SNAPSHOT"
+
+            if (commitCount != 0 || git.isDirty() || baseTag.startsWith("0.0.")) {
+                if (commitCount != 0 || git.isDirty()) {
+                    result += ".$commitCount"
+                }
+                result += "-SNAPSHOT"
+            }
 
             return result
         },
