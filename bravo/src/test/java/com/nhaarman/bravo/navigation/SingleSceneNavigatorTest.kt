@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.expect.expect
@@ -20,7 +21,7 @@ class SingleSceneNavigatorTest {
     private val listener = TestListener()
 
     @Nested
-    inner class NavigatorState {
+    inner class TestNavigatorState {
 
         @Test
         fun `inactive navigator is not finished`() {
@@ -300,11 +301,11 @@ class SingleSceneNavigatorTest {
         }
     }
 
-    class TestSingleSceneNavigator(savedState: BravoBundle?) : SingleSceneNavigator<Navigator.Events>(savedState) {
+    class TestSingleSceneNavigator(savedState: NavigatorState?) : SingleSceneNavigator<Navigator.Events>(savedState) {
 
         lateinit var scene: TestScene
 
-        override fun createScene(state: BravoBundle?): Scene<out Container> {
+        override fun createScene(state: SceneState?): Scene<out Container> {
             return spy(TestScene.create(state)).also { scene = it }
         }
     }

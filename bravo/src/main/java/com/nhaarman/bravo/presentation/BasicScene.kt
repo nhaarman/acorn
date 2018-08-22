@@ -1,21 +1,19 @@
 package com.nhaarman.bravo.presentation
 
 import android.support.annotation.CallSuper
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateRestorable
+import com.nhaarman.bravo.ContainerState
 
 /**
  * An abstract [Scene] implementation that saves and restores view state between
  * different views, and provides a reference to the currently attached view.
  *
- * @param V The view type for this [Scene], must implement [StateRestorable].
- * @property viewState The initial view state for this [Scene].
+ * @param V The view type for this [Scene], must implement [RestorableContainer].
+ * @property containerState The initial view state for this [Scene].
  * @constructor Creates a new [BasicScene], restoring view state when available.
  */
-abstract class BasicScene<V>
-    : Scene<V> where V : Container, V : StateRestorable {
+abstract class BasicScene<V : RestorableContainer> : Scene<V> {
 
-    private var viewState: BravoBundle? = null
+    private var containerState: ContainerState? = null
 
     /**
      * The currently attached [V] instance, if available.
@@ -26,13 +24,13 @@ abstract class BasicScene<V>
 
     @CallSuper
     override fun attach(v: V) {
-        viewState?.let { v.restoreInstanceState(it) }
+        containerState?.let { v.restoreInstanceState(it) }
         currentView = v
     }
 
     @CallSuper
     override fun detach(v: V) {
-        viewState = v.saveInstanceState()
+        containerState = v.saveInstanceState()
         currentView = null
     }
 }

@@ -1,28 +1,29 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.BravoBundle.Companion.bundle
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.NavigatorState.Companion.navigatorState
 import com.nhaarman.bravo.OnBackPressListener
+import com.nhaarman.bravo.presentation.SaveableScene
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
-import com.nhaarman.bravo.StateSaveable
 import com.nhaarman.bravo.util.lazyVar
 import io.reactivex.disposables.Disposable
 
 /**
  * A simple [Navigator] that only hosts a single [Scene].
  *
- * This Navigator implements [StateSaveable] and thus can have its state saved
+ * This Navigator implements [SaveableNavigator] and thus can have its state saved
  * and restored when necessary.
  *
  * @param savedState An optional instance that contains saved state as returned
  *                   by [saveInstanceState].
  */
 abstract class SingleSceneNavigator<Events : Navigator.Events>(
-    private val savedState: BravoBundle?
-) : Navigator<Events>, StateSaveable, OnBackPressListener {
+    private val savedState: NavigatorState?
+) : Navigator<Events>, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the [Scene] instance to host.
@@ -30,17 +31,17 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
      * @param state An optional saved state instance to restore the Scene's
      *              state from.
      */
-    abstract fun createScene(state: BravoBundle?): Scene<out Container>
+    abstract fun createScene(state: SceneState?): Scene<out Container>
 
     private val scene by lazy { createScene(savedState?.sceneState) }
 
-    private var state by lazyVar { SceneState.create(scene) }
+    private var state by lazyVar { LifecycleState.create(scene) }
 
     protected val listeners = mutableListOf<Events>()
     override fun addListener(listener: Events): Disposable {
         listeners += listener
 
-        if (state is SceneState.Active) {
+        if (state is LifecycleState.Active) {
             listener.scene(scene)
         }
 
@@ -81,72 +82,72 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
         return true
     }
 
-    override fun saveInstanceState(): BravoBundle {
-        return bundle {
-            it.sceneState = (scene as? StateSaveable)?.saveInstanceState()
+    override fun saveInstanceState(): NavigatorState {
+        return navigatorState {
+            it.sceneState = (scene as? SaveableScene)?.saveInstanceState()
         }
     }
 
-    private sealed class SceneState {
+    private sealed class LifecycleState {
 
-        abstract fun start(): SceneState
-        abstract fun stop(): SceneState
-        abstract fun destroy(): SceneState
+        abstract fun start(): LifecycleState
+        abstract fun stop(): LifecycleState
+        abstract fun destroy(): LifecycleState
 
         companion object {
 
-            fun create(scene: Scene<out Container>): SceneState {
+            fun create(scene: Scene<out Container>): LifecycleState {
                 return Inactive(scene)
             }
         }
 
-        class Inactive(val scene: Scene<out Container>) : SceneState() {
+        class Inactive(val scene: Scene<out Container>) : LifecycleState() {
 
-            override fun start(): SceneState {
+            override fun start(): LifecycleState {
                 scene.onStart()
                 return Active(scene)
             }
 
-            override fun stop(): SceneState {
+            override fun stop(): LifecycleState {
                 return this
             }
 
-            override fun destroy(): SceneState {
+            override fun destroy(): LifecycleState {
                 scene.onDestroy()
                 return Destroyed(scene)
             }
         }
 
-        class Active(val scene: Scene<out Container>) : SceneState() {
+        class Active(val scene: Scene<out Container>) : LifecycleState() {
 
-            override fun start(): SceneState {
+            override fun start(): LifecycleState {
                 return this
             }
 
-            override fun stop(): SceneState {
+            override fun stop(): LifecycleState {
                 scene.onStop()
                 return Inactive(scene)
             }
 
-            override fun destroy(): SceneState {
+            override fun destroy(): LifecycleState {
                 scene.onStop()
                 scene.onDestroy()
                 return Destroyed(scene)
             }
         }
 
-        class Destroyed(val scene: Scene<out Container>) : SceneState() {
+        class Destroyed(val scene: Scene<out Container>) : LifecycleState() {
 
-            override fun start(): SceneState {
-                w("SceneState", "Warning: Cannot start state after it is destroyed.")
+            override fun start(): LifecycleState {
+                w("LifecycleState", "Warning: Cannot start state after it is destroyed.")
                 return this
             }
 
-            override fun stop(): SceneState {
+            override fun stop(): LifecycleState {
                 return this
             }
 
-            override fun destroy(): SceneState {
+            override fun destroy(): LifecycleState {
                 return this
             }
         }
@@ -154,7 +155,7 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
 
     companion object {
 
-        private var BravoBundle.sceneState: BravoBundle?
+        private var NavigatorState.sceneState: SceneState?
             get() = get("scene:state")
             set(value) {
                 set("scene:state", value)

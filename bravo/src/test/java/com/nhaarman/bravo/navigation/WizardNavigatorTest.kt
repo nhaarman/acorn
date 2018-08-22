@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.expect.expect
@@ -25,7 +26,7 @@ internal class WizardNavigatorTest {
     private val listener = TestListener()
 
     @Nested
-    inner class NavigatorState {
+    inner class TestNavigatorState {
 
         @Test
         fun `inactive navigator is not finished`() {
@@ -816,14 +817,14 @@ internal class WizardNavigatorTest {
 
     class TestWizardNavigator(
         private val initialStack: List<TestScene>,
-        savedState: BravoBundle? = null
+        savedState: NavigatorState? = null
     ) : WizardNavigator<Navigator.Events>(savedState) {
 
         override fun createScene(index: Int): Scene<out Container>? {
             return initialStack.getOrNull(index)
         }
 
-        override fun instantiateScene(sceneClass: Class<*>, state: BravoBundle?): Scene<*> {
+        override fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
                 TestScene::class.java -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")

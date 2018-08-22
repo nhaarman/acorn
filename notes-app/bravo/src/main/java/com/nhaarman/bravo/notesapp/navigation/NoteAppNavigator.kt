@@ -1,14 +1,14 @@
 package com.nhaarman.bravo.notesapp.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
 import com.nhaarman.bravo.navigation.CompositeStackNavigator
 import com.nhaarman.bravo.navigation.Navigator
-import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.NotesAppComponent
+import com.nhaarman.bravo.notesapp.note.NoteItem
 
 class NoteAppNavigator(
     private val notesAppComponent: NotesAppComponent,
-    savedState: BravoBundle?
+    savedState: NavigatorState?
 ) : CompositeStackNavigator<Navigator.Events>(savedState),
     PrimaryNavigator.Events,
     CreateItemNavigator.Events {
@@ -19,7 +19,7 @@ class NoteAppNavigator(
 
     override fun instantiateNavigator(
         navigatorClass: Class<Navigator<*>>,
-        state: BravoBundle?
+        state: NavigatorState?
     ): Navigator<out Navigator.Events> {
         return when (navigatorClass) {
             PrimaryNavigator::class.java -> PrimaryNavigator(

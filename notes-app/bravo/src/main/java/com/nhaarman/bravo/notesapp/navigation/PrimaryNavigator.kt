@@ -1,10 +1,11 @@
 package com.nhaarman.bravo.notesapp.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.StackNavigator
-import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.NotesAppComponent
+import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.presentation.edititem.EditItemScene
 import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListScene
 import com.nhaarman.bravo.presentation.Container
@@ -18,7 +19,7 @@ import com.nhaarman.bravo.presentation.Scene
  */
 class PrimaryNavigator(
     private val notesAppComponent: NotesAppComponent,
-    private val savedState: BravoBundle?
+    private val savedState: NavigatorState?
 ) : StackNavigator<PrimaryNavigator.Events>(savedState),
     ItemListScene.Events,
     EditItemScene.Events {
@@ -50,7 +51,7 @@ class PrimaryNavigator(
         )
     }
 
-    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: BravoBundle?): Scene<out Container> {
+    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container> {
         return when (sceneClass) {
             ItemListScene::class.java -> ItemListScene(
                 notesAppComponent.noteItemsRepository,

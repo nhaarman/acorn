@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.notesapp.presentation.itemlist
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
@@ -10,7 +10,7 @@ import io.reactivex.rxkotlin.plusAssign
 class ItemListScene(
     private val noteItemsRepository: NoteItemsRepository,
     private val listener: Events,
-    savedState: BravoBundle?
+    savedState: SceneState?
 ) : RxScene<ItemListContainer>(savedState) {
 
     private val createClicks = view.whenAvailable { it.createClicks }

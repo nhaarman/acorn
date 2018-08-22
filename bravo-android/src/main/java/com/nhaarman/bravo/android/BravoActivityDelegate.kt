@@ -3,13 +3,14 @@ package com.nhaarman.bravo.android
 import android.app.Activity
 import android.os.Bundle
 import android.view.ViewGroup
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.ActivityState
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.android.transition.ViewFactory
 import com.nhaarman.bravo.android.util.toBundle
+import com.nhaarman.bravo.android.util.toNavigatorState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
@@ -80,8 +81,8 @@ class BravoActivityDelegate(
 
         private val Activity.root get() = findViewById<ViewGroup>(android.R.id.content)
 
-        private var Bundle?.navigatorState: BravoBundle?
-            get() = this?.getBundle("navigator")?.toBundle()
+        private var Bundle?.navigatorState: NavigatorState?
+            get() = this?.getBundle("navigator")?.toNavigatorState()
             set(value) {
                 this?.putBundle("navigator", value?.toBundle())
             }

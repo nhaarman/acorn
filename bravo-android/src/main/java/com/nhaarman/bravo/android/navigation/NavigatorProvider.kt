@@ -1,23 +1,24 @@
 package com.nhaarman.bravo.android.navigation
 
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateSaveable
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.NavigatorState.Companion.navigatorState
+import com.nhaarman.bravo.navigation.SaveableNavigator
 import com.nhaarman.bravo.android.internal.i
 import com.nhaarman.bravo.navigation.Navigator
 import java.util.concurrent.TimeUnit
 
 interface NavigatorProvider {
 
-    fun navigatorFor(savedState: BravoBundle?): Navigator<*>
+    fun navigatorFor(savedState: NavigatorState?): Navigator<*>
 
-    fun saveNavigatorState(): BravoBundle?
+    fun saveNavigatorState(): NavigatorState?
 }
 
 abstract class AbstractNavigatorProvider<N : Navigator<*>> : NavigatorProvider {
 
     private var navigator: N? = null
 
-    override fun navigatorFor(savedState: BravoBundle?): N {
+    override fun navigatorFor(savedState: NavigatorState?): N {
         var result = navigator
 
         if (result == null) {
@@ -27,7 +28,7 @@ abstract class AbstractNavigatorProvider<N : Navigator<*>> : NavigatorProvider {
         return result.also { this.navigator = it }
     }
 
-    private fun createNavigatorInternal(savedState: BravoBundle?): N {
+    private fun createNavigatorInternal(savedState: NavigatorState?): N {
         if (savedState == null) return createNavigator(null)
 
         val timeMillis = savedState.timeMillis ?: return createNavigator(savedState.navigatorState)
@@ -41,24 +42,24 @@ abstract class AbstractNavigatorProvider<N : Navigator<*>> : NavigatorProvider {
         return createNavigator(null)
     }
 
-    abstract fun createNavigator(savedState: BravoBundle?): N
+    abstract fun createNavigator(savedState: NavigatorState?): N
 
-    override fun saveNavigatorState(): BravoBundle? {
-        return BravoBundle.bundle {
+    override fun saveNavigatorState(): NavigatorState? {
+        return navigatorState {
             it.timeMillis = System.currentTimeMillis()
-            it.navigatorState = (navigator as? StateSaveable)?.saveInstanceState()
+            it.navigatorState = (navigator as? SaveableNavigator)?.saveInstanceState()
         }
     }
 
     companion object {
 
-        private var BravoBundle.timeMillis: Long?
+        private var NavigatorState.timeMillis: Long?
             get() = get("timestamp")
             set(value) {
                 set("timestamp", value)
             }
 
-        private var BravoBundle.navigatorState: BravoBundle?
+        private var NavigatorState.navigatorState: NavigatorState?
             get() = get("navigator")
             set(value) {
                 set("navigator", value)

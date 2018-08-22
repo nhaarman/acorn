@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.notesapp.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.SingleSceneNavigator
 import com.nhaarman.bravo.notesapp.NotesAppComponent
@@ -12,12 +13,12 @@ import com.nhaarman.bravo.presentation.Scene
 class CreateItemNavigator(
     private val text: String?,
     private val notesAppComponent: NotesAppComponent,
-    private val savedState: BravoBundle?,
+    private val savedState: NavigatorState?,
     private val listener: Events
 ) : SingleSceneNavigator<CreateItemNavigator.Events>(savedState),
     CreateItemScene.Events {
 
-    override fun createScene(state: BravoBundle?): Scene<out Container> {
+    override fun createScene(state: SceneState?): Scene<out Container> {
         return CreateItemScene(
             text,
             notesAppComponent.noteItemsRepository,

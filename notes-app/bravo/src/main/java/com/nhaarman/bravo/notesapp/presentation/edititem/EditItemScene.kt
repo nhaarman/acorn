@@ -1,18 +1,17 @@
 package com.nhaarman.bravo.notesapp.presentation.edititem
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
 import com.nhaarman.bravo.presentation.RxScene
-import com.nhaarman.bravo.StateSaveable
 import io.reactivex.rxkotlin.plusAssign
 
 class EditItemScene(
     private val itemId: Long,
     private val noteItemsRepository: NoteItemsRepository,
     private val listener: Events,
-    savedState: BravoBundle? = null
-) : RxScene<EditItemContainer>(savedState), StateSaveable {
+    savedState: SceneState? = null
+) : RxScene<EditItemContainer>(savedState) {
 
     override val key = EditItemScene.key
 
@@ -46,7 +45,7 @@ class EditItemScene(
             }
     }
 
-    override fun saveInstanceState(): BravoBundle {
+    override fun saveInstanceState(): SceneState {
         return super.saveInstanceState()
             .also { it["item_id"] = itemId }
     }
@@ -68,7 +67,7 @@ class EditItemScene(
         fun create(
             noteItemsRepository: NoteItemsRepository,
             listener: Events,
-            state: BravoBundle
+            state: SceneState
         ): EditItemScene {
             return EditItemScene(
                 state["item_id"]!!,
