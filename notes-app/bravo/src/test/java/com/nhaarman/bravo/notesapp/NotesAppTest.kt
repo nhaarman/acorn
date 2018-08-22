@@ -1,11 +1,11 @@
 package com.nhaarman.bravo.notesapp
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.ContainerState
 import com.nhaarman.bravo.navigation.Navigator
+import com.nhaarman.bravo.notesapp.navigation.NoteAppNavigator
 import com.nhaarman.bravo.notesapp.note.MemoryNoteItemsRepository
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
-import com.nhaarman.bravo.notesapp.navigation.NoteAppNavigator
 import com.nhaarman.bravo.notesapp.presentation.createitem.CreateItemContainer
 import com.nhaarman.bravo.notesapp.presentation.createitem.CreateItemScene
 import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListContainer
@@ -137,11 +137,11 @@ class TestCreateItemContainer : CreateItemContainer {
 
     override val createClicks = PublishSubject.create<Unit>()
 
-    override fun saveInstanceState(): BravoBundle {
-        return BravoBundle()
+    override fun saveInstanceState(): ContainerState {
+        return ContainerState()
     }
 
-    override fun restoreInstanceState(bundle: BravoBundle) {
+    override fun restoreInstanceState(bundle: ContainerState) {
     }
 }
 
@@ -184,10 +184,10 @@ class TestItemListContainer : ItemListContainer {
 
     override val deleteClicks = PublishSubject.create<NoteItem>()
 
-    override fun saveInstanceState(): BravoBundle {
-        return BravoBundle()
+    override fun saveInstanceState(): ContainerState {
+        return ContainerState()
     }
 
-    override fun restoreInstanceState(bundle: BravoBundle) {
+    override fun restoreInstanceState(bundle: ContainerState) {
     }
 }

@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.expect.expect
@@ -28,7 +29,7 @@ internal class CompositeStackNavigatorTest {
     private val listener = mock<Navigator.Events>()
 
     @Nested
-    inner class NavigatorState {
+    inner class TestNavigatorState {
 
         @Nested
         inner class InactiveNavigator {
@@ -905,7 +906,7 @@ internal class CompositeStackNavigatorTest {
 
         override fun instantiateNavigator(
             navigatorClass: Class<Navigator<*>>,
-            state: BravoBundle?
+            state: NavigatorState?
         ): Navigator<out Navigator.Events> {
             error("Not supported")
         }
@@ -913,24 +914,24 @@ internal class CompositeStackNavigatorTest {
 
     open class TestSingleSceneNavigator(
         private val scene: Scene<out Container>,
-        savedState: BravoBundle? = null
+        savedState: NavigatorState? = null
     ) : SingleSceneNavigator<Navigator.Events>(savedState) {
 
-        override fun createScene(state: BravoBundle?): Scene<out Container> {
+        override fun createScene(state: SceneState?): Scene<out Container> {
             return scene
         }
     }
 
     open class TestStackNavigator(
         private val initialStack: List<TestScene>,
-        savedState: BravoBundle? = null
+        savedState: NavigatorState? = null
     ) : StackNavigator<Navigator.Events>(savedState) {
 
         override fun initialStack(): List<Scene<out Container>> {
             return initialStack
         }
 
-        override fun instantiateScene(sceneClass: Class<Scene<*>>, state: BravoBundle?): Scene<*> {
+        override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
                 TestScene::class.java -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
@@ -940,7 +941,7 @@ internal class CompositeStackNavigatorTest {
 
     class RestorableTestCompositeStackNavigator(
         private val initialStack: List<Navigator<out Navigator.Events>>,
-        savedState: BravoBundle?
+        savedState: NavigatorState?
     ) : CompositeStackNavigator<Navigator.Events>(savedState) {
 
         override fun initialStack(): List<Navigator<out Navigator.Events>> {
@@ -949,7 +950,7 @@ internal class CompositeStackNavigatorTest {
 
         override fun instantiateNavigator(
             navigatorClass: Class<Navigator<*>>,
-            state: BravoBundle?
+            state: NavigatorState?
         ): Navigator<out Navigator.Events> {
             return when (navigatorClass) {
                 RestorableTestSingleSceneNavigator::class.java -> RestorableTestSingleSceneNavigator(
@@ -964,10 +965,10 @@ internal class CompositeStackNavigatorTest {
 
     open class RestorableTestSingleSceneNavigator(
         private val scene: Scene<out Container>,
-        savedState: BravoBundle? = null
+        savedState: NavigatorState? = null
     ) : SingleSceneNavigator<Navigator.Events>(savedState) {
 
-        override fun createScene(state: BravoBundle?): Scene<out Container> {
+        override fun createScene(state: SceneState?): Scene<out Container> {
             return state?.let { TestScene.create(it) } ?: scene
         }
     }

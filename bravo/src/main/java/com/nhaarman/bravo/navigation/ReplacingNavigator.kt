@@ -1,13 +1,14 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.BravoBundle.Companion.bundle
+import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.NavigatorState.Companion.navigatorState
 import com.nhaarman.bravo.OnBackPressListener
+import com.nhaarman.bravo.presentation.SaveableScene
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
-import com.nhaarman.bravo.StateSaveable
 import com.nhaarman.bravo.util.lazyVar
 import io.reactivex.disposables.Disposable
 
@@ -16,8 +17,8 @@ import io.reactivex.disposables.Disposable
  * behavior.
  */
 abstract class ReplacingNavigator(
-    private val savedState: BravoBundle?
-) : Navigator<Navigator.Events>, StateSaveable, OnBackPressListener {
+    private val savedState: NavigatorState?
+) : Navigator<Navigator.Events>, SaveableNavigator, OnBackPressListener {
 
     /**
      * Returns the Scene this Navigator should start with.
@@ -37,7 +38,7 @@ abstract class ReplacingNavigator(
      * @param state An optional saved state instance to restore the new Scene's
      *              state from
      */
-    abstract fun instantiateScene(sceneClass: Class<*>, state: BravoBundle?): Scene<out Container>
+    abstract fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<out Container>
 
     /**
      * Replaces the current Scene with [newScene].
@@ -58,7 +59,7 @@ abstract class ReplacingNavigator(
     fun replace(newScene: Scene<out Container>) {
         state = state.replaceWith(newScene)
 
-        if (state is SceneState.Active) {
+        if (state is LifecycleState.Active) {
             listeners.forEach { it.scene(state.scene) }
         }
     }
@@ -71,14 +72,14 @@ abstract class ReplacingNavigator(
             return instantiateScene(savedClass, savedState)
         }
 
-        SceneState.create(initialScene())
+        LifecycleState.create(initialScene())
     }
 
     private val listeners = mutableListOf<Navigator.Events>()
     override fun addListener(listener: Navigator.Events): Disposable {
         listeners += listener
 
-        if (state is SceneState.Active) {
+        if (state is LifecycleState.Active) {
             listener.scene(state.scene)
         }
 
@@ -119,69 +120,69 @@ abstract class ReplacingNavigator(
         return true
     }
 
-    override fun saveInstanceState(): BravoBundle {
-        return bundle {
+    override fun saveInstanceState(): NavigatorState {
+        return navigatorState {
             it.sceneClass = state.scene.javaClass
-            it.sceneState = (state.scene as? StateSaveable)?.saveInstanceState()
+            it.sceneState = (state.scene as? SaveableScene)?.saveInstanceState()
         }
     }
 
-    private sealed class SceneState {
+    private sealed class LifecycleState {
 
         abstract val scene: Scene<out Container>
 
-        abstract fun start(): SceneState
-        abstract fun stop(): SceneState
-        abstract fun destroy(): SceneState
+        abstract fun start(): LifecycleState
+        abstract fun stop(): LifecycleState
+        abstract fun destroy(): LifecycleState
 
-        abstract fun replaceWith(scene: Scene<out Container>): SceneState
+        abstract fun replaceWith(scene: Scene<out Container>): LifecycleState
 
         companion object {
 
-            fun create(scene: Scene<out Container>): SceneState {
+            fun create(scene: Scene<out Container>): LifecycleState {
                 return Inactive(scene)
             }
         }
 
-        class Inactive(override val scene: Scene<out Container>) : SceneState() {
+        class Inactive(override val scene: Scene<out Container>) : LifecycleState() {
 
-            override fun start(): SceneState {
+            override fun start(): LifecycleState {
                 scene.onStart()
                 return Active(scene)
             }
 
-            override fun stop(): SceneState {
+            override fun stop(): LifecycleState {
                 return this
             }
 
-            override fun destroy(): SceneState {
+            override fun destroy(): LifecycleState {
                 scene.onDestroy()
                 return Destroyed(scene)
             }
 
-            override fun replaceWith(scene: Scene<out Container>): SceneState {
+            override fun replaceWith(scene: Scene<out Container>): LifecycleState {
                 return Inactive(scene)
             }
         }
 
-        class Active(override val scene: Scene<out Container>) : SceneState() {
+        class Active(override val scene: Scene<out Container>) : LifecycleState() {
 
-            override fun start(): SceneState {
+            override fun start(): LifecycleState {
                 return this
             }
 
-            override fun stop(): SceneState {
+            override fun stop(): LifecycleState {
                 scene.onStop()
                 return Inactive(scene)
             }
 
-            override fun destroy(): SceneState {
+            override fun destroy(): LifecycleState {
                 scene.onStop()
                 scene.onDestroy()
                 return Destroyed(scene)
             }
 
-            override fun replaceWith(scene: Scene<out Container>): SceneState {
+            override fun replaceWith(scene: Scene<out Container>): LifecycleState {
                 this.scene.onStop()
                 this.scene.onDestroy()
                 scene.onStart()
@@ -189,23 +190,23 @@ abstract class ReplacingNavigator(
             }
         }
 
-        class Destroyed(override val scene: Scene<out Container>) : SceneState() {
+        class Destroyed(override val scene: Scene<out Container>) : LifecycleState() {
 
-            override fun start(): SceneState {
-                w("SceneState", "Warning: Cannot start state after it is destroyed.")
+            override fun start(): LifecycleState {
+                w("LifecycleState", "Warning: Cannot start state after it is destroyed.")
                 return this
             }
 
-            override fun stop(): SceneState {
+            override fun stop(): LifecycleState {
                 return this
             }
 
-            override fun destroy(): SceneState {
+            override fun destroy(): LifecycleState {
                 return this
             }
 
-            override fun replaceWith(scene: Scene<out Container>): SceneState {
-                w("SceneState", "Warning: Cannot replace scene after state is destroyed.")
+            override fun replaceWith(scene: Scene<out Container>): LifecycleState {
+                w("LifecycleState", "Warning: Cannot replace scene after state is destroyed.")
                 return this
             }
         }
@@ -213,13 +214,13 @@ abstract class ReplacingNavigator(
 
     companion object {
 
-        private var BravoBundle.sceneClass: Class<*>?
+        private var NavigatorState.sceneClass: Class<*>?
             get() = get<String>("scene:class")?.let { Class.forName(it) }
             set(value) {
                 set("scene:class", value?.name)
             }
 
-        private var BravoBundle.sceneState: BravoBundle?
+        private var NavigatorState.sceneState: SceneState?
             get() = get("scene:state")
             set(value) {
                 set("scene:state", value)

@@ -1,11 +1,12 @@
 package com.nhaarman.bravo.presentation
 
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateRestorable
+import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.ContainerState.Companion.containerState
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.expect.expect
 import org.junit.jupiter.api.Test
 
-class SaveableSceneTest {
+class BaseSaveableSceneTest {
 
     private val view1 = TestView()
     private val view2 = TestView()
@@ -60,18 +61,18 @@ class SaveableSceneTest {
         expect(view2.state).toBe(3)
     }
 
-    private class TestSaveableScene(viewState: BravoBundle?) : SaveableScene<TestView>(viewState)
-    private class TestView : Container, StateRestorable {
+    private class TestSaveableScene(viewState: SceneState?) : BaseSaveableScene<TestView>(viewState)
+    private class TestView : Container, RestorableContainer {
 
         var state: Int? = null
 
-        override fun saveInstanceState(): BravoBundle {
-            return BravoBundle.bundle {
+        override fun saveInstanceState(): ContainerState {
+            return containerState {
                 it["state"] = state
             }
         }
 
-        override fun restoreInstanceState(bundle: BravoBundle) {
+        override fun restoreInstanceState(bundle: ContainerState) {
             state = bundle["state"]
         }
     }

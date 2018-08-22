@@ -1,8 +1,9 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
-import com.nhaarman.bravo.StateSaveable
+import com.nhaarman.bravo.presentation.SaveableScene
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
@@ -21,15 +22,15 @@ import io.reactivex.disposables.Disposable
  *
  * Implementers must implement [createScene] to provide the proper Scenes.
  *
- * This Navigator implements [StateSaveable] and thus can have its state saved
+ * This Navigator implements [SaveableNavigator] and thus can have its state saved
  * and restored when necessary.
  *
  * @param savedState An optional instance that contains saved state as returned
  *                   by this class's saveInstanceState() method.
  */
 abstract class WizardNavigator<E : Navigator.Events>(
-    private val savedState: BravoBundle?
-) : Navigator<E>, StateSaveable, OnBackPressListener {
+    private val savedState: NavigatorState?
+) : Navigator<E>, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the Scene for given [index], starting at `0`.
@@ -51,7 +52,7 @@ abstract class WizardNavigator<E : Navigator.Events>(
      *              the instance as returned from [StateSaveable.saveInstanceState]
      *              if its state was saved.
      */
-    abstract fun instantiateScene(sceneClass: Class<*>, state: BravoBundle?): Scene<out Container>
+    abstract fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<out Container>
 
     private var state by lazyVar {
         val size: Int? = savedState?.get("size")
@@ -186,12 +187,12 @@ abstract class WizardNavigator<E : Navigator.Events>(
         }
     }
 
-    override fun saveInstanceState(): BravoBundle {
+    override fun saveInstanceState(): NavigatorState {
         return state.scenes
-            .foldIndexed(BravoBundle()) { index, bundle, scene ->
+            .foldIndexed(NavigatorState()) { index, bundle, scene ->
                 bundle.also {
                     it["${index}_class"] = scene::class.java.name
-                    it["${index}_state"] = (scene as? StateSaveable)?.saveInstanceState()
+                    it["${index}_state"] = (scene as? SaveableScene)?.saveInstanceState()
                 }
             }
             .also {

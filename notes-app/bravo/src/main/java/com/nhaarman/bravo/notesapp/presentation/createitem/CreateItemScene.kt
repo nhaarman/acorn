@@ -1,7 +1,6 @@
 package com.nhaarman.bravo.notesapp.presentation.createitem
 
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateSaveable
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
@@ -14,8 +13,8 @@ class CreateItemScene(
     private val initialText: String?,
     private val noteItemsRepository: NoteItemsRepository,
     private val listener: Events,
-    savedState: BravoBundle? = null
-) : RxScene<CreateItemContainer>(savedState), StateSaveable {
+    savedState: SceneState? = null
+) : RxScene<CreateItemContainer>(savedState) {
 
     override val key = CreateItemScene.key
 

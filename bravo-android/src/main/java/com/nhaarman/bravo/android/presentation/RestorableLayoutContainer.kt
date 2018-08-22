@@ -3,47 +3,47 @@ package com.nhaarman.bravo.android.presentation
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.View
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateRestorable
+import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.ContainerState.Companion.containerState
+import com.nhaarman.bravo.presentation.RestorableContainer
 import com.nhaarman.bravo.android.util.saveHierarchyState
-import com.nhaarman.bravo.presentation.Container
 
 /**
  * A helper interface that offers default implementations for [View] state saving
  * and restoration.
  *
- * Classes that utilize the [LayoutContainer] interface and implement a
- * [StateRestorable] [Container] need to manually implement saving the hierarchy
+ * Classes that utilize the [LayoutContainer] interface and implement
+ * [RestorableContainer] need to manually implement saving the hierarchy
  * state. To make this easier, you can implement this interface instead:
  *
  * ```
- * interface MyContainer: Container, StateRestorable
+ * interface MyContainer: RestorableContainer
  *
  * class MyViewWrapper : LayoutContainer, MyContainer, RestorableLayoutContainer
  * ```
  */
-interface RestorableLayoutContainer : StateRestorable {
+interface RestorableLayoutContainer : RestorableContainer {
 
     val containerView: View
 
-    override fun saveInstanceState() = BravoBundle.bundle {
+    override fun saveInstanceState() = containerState {
         it.hierarchyState = containerView.saveHierarchyState()
     }
 
-    override fun restoreInstanceState(bundle: BravoBundle) {
+    override fun restoreInstanceState(bundle: ContainerState) {
         bundle.hierarchyState?.let { containerView.restoreHierarchyState(it) }
     }
 
-    fun getHierarchyState(bundle: BravoBundle): SparseArray<Parcelable>? {
+    fun getHierarchyState(bundle: ContainerState): SparseArray<Parcelable>? {
         return bundle.hierarchyState
     }
 
     companion object {
 
-        private var BravoBundle.hierarchyState: SparseArray<Parcelable>?
+        private var ContainerState.hierarchyState: SparseArray<Parcelable>?
             get() = get("hierarchy_state")
             set(value) {
-                this["hierarchy_state"] = value
+                setUnchecked("hierarchy_state", value)
             }
     }
 }

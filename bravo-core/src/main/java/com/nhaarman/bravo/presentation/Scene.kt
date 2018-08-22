@@ -1,7 +1,5 @@
 package com.nhaarman.bravo.presentation
 
-import com.nhaarman.bravo.StateSaveable
-
 /**
  * A Scene is a destination in the application the user can navigate to.
  *
@@ -20,8 +18,8 @@ import com.nhaarman.bravo.StateSaveable
  * the user. It is therefore possible that the Scene is active without having
  * a user interface attached.
  *
- * Scenes may implement [StateSaveable] to indicate that their instance state
- * can be saved. When this is the case, [StateSaveable.saveInstanceState] will
+ * Scenes may implement [SaveableScene] to indicate that their instance state
+ * can be saved. When this is the case, [SaveableScene.saveInstanceState] will
  * be called at the appropriate time.
  *
  * @param V The type of the view to display the Scene, representing the

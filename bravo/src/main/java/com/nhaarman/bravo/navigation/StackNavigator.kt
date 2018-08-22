@@ -1,8 +1,9 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
-import com.nhaarman.bravo.StateSaveable
+import com.nhaarman.bravo.presentation.SaveableScene
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
@@ -17,15 +18,15 @@ import io.reactivex.disposables.Disposable
  * stack. Implementers must implement [initialStack] to provide the initial stack
  * to work with.
  *
- * This Navigator implements [StateSaveable] and thus can have its state saved
+ * This Navigator implements [SaveableNavigator] and thus can have its state saved
  * and restored when necessary.
  *
  * @param savedState An optional instance that contains saved state as returned
  *                   by this class's saveInstanceState() method.
  */
 abstract class StackNavigator<E : Navigator.Events>(
-    private val savedState: BravoBundle?
-) : Navigator<E>, StateSaveable, OnBackPressListener {
+    private val savedState: NavigatorState?
+) : Navigator<E>, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the initial stack of [Scene]s for this StackNavigator.
@@ -44,7 +45,7 @@ abstract class StackNavigator<E : Navigator.Events>(
      *              the instance as returned from [StateSaveable.saveInstanceState]
      *              if its state was saved.
      */
-    abstract fun instantiateScene(sceneClass: Class<Scene<*>>, state: BravoBundle?): Scene<out Container>
+    abstract fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container>
 
     private var state by lazyVar {
         @Suppress("UNCHECKED_CAST")
@@ -170,12 +171,12 @@ abstract class StackNavigator<E : Navigator.Events>(
         }
     }
 
-    override fun saveInstanceState(): BravoBundle {
+    override fun saveInstanceState(): NavigatorState {
         return state.scenes
-            .foldIndexed(BravoBundle()) { index, bundle, scene ->
+            .foldIndexed(NavigatorState()) { index, bundle, scene ->
                 bundle.also {
                     it["${index}_class"] = scene::class.java.name
-                    it["${index}_state"] = (scene as? StateSaveable)?.saveInstanceState()
+                    it["${index}_state"] = (scene as? SaveableScene)?.saveInstanceState()
                 }
             }
             .also { it["size"] = state.scenes.size }

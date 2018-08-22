@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.samples.hellonavigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.StackNavigator
 import com.nhaarman.bravo.presentation.Container
@@ -25,7 +25,7 @@ class HelloNavigationNavigator :
         pop()
     }
 
-    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: BravoBundle?): Scene<out Container> {
+    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container> {
         return when (sceneClass) {
             FirstScene::class.java -> FirstScene(this)
             SecondScene::class.java -> SecondScene(this)

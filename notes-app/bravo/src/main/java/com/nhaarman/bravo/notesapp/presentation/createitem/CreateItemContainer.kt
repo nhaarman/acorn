@@ -1,10 +1,10 @@
 package com.nhaarman.bravo.notesapp.presentation.createitem
 
+import com.nhaarman.bravo.presentation.RestorableContainer
 import com.nhaarman.bravo.presentation.Container
-import com.nhaarman.bravo.StateRestorable
 import io.reactivex.Observable
 
-interface CreateItemContainer : Container, StateRestorable {
+interface CreateItemContainer : Container, RestorableContainer {
 
     fun setInitialText(text: String?)
 

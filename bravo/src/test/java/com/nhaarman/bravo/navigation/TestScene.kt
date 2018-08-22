@@ -1,15 +1,16 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.presentation.SaveableScene
+import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.SceneState.Companion.sceneState
 import com.nhaarman.bravo.navigation.TestScene.State.Created
 import com.nhaarman.bravo.navigation.TestScene.State.Destroyed
 import com.nhaarman.bravo.navigation.TestScene.State.Started
 import com.nhaarman.bravo.navigation.TestScene.State.Stopped
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
-import com.nhaarman.bravo.StateSaveable
 
-open class TestScene(var foo: Int) : Scene<Container>, StateSaveable {
+open class TestScene(var foo: Int) : Scene<Container>, SaveableScene {
 
     var state = Created
 
@@ -36,8 +37,8 @@ open class TestScene(var foo: Int) : Scene<Container>, StateSaveable {
         Destroyed
     }
 
-    override fun saveInstanceState(): BravoBundle {
-        return BravoBundle.bundle { it["foo"] = foo }
+    override fun saveInstanceState(): SceneState {
+        return sceneState { it["foo"] = foo }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -57,7 +58,7 @@ open class TestScene(var foo: Int) : Scene<Container>, StateSaveable {
 
     companion object {
 
-        fun create(state: BravoBundle?): TestScene {
+        fun create(state: SceneState?): TestScene {
             return TestScene(
                 foo = state?.get("foo") ?: 0
             )

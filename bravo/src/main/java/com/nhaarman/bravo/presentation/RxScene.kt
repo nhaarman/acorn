@@ -3,9 +3,7 @@ package com.nhaarman.bravo.presentation
 import android.support.annotation.CallSuper
 import arrow.core.Option
 import arrow.core.toOption
-import com.nhaarman.bravo.BravoBundle
-import com.nhaarman.bravo.StateRestorable
-import com.nhaarman.bravo.StateSaveable
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.presentation.RxScene.Event.Attached
 import com.nhaarman.bravo.presentation.RxScene.Event.Detached
 import io.reactivex.Observable
@@ -24,10 +22,9 @@ import io.reactivex.subjects.BehaviorSubject
  *
  * @see SaveableScene
  */
-abstract class RxScene<V>(
-    savedState: BravoBundle?
-) : SaveableScene<V>(savedState), StateSaveable
-    where V : Container, V : StateRestorable {
+abstract class RxScene<V : RestorableContainer>(
+    savedState: SceneState?
+) : BaseSaveableScene<V>(savedState) {
 
     /**
      * A disposable container which will be cleared when this Scene receives a

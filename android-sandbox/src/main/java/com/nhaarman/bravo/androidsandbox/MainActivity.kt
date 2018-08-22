@@ -2,7 +2,7 @@ package com.nhaarman.bravo.androidsandbox
 
 import android.app.Activity
 import android.os.Bundle
-import com.nhaarman.bravo.BravoBundle
+import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.SingleSceneNavigator
 import com.nhaarman.bravo.presentation.Container
@@ -28,7 +28,7 @@ class MyScene : Scene<Container> {
 
 class MyNavigator : SingleSceneNavigator<Navigator.Events>(null) {
 
-    override fun createScene(state: BravoBundle?): Scene<out Container> = MyScene()
+    override fun createScene(state: SceneState?): Scene<out Container> = MyScene()
 }
 
 val navigator by lazy {
