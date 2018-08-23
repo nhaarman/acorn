@@ -3,10 +3,11 @@ package com.nhaarman.bravo.android.tests
 import android.support.test.rule.ActivityTestRule
 import com.nhaarman.bravo.android.transition.ViewFactory
 import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.SceneKey
 
 class BravoViewTestRule<C : Container>(
     private val viewFactory: ViewFactory,
-    private val sceneKey: String
+    private val sceneKey: SceneKey
 ) : ActivityTestRule<BravoTestActivity>(BravoTestActivity::class.java) {
 
     val viewResult by lazy {

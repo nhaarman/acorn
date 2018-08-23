@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.android.transition
 
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.presentation.SceneKey
 
 interface TransitionFactory {
 
@@ -9,7 +10,7 @@ interface TransitionFactory {
 
 class SimpleTransitionFactory(
     private val viewFactory: ViewFactory,
-    private val transitions: Map<Pair<String, String>, Transition>,
+    private val transitions: Map<Pair<SceneKey, SceneKey>, Transition>,
     private val classTransitions: Map<Pair<Class<out Scene<*>>, Class<out Scene<*>>>, Transition>,
     private val classTransitions2: MutableMap<Pair<Class<out Scene<*>>, Class<out Scene<*>>>, (Scene<*>) -> Transition>
 ) : TransitionFactory {
@@ -49,7 +50,7 @@ class TransitionFactoryBuilder internal constructor(
     private val viewFactory: ViewFactory
 ) {
 
-    private val keyTransitions = mutableMapOf<Pair<String, String>, Transition>()
+    private val keyTransitions = mutableMapOf<Pair<SceneKey, SceneKey>, Transition>()
     private val classTransitions = mutableMapOf<Pair<Class<out Scene<*>>, Class<out Scene<*>>>, Transition>()
     private val classTransitions2 =
         mutableMapOf<Pair<Class<out Scene<*>>, Class<out Scene<*>>>, (Scene<*>) -> Transition>()
@@ -63,7 +64,7 @@ class TransitionFactoryBuilder internal constructor(
         classTransitions2 += Pair(this, transition)
     }
 
-    infix fun Pair<String, String>.use(transition: Transition) {
+    infix fun Pair<SceneKey, SceneKey>.use(transition: Transition) {
         keyTransitions += Pair(this, transition)
     }
 

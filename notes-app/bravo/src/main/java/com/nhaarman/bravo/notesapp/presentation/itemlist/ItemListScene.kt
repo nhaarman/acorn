@@ -5,6 +5,7 @@ import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
 import com.nhaarman.bravo.presentation.RxScene
+import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 import io.reactivex.rxkotlin.plusAssign
 
 class ItemListScene(
@@ -51,10 +52,8 @@ class ItemListScene(
         fun showItemRequested(item: NoteItem)
     }
 
-    override val key: String = ItemListScene.key
-
     companion object {
 
-        val key: String = ItemListScene::class.java.name
+        val key = defaultKey<ItemListScene>()
     }
 }

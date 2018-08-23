@@ -5,13 +5,14 @@ import android.support.v7.app.AppCompatActivity
 import com.nhaarman.bravo.android.BravoActivityDelegate
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.bindViews
+import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
 class MainActivity : AppCompatActivity() {
 
     private val delegate by lazy {
         val viewFactory = bindViews {
-            bind(FirstScene.key, R.layout.first_scene)
-            bind(SecondScene.key, R.layout.second_scene)
+            bind(defaultKey<FirstScene>(), R.layout.first_scene)
+            bind(defaultKey<SecondScene>(), R.layout.second_scene)
         }
 
         BravoActivityDelegate(

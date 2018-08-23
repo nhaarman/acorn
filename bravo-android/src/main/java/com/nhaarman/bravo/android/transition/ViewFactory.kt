@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.presentation.SceneKey
 
 /**
  * A factory interface that can create view instances for [Scene]s.
@@ -22,7 +23,7 @@ interface ViewFactory {
      *
      * @return The resulting [ViewResult].
      */
-    fun viewFor(sceneKey: String, parent: ViewGroup): ViewResult
+    fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewResult
 }
 
 /**

@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.samples.hellonavigation.FirstScene.Events
 import kotlinx.android.synthetic.main.first_scene.view.*
 
 /**
@@ -23,8 +24,6 @@ class FirstScene(
     private val listener: Events
 ) : Scene<FirstSceneContainer> {
 
-    override val key = Companion.key
-
     override fun attach(v: FirstSceneContainer) {
         v.onSecondSceneClicked { listener.secondSceneRequested() }
     }
@@ -35,11 +34,6 @@ class FirstScene(
     interface Events {
 
         fun secondSceneRequested()
-    }
-
-    companion object {
-
-        val key = FirstScene::class.java.name
     }
 }
 

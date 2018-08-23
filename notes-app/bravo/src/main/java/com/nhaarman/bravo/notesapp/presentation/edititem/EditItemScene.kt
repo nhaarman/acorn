@@ -4,6 +4,7 @@ import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
 import com.nhaarman.bravo.presentation.RxScene
+import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 import io.reactivex.rxkotlin.plusAssign
 
 class EditItemScene(
@@ -12,8 +13,6 @@ class EditItemScene(
     private val listener: Events,
     savedState: SceneState? = null
 ) : RxScene<EditItemContainer>(savedState) {
-
-    override val key = EditItemScene.key
 
     private val originalItem by lazy {
         noteItemsRepository.find(itemId)
@@ -62,7 +61,7 @@ class EditItemScene(
 
     companion object {
 
-        val key: String = EditItemScene::class.java.name
+        val key = defaultKey<EditItemScene>()
 
         fun create(
             noteItemsRepository: NoteItemsRepository,

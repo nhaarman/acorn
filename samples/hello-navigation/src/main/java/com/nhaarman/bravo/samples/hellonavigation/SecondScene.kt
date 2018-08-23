@@ -11,8 +11,6 @@ class SecondScene(
     private val listener: Events
 ) : Scene<SecondSceneContainer> {
 
-    override val key = Companion.key
-
     override fun attach(v: SecondSceneContainer) {
         v.onFirstSceneClicked { listener.onFirstSceneRequested() }
     }
@@ -20,11 +18,6 @@ class SecondScene(
     interface Events {
 
         fun onFirstSceneRequested()
-    }
-
-    companion object {
-
-        val key = SecondScene::class.java.name
     }
 }
 
