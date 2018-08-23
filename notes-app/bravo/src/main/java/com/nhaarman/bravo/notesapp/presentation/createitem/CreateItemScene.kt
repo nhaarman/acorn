@@ -5,6 +5,7 @@ import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
 import com.nhaarman.bravo.presentation.RxScene
+import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.withLatestFrom
@@ -15,8 +16,6 @@ class CreateItemScene(
     private val listener: Events,
     savedState: SceneState? = null
 ) : RxScene<CreateItemContainer>(savedState) {
-
-    override val key = CreateItemScene.key
 
     private val textObservable by lazy {
         Observable.just(initialText ?: "")
@@ -51,6 +50,6 @@ class CreateItemScene(
 
     companion object {
 
-        val key = CreateItemScene::class.java.name
+        val key = defaultKey<CreateItemScene>()
     }
 }

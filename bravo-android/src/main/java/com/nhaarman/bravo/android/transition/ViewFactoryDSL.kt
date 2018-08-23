@@ -10,6 +10,7 @@ import com.nhaarman.bravo.android.util.inflate
 import com.nhaarman.bravo.android.util.inflateView
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.presentation.SceneKey
 
 /**
  * An entry point for the [ViewFactory] DSL.
@@ -26,7 +27,7 @@ fun bindViews(init: ViewFactoryBuilder.() -> Unit): ViewFactory {
  */
 class ViewFactoryBuilder internal constructor() {
 
-    private val bindings = mutableMapOf<String, Binding>()
+    private val bindings = mutableMapOf<SceneKey, Binding>()
 
     /**
      * Binds [Scene]s with given [sceneKey] to the layout with given
@@ -37,7 +38,7 @@ class ViewFactoryBuilder internal constructor() {
      *                    [Scene]. The root view of the inflated layout must
      *                    implement the [Container] contract for the [Scene].
      */
-    fun bind(sceneKey: String, @LayoutRes layoutResId: Int) {
+    fun bind(sceneKey: SceneKey, @LayoutRes layoutResId: Int) {
         bindings[sceneKey] = ViewResourceBinding(layoutResId)
     }
 
@@ -52,7 +53,7 @@ class ViewFactoryBuilder internal constructor() {
      * @param wrapper A function that takes in the inflated layout and returns
      *                a [Container] instance that can be passed to the [Scene].
      */
-    fun bind(sceneKey: String, @LayoutRes layoutResId: Int, wrapper: (View) -> Container) {
+    fun bind(sceneKey: SceneKey, @LayoutRes layoutResId: Int, wrapper: (View) -> Container) {
         bindings[sceneKey] = WrappedViewResourceBinding(layoutResId, wrapper)
     }
 
@@ -68,7 +69,7 @@ class ViewFactoryBuilder internal constructor() {
      *                [ViewGroup] and returns a [Container] instance that can be
      *                passed to the [Scene].
      */
-    fun bindViewGroup(sceneKey: String, @LayoutRes layoutResId: Int, wrapper: (ViewGroup) -> Container) {
+    fun bindViewGroup(sceneKey: SceneKey, @LayoutRes layoutResId: Int, wrapper: (ViewGroup) -> Container) {
         bindings[sceneKey] = WrappedViewGroupResourceBinding(layoutResId, wrapper)
     }
 
@@ -79,13 +80,13 @@ class ViewFactoryBuilder internal constructor() {
 }
 
 internal class DefaultViewFactory(
-    private val bindings: Map<String, Binding>
+    private val bindings: Map<SceneKey, Binding>
 ) : ViewFactory {
 
-    override fun viewFor(sceneKey: String, parent: ViewGroup): ViewResult {
+    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewResult {
         return bindings[sceneKey]
             ?.create(parent)
-            ?: error("Unable to create view for Scene with key: \"${sceneKey}\".")
+            ?: error("Unable to create view for Scene with key: \"$sceneKey\".")
     }
 }
 

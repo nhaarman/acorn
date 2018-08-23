@@ -44,7 +44,7 @@ class CreateItemViewTest {
         onView(withHint("Take a note")).perform(typeText("Hello, world!"))
 
         /* Then */
-        expect(observer.lastValue).toBe("Hello, world!")
+        expect(observer.lastValue.trim()).toBe("Hello, world!")
     }
 
     @Test

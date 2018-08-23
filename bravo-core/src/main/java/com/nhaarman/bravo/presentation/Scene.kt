@@ -1,5 +1,7 @@
 package com.nhaarman.bravo.presentation
 
+import com.nhaarman.bravo.presentation.SceneKey.Companion.from
+
 /**
  * A Scene is a destination in the application the user can navigate to.
  *
@@ -33,7 +35,7 @@ interface Scene<V : Container> {
      * This key can be used to determine what layout to show, and can be used
      * to save and restore instance state, if needed.
      */
-    val key: String get() = this.javaClass.name
+    val key: SceneKey get() = SceneKey.from(javaClass)
 
     /**
      * Called when this Scene becomes active.
