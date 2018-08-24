@@ -94,6 +94,29 @@ class BundleTest {
         expect(result).toBe(state)
     }
 
+    @Test
+    fun fullBundle_toParcelAndBack() {
+        /* Given */
+        val state = navigatorState {
+            it["transformToBravo"] = 3.14
+            it["scene"] = sceneState {
+                it["bar"] = 42
+                it["container"] = containerState {
+                    it["baz"] = 1337
+                }
+            }
+        }
+
+        /* When */
+        val parcel = Parcel.obtain()
+        parcel.writeBundle(state.toBundle())
+        parcel.setDataPosition(0)
+        val result = parcel.readBundle()?.toNavigatorState()
+
+        /* Then */
+        expect(result).toBe(state)
+    }
+
     class MyParcelable(val value: Int) : Parcelable {
 
         override fun writeToParcel(dest: Parcel, flags: Int) {

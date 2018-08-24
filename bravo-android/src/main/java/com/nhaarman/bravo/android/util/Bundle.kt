@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import androidx.core.os.bundleOf
+import androidx.core.util.component1
+import androidx.core.util.component2
 import com.nhaarman.bravo.ContainerState
 import com.nhaarman.bravo.NavigatorState
 import com.nhaarman.bravo.SavedState
@@ -15,9 +17,9 @@ fun SavedState.toBundle(): Bundle {
         .map { (key, value) ->
 
             val v = when (value) {
-                is NavigatorState -> "navigator_state" to value.toBundle()
-                is SceneState -> "scene_state" to value.toBundle()
-                is ContainerState -> "container_state" to value.toBundle()
+                is NavigatorState -> bundleOf("type" to "navigator_state", "state" to value.toBundle())
+                is SceneState -> bundleOf("type" to "scene_state", "state" to value.toBundle())
+                is ContainerState -> bundleOf("type" to "container_state", "state" to value.toBundle())
                 else -> value
             }
 
@@ -54,17 +56,13 @@ private fun Bundle.toContainerState(): ContainerState = ContainerState().also { 
 
 private fun transformToBravo(it: Any?): Any? {
     return when (it) {
-        is Pair<*, *> -> {
-            val (bundleKey, bundleValue) = it
-            if (bundleKey is String && bundleValue is Bundle) {
-                when (bundleKey) {
-                    "navigator_state" -> bundleValue.toNavigatorState()
-                    "scene_state" -> bundleValue.toSceneState()
-                    "container_state" -> bundleValue.toContainerState()
-                    else -> it
-                }
-            } else {
-                it
+        is Bundle -> {
+            val bundleKey = it["type"]
+            when (bundleKey) {
+                "navigator_state" -> it.getBundle("state")?.toNavigatorState()
+                "scene_state" -> it.getBundle("state")?.toSceneState()
+                "container_state" -> it.getBundle("state")?.toContainerState()
+                else -> it
             }
         }
         else -> it
