@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:3.3.0-alpha06")
+        classpath('com.android.tools.build:gradle:3.3.0-alpha07')
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.adarshr:gradle-test-logger-plugin:1.4.0")
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
@@ -50,6 +50,10 @@ subprojects {
                     testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
                 }
 
+                testOptions {
+                    execution 'ANDROID_TEST_ORCHESTRATOR'
+                }
+
                 lintOptions {
                     warningsAsErrors = true
                     textReport = true
@@ -77,10 +81,6 @@ subprojects {
 
 task clean(type: Delete) {
     delete(rootProject.buildDir)
-}
-
-wrapper {
-    gradleVersion = "4.9"
 }
 
 println("Version ${git.versionName()}")

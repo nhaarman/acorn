@@ -8,6 +8,7 @@ include(":android-sandbox")
 
 include(":samples:hello-world")
 include(":samples:hello-navigation")
+include(":samples:hello-staterestoration")
 
 include(":notes-app-bravo")
 include(":notes-app-bravo-android")

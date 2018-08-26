@@ -1,12 +1,13 @@
 package com.nhaarman.bravo.navigation
 
+import android.support.annotation.CallSuper
 import com.nhaarman.bravo.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
-import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.util.lazyVar
 import io.reactivex.disposables.Disposable
@@ -171,6 +172,7 @@ abstract class StackNavigator<E : Navigator.Events>(
         }
     }
 
+    @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return state.scenes
             .foldIndexed(NavigatorState()) { index, bundle, scene ->
