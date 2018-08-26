@@ -51,7 +51,10 @@ abstract class StackNavigator<E : Navigator.Events>(
     private var state by lazyVar {
         @Suppress("UNCHECKED_CAST")
         fun initialStack(): List<Scene<out Container>> {
-            val size: Int = savedState?.get("size") ?: return this@StackNavigator.initialStack()
+            if (savedState == null) return this@StackNavigator.initialStack()
+
+            val size: Int? = savedState.get("size")
+            if (size == null || size == 0) return this@StackNavigator.initialStack()
 
             return (0 until size)
                 .map { index ->

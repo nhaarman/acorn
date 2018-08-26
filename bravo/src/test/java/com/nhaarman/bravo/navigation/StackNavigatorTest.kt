@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.navigation
 
 import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.NavigatorState.Companion.navigatorState
 import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
@@ -763,6 +764,33 @@ internal class StackNavigatorTest {
 
             /* Then */
             expect(listener.lastScene?.foo).toBe(42)
+        }
+
+        @Test
+        fun `restoring from empty state ignores state`() {
+            /* When */
+            val result = TestStackNavigator(listOf(scene1), NavigatorState())
+            result.onStart()
+            result.addListener(listener)
+
+            /* Then */
+            expect(listener.lastScene).toBe(scene1)
+        }
+
+        @Test
+        fun `restoring from invalid state ignores state - size = 0`() {
+            /* Given */
+            val state = navigatorState {
+                it["size"] = 0
+            }
+
+            /* When */
+            val result = TestStackNavigator(listOf(scene1), state)
+            result.onStart()
+            result.addListener(listener)
+
+            /* Then */
+            expect(listener.lastScene).toBe(scene1)
         }
     }
 
