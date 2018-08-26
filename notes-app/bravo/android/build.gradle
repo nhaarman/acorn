@@ -54,6 +54,7 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib"
     androidTestImplementation "com.android.support.test:runner"
     androidTestImplementation "com.android.support.test:rules"
+    androidTestUtil "com.android.support.test:orchestrator"
 }
 
 androidExtensions {

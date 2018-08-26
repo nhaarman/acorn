@@ -1,4 +1,4 @@
-package com.nhaarman.bravo.samples.helloworld
+package com.nhaarman.bravo.samples.hellostaterestoration
 
 import android.app.Application
 import com.nhaarman.bravo.android.TimberLogger

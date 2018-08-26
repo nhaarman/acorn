@@ -23,6 +23,10 @@ dependencies {
 
     implementation "com.jakewharton.timber:timber"
 
+    testImplementation "com.nhaarman:expect.kt"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+
     debugImplementation project(":bravo-android-tests")
     androidTestImplementation "junit:junit:4.12"
     androidTestImplementation "com.nhaarman:expect.kt"
@@ -30,6 +34,7 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib"
     androidTestImplementation "com.android.support.test:runner"
     androidTestImplementation "com.android.support.test:rules"
+    androidTestUtil "com.android.support.test:orchestrator"
 }
 
 androidExtensions {

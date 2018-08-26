@@ -7,6 +7,16 @@ import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.bindViews
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
+/**
+ * The Activity that hosts this sample.
+ *
+ * Interesting components:
+ *
+ *  - [HelloWorldNavigator] manages the navigation flow, in this case showing
+ *    a simple Scene.
+ *  - [HelloWorldScene] presents a text to the UI when available.
+ *  - [HelloWorldView] implements the view to show the text.
+ */
 class MainActivity : Activity() {
 
     private val delegate by lazy {

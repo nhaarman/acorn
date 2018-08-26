@@ -36,6 +36,7 @@ dependencyManagement {
         dependency "com.android.support.test.espresso:espresso-contrib:3.0.2"
         dependency "com.android.support.test:runner:1.0.2"
         dependency "com.android.support.test:rules:1.0.2"
+        dependency "com.android.support.test:orchestrator:1.0.2"
 
         def androidToolsVersion = "26.3.0-alpha06"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
