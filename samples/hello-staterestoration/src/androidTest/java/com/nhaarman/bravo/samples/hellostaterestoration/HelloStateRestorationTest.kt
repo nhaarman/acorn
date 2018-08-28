@@ -12,6 +12,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withHint
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
+import org.hamcrest.CoreMatchers.containsString
 import org.junit.Rule
 import org.junit.Test
 import java.lang.Thread.sleep
@@ -45,7 +46,7 @@ class HelloStateRestorationTest {
 
         rotate()
 
-        onView(withText("Hello!")).check((matches(isDisplayed())))
+        onView(withText(containsString("Hello!"))).check((matches(isDisplayed())))
     }
 
     @Test
@@ -55,7 +56,7 @@ class HelloStateRestorationTest {
         onView(withText("Next")).perform(click())
         pressBack()
 
-        onView(withText("Hello!")).check((matches(isDisplayed())))
+        onView(withText(containsString("Hello!"))).check((matches(isDisplayed())))
     }
 
     private fun setPortrait() {
