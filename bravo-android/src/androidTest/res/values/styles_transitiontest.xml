@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="NoWindowBackground" />
+
+    <style name="NullWindowBackground">
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="WhiteColorWindowBackground">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="Rgb8ColorWindowBackground">
+        <item name="android:windowBackground">@color/rgb8</item>
+    </style>
+
+    <style name="DrawableWindowBackground">
+        <item name="android:windowBackground">@drawable/ic_android_black_24dp</item>
+    </style>
+
+    <color name="white">#fff</color>
+    <color name="rgb8">#123456</color>
+
+</resources>
