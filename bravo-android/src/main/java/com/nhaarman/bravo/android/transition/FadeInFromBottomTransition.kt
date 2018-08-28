@@ -1,12 +1,11 @@
 package com.nhaarman.bravo.android.transition
 
 import android.support.v4.view.animation.LinearOutSlowInInterpolator
-import android.util.TypedValue
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.core.view.doOnPreDraw
 import com.nhaarman.bravo.android.R
+import com.nhaarman.bravo.android.internal.applyWindowBackground
 
 class FadeInFromBottomTransition(
     private val view: (ViewGroup) -> ViewResult
@@ -19,7 +18,9 @@ class FadeInFromBottomTransition(
 
         val newView = newViewResult.view
         parent.addView(newView)
-        val shouldClearBackground = newView.applyWindowBackground()
+
+        val shouldClearBackground = newView.background == null
+        if (newView.background == null) newView.applyWindowBackground()
 
         newView.apply {
             translationY = parent.height / 5f
@@ -47,21 +48,5 @@ class FadeInFromBottomTransition(
                     callback.onComplete(newViewResult)
                 }
         }
-    }
-
-    private fun View.applyWindowBackground(): Boolean {
-        if (background != null) return false
-
-        val value = TypedValue().also {
-            context.theme.resolveAttribute(android.R.attr.windowBackground, it, true)
-        }
-
-        if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
-            setBackgroundColor(value.data)
-        } else {
-            background = context.getDrawable(value.data)
-        }
-
-        return true
     }
 }
