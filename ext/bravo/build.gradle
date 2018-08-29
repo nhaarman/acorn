@@ -1,0 +1,25 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+
+    id("org.jetbrains.dokka")
+    id("org.gradle.maven-publish")
+    id("signing")
+
+    id("org.jmailen.kotlinter")
+}
+
+dependencies {
+    api project(':bravo')
+
+    api "io.arrow-kt:arrow-core"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    compileOnly "com.android.support:support-annotations"
+
+    testImplementation "com.nhaarman:expect.kt"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}

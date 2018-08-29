@@ -1,0 +1,66 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+
+    id("org.jmailen.kotlinter")
+}
+
+android {
+    defaultConfig {
+        minSdkVersion(21)
+    }
+
+    lintOptions {
+        /*
+         This module is chosen to act as a Lint leaf for bravo and bravo-android.
+         See https://groups.google.com/forum/#!msg/lint-dev/RGTvK_uHQGQ/FjJA12aGBAAJ
+         */
+        checkDependencies true
+    }
+}
+
+repositories {
+    mavenLocal()
+}
+
+dependencies {
+    implementation project(":ext-bravo")
+    implementation project(":ext-bravo-rx")
+    implementation project(":ext-bravo-android")
+    implementation project(":ext-bravo-android-timber")
+
+    implementation project(":notes-app-bravo")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "androidx.core:core-ktx"
+
+    implementation "com.android.support:design"
+    implementation "com.android.support.constraint:constraint-layout"
+    implementation "com.android.support:appcompat-v7"
+
+    implementation "io.reactivex.rxjava2:rxjava"
+    implementation "io.reactivex.rxjava2:rxkotlin"
+    implementation "io.reactivex.rxjava2:rxandroid"
+
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin"
+
+    implementation "com.squareup.sqlbrite3:sqlbrite-kotlin"
+    implementation "android.arch.persistence:db-framework"
+
+    implementation "com.jakewharton.timber:timber"
+
+    debugImplementation project(":ext-bravo-android-testing")
+    androidTestImplementation "junit:junit:4.12"
+    androidTestImplementation "com.nhaarman:expect.kt"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib"
+    androidTestImplementation "com.android.support.test:runner"
+    androidTestImplementation "com.android.support.test:rules"
+    androidTestUtil "com.android.support.test:orchestrator"
+}
+
+androidExtensions {
+    experimental = true
+}

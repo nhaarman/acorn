@@ -46,7 +46,8 @@ publishing {
 
             version = git.versionName()
 
-            groupId = "com.nhaarman.bravo"
+            groupId = project.getProperty("groupId")
+            artifactId = project.getProperty("artifactId")
 
             pom {
                 name = "Bravo"
