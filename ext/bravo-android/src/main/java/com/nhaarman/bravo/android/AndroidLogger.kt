@@ -1,11 +1,13 @@
 package com.nhaarman.bravo.android
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.nhaarman.bravo.Logger
 
 /**
  * A [Logger] implementation that uses Android's [Log] class for logging.
  */
+@SuppressLint("LogNotTimber")
 class AndroidLogger : Logger {
 
     override fun v(tag: String, message: Any?) {
