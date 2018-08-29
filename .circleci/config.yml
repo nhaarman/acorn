@@ -14,7 +14,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}-{{ checksum ".circleci/config.yml" }}
       - run:
           name: Run Tests
-          command: ./gradlew clean test --rerun-tasks lintKotlin :android-sandbox:lintRelease :samples:hello-world:lintRelease :samples:hello-navigation:lintRelease :samples:hello-staterestoration:lintRelease :notes-app-bravo-android:lintRelease :notes-app:aac-navigation:lintRelease :notes-app:cicerone:lintRelease :notes-app:conductor:lintRelease :notes-app:mosby:lintRelease publishToMavenLocal
+          command: ./gradlew clean test --rerun-tasks lintKotlin :samples:hello-world:lintRelease :samples:hello-navigation:lintRelease :samples:hello-staterestoration:lintRelease :notes-app-bravo-android:lintRelease :notes-app:aac-navigation:lintRelease :notes-app:cicerone:lintRelease :notes-app:conductor:lintRelease :notes-app:mosby:lintRelease publishToMavenLocal
       - save_cache:
           paths:
             - ~/.gradle

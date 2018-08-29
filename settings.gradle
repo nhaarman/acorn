@@ -4,8 +4,6 @@ include(":bravo-android")
 include(":bravo-android-tests")
 include(":bravo-android-lint")
 
-include(":android-sandbox")
-
 include(":samples:hello-world")
 include(":samples:hello-navigation")
 include(":samples:hello-staterestoration")
