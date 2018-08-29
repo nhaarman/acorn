@@ -1,6 +1,5 @@
 package com.nhaarman.bravo.notesapp
 
-import com.nhaarman.bravo.ContainerState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.notesapp.navigation.NoteAppNavigator
 import com.nhaarman.bravo.notesapp.note.MemoryNoteItemsRepository
@@ -12,6 +11,7 @@ import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListContainer
 import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListScene
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.ContainerState
 import com.nhaarman.expect.expect
 import io.reactivex.subjects.PublishSubject
 import org.junit.jupiter.api.Test

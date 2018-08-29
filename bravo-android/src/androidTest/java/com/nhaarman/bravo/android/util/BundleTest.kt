@@ -4,10 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.SparseArray
 import androidx.core.util.set
-import com.nhaarman.bravo.ContainerState.Companion.containerState
-import com.nhaarman.bravo.NavigatorState
-import com.nhaarman.bravo.NavigatorState.Companion.navigatorState
-import com.nhaarman.bravo.SceneState.Companion.sceneState
+import com.nhaarman.bravo.state.navigatorState
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.sceneState
+import com.nhaarman.bravo.state.containerState
 import com.nhaarman.expect.expect
 import org.junit.Test
 

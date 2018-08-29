@@ -6,10 +6,10 @@ import android.util.SparseArray
 import androidx.core.os.bundleOf
 import androidx.core.util.component1
 import androidx.core.util.component2
-import com.nhaarman.bravo.ContainerState
-import com.nhaarman.bravo.NavigatorState
-import com.nhaarman.bravo.SavedState
-import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.state.ContainerState
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SavedState
+import com.nhaarman.bravo.state.SceneState
 
 fun SavedState.toBundle(): Bundle {
     return entries

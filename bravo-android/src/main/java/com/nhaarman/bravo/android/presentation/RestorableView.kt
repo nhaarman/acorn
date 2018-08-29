@@ -3,10 +3,10 @@ package com.nhaarman.bravo.android.presentation
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.View
-import com.nhaarman.bravo.ContainerState
-import com.nhaarman.bravo.ContainerState.Companion.containerState
 import com.nhaarman.bravo.android.util.saveHierarchyState
 import com.nhaarman.bravo.presentation.RestorableContainer
+import com.nhaarman.bravo.state.ContainerState
+import com.nhaarman.bravo.state.containerState
 
 /**
  * A helper interface that offers default implementations for [View] state saving

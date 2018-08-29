@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w

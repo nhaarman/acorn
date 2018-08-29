@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.samples.hellostaterestoration
 
-import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.android.navigation.AbstractNavigatorProvider
 
 object HelloStateRestorationNavigatorProvider : AbstractNavigatorProvider<HelloStateRestorationNavigator>() {

@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.presentation
 
-import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.state.ContainerState
 
 /**
  * Indicates that implementers can have their instance state saved.
