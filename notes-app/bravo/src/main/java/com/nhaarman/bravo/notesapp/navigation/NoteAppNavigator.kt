@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.notesapp.navigation
 
-import com.nhaarman.bravo.NavigatorState
+import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.navigation.CompositeStackNavigator
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.notesapp.NotesAppComponent

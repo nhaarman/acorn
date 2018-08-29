@@ -1,11 +1,11 @@
 package com.nhaarman.bravo.notesapp.presentation.itemlist
 
-import com.nhaarman.bravo.ContainerState
-import com.nhaarman.bravo.ContainerState.Companion.containerState
 import com.nhaarman.bravo.notesapp.ImmediateMainThreadExtension
 import com.nhaarman.bravo.notesapp.NoRxErrorsExtension
 import com.nhaarman.bravo.notesapp.note.MemoryNoteItemsRepository
 import com.nhaarman.bravo.notesapp.note.NoteItem
+import com.nhaarman.bravo.state.ContainerState
+import com.nhaarman.bravo.state.containerState
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify

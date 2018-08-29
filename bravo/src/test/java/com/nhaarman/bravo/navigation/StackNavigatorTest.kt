@@ -1,10 +1,10 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.NavigatorState
-import com.nhaarman.bravo.NavigatorState.Companion.navigatorState
-import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.navigatorState
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.never

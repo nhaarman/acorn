@@ -1,7 +1,7 @@
 package com.nhaarman.bravo.presentation
 
 import android.support.annotation.CallSuper
-import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.state.ContainerState
 
 /**
  * An abstract [Scene] implementation that saves and restores view state between

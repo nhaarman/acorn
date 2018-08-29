@@ -1,10 +1,10 @@
 package com.nhaarman.bravo.android.navigation
 
-import com.nhaarman.bravo.NavigatorState
-import com.nhaarman.bravo.NavigatorState.Companion.navigatorState
-import com.nhaarman.bravo.navigation.SaveableNavigator
 import com.nhaarman.bravo.android.internal.i
 import com.nhaarman.bravo.navigation.Navigator
+import com.nhaarman.bravo.navigation.SaveableNavigator
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.navigatorState
 import java.util.concurrent.TimeUnit
 
 interface NavigatorProvider {

@@ -1,8 +1,9 @@
 package com.nhaarman.bravo.presentation
 
 import android.support.annotation.CallSuper
-import com.nhaarman.bravo.ContainerState
-import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.state.ContainerState
+import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.sceneState
 
 /**
  * A saveable [Scene] implementation that saves and restores view state between
@@ -39,7 +40,7 @@ abstract class BaseSaveableScene<V : RestorableContainer>(
 
     @CallSuper
     override fun saveInstanceState(): SceneState {
-        return SceneState.sceneState {
+        return sceneState {
             it.containerState = containerState ?: view?.saveInstanceState()
         }
     }

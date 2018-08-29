@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.expect.expect
@@ -447,7 +447,7 @@ internal class ReplacingNavigatorTest {
         }
     }
 
-    private class TestReplacingNavigator(savedState: com.nhaarman.bravo.NavigatorState?) :
+    private class TestReplacingNavigator(savedState: com.nhaarman.bravo.state.NavigatorState?) :
         ReplacingNavigator(savedState) {
 
         val initialScenes = listOf(
@@ -474,7 +474,7 @@ internal class ReplacingNavigatorTest {
         }
     }
 
-    private class RestorableReplacingNavigator(savedState: com.nhaarman.bravo.NavigatorState?) :
+    private class RestorableReplacingNavigator(savedState: com.nhaarman.bravo.state.NavigatorState?) :
         ReplacingNavigator(savedState) {
 
         val initialScene = TestScene(0)

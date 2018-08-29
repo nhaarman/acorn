@@ -1,14 +1,14 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.presentation.SaveableScene
-import com.nhaarman.bravo.SceneState
-import com.nhaarman.bravo.SceneState.Companion.sceneState
 import com.nhaarman.bravo.navigation.TestScene.State.Created
 import com.nhaarman.bravo.navigation.TestScene.State.Destroyed
 import com.nhaarman.bravo.navigation.TestScene.State.Started
 import com.nhaarman.bravo.navigation.TestScene.State.Stopped
 import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.sceneState
 
 open class TestScene(var foo: Int) : Scene<Container>, SaveableScene {
 

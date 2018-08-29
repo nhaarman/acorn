@@ -1,7 +1,7 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.NavigatorState
-import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.expect.expect

@@ -3,7 +3,7 @@ package com.nhaarman.bravo.notesapp.android.ui.createitem
 import android.view.ViewGroup
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar
 import com.jakewharton.rxbinding2.widget.textChanges
-import com.nhaarman.bravo.ContainerState
+import com.nhaarman.bravo.state.ContainerState
 import com.nhaarman.bravo.android.presentation.RestorableLayoutContainer
 import com.nhaarman.bravo.notesapp.android.R
 import com.nhaarman.bravo.notesapp.presentation.createitem.CreateItemContainer

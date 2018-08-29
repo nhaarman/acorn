@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.notesapp.presentation.edititem
 
-import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
 import com.nhaarman.bravo.presentation.RxScene

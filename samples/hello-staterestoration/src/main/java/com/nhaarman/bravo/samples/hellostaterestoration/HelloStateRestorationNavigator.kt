@@ -1,7 +1,7 @@
 package com.nhaarman.bravo.samples.hellostaterestoration
 
-import com.nhaarman.bravo.NavigatorState
-import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.StackNavigator
 import com.nhaarman.bravo.presentation.Container

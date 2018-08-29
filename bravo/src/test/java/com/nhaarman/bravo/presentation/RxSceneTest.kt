@@ -1,9 +1,9 @@
 package com.nhaarman.bravo.presentation
 
 import arrow.core.Option
-import com.nhaarman.bravo.ContainerState
-import com.nhaarman.bravo.ContainerState.Companion.containerState
-import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.state.ContainerState
+import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.containerState
 import com.nhaarman.expect.expect
 import com.nhaarman.expect.lastValue
 import org.junit.jupiter.api.Test

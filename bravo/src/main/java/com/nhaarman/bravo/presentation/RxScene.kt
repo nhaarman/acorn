@@ -3,7 +3,7 @@ package com.nhaarman.bravo.presentation
 import android.support.annotation.CallSuper
 import arrow.core.Option
 import arrow.core.toOption
-import com.nhaarman.bravo.SceneState
+import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.presentation.RxScene.Event.Attached
 import com.nhaarman.bravo.presentation.RxScene.Event.Detached
 import io.reactivex.Observable
