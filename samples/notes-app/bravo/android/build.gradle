@@ -25,7 +25,10 @@ repositories {
 }
 
 dependencies {
+    implementation project(":ext-bravo")
+    implementation project(":ext-bravo-rx")
     implementation project(":ext-bravo-android")
+
     implementation project(":notes-app-bravo")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
