@@ -16,8 +16,8 @@ android {
 }
 
 dependencies {
-    api project(":bravo")
-    api project(":bravo-android-core")
+    api project(":ext-bravo")
+    api project(":bravo-android")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "androidx.core:core-ktx"
@@ -28,7 +28,7 @@ dependencies {
 
     compileOnly "com.android.support:support-annotations"
 
-    lintChecks project(":bravo-android-lint")
+    lintChecks project(":ext-bravo-android-lint")
 
     androidTestImplementation "junit:junit:4.12"
     androidTestImplementation "com.nhaarman:expect.kt"

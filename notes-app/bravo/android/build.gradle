@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(":bravo-android")
+    implementation project(":ext-bravo-android")
     implementation project(":notes-app-bravo")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
@@ -47,7 +47,7 @@ dependencies {
 
     implementation "com.jakewharton.timber:timber"
 
-    debugImplementation project(":bravo-android-tests")
+    debugImplementation project(":ext-bravo-android-testing")
     androidTestImplementation "junit:junit:4.12"
     androidTestImplementation "com.nhaarman:expect.kt"
     androidTestImplementation "com.android.support.test.espresso:espresso-core"

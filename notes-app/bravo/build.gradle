@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":bravo"))
+    implementation project(":ext-bravo")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 

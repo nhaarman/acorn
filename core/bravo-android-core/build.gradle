@@ -25,7 +25,7 @@ dependencies {
 
     compileOnly "com.android.support:support-annotations"
 
-    lintChecks project(":bravo-android-lint")
+//    lintChecks project(":bravo-android-lint")
 
     androidTestImplementation "junit:junit:4.12"
     androidTestImplementation "com.nhaarman:expect.kt"

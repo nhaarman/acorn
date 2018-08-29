@@ -1,11 +1,12 @@
 include(":core")
-include(":bravo-core")
-include(":bravo-android-core")
-
 include(":bravo")
 include(":bravo-android")
-include(":bravo-android-tests")
-include(":bravo-android-lint")
+
+include(":ext")
+include(":ext-bravo")
+include(":ext-bravo-android")
+include(":ext-bravo-android-testing")
+include(":ext-bravo-android-lint")
 
 include(":samples:hello-world")
 include(":samples:hello-navigation")
@@ -20,11 +21,13 @@ include(":notes-app:cicerone")
 include(":notes-app:conductor")
 include(":notes-app:mosby")
 
-project(":bravo-core").projectDir = file("core/bravo-core")
-project(":bravo-android-core").projectDir = file("core/bravo-android-core")
+project(":bravo").projectDir = file("core/bravo-core")
+project(":bravo-android").projectDir = file("core/bravo-android-core")
 
-project(":bravo-android-tests").projectDir = file("bravo-android/bravo-android-tests")
-project(":bravo-android-lint").projectDir = file("bravo-android/bravo-android-lint")
+project(":ext-bravo").projectDir = file("ext/bravo")
+project(":ext-bravo-android").projectDir = file("ext/bravo-android")
+project(":ext-bravo-android-testing").projectDir = file("ext/bravo-android/bravo-android-testing")
+project(":ext-bravo-android-lint").projectDir = file("ext/bravo-android/bravo-android-lint")
 
 project(":notes-app-bravo").projectDir = file("notes-app/bravo")
 project(":notes-app-bravo-android").projectDir = file("notes-app/bravo/android")

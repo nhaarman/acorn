@@ -10,7 +10,7 @@ plugins {
 }
 
 dependencies {
-    api project(':bravo-core')
+    api project(':bravo')
 
     api "io.reactivex.rxjava2:rxjava"
     api "io.arrow-kt:arrow-core"

@@ -38,8 +38,6 @@ publishing {
         from(javadoc.destinationDir)
     }
 
-    println project.getProperty("artifactId")
-
     publications {
         maven(MavenPublication) {
             from(components[hasAndroid ? "android" : "java"])
