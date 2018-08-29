@@ -1,4 +1,6 @@
+include(":core")
 include(":bravo-core")
+
 include(":bravo")
 include(":bravo-android")
 include(":bravo-android-tests")
@@ -16,6 +18,8 @@ include(":notes-app:aac-navigation")
 include(":notes-app:cicerone")
 include(":notes-app:conductor")
 include(":notes-app:mosby")
+
+project(":bravo-core").projectDir = file("core/bravo-core")
 
 project(":bravo-android-tests").projectDir = file("bravo-android/bravo-android-tests")
 project(":bravo-android-lint").projectDir = file("bravo-android/bravo-android-lint")
