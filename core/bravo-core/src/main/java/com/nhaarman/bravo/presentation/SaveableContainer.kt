@@ -15,10 +15,6 @@ interface SaveableContainer : Container {
 
 /**
  * Indicates that implementers can have their instance state saved and restored.
- *
- * [android.view.View] implementations can additionally implement
- * [com.nhaarman.bravo.presentation.RestorableView] which provides default
- * implementations of [saveInstanceState] and [restoreInstanceState].
  */
 interface RestorableContainer : SaveableContainer {
 
