@@ -21,26 +21,34 @@ You can declare the dependencies as follows, replacing `x.x.x` by the latest
 snapshot version:
 
 ```groovy
+// Core artifacts containing interfaces only
 implementation "com.nhaarman.bravo:bravo:x.x.x-SNAPSHOT"
 implementation "com.nhaarman.bravo:bravo-android:x.x.x-SNAPSHOT"
-implementation "com.nhaarman.bravo:bravo-android-tests:x.x.x-SNAPSHOT"
+
+// Artifacts that extend upon the core
+implementation "com.nhaarman.bravo.ext:bravo:x.x.x-SNAPSHOT"
+implementation "com.nhaarman.bravo.ext:bravo-rx:x.x.x-SNAPSHOT"
+implementation "com.nhaarman.bravo.ext:bravo-android:x.x.x-SNAPSHOT"
+implementation "com.nhaarman.bravo.ext:bravo-android-testing:x.x.x-SNAPSHOT"
+implementation "com.nhaarman.bravo.ext:bravo-android-timber:x.x.x-SNAPSHOT"
 ```
 
-Bravo is divided in three main parts:
+Bravo is built in two main parts: the core libraries and the extension libraries
+that implement the core.
+The core libraries provide the interfaces that carry the spirit of Bravo:
 
-| Artifact | Description | Dependencies|
-|----------|-------------|-------------|
-| `bravo-core` | The core library, containing only the interfaces for Bravo without any functionality. | - |
-| `bravo` | The main library which provides JVM implementations for Navigators and Scenes. | `bravo-core` |
-| `bravo-android` | The main library for Android, which provides default Android implementations. | `bravo`, `bravo-core` |
-|----|
+|Group| Artifact | Description | Dependencies|
+|-----|----------|-------------|-------------|
+|`com.nhaarman.bravo`| `bravo` | The core library, containing only the interfaces for Bravo without any functionality. | - |
+|`com.nhaarman.bravo`| `bravo-android` | The core library for Android, containing only the interfaces for working with Bravo on Android. | `com.nhaarman.bravo:bravo` |
 
-Next to these, there is a `bravo-android-tests` artifact that provides helper classes for running instrumentation tests.
+The extension libraries provide default implementations of the core:
 
-# Description
-
-In Bravo, dedicated `Navigator` classes are responsible for handling navigation
-from screen to screen in your application.
-Screens are represented by `Scene` classes, and are responsible for bridging
-business logic and the UI.
+|Group| Artifact | Description | Dependencies|
+|-----|----------|-------------|-------------|
+|`com.nhaarman.bravo.ext`| `bravo` | The main extension on the Bravo core, providing default implementations. |`com.nhaarman.bravo:bravo`|
+|`com.nhaarman.bravo.ext`| `bravo-rx` | An RxJava extension for Bravo. |`com.nhaarman.bravo:bravo`|
+|`com.nhaarman.bravo.ext`| `bravo-android` | The main extension on the Bravo-Android core, providing default implementations. |`com.nhaarman.bravo:bravo`<br>`com.nhaarman.bravo:bravo-android`|
+|`com.nhaarman.bravo.ext`| `bravo-android-testing` | Provides testing facilities for instrumentation testing with Bravo-Android. |`com.nhaarman.bravo:bravo`<br>`com.nhaarman.bravo:bravo-android`<br>`com.nhaarman.bravo.ext:bravo-android`|
+|`com.nhaarman.bravo.ext`| `bravo-android-timber` | Provides a `TimberLogger` |`com.nhaarman.bravo:bravo`<br>`com.nhaarman.bravo.ext:bravo`|
 

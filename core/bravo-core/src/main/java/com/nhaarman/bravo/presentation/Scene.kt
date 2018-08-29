@@ -1,7 +1,5 @@
 package com.nhaarman.bravo.presentation
 
-import com.nhaarman.bravo.presentation.SceneKey.Companion.from
-
 /**
  * A Scene is a destination in the application the user can navigate to.
  *
