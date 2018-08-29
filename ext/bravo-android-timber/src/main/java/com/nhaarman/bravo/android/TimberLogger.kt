@@ -5,10 +5,6 @@ import timber.log.Timber
 
 /**
  * A [Logger] implementation that delegates to [Timber].
- *
- * The Timber dependency is not provided by this library, so you will have to
- * include this yourself. Furthermore, no [timber.log.Timber.Tree] instances
- * are planted.
  */
 class TimberLogger : Logger {
 
