@@ -10,7 +10,6 @@ import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.util.lazyVar
-import io.reactivex.disposables.Disposable
 
 /**
  * A simple [Navigator] that only hosts a single [Scene].
@@ -38,14 +37,14 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
     private var state by lazyVar { LifecycleState.create(scene) }
 
     protected val listeners = mutableListOf<Events>()
-    override fun addListener(listener: Events): Disposable {
+    override fun addListener(listener: Events): DisposableHandle {
         listeners += listener
 
         if (state is LifecycleState.Active) {
             listener.scene(scene)
         }
 
-        return object : Disposable {
+        return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
                 return listener in listeners

@@ -11,11 +11,11 @@ import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.android.transition.ViewFactory
 import com.nhaarman.bravo.android.util.toBundle
 import com.nhaarman.bravo.android.util.toNavigatorState
+import com.nhaarman.bravo.navigation.DisposableHandle
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.util.lazyVar
-import io.reactivex.disposables.Disposable
 
 class BravoActivityDelegate(
     private val activity: Activity,
@@ -30,7 +30,7 @@ class BravoActivityDelegate(
         ActivityState.create(activity.root, viewFactory, transitionFactory)
     }
 
-    private var disposable: Disposable? = null
+    private var disposable: DisposableHandle? = null
         set(value) {
             field?.dispose()
             field = value

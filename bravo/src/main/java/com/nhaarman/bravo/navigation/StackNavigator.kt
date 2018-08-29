@@ -10,7 +10,6 @@ import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.util.lazyVar
-import io.reactivex.disposables.Disposable
 
 /**
  * An abstract [Navigator] class that uses a stack to navigate through [Scene]s.
@@ -76,7 +75,7 @@ abstract class StackNavigator<E : Navigator.Events>(
     protected val listeners: List<E> get() = _listeners
 
     private val _listeners = mutableListOf<E>()
-    override fun addListener(listener: E): Disposable {
+    override fun addListener(listener: E): DisposableHandle {
         _listeners += listener
 
         (state as? State.Active)
@@ -85,7 +84,7 @@ abstract class StackNavigator<E : Navigator.Events>(
                 listener.scene(it)
             }
 
-        return object : Disposable {
+        return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
                 return listener in _listeners

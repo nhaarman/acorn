@@ -5,10 +5,10 @@ import android.os.Bundle
 import com.nhaarman.bravo.SceneState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.SingleSceneNavigator
+import com.nhaarman.bravo.navigation.plusAssign
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.plusAssign
 import timber.log.Timber.i
 
 class MyScene : Scene<Container> {

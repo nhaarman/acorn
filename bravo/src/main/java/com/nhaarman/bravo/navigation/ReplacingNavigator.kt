@@ -10,7 +10,6 @@ import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.util.lazyVar
-import io.reactivex.disposables.Disposable
 
 /**
  * A navigator class that can switch between [Scene]s, but has no 'back'
@@ -76,14 +75,14 @@ abstract class ReplacingNavigator(
     }
 
     private val listeners = mutableListOf<Navigator.Events>()
-    override fun addListener(listener: Navigator.Events): Disposable {
+    override fun addListener(listener: Navigator.Events): DisposableHandle {
         listeners += listener
 
         if (state is LifecycleState.Active) {
             listener.scene(state.scene)
         }
 
-        return object : Disposable {
+        return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
                 return listener in listeners

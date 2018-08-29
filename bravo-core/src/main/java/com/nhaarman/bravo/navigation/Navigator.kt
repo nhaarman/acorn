@@ -1,9 +1,8 @@
 package com.nhaarman.bravo.navigation
 
+import android.support.annotation.CheckResult
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
-import io.reactivex.annotations.CheckReturnValue
-import io.reactivex.disposables.Disposable
 
 /**
  * An interface that describes a flow through the application.
@@ -41,11 +40,11 @@ interface Navigator<E : Navigator.Events> {
     /**
      * Registers given [listener] with this Navigator.
      *
-     * @return a [Disposable] instance that can be disposed when the [listener]
-     * is not interested in events anymore.
+     * @return a [DisposableHandle] instance that can be disposed when the
+     * [listener] is not interested in events anymore.
      */
-    @CheckReturnValue
-    fun addListener(listener: E): Disposable
+    @CheckResult
+    fun addListener(listener: E): DisposableHandle
 
     /**
      * Starts this Navigator.
