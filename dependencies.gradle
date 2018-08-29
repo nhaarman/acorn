@@ -38,7 +38,7 @@ dependencyManagement {
         dependency "com.android.support.test:rules:1.0.2"
         dependency "com.android.support.test:orchestrator:1.0.2"
 
-        def androidToolsVersion = "26.3.0-alpha06"
+        def androidToolsVersion = "26.3.0-alpha07"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"
