@@ -38,6 +38,8 @@ publishing {
         from(javadoc.destinationDir)
     }
 
+    println project.getProperty("artifactId")
+
     publications {
         maven(MavenPublication) {
             from(components[hasAndroid ? "android" : "java"])
@@ -46,7 +48,8 @@ publishing {
 
             version = git.versionName()
 
-            groupId = "com.nhaarman.bravo"
+            groupId = project.getProperty("groupId")
+            artifactId = project.getProperty("artifactId")
 
             pom {
                 name = "Bravo"

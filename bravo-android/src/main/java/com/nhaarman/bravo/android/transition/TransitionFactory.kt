@@ -1,12 +1,8 @@
 package com.nhaarman.bravo.android.transition
 
+import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
-
-interface TransitionFactory {
-
-    fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>): Transition
-}
 
 class SimpleTransitionFactory(
     private val viewFactory: ViewFactory,

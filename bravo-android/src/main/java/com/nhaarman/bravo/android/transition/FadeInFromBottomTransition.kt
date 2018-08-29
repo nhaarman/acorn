@@ -6,6 +6,7 @@ import androidx.core.view.children
 import androidx.core.view.doOnPreDraw
 import com.nhaarman.bravo.android.R
 import com.nhaarman.bravo.android.internal.applyWindowBackground
+import com.nhaarman.bravo.android.presentation.ViewResult
 
 class FadeInFromBottomTransition(
     private val view: (ViewGroup) -> ViewResult

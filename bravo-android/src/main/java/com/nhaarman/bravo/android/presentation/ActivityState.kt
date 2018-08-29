@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import com.nhaarman.bravo.android.internal.v
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.transition.TransitionFactory
-import com.nhaarman.bravo.android.transition.ViewFactory
-import com.nhaarman.bravo.android.transition.ViewResult
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 

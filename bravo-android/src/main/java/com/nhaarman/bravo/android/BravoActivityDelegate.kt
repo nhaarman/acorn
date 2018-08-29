@@ -8,7 +8,7 @@ import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.ActivityState
 import com.nhaarman.bravo.android.transition.TransitionFactory
-import com.nhaarman.bravo.android.transition.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.util.toBundle
 import com.nhaarman.bravo.android.util.toNavigatorState
 import com.nhaarman.bravo.navigation.DisposableHandle

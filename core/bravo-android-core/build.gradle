@@ -17,12 +17,9 @@ android {
 
 dependencies {
     api project(":bravo")
-    api project(":bravo-android-core")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "androidx.core:core-ktx"
-
-    implementation "com.android.support:interpolator"
 
     compileOnly "com.jakewharton.timber:timber"
 

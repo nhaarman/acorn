@@ -1,7 +1,7 @@
 package com.nhaarman.bravo.android.tests
 
 import android.support.test.rule.ActivityTestRule
-import com.nhaarman.bravo.android.transition.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.SceneKey
 

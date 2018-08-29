@@ -3,6 +3,8 @@ package com.nhaarman.bravo.android.transition
 import android.support.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
+import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.android.transition.Binding.ViewResourceBinding
 import com.nhaarman.bravo.android.transition.Binding.WrappedViewGroupResourceBinding
 import com.nhaarman.bravo.android.transition.Binding.WrappedViewResourceBinding
