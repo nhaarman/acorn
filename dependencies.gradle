@@ -15,7 +15,7 @@ dependencyManagement {
 
         dependency "com.jakewharton.timber:timber:4.7.1"
 
-        dependency "io.reactivex.rxjava2:rxjava:2.2.0"
+        dependency "io.reactivex.rxjava2:rxjava:2.2.1"
         dependency "io.reactivex.rxjava2:rxkotlin:2.3.0"
         dependency "io.reactivex.rxjava2:rxandroid:2.1.0"
 
