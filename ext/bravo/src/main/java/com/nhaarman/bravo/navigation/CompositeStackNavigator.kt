@@ -1,11 +1,11 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.util.lazyVar
 
 /**
@@ -64,7 +64,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
 
         initialStack()
             .also { stack -> stack.forEach { addListenerTo(it) } }
-            .let { State.create(it) }
+            .let { LifecycleState.create(it) }
     }
 
     private fun <T : Navigator.Events> addListenerTo(navigator: Navigator<T>) {
@@ -79,24 +79,21 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
      *
      * @see addListener
      */
-    protected val listeners: List<E> get() = _listeners
+    @Suppress("UNCHECKED_CAST")
+    protected val listeners: List<E>
+        get() = state.listeners as List<E>
 
-    private val _listeners = mutableListOf<E>()
     override fun addListener(listener: E): DisposableHandle {
-        _listeners += listener
-
-        if (state is State.Active) {
-            scene?.let { listener.scene(it) }
-        }
+        state.addListener(listener)
 
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in _listeners
+                return listener in listeners
             }
 
             override fun dispose() {
-                _listeners -= listener
+                state.removeListener(listener)
             }
         }
     }
@@ -138,15 +135,10 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
      */
     fun pop() {
         state = state.pop()
-
-        if (state is State.Destroyed) {
-            _listeners.forEach { it.finished() }
-        }
     }
 
     override fun onStart() {
         v("CompositeStackNavigator", "onStart")
-
         state = state.start()
     }
 
@@ -160,10 +152,9 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
         state = state.destroy()
     }
 
-    private var scene: Scene<out Container>? = null
-    override fun scene(scene: Scene<out Container>) {
-        this.scene = scene
-        _listeners.onEach { it.scene(scene) }
+    override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+        v("CompositeStackNavigator", "Scene change: $scene, $data")
+        state.scene(scene, data)
     }
 
     override fun finished() {
@@ -171,19 +162,8 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
     }
 
     override fun onBackPressed(): Boolean {
-        val result = state.let { state ->
-            when (state) {
-                is State.Inactive -> (state.navigator as? OnBackPressListener)?.onBackPressed() ?: false
-                is State.Active -> (state.navigator as? OnBackPressListener)?.onBackPressed() ?: false
-                is State.Destroyed -> false
-            }
-        }
-
-        if (state is State.Destroyed) {
-            _listeners.forEach { it.finished() }
-        }
-
-        return result
+        v("CompositeStackNavigator", "onBackPressed")
+        return state.onBackPressed()
     }
 
     override fun saveInstanceState(): NavigatorState {
@@ -197,89 +177,157 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
             .also { it["size"] = state.navigators.size }
     }
 
-    private sealed class State {
+    private sealed class LifecycleState {
 
         abstract val navigators: List<Navigator<out Navigator.Events>>
+        abstract val listeners: List<Navigator.Events>
 
-        abstract fun start(): State
-        abstract fun stop(): State
-        abstract fun destroy(): State
+        abstract fun addListener(listener: Navigator.Events)
+        abstract fun removeListener(listener: Navigator.Events)
 
-        abstract fun push(navigator: Navigator<out Navigator.Events>): State
-        abstract fun pop(): State
+        abstract fun start(): LifecycleState
+        abstract fun stop(): LifecycleState
+        abstract fun destroy(): LifecycleState
+
+        abstract fun scene(scene: Scene<out Container>, data: TransitionData?)
+
+        abstract fun push(navigator: Navigator<out Navigator.Events>): LifecycleState
+        abstract fun pop(): LifecycleState
+
+        abstract fun onBackPressed(): Boolean
 
         companion object {
 
-            fun create(initialStack: List<Navigator<out Navigator.Events>>): State {
-                return Inactive(initialStack)
+            fun create(initialStack: List<Navigator<out Navigator.Events>>): LifecycleState {
+                return Inactive(initialStack, emptyList(), null)
             }
         }
 
-        class Inactive(override val navigators: List<Navigator<out Navigator.Events>>) : State() {
+        class Inactive(
+            override val navigators: List<Navigator<out Navigator.Events>>,
+            override var listeners: List<Navigator.Events>,
+            private var activeScene: Scene<out Container>?
+        ) : LifecycleState() {
 
             init {
                 check(navigators.isNotEmpty()) { "Stack may not be empty." }
             }
 
-            val navigator: Navigator<out Navigator.Events> get() = navigators.last()
+            private val navigator: Navigator<out Navigator.Events> get() = navigators.last()
 
-            override fun start(): State {
-                navigators.last().onStart()
-                return Active(navigators)
+            override fun addListener(listener: Navigator.Events) {
+                listeners += listener
             }
 
-            override fun stop(): State {
+            override fun removeListener(listener: Navigator.Events) {
+                listeners -= listener
+            }
+
+            override fun start(): LifecycleState {
+                navigators.last().onStart()
+                return Active(navigators, listeners, activeScene)
+            }
+
+            override fun stop(): LifecycleState {
                 return this
             }
 
-            override fun destroy(): State {
+            override fun destroy(): LifecycleState {
                 navigators.asReversed().forEach { it.onDestroy() }
                 return Destroyed()
             }
 
-            override fun push(navigator: Navigator<out Navigator.Events>): State {
-                return Inactive(navigators + navigator)
+            override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+                this.activeScene = scene
             }
 
-            override fun pop(): State {
+            override fun push(navigator: Navigator<out Navigator.Events>): LifecycleState {
+                return Inactive(navigators + navigator, listeners, activeScene)
+            }
+
+            override fun pop(): LifecycleState {
                 navigators.last().onDestroy()
                 val newScenes = navigators.dropLast(1)
 
                 return when {
-                    newScenes.isEmpty() -> Destroyed()
-                    else -> Inactive(newScenes)
+                    newScenes.isEmpty() -> {
+                        listeners.forEach { it.finished() }
+                        Destroyed()
+                    }
+                    else -> Inactive(newScenes, listeners, activeScene)
                 }
+            }
+
+            override fun onBackPressed(): Boolean {
+                return (navigator as? OnBackPressListener)?.onBackPressed() ?: false
             }
         }
 
-        class Active(override val navigators: List<Navigator<out Navigator.Events>>) : State() {
+        class Active(
+            override var navigators: List<Navigator<out Navigator.Events>>,
+            override var listeners: List<Navigator.Events>,
+            private var activeScene: Scene<out Container>?
+        ) : LifecycleState() {
 
             init {
                 check(navigators.isNotEmpty()) { "Stack may not be empty." }
+
+                activeScene?.let {
+                    listeners.forEach { listener ->
+                        listener.scene(it, null)
+                    }
+                }
             }
 
             val navigator: Navigator<out Navigator.Events> get() = navigators.last()
 
-            override fun start(): State {
+            override fun addListener(listener: Navigator.Events) {
+                listeners += listener
+                activeScene?.let { listener.scene(it, null) }
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+                listeners -= listener
+            }
+
+            override fun start(): LifecycleState {
                 return this
             }
 
-            override fun stop(): State {
+            override fun stop(): LifecycleState {
                 navigators.last().onStop()
-                return Inactive(navigators)
+                return Inactive(navigators, listeners, activeScene)
             }
 
-            override fun destroy(): State {
+            override fun destroy(): LifecycleState {
                 return stop().destroy()
             }
 
-            override fun push(navigator: Navigator<out Navigator.Events>): State {
-                navigators.last().onStop()
-                navigator.onStart()
-                return Active(navigators + navigator)
+            override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+                val newData = when (backward) {
+                    null -> data
+                    else -> TransitionData.create(backward ?: false)
+                }
+
+                backward = null
+
+                activeScene = scene
+                listeners.onEach { it.scene(scene, newData) }
             }
 
-            override fun pop(): State {
+            private var backward: Boolean? = null
+            override fun push(navigator: Navigator<out Navigator.Events>): LifecycleState {
+                backward = false
+
+                navigators.last().onStop()
+                navigator.onStart()
+                navigators += navigator
+                return this
+            }
+
+            override fun pop(): LifecycleState {
+                backward = true
+
                 val poppedScene = navigators.last()
                 poppedScene.onStop()
                 poppedScene.onDestroy()
@@ -287,40 +335,66 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
                 val newScenes = navigators.dropLast(1)
 
                 return when {
-                    newScenes.isEmpty() -> Destroyed()
+                    newScenes.isEmpty() -> {
+                        listeners.forEach { it.finished() }
+                        Destroyed()
+                    }
                     else -> {
                         newScenes.last().onStart()
-                        Active(newScenes)
+                        navigators = newScenes
+                        this
                     }
                 }
             }
+
+            override fun onBackPressed(): Boolean {
+                return (navigator as? OnBackPressListener)?.onBackPressed() ?: false
+            }
         }
 
-        class Destroyed : State() {
+        class Destroyed : LifecycleState() {
 
             override val navigators: List<Navigator<out Navigator.Events>> = emptyList()
+            override val listeners: List<Navigator.Events> = emptyList()
 
-            override fun start(): State {
-                w("State", "Warning: Cannot start state after navigator is destroyed.")
+            override fun addListener(listener: Navigator.Events) {
+                w("CompositeStackNavigator.LifecycleState", "Warning: Ignoring listener for destroyed navigator.")
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+            }
+
+            override fun start(): LifecycleState {
+                w("CompositeStackNavigator.LifecycleState", "Warning: Cannot start state after navigator is destroyed.")
                 return this
             }
 
-            override fun stop(): State {
+            override fun stop(): LifecycleState {
                 return this
             }
 
-            override fun destroy(): State {
+            override fun destroy(): LifecycleState {
                 return this
             }
 
-            override fun push(navigator: Navigator<out Navigator.Events>): State {
-                w("State", "Warning: Cannot push navigator after parent navigator is destroyed.")
+            override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+            }
+
+            override fun push(navigator: Navigator<out Navigator.Events>): LifecycleState {
+                w(
+                    "CompositeStackNavigator.LifecycleState",
+                    "Warning: Cannot push navigator after parent navigator is destroyed."
+                )
                 return this
             }
 
-            override fun pop(): State {
-                w("State", "Warning: Cannot pop scene after navigator is destroyed.")
+            override fun pop(): LifecycleState {
+                w("CompositeStackNavigator.LifecycleState", "Warning: Cannot pop scene after navigator is destroyed.")
                 return this
+            }
+
+            override fun onBackPressed(): Boolean {
+                return false
             }
         }
     }

@@ -1,12 +1,15 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.atLeastOnce
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
@@ -49,7 +52,7 @@ internal class CompositeStackNavigatorTest {
                 navigator.addListener(listener)
 
                 /* Then */
-                verify(listener, never()).scene(any())
+                verify(listener, never()).scene(any(), any())
             }
 
             @Test
@@ -61,7 +64,7 @@ internal class CompositeStackNavigatorTest {
                 navigator.push(navigator2)
 
                 /* Then */
-                verify(listener, never()).scene(any())
+                verify(listener, never()).scene(any(), any())
             }
 
             @Test
@@ -99,7 +102,7 @@ internal class CompositeStackNavigatorTest {
                 navigator.pop()
 
                 /* Then */
-                verify(listener, never()).scene(any())
+                verify(listener, never()).scene(any(), any())
             }
 
             @Test
@@ -125,7 +128,7 @@ internal class CompositeStackNavigatorTest {
 
                 /* Then */
                 expect(result).toBe(true)
-                verify(listener, never()).scene(any())
+                verify(listener, never()).scene(any(), any())
             }
 
             @Test
@@ -139,7 +142,7 @@ internal class CompositeStackNavigatorTest {
 
                 /* Then */
                 expect(result).toBe(true)
-                verify(listener, never()).scene(any())
+                verify(listener, never()).scene(any(), any())
             }
         }
 
@@ -164,7 +167,7 @@ internal class CompositeStackNavigatorTest {
                 navigator.addListener(listener)
 
                 /* Then */
-                verify(listener).scene(navigator1Scene1)
+                verify(listener).scene(navigator1Scene1, null)
             }
 
             @Test
@@ -176,7 +179,7 @@ internal class CompositeStackNavigatorTest {
                 navigator.onStart()
 
                 /* Then */
-                verify(listener).scene(navigator1Scene1)
+                verify(listener).scene(navigator1Scene1, null)
             }
 
             @Test
@@ -201,7 +204,24 @@ internal class CompositeStackNavigatorTest {
                 navigator.push(navigator2)
 
                 /* Then */
-                verify(listener).scene(navigator2Scene1)
+                verify(listener).scene(eq(navigator2Scene1), anyOrNull())
+            }
+
+            @Test
+            fun `pushing a navigator - scene notification has forward transition data`() {
+                /* Given */
+                navigator.addListener(listener)
+                navigator.onStart()
+
+                /* When */
+                navigator.push(navigator2)
+
+                /* Then */
+                argumentCaptor<TransitionData> {
+                    verify(listener, atLeastOnce()).scene(any(), capture())
+
+                    expect(lastValue.isBackwards).toBe(false)
+                }
             }
 
             @Test
@@ -256,10 +276,27 @@ internal class CompositeStackNavigatorTest {
 
                 /* Then */
                 listener.inOrder {
-                    verify().scene(navigator1Scene1)
-                    verify().scene(navigator2Scene1)
-                    verify().scene(navigator1Scene1)
+                    verify().scene(eq(navigator1Scene1), anyOrNull())
+                    verify().scene(eq(navigator2Scene1), anyOrNull())
+                    verify().scene(eq(navigator1Scene1), anyOrNull())
                     verifyNoMoreInteractions()
+                }
+            }
+
+            @Test
+            fun `popping the second to last navigator from the stack scene - notification has backward transition data`() {
+                /* Given */
+                navigator.addListener(listener)
+                navigator.onStart()
+                navigator.push(navigator2)
+
+                /* When */
+                navigator.pop()
+
+                /* Then */
+                argumentCaptor<TransitionData> {
+                    verify(listener, atLeastOnce()).scene(any(), capture())
+                    expect(lastValue.isBackwards).toBe(true)
                 }
             }
 
@@ -308,10 +345,64 @@ internal class CompositeStackNavigatorTest {
                 /* Then */
                 expect(result).toBe(true)
                 listener.inOrder {
-                    verify().scene(navigator1Scene1)
-                    verify().scene(navigator2Scene1)
-                    verify().scene(navigator1Scene1)
+                    verify().scene(eq(navigator1Scene1), anyOrNull())
+                    verify().scene(eq(navigator2Scene1), anyOrNull())
+                    verify().scene(eq(navigator1Scene1), anyOrNull())
                     verifyNoMoreInteractions()
+                }
+            }
+
+            @Test
+            fun `onBackPressed for multiple navigators - scene notification has backward transition data`() {
+                /* Given */
+                navigator.onStart()
+                navigator.addListener(listener)
+                navigator.push(navigator2)
+
+                /* When */
+                navigator.onBackPressed()
+
+                /* Then */
+                argumentCaptor<TransitionData> {
+                    verify(listener, atLeastOnce()).scene(any(), capture())
+                    expect(lastValue.isBackwards).toBe(true)
+                }
+            }
+
+            @Test
+            fun `forwards from nested navigator is propagated`() {
+                /* Given */
+                navigator.onStart()
+                navigator.addListener(listener)
+                navigator.push(navigator2)
+
+                /* When */
+                navigator2.push(navigator2Scene2)
+
+                /* Then */
+                /* Then */
+                argumentCaptor<TransitionData> {
+                    verify(listener, atLeastOnce()).scene(any(), capture())
+                    expect(lastValue.isBackwards).toBe(false)
+                }
+            }
+
+            @Test
+            fun `backwards from nested navigator is propagated`() {
+                /* Given */
+                navigator.onStart()
+                navigator.addListener(listener)
+                navigator.push(navigator2)
+                navigator2.push(navigator2Scene2)
+
+                /* When */
+                navigator.onBackPressed()
+
+                /* Then */
+                /* Then */
+                argumentCaptor<TransitionData> {
+                    verify(listener, atLeastOnce()).scene(any(), capture())
+                    expect(lastValue.isBackwards).toBe(true)
                 }
             }
         }
@@ -357,7 +448,7 @@ internal class CompositeStackNavigatorTest {
                 navigator.push(navigator2)
 
                 /* Then */
-                verify(listener, never()).scene(any())
+                verify(listener, never()).scene(any(), any())
             }
 
             @Test
@@ -371,7 +462,7 @@ internal class CompositeStackNavigatorTest {
                 navigator.pop()
 
                 /* Then */
-                verify(listener, never()).scene(any())
+                verify(listener, never()).scene(any(), any())
             }
         }
     }
@@ -851,7 +942,7 @@ internal class CompositeStackNavigatorTest {
 
             /* Then */
             argumentCaptor<Scene<out Container>> {
-                verify(listener).scene(capture())
+                verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toNotBeTheSameAs(navigator1Scene1)
                 expect(lastValue).toBeInstanceOf<TestScene> {
                     expect(it.foo).toBe(3)
@@ -875,7 +966,7 @@ internal class CompositeStackNavigatorTest {
 
             /* Then */
             argumentCaptor<Scene<out Container>> {
-                verify(listener).scene(capture())
+                verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toNotBeTheSameAs(navigator2Scene1)
                 expect(lastValue).toBeInstanceOf<TestScene> {
                     expect(it.foo).toBe(4)
@@ -887,7 +978,7 @@ internal class CompositeStackNavigatorTest {
 
             /* Then */
             argumentCaptor<Scene<out Container>> {
-                verify(listener, times(2)).scene(capture())
+                verify(listener, times(2)).scene(capture(), anyOrNull())
                 expect(lastValue).toNotBeTheSameAs(navigator1Scene1)
                 expect(lastValue).toBeInstanceOf<TestScene> {
                     expect(it.foo).toBe(3)

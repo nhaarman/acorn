@@ -1,14 +1,14 @@
 package com.nhaarman.bravo.navigation
 
 import android.support.annotation.CallSuper
-import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
-import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.util.lazyVar
 
 /**
@@ -81,7 +81,7 @@ abstract class StackNavigator<E : Navigator.Events>(
         (state as? State.Active)
             ?.scene
             ?.let {
-                listener.scene(it)
+                listener.scene(it, null)
             }
 
         return object : DisposableHandle {
@@ -108,12 +108,15 @@ abstract class StackNavigator<E : Navigator.Events>(
      *
      * Calling this method when this Navigator has been destroyed will have no
      * effect.
+     *
+     * @param scene The [Scene] instance to push.
      */
     fun push(scene: Scene<out Container>) {
         v("StackNavigator", "push $scene")
 
         state = state.push(scene)
-        notifyListenersOfState()
+
+        notifyListenersOfState(TransitionData.forwards)
     }
 
     /**
@@ -135,14 +138,15 @@ abstract class StackNavigator<E : Navigator.Events>(
         v("StackNavigator", "pop")
 
         state = state.pop()
-        notifyListenersOfState()
+
+        notifyListenersOfState(TransitionData.backwards)
     }
 
     override fun onStart() {
         v("StackNavigator", "onStart")
 
         state = state.start()
-        notifyListenersOfState()
+        notifyListenersOfState(null)
     }
 
     override fun onStop() {
@@ -159,16 +163,16 @@ abstract class StackNavigator<E : Navigator.Events>(
         v("StackNavigator", "onBackPressed")
         state = state.pop()
 
-        notifyListenersOfState()
+        notifyListenersOfState(TransitionData.backwards)
 
         return true
     }
 
-    private fun notifyListenersOfState() {
+    private fun notifyListenersOfState(data: TransitionData?) {
         state.let { state ->
             when (state) {
                 is State.Inactive -> Unit
-                is State.Active -> state.scene.let { scene -> _listeners.forEach { it.scene(scene) } }
+                is State.Active -> state.scene.let { scene -> _listeners.forEach { it.scene(scene, data) } }
                 is State.Destroyed -> _listeners.forEach { it.finished() }
             }
         }

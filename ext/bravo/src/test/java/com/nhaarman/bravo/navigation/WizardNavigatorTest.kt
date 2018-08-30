@@ -834,13 +834,14 @@ internal class WizardNavigatorTest {
 
     private class TestListener : Navigator.Events {
 
-        val scenes = mutableListOf<Scene<out Container>>()
-        val lastScene get() = scenes.lastOrNull() as TestScene?
+        val scenes = mutableListOf<Pair<Scene<out Container>, TransitionData?>>()
+        val lastScene get() = scenes.lastOrNull()?.first as TestScene?
+        val lastTransitionData get() = scenes.lastOrNull()?.second
 
         var finished = false
 
-        override fun scene(scene: Scene<out Container>) {
-            scenes += scene
+        override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+            scenes += scene to data
         }
 
         override fun finished() {

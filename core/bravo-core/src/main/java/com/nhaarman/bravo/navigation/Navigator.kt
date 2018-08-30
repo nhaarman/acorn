@@ -104,7 +104,7 @@ interface Navigator<E : Navigator.Events> {
          *
          * @param scene the newly active [Scene].
          */
-        fun scene(scene: Scene<out Container>)
+        fun scene(scene: Scene<out Container>, data: TransitionData? = null)
 
         /**
          * Called when the Navigator has finished.

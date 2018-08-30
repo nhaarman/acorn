@@ -438,7 +438,7 @@ internal class ReplacingNavigatorTest {
 
         var finished = false
 
-        override fun scene(scene: Scene<out Container>) {
+        override fun scene(scene: Scene<out Container>, data: TransitionData?) {
             scenes += scene
         }
 

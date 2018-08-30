@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.android.transition
 
 import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
 
@@ -11,16 +12,13 @@ class SimpleTransitionFactory(
     private val classTransitions2: MutableMap<Pair<Class<out Scene<*>>, Class<out Scene<*>>>, (Scene<*>) -> Transition>
 ) : TransitionFactory {
 
-    override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>): Transition {
+    private val delegate by lazy { DefaultTransitionFactory(viewFactory) }
+
+    override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition {
         return transitions[previousScene.key to newScene.key]
             ?: classTransitions[previousScene::class.java to newScene::class.java]
             ?: classTransitions2[previousScene::class.java to newScene::class.java]?.invoke(newScene)
-            ?: FadeInFromBottomTransition { parent ->
-                viewFactory.viewFor(
-                    newScene.key,
-                    parent
-                )
-            }
+            ?: delegate.transitionFor(previousScene, newScene, data)
     }
 }
 
@@ -28,12 +26,10 @@ class DefaultTransitionFactory(
     private val viewFactory: ViewFactory
 ) : TransitionFactory {
 
-    override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>): Transition {
-        return FadeInFromBottomTransition { parent ->
-            viewFactory.viewFor(
-                newScene.key,
-                parent
-            )
+    override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition {
+        return when (data?.isBackwards) {
+            true -> FadeOutToBottomTransition { parent -> viewFactory.viewFor(newScene.key, parent) }
+            else -> FadeInFromBottomTransition { parent -> viewFactory.viewFor(newScene.key, parent) }
         }
     }
 }

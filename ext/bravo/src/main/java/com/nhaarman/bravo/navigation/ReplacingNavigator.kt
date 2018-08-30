@@ -54,12 +54,15 @@ abstract class ReplacingNavigator(
      *
      * Calling this method when the Navigator has been destroyed will have no
      * effect.
+     *
+     * @param newScene The [Scene] instance that should replace the current one.
+     * @param data Any transition data for this transition.
      */
-    fun replace(newScene: Scene<out Container>) {
+    fun replace(newScene: Scene<out Container>, data: TransitionData? = null) {
         state = state.replaceWith(newScene)
 
         if (state is LifecycleState.Active) {
-            listeners.forEach { it.scene(state.scene) }
+            listeners.forEach { it.scene(state.scene, data) }
         }
     }
 
@@ -79,7 +82,7 @@ abstract class ReplacingNavigator(
         listeners += listener
 
         if (state is LifecycleState.Active) {
-            listener.scene(state.scene)
+            listener.scene(state.scene, null)
         }
 
         return object : DisposableHandle {

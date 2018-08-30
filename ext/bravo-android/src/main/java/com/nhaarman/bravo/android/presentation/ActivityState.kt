@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.nhaarman.bravo.android.internal.v
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.transition.TransitionFactory
+import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 
@@ -43,7 +44,7 @@ sealed class ActivityState {
      * @param scene The new [Scene].
      * @return the new state the Activity is in.
      */
-    abstract fun withScene(scene: Scene<out Container>): ActivityState
+    abstract fun withScene(scene: Scene<out Container>, data: TransitionData?): ActivityState
 
     companion object {
 
@@ -94,7 +95,7 @@ internal class Idle(
     /**
      * Transitions to the [IdleWithScene] state, which is not started.
      */
-    override fun withScene(scene: Scene<out Container>): ActivityState {
+    override fun withScene(scene: Scene<out Container>, data: TransitionData?): ActivityState {
         v("ActivityState.Idle", "Scene changed while idle: $scene.")
         return IdleWithScene(root, viewFactory, transitionFactory, scene)
     }
@@ -146,7 +147,7 @@ internal class IdleWithScene(
      * Discards the current scene and transitions to a new [IdleWithScene] state
      * with the new given [Scene].
      */
-    override fun withScene(scene: Scene<out Container>): ActivityState {
+    override fun withScene(scene: Scene<out Container>, data: TransitionData?): ActivityState {
         v("ActivityState.IdleWithScene", "Scene changed while idle to: $scene.")
         return IdleWithScene(root, viewFactory, transitionFactory, scene)
     }
@@ -180,7 +181,7 @@ internal class Started(
      * Immediately shows the view for given [Scene] without a transition
      * animation, and transitions to the [StartedWithScene] state.
      */
-    override fun withScene(scene: Scene<out Container>): ActivityState {
+    override fun withScene(scene: Scene<out Container>, data: TransitionData?): ActivityState {
         v("ActivityState.Started", "Scene changed in Started state to: $scene.")
         v(
             "ActivityState.Started",
@@ -224,7 +225,7 @@ internal class StartedWithScene(
             field = value
         }
 
-    private var scheduledScene: Scene<out Container>? = null
+    private var scheduledScene: Pair<Scene<out Container>, TransitionData?>? = null
 
     /**
      * Makes no transition.
@@ -253,18 +254,19 @@ internal class StartedWithScene(
     }
 
     /**
-     * Executes a transition from the current [Scene] to the given [Scene]. If
-     * a transition animation is currently active, the transition to [scene] is
-     * scheduled.
+     * Executes a transition from the current [Scene] to the given [Scene].
+     *
+     * If a transition animation is currently active, the transition to [scene]
+     * is scheduled.
      */
-    override fun withScene(scene: Scene<out Container>): ActivityState {
+    override fun withScene(scene: Scene<out Container>, data: TransitionData?): ActivityState {
         v("ActivityState.StartedWithScene", "Scene changed to: $scene.")
         if (transitionCallback != null) {
             v(
                 "ActivityState.StartedWithScene",
                 "Transition already in progress, scheduling transition to $scene."
             )
-            scheduledScene = scene
+            scheduledScene = scene to data
             return this
         }
 
@@ -275,7 +277,7 @@ internal class StartedWithScene(
         currentScene.forceDetach(currentView.container)
 
         val callback = MyCallback(scene).also { transitionCallback = it }
-        transitionFactory.transitionFor(currentScene, scene)
+        transitionFactory.transitionFor(currentScene, scene, data)
             .execute(root, callback)
 
         return this
@@ -335,10 +337,10 @@ internal class StartedWithScene(
                 currentScene.forceAttach(viewResult.container)
             }
 
-            scheduledScene?.let {
-                v("ActivityState.StartWithScene", "Found scheduled scene: $it")
+            scheduledScene?.let { (scene, data) ->
+                v("ActivityState.StartWithScene", "Found scheduled scene: $scene")
                 scheduledScene = null
-                withScene(it)
+                withScene(scene, data)
             }
         }
     }
@@ -388,7 +390,7 @@ internal class StoppedWithScene(
     /**
      * Discards the current view and transitions to the [IdleWithScene] state.
      */
-    override fun withScene(scene: Scene<out Container>): ActivityState {
+    override fun withScene(scene: Scene<out Container>, data: TransitionData?): ActivityState {
         v("StoppedWithScene", "Scene changed while stopped: $scene.")
         return IdleWithScene(root, viewFactory, transitionFactory, scene)
     }

@@ -70,6 +70,18 @@ internal class StackNavigatorTest {
         }
 
         @Test
+        fun `starting navigator - scene notification has no transition data`() {
+            /* Given */
+            navigator.addListener(listener)
+
+            /* When */
+            navigator.onStart()
+
+            /* Then */
+            expect(listener.lastTransitionData).toBeNull()
+        }
+
+        @Test
         fun `starting navigator does not finish`() {
             /* Given */
             navigator.addListener(listener)
@@ -141,6 +153,19 @@ internal class StackNavigatorTest {
 
             /* Then */
             expect(listener.lastScene).toBe(scene2)
+        }
+
+        @Test
+        fun `pushing a scene for active navigator - scene notification has forward transition data`() {
+            /* Given */
+            navigator.addListener(listener)
+            navigator.onStart()
+
+            /* When */
+            navigator.push(scene2)
+
+            /* Then */
+            expect(listener.lastTransitionData?.isBackwards).toBe(false)
         }
 
         @Test
@@ -233,6 +258,20 @@ internal class StackNavigatorTest {
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
+        }
+
+        @Test
+        fun `popping from multi item stack for active navigator - scene notification has backward transition data`() {
+            /* Given */
+            navigator.addListener(listener)
+            navigator.onStart()
+            navigator.push(scene2)
+
+            /* When */
+            navigator.pop()
+
+            /* Then */
+            expect(listener.lastTransitionData?.isBackwards).toBe(true)
         }
 
         @Test
@@ -813,13 +852,14 @@ internal class StackNavigatorTest {
 
     private class TestListener : Navigator.Events {
 
-        val scenes = mutableListOf<Scene<out Container>>()
-        val lastScene get() = scenes.lastOrNull() as TestScene?
+        val scenes = mutableListOf<Pair<Scene<out Container>, TransitionData?>>()
+        val lastScene get() = scenes.lastOrNull()?.first as TestScene?
+        val lastTransitionData get() = scenes.lastOrNull()?.second
 
         var finished = false
 
-        override fun scene(scene: Scene<out Container>) {
-            scenes += scene
+        override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+            scenes += scene to data
         }
 
         override fun finished() {

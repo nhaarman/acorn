@@ -41,7 +41,7 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
         listeners += listener
 
         if (state is LifecycleState.Active) {
-            listener.scene(scene)
+            listener.scene(scene, null)
         }
 
         return object : DisposableHandle {
@@ -60,7 +60,7 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
         v("SingleSceneNavigator", "onStart")
 
         state = state.start()
-        listeners.forEach { it.scene(scene) }
+        listeners.forEach { it.scene(scene, null) }
     }
 
     override fun onStop() {
@@ -113,7 +113,7 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
 
             override fun destroy(): LifecycleState {
                 scene.onDestroy()
-                return Destroyed(scene)
+                return Destroyed()
             }
         }
 
@@ -131,11 +131,11 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
             override fun destroy(): LifecycleState {
                 scene.onStop()
                 scene.onDestroy()
-                return Destroyed(scene)
+                return Destroyed()
             }
         }
 
-        class Destroyed(val scene: Scene<out Container>) : LifecycleState() {
+        class Destroyed : LifecycleState() {
 
             override fun start(): LifecycleState {
                 w("LifecycleState", "Warning: Cannot start state after it is destroyed.")
