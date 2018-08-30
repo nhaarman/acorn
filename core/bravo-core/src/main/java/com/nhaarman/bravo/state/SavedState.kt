@@ -13,14 +13,29 @@ interface SavedState {
     val entries: Set<Map.Entry<String, Any?>>
 
     /**
+     * Clears the value for given [key].
+     */
+    fun clear(key: String)
+
+    /**
      * Sets a number value for given [key].
      */
     operator fun set(key: String, value: Number?)
 
     /**
+     * Sets a char value for given [key].
+     */
+    operator fun set(key: String, value: Char?)
+
+    /**
      * Sets a String value for given [key].
      */
     operator fun set(key: String, value: String?)
+
+    /**
+     * Sets a SavedState value for given [key].
+     */
+    operator fun set(key: String, value: SavedState?)
 
     /**
      * Sets any value for given [key].
@@ -34,5 +49,5 @@ interface SavedState {
     /**
      * Retrieves the value for given [key].
      */
-    operator fun <T : Any> get(key: String, default: T? = null): T?
+    fun getUnchecked(key: String): Any?
 }

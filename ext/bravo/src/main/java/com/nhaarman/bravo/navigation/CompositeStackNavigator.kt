@@ -6,6 +6,7 @@ import com.nhaarman.bravo.internal.w
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.util.lazyVar
 
 /**

@@ -8,6 +8,7 @@ import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.state.sceneState
 
 open class TestScene(var foo: Int) : Scene<Container>, SaveableScene {

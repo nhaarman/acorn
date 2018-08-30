@@ -1,10 +1,11 @@
 package com.nhaarman.bravo.notesapp.presentation.edititem
 
-import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
 import com.nhaarman.bravo.presentation.RxScene
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
+import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.get
 import io.reactivex.rxkotlin.plusAssign
 
 class EditItemScene(

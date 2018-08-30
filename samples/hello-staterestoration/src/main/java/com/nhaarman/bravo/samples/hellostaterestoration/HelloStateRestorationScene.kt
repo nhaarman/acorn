@@ -4,6 +4,7 @@ import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.presentation.BaseSaveableScene
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.get
 
 /**
  * A [Scene] implementation that can have its state saved.
@@ -53,7 +54,7 @@ class HelloStateRestorationScene private constructor(
         }
 
         private var SceneState.counter: Int?
-            get() = get("counter")
+            get() = this["counter"]
             set(value) {
                 this["counter"] = value
             }

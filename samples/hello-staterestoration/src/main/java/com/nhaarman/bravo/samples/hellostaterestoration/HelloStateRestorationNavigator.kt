@@ -1,11 +1,12 @@
 package com.nhaarman.bravo.samples.hellostaterestoration
 
-import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.StackNavigator
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.get
 
 /**
  * A [Navigator] implementation that can be saved and restored.
