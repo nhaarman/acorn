@@ -1,6 +1,6 @@
 package com.nhaarman.bravo.notesapp.android
 
-import com.nhaarman.bravo.android.transition.bindViews
+import com.nhaarman.bravo.android.presentation.bindViews
 import com.nhaarman.bravo.notesapp.android.ui.createitem.CreateItemView
 import com.nhaarman.bravo.notesapp.android.ui.edititem.EditItemView
 import com.nhaarman.bravo.notesapp.android.ui.itemlist.ItemListView

@@ -30,7 +30,7 @@ class DefaultTransitionFactory(
         return when (data?.isBackwards) {
             true -> FadeOutToBottomTransition { parent -> viewFactory.viewFor(newScene.key, parent) }
             else -> FadeInFromBottomTransition { parent -> viewFactory.viewFor(newScene.key, parent) }
-        }
+        }.hideKeyboardOnStart()
     }
 }
 

@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.android.transition
 
 import android.support.v4.view.animation.LinearOutSlowInInterpolator
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.core.view.doOnPreDraw
@@ -8,6 +9,12 @@ import com.nhaarman.bravo.android.R
 import com.nhaarman.bravo.android.internal.applyWindowBackground
 import com.nhaarman.bravo.android.presentation.ViewResult
 
+/**
+ * A transition that fades the new [View] from the bottom.
+ *
+ * Any views that live in the parent [ViewGroup] before the transition starts
+ * wil be removed.
+ */
 class FadeInFromBottomTransition(
     private val view: (ViewGroup) -> ViewResult
 ) : Transition {
