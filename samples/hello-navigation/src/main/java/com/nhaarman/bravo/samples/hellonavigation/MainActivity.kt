@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.nhaarman.bravo.android.BravoActivityDelegate
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
-import com.nhaarman.bravo.android.transition.bindViews
+import com.nhaarman.bravo.android.presentation.bindViews
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
 class MainActivity : AppCompatActivity() {

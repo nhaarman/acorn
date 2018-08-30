@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.android.transition
 
 import android.support.v4.view.animation.FastOutLinearInInterpolator
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.core.view.doOnPreDraw
@@ -10,6 +11,17 @@ import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.presentation.Scene
 
+/**
+ * A [Transition] that fades the current [View] out to bottom, revealing the new
+ * View underneath.
+ *
+ * This class assumes there is currently a single View present in the parent
+ * [ViewGroup]. If there is more than one View, the first child is used to fade
+ * out.
+ *
+ * Any views that live in the parent [ViewGroup] before the transition starts
+ * wil be removed.
+ */
 class FadeOutToBottomTransition(
     private val view: (ViewGroup) -> ViewResult
 ) : Transition {

@@ -4,7 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import com.nhaarman.bravo.android.BravoActivityDelegate
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
-import com.nhaarman.bravo.android.transition.bindViews
+import com.nhaarman.bravo.android.presentation.bindViews
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
 /**

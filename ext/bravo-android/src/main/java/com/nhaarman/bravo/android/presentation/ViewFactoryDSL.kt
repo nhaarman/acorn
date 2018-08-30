@@ -1,13 +1,11 @@
-package com.nhaarman.bravo.android.transition
+package com.nhaarman.bravo.android.presentation
 
 import android.support.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.ViewFactory
-import com.nhaarman.bravo.android.presentation.ViewResult
-import com.nhaarman.bravo.android.transition.Binding.ViewResourceBinding
-import com.nhaarman.bravo.android.transition.Binding.WrappedViewGroupResourceBinding
-import com.nhaarman.bravo.android.transition.Binding.WrappedViewResourceBinding
+import com.nhaarman.bravo.android.presentation.Binding.ViewResourceBinding
+import com.nhaarman.bravo.android.presentation.Binding.WrappedViewGroupResourceBinding
+import com.nhaarman.bravo.android.presentation.Binding.WrappedViewResourceBinding
 import com.nhaarman.bravo.android.util.inflate
 import com.nhaarman.bravo.android.util.inflateView
 import com.nhaarman.bravo.presentation.Container

@@ -1,6 +1,7 @@
 package com.nhaarman.bravo.notesapp
 
 import com.nhaarman.bravo.navigation.Navigator
+import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.notesapp.navigation.NoteAppNavigator
 import com.nhaarman.bravo.notesapp.note.MemoryNoteItemsRepository
 import com.nhaarman.bravo.notesapp.note.NoteItem
@@ -77,7 +78,7 @@ class NoteAppContext(val navigator: NoteAppNavigator) : Navigator.Events {
     var container: Container? = null
     fun <T> container(): T = container as T
 
-    override fun scene(scene: Scene<out Container>) {
+    override fun scene(scene: Scene<out Container>, data: TransitionData?) {
         (this.scene as? Scene<Container>)?.detach(container!!)
         this.scene = scene
         when (scene) {
