@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="NotesApp Bravo tests" type="AndroidJUnit" factoryName="Android JUnit">
     <module name="notes-app-bravo" />
@@ -19,4 +18,3 @@
     <method />
   </configuration>
 </component>
-

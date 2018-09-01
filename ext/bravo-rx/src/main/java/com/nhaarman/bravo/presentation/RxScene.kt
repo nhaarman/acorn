@@ -3,11 +3,12 @@ package com.nhaarman.bravo.presentation
 import android.support.annotation.CallSuper
 import arrow.core.Option
 import arrow.core.toOption
-import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.presentation.RxScene.Event.Attached
 import com.nhaarman.bravo.presentation.RxScene.Event.Detached
+import com.nhaarman.bravo.state.SceneState
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.observables.ConnectableObservable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.plusAssign
@@ -18,7 +19,7 @@ import io.reactivex.subjects.BehaviorSubject
  *
  * Implementers of this class gain access to the [view] property to get notified
  * of view changes, and a [disposables] property is provided for easy clearing
- * of [io.reactivex.disposables.Disposable]s.
+ * of [Disposable]s.
  *
  * @see SaveableScene
  */
@@ -31,6 +32,9 @@ abstract class RxScene<V : RestorableContainer>(
      * call to [onStop].
      * Note that the instance will be _cleared_ not disposed, so this instance
      * can be reused multiple times.
+     *
+     * This container should only be used in the [onStart] method. When used in
+     * other methods like [attach], memory leaks may occur.
      *
      * @see [CompositeDisposable.clear]
      */
@@ -106,9 +110,12 @@ abstract class RxScene<V : RestorableContainer>(
     }
 
     /**
-     * Returns an Observable that automatically connects at most once to the
+     * Returns an [Observable] that automatically connects at most once to the
      * receiving [ConnectableObservable] when the first Observer subscribes to it.
      * The connection will automatically be disposed of when [scene] is destroyed.
+     *
+     * This can be used to keep an Observable alive for as long as the Scene
+     * lives.
      *
      * @see [ConnectableObservable.autoConnect].
      */
