@@ -2,6 +2,7 @@ package com.nhaarman.bravo.samples.hellostaterestoration
 
 import com.nhaarman.bravo.state.ContainerState
 import com.nhaarman.bravo.state.containerState
+import com.nhaarman.bravo.state.get
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify

@@ -4,10 +4,11 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.SparseArray
 import androidx.core.util.set
-import com.nhaarman.bravo.state.navigatorState
 import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.state.sceneState
 import com.nhaarman.bravo.state.containerState
+import com.nhaarman.bravo.state.navigatorState
+import com.nhaarman.bravo.state.savedState
+import com.nhaarman.bravo.state.sceneState
 import com.nhaarman.expect.expect
 import org.junit.Test
 
@@ -103,6 +104,9 @@ class BundleTest {
                 it["bar"] = 42
                 it["container"] = containerState {
                     it["baz"] = 1337
+                    it["state"] = savedState {
+                        it["foo"] = 9
+                    }
                 }
             }
         }

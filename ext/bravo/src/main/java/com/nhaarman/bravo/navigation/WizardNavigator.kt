@@ -8,6 +8,7 @@ import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.util.lazyVar
 
 /**

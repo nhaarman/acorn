@@ -9,6 +9,7 @@ import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.util.lazyVar
 
 /**
@@ -52,7 +53,7 @@ abstract class StackNavigator<E : Navigator.Events>(
         fun initialStack(): List<Scene<out Container>> {
             if (savedState == null) return this@StackNavigator.initialStack()
 
-            val size: Int? = savedState.get("size")
+            val size: Int? = savedState["size"]
             if (size == null || size == 0) return this@StackNavigator.initialStack()
 
             return (0 until size)

@@ -7,6 +7,7 @@ import com.nhaarman.bravo.android.util.saveHierarchyState
 import com.nhaarman.bravo.presentation.RestorableContainer
 import com.nhaarman.bravo.state.ContainerState
 import com.nhaarman.bravo.state.containerState
+import com.nhaarman.bravo.state.get
 
 /**
  * A helper interface that offers default implementations for [View] state saving

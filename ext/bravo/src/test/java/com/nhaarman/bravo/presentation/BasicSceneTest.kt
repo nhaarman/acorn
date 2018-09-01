@@ -2,6 +2,7 @@ package com.nhaarman.bravo.presentation
 
 import com.nhaarman.bravo.state.ContainerState
 import com.nhaarman.bravo.state.containerState
+import com.nhaarman.bravo.state.get
 import com.nhaarman.expect.expect
 import org.junit.jupiter.api.Test
 

@@ -14,7 +14,15 @@ internal class BaseSavedState(
             return map.entries
         }
 
+    override fun clear(key: String) {
+        map[key] = null
+    }
+
     override fun set(key: String, value: Number?) {
+        map[key] = value
+    }
+
+    override fun set(key: String, value: Char?) {
         map[key] = value
     }
 
@@ -22,15 +30,16 @@ internal class BaseSavedState(
         map[key] = value
     }
 
+    override fun set(key: String, value: SavedState?) {
+        map[key] = value
+    }
+
     override fun setUnchecked(key: String, value: Any?) {
         map[key] = value
     }
 
-    private fun get(key: String) = map[key]
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> get(key: String, default: T?): T? {
-        return get(key) as? T ?: default
+    override fun getUnchecked(key: String): Any? {
+        return map[key]
     }
 
     override fun equals(other: Any?): Boolean {

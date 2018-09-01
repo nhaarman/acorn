@@ -3,6 +3,7 @@ package com.nhaarman.bravo.presentation
 import android.support.annotation.CallSuper
 import com.nhaarman.bravo.state.ContainerState
 import com.nhaarman.bravo.state.SceneState
+import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.state.sceneState
 
 /**

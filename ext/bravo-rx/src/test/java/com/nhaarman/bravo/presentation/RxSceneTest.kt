@@ -4,6 +4,7 @@ import arrow.core.Option
 import com.nhaarman.bravo.state.ContainerState
 import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.state.containerState
+import com.nhaarman.bravo.state.get
 import com.nhaarman.expect.expect
 import com.nhaarman.expect.lastValue
 import org.junit.jupiter.api.Test
