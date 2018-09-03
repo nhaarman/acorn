@@ -448,7 +448,7 @@ internal class ReplacingNavigatorTest {
     }
 
     private class TestReplacingNavigator(savedState: com.nhaarman.bravo.state.NavigatorState?) :
-        ReplacingNavigator(savedState) {
+        ReplacingNavigator<Navigator.Events>(savedState) {
 
         val initialScenes = listOf(
             spy(TestScene(0)),
@@ -475,7 +475,7 @@ internal class ReplacingNavigatorTest {
     }
 
     private class RestorableReplacingNavigator(savedState: com.nhaarman.bravo.state.NavigatorState?) :
-        ReplacingNavigator(savedState) {
+        ReplacingNavigator<Navigator.Events>(savedState) {
 
         val initialScene = TestScene(0)
         override fun initialScene(): Scene<*> {

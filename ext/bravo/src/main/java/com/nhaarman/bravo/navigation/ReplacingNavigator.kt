@@ -16,9 +16,9 @@ import com.nhaarman.bravo.util.lazyVar
  * A navigator class that can switch between [Scene]s, but has no 'back'
  * behavior.
  */
-abstract class ReplacingNavigator(
+abstract class ReplacingNavigator<E : Navigator.Events>(
     private val savedState: NavigatorState?
-) : Navigator<Navigator.Events>, SaveableNavigator, OnBackPressListener {
+) : Navigator<E>, SaveableNavigator, OnBackPressListener {
 
     /**
      * Returns the Scene this Navigator should start with.
@@ -63,7 +63,7 @@ abstract class ReplacingNavigator(
         state = state.replaceWith(newScene)
 
         if (state is LifecycleState.Active) {
-            listeners.forEach { it.scene(state.scene, data) }
+            _listeners.forEach { it.scene(state.scene, data) }
         }
     }
 
@@ -78,9 +78,12 @@ abstract class ReplacingNavigator(
         LifecycleState.create(initialScene())
     }
 
-    private val listeners = mutableListOf<Navigator.Events>()
-    override fun addListener(listener: Navigator.Events): DisposableHandle {
-        listeners += listener
+    @Suppress("UNCHECKED_CAST")
+    protected val listeners: List<E> get() = _listeners as List<E>
+
+    private val _listeners = mutableListOf<Navigator.Events>()
+    override fun addListener(listener: E): DisposableHandle {
+        _listeners += listener
 
         if (state is LifecycleState.Active) {
             listener.scene(state.scene, null)
@@ -89,11 +92,11 @@ abstract class ReplacingNavigator(
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in listeners
+                return listener in _listeners
             }
 
             override fun dispose() {
-                listeners -= listener
+                _listeners -= listener
             }
         }
     }
@@ -102,7 +105,7 @@ abstract class ReplacingNavigator(
         v("ReplacingNavigator", "onStart")
 
         state = state.start()
-        listeners.forEach { it.scene(state.scene) }
+        _listeners.forEach { it.scene(state.scene) }
     }
 
     override fun onStop() {
@@ -119,7 +122,7 @@ abstract class ReplacingNavigator(
         v("ReplacingNavigator", "onBackPressed")
         state = state.stop().destroy()
 
-        listeners.forEach { it.finished() }
+        _listeners.forEach { it.finished() }
         return true
     }
 
