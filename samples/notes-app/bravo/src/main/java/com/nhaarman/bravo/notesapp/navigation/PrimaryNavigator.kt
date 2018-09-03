@@ -1,7 +1,5 @@
 package com.nhaarman.bravo.notesapp.navigation
 
-import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.StackNavigator
 import com.nhaarman.bravo.notesapp.NotesAppComponent
@@ -10,6 +8,8 @@ import com.nhaarman.bravo.notesapp.presentation.edititem.EditItemScene
 import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListScene
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SceneState
 
 /**
  * A Navigator that starts at the [ItemListScene], and can navigate to
@@ -19,7 +19,7 @@ import com.nhaarman.bravo.presentation.Scene
  */
 class PrimaryNavigator(
     private val notesAppComponent: NotesAppComponent,
-    private val savedState: NavigatorState?
+    savedState: NavigatorState?
 ) : StackNavigator<PrimaryNavigator.Events>(savedState),
     ItemListScene.Events,
     EditItemScene.Events {

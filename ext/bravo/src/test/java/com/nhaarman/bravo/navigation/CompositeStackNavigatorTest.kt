@@ -47,6 +47,12 @@ internal class CompositeStackNavigatorTest {
             }
 
             @Test
+            fun `navigator is not destroyed`() {
+                /* Then */
+                expect(navigator.isDestroyed()).toBe(false)
+            }
+
+            @Test
             fun `added listener does not get notified of scene`() {
                 /* When */
                 navigator.addListener(listener)
@@ -151,11 +157,23 @@ internal class CompositeStackNavigatorTest {
 
             @Test
             fun `navigator is not finished`() {
+                /* Given */
+                navigator.onStart()
+
                 /* When */
                 navigator.addListener(listener)
 
                 /* Then */
                 verify(listener, never()).finished()
+            }
+
+            @Test
+            fun `navigator is not destroyed`() {
+                /* Given */
+                navigator.onStart()
+
+                /* Then */
+                expect(navigator.isDestroyed()).toBe(false)
             }
 
             @Test
@@ -421,6 +439,15 @@ internal class CompositeStackNavigatorTest {
                 /* Then */
                 verify(listener, never()).finished()
             }
+
+            @Test
+            fun `stopped navigator is not destroyed`() {
+                /* When */
+                navigator.onStop()
+
+                /* Then */
+                expect(navigator.isDestroyed()).toBe(false)
+            }
         }
 
         @Nested
@@ -436,6 +463,15 @@ internal class CompositeStackNavigatorTest {
 
                 /* Then */
                 verify(listener, never()).finished()
+            }
+
+            @Test
+            fun `isDestroyed returns true`() {
+                /* When */
+                navigator.onDestroy()
+
+                /* Then */
+                expect(navigator.isDestroyed()).toBe(true)
             }
 
             @Test

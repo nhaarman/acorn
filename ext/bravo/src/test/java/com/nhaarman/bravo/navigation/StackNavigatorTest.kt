@@ -37,6 +37,42 @@ internal class StackNavigatorTest {
         }
 
         @Test
+        fun `inactive navigator is not destroyed`() {
+            /* Then */
+            expect(navigator.isDestroyed()).toBe(false)
+        }
+
+        @Test
+        fun `active navigator is not destroyed`() {
+            /* Given */
+            navigator.onStart()
+
+            /* Then */
+            expect(navigator.isDestroyed()).toBe(false)
+        }
+
+        @Test
+        fun `stopped navigator is not destroyed`() {
+            /* Given */
+            navigator.onStart()
+
+            /* When */
+            navigator.onStop()
+
+            /* Then */
+            expect(navigator.isDestroyed()).toBe(false)
+        }
+
+        @Test
+        fun `destroyed navigator is destroyed`() {
+            /* When */
+            navigator.onDestroy()
+
+            /* Then */
+            expect(navigator.isDestroyed()).toBe(true)
+        }
+
+        @Test
         fun `inactive navigator does not notify newly added listener of scene`() {
             /* When */
             navigator.addListener(listener)

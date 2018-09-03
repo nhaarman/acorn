@@ -79,7 +79,8 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    protected val listeners: List<E> get() = _listeners as List<E>
+    protected val listeners: List<E>
+        get() = _listeners as List<E>
 
     private val _listeners = mutableListOf<Navigator.Events>()
     override fun addListener(listener: E): DisposableHandle {
@@ -131,6 +132,10 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
             it.sceneClass = state.scene.javaClass
             it.sceneState = (state.scene as? SaveableScene)?.saveInstanceState()
         }
+    }
+
+    override fun isDestroyed(): Boolean {
+        return state is LifecycleState.Destroyed
     }
 
     private sealed class LifecycleState {

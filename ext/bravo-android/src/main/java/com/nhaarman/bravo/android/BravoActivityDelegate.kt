@@ -3,12 +3,11 @@ package com.nhaarman.bravo.android
 import android.app.Activity
 import android.os.Bundle
 import android.view.ViewGroup
-import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.ActivityState
-import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.android.util.toBundle
 import com.nhaarman.bravo.android.util.toNavigatorState
 import com.nhaarman.bravo.navigation.DisposableHandle
@@ -16,6 +15,7 @@ import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.util.lazyVar
 
 class BravoActivityDelegate(

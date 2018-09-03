@@ -205,6 +205,10 @@ abstract class WizardNavigator<E : Navigator.Events>(
             }
     }
 
+    override fun isDestroyed(): Boolean {
+        return state is State.Destroyed
+    }
+
     private sealed class State {
 
         abstract val scenes: List<Scene<out Container>>

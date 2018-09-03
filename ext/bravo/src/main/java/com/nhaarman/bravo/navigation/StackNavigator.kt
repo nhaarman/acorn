@@ -179,6 +179,10 @@ abstract class StackNavigator<E : Navigator.Events>(
         }
     }
 
+    override fun isDestroyed(): Boolean {
+        return state is State.Destroyed
+    }
+
     @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return state.scenes
