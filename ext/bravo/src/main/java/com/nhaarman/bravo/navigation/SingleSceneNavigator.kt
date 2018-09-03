@@ -88,6 +88,10 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
         }
     }
 
+    override fun isDestroyed(): Boolean {
+        return state is LifecycleState.Destroyed
+    }
+
     private sealed class LifecycleState {
 
         abstract fun start(): LifecycleState

@@ -178,6 +178,10 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
             .also { it["size"] = state.navigators.size }
     }
 
+    override fun isDestroyed(): Boolean {
+        return state is LifecycleState.Destroyed
+    }
+
     private sealed class LifecycleState {
 
         abstract val navigators: List<Navigator<out Navigator.Events>>

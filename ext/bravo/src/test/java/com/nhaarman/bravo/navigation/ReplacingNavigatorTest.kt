@@ -1,8 +1,8 @@
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.never
@@ -33,6 +33,42 @@ internal class ReplacingNavigatorTest {
 
             /* Then */
             expect(listener.finished).toBe(false)
+        }
+
+        @Test
+        fun `inactive navigator is not destroyed`() {
+            /* Then */
+            expect(navigator.isDestroyed()).toBe(false)
+        }
+
+        @Test
+        fun `active navigator is not destroyed`() {
+            /* Given */
+            navigator.onStart()
+
+            /* Then */
+            expect(navigator.isDestroyed()).toBe(false)
+        }
+
+        @Test
+        fun `stopped navigator is not destroyed`() {
+            /* Given */
+            navigator.onStart()
+
+            /* When */
+            navigator.onStop()
+
+            /* Then */
+            expect(navigator.isDestroyed()).toBe(false)
+        }
+
+        @Test
+        fun `destroyed navigator is destroyed`() {
+            /* When */
+            navigator.onDestroy()
+
+            /* Then */
+            expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test

@@ -28,6 +28,11 @@ dependencies {
 
     lintChecks project(":ext-bravo-android-lint")
 
+    testImplementation "com.nhaarman:expect.kt"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+
     androidTestImplementation "junit:junit:4.12"
     androidTestImplementation "com.nhaarman:expect.kt"
     androidTestImplementation "com.android.support.test.espresso:espresso-core"

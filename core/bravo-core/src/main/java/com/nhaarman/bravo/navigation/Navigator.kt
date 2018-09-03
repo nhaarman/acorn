@@ -89,6 +89,13 @@ interface Navigator<E : Navigator.Events> {
     fun onDestroy()
 
     /**
+     * Returns whether this Navigator has been destroyed.
+     *
+     * @return true after a call to [onDestroy].
+     */
+    fun isDestroyed(): Boolean
+
+    /**
      * An interface that is used to notify interested parties of Scene changes
      * or finish events.
      *
