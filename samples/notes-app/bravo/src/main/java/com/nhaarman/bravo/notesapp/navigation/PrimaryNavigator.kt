@@ -14,8 +14,6 @@ import com.nhaarman.bravo.state.SceneState
 /**
  * A Navigator that starts at the [ItemListScene], and can navigate to
  * [EditItemScene]s.
- *
- *
  */
 class PrimaryNavigator(
     private val notesAppComponent: NotesAppComponent,
