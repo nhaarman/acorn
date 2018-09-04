@@ -9,5 +9,9 @@ class BravoIssueRegistry : IssueRegistry() {
     override val api = CURRENT_API
 
     override val issues: List<Issue>
-        get() = listOf(RestorableViewUsageDetector.issue, RxSceneDisposablesUsageDetector.issue)
+        get() = listOf(
+            RestorableViewUsageDetector.issue,
+            RxSceneDisposablesUsageDetector.issue,
+            RestoreSceneDetector.issue
+        )
 }

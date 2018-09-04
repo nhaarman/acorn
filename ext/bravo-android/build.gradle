@@ -41,3 +41,10 @@ dependencies {
     androidTestImplementation "com.android.support.test:rules"
     androidTestUtil "com.android.support.test:orchestrator"
 }
+
+defaultTasks 'assemble'
+
+task install(type: Copy) {
+    from configurations.lintChecks
+    into System.getProperty('user.home') + '/.android/lint/'
+}

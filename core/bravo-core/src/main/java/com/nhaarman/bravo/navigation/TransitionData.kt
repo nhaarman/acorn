@@ -7,7 +7,7 @@ import com.nhaarman.bravo.presentation.Scene
  */
 class TransitionData private constructor(
     /**
-     * Denoted whether the transition is a transition that goed back to a
+     * Denoted whether the transition is a transition that goes back to a
      * previous [Scene].
      *
      * @return `true` if the transition is backwards.
