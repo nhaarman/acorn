@@ -8,8 +8,9 @@ buildscript {
     }
 
     dependencies {
-        classpath('com.android.tools.build:gradle:3.3.0-alpha07')
+        classpath("com.android.tools.build:gradle:3.3.0-alpha07")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.2.0.0")
         classpath("com.adarshr:gradle-test-logger-plugin:1.4.0")
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
         classpath("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
@@ -38,7 +39,7 @@ subprojects {
     project.apply from: "$rootDir/dependencies.gradle"
 
     afterEvaluate { project ->
-        if (project.hasProperty('android')) {
+        if (project.hasProperty("android")) {
             android {
                 compileSdkVersion(28)
                 defaultConfig {
@@ -51,7 +52,7 @@ subprojects {
                 }
 
                 testOptions {
-                    execution 'ANDROID_TEST_ORCHESTRATOR'
+                    execution "ANDROID_TEST_ORCHESTRATOR"
                 }
 
                 lintOptions {
@@ -60,12 +61,12 @@ subprojects {
 
                     ignoreTestSources true
 
-                    ignore 'ObsoleteLintCustomCheck'
+                    ignore "ObsoleteLintCustomCheck"
                 }
             }
         }
 
-        if (project.hasProperty('test')) {
+        if (project.hasProperty("test") || project.hasProperty("android")) {
             project.apply from: "$rootDir/.ops/testing.gradle"
         }
 

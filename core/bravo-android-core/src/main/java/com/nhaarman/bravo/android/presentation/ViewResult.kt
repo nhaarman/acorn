@@ -23,7 +23,9 @@ class ViewResult private constructor(
          * [Container], or an [IllegalArgumentException] is thrown.
          */
         fun from(view: View): ViewResult {
-            if (view !is Container) throw IllegalStateException("View should implement ${Container::class.java.name}: $view")
+            if (view !is Container) {
+                throw IllegalArgumentException("View should implement ${Container::class.java.name}: $view")
+            }
 
             return ViewResult(view = view, container = view)
         }

@@ -1,11 +1,20 @@
-test {
-    useJUnitPlatform {
-        systemProperties = ['junit.jupiter.extensions.autodetection.enabled': 'true']
-    }
+def hasAndroid = project.hasProperty("android")
 
-    reports {
-        html.enabled true
-        junitXml.enabled true
+if (!hasAndroid) {
+    test {
+        useJUnitPlatform {
+            systemProperties = ['junit.jupiter.extensions.autodetection.enabled': 'true']
+        }
+
+        reports {
+            html.enabled true
+            junitXml.enabled true
+        }
+    }
+} else {
+    project.apply plugin: "de.mannodermaus.android-junit5"
+    android.testOptions.junitPlatform {
+        configurationParameter "junit.jupiter.extensions.autodetection.enabled", "true"
     }
 }
 

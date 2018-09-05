@@ -19,7 +19,8 @@ interface ViewFactory {
      * to the parent itself, but this can be used to generate the LayoutParams
      * of the view.
      *
-     * @return The resulting [ViewResult].
+     * @return The resulting [ViewResult]. `null` if no result could be created
+     * for given [sceneKey].
      */
-    fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewResult
+    fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewResult?
 }

@@ -63,11 +63,17 @@ class FadeOutToBottomTransition(
     companion object {
 
         fun from(viewFactory: ViewFactory): (Scene<*>) -> FadeOutToBottomTransition = { scene ->
-            FadeOutToBottomTransition { parent -> viewFactory.viewFor(scene.key, parent) }
+            FadeOutToBottomTransition { parent ->
+                viewFactory.viewFor(scene.key, parent)
+                    ?: error("No view could be created for Scene with key ${scene.key}.")
+            }
         }
 
         fun from(viewFactory: ViewFactory, scene: Scene<*>): FadeOutToBottomTransition {
-            return FadeOutToBottomTransition { parent -> viewFactory.viewFor(scene.key, parent) }
+            return FadeOutToBottomTransition { parent ->
+                viewFactory.viewFor(scene.key, parent)
+                    ?: error("No view could be created for Scene with key ${scene.key}.")
+            }
         }
     }
 }
