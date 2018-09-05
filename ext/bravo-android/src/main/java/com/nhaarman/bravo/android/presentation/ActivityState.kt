@@ -125,6 +125,8 @@ internal class IdleWithScene(
         v("ActivityState.IdleWithScene", "Showing scene without animation.")
 
         val result = viewFactory.viewFor(scene.key, root)
+            ?: error("No view could be created for Scene with key ${scene.key}.")
+
         root.removeAllViews()
         root.addView(result.view)
 
@@ -189,6 +191,8 @@ internal class Started(
         )
 
         val result = viewFactory.viewFor(scene.key, root)
+            ?: error("No view could be created for Scene with key ${scene.key}.")
+
         root.removeAllViews()
         root.addView(result.view)
 

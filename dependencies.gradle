@@ -29,8 +29,8 @@ dependencyManagement {
 
         dependency "com.nhaarman:expect.kt:1.0.0"
         dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1"
-        dependency "org.junit.jupiter:junit-jupiter-api:5.2.0"
-        dependency "org.junit.jupiter:junit-jupiter-engine:5.2.0"
+        dependency "org.junit.jupiter:junit-jupiter-api:5.3.0"
+        dependency "org.junit.jupiter:junit-jupiter-engine:5.3.0"
 
         dependency "com.android.support.test.espresso:espresso-core:3.0.2"
         dependency "com.android.support.test.espresso:espresso-contrib:3.0.2"

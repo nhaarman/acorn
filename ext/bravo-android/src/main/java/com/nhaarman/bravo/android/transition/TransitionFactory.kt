@@ -28,8 +28,14 @@ class DefaultTransitionFactory(
 
     override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition {
         return when (data?.isBackwards) {
-            true -> FadeOutToBottomTransition { parent -> viewFactory.viewFor(newScene.key, parent) }
-            else -> FadeInFromBottomTransition { parent -> viewFactory.viewFor(newScene.key, parent) }
+            true -> FadeOutToBottomTransition { parent ->
+                viewFactory.viewFor(newScene.key, parent)
+                    ?: error("No view could be created for Scene with key ${newScene.key}.")
+            }
+            else -> FadeInFromBottomTransition { parent ->
+                viewFactory.viewFor(newScene.key, parent)
+                    ?: error("No view could be created for Scene with key ${newScene.key}.")
+            }
         }.hideKeyboardOnStart()
     }
 }

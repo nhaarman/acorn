@@ -12,6 +12,7 @@ class BravoViewTestRule<C : Container>(
 
     val viewResult by lazy {
         viewFactory.viewFor(sceneKey, activity.findViewById(android.R.id.content))
+            ?: error("No view could be created for Scene with key $sceneKey.")
     }
 
     @Suppress("UNCHECKED_CAST")
