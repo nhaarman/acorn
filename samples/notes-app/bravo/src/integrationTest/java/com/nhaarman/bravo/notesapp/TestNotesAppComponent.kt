@@ -1,6 +1,5 @@
-package com.nhaarman.bravo.notesapp.presentation
+package com.nhaarman.bravo.notesapp
 
-import com.nhaarman.bravo.notesapp.NotesAppComponent
 import com.nhaarman.bravo.notesapp.note.MemoryNoteItemsRepository
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
 

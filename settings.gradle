@@ -4,6 +4,7 @@ include(":bravo-android")
 
 include(":ext")
 include(":ext-bravo")
+include(":ext-bravo-testing")
 include(":ext-bravo-rx")
 
 include(":ext-bravo-android")
@@ -28,6 +29,7 @@ project(":bravo").projectDir = file("core/bravo-core")
 project(":bravo-android").projectDir = file("core/bravo-android-core")
 
 project(":ext-bravo").projectDir = file("ext/bravo")
+project(":ext-bravo-testing").projectDir = file("ext/bravo/bravo-testing")
 project(":ext-bravo-rx").projectDir = file("ext/bravo-rx")
 
 project(":ext-bravo-android").projectDir = file("ext/bravo-android")

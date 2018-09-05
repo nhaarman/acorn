@@ -100,23 +100,23 @@ class ItemListSceneTest {
         /* Then */
         expect(container.state).toBe(3)
     }
-}
 
-private open class TestItemListContainer : ItemListContainer {
+    private open class TestItemListContainer : ItemListContainer {
 
-    override var items: List<NoteItem> = emptyList()
+        override var items: List<NoteItem> = emptyList()
 
-    override val createClicks = PublishSubject.create<Unit>()
-    override val itemClicks = PublishSubject.create<NoteItem>()
-    override val deleteClicks = PublishSubject.create<NoteItem>()
+        override val createClicks = PublishSubject.create<Unit>()
+        override val itemClicks = PublishSubject.create<NoteItem>()
+        override val deleteClicks = PublishSubject.create<NoteItem>()
 
-    var state = 0
+        var state = 0
 
-    override fun saveInstanceState(): ContainerState {
-        return containerState { it["state"] = 3 }
-    }
+        override fun saveInstanceState(): ContainerState {
+            return containerState { it["state"] = 3 }
+        }
 
-    override fun restoreInstanceState(bundle: ContainerState) {
-        state = bundle["state"] ?: 0
+        override fun restoreInstanceState(bundle: ContainerState) {
+            state = bundle["state"] ?: 0
+        }
     }
 }

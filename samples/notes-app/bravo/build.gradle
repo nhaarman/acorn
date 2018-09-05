@@ -5,6 +5,14 @@ plugins {
     id("org.jmailen.kotlinter")
 }
 
+sourceSets {
+    test {
+        kotlin {
+            srcDir file("src/integrationTest/java")
+        }
+    }
+}
+
 dependencies {
     implementation project(":ext-bravo")
     implementation project(":ext-bravo-rx")
@@ -14,6 +22,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava"
     implementation "io.reactivex.rxjava2:rxkotlin"
 
+    testImplementation project(":ext-bravo-testing")
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
     testImplementation "com.nhaarman:expect.kt"
