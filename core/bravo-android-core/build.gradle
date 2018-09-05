@@ -19,12 +19,4 @@ dependencies {
     api project(":bravo")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
-    androidTestImplementation "junit:junit:4.12"
-    androidTestImplementation "com.nhaarman:expect.kt"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib"
-    androidTestImplementation "com.android.support.test:runner"
-    androidTestImplementation "com.android.support.test:rules"
-    androidTestUtil "com.android.support.test:orchestrator"
 }
