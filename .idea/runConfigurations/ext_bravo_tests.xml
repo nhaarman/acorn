@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ext-bravo tests" type="AndroidJUnit" factoryName="Android JUnit">
     <module name="ext-bravo" />
@@ -20,3 +21,4 @@
     </method>
   </configuration>
 </component>
+

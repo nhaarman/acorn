@@ -6,7 +6,7 @@ import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.notesapp.NotesAppComponent
 import com.nhaarman.bravo.notesapp.note.NoteItem
 
-class NoteAppNavigator(
+class NotesAppNavigator(
     private val notesAppComponent: NotesAppComponent,
     savedState: NavigatorState?
 ) : CompositeStackNavigator<Navigator.Events>(savedState),

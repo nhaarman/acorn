@@ -18,6 +18,7 @@ class MemoryNoteItemsRepository : NoteItemsRepository {
             .scan(mutableMapOf<Long, NoteItem>()) { items, event ->
                 when (event) {
                     is Event.Create -> items.also { it[event.item.id] = event.item }
+                    is Event.Update -> items.also { it[event.item.id] = event.item }
                     is Event.Delete -> items.also { it.remove(event.item.id) }
                 }
             }
@@ -51,7 +52,11 @@ class MemoryNoteItemsRepository : NoteItemsRepository {
     }
 
     override fun update(itemId: Long, text: String): Single<Boolean> {
-        error("Not used")
+        return Single
+            .fromCallable {
+                eventSubject.onNext(Event.Update(NoteItem(itemId, text)))
+                true
+            }
     }
 
     override fun purge() {
@@ -60,6 +65,7 @@ class MemoryNoteItemsRepository : NoteItemsRepository {
 
     private sealed class Event {
         class Create(val item: NoteItem) : Event()
+        class Update(val item: NoteItem) : Event()
         class Delete(val item: NoteItem) : Event()
     }
 }
