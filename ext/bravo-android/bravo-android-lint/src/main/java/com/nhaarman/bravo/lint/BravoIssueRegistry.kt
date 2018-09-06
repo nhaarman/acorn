@@ -12,6 +12,7 @@ class BravoIssueRegistry : IssueRegistry() {
         get() = listOf(
             RestorableViewUsageDetector.issue,
             RxSceneDisposablesUsageDetector.issue,
-            RestoreSceneDetector.issue
+            RestoreSceneDetector.issue,
+            RestoreNavigatorDetector.issue
         )
 }
