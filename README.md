@@ -8,6 +8,11 @@ and using Activities or Fragments severely violate separation of concerns.
 This project aims to be able to reclaim this separation by clearly providing a
 separation between UI, presentation and navigation.
 
+<p align="center">
+  <br>
+  <img src=".github/art/diagram_readme.png">
+</p>
+
 ## Setup
 
 Bravo currently only exists as a SNAPSHOT.
