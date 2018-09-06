@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Test .kt" pattern="file:src/test/java//*.kt||file:src/androidTest/java//*" />
+</component>
