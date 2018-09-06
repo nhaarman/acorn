@@ -19,7 +19,7 @@ import org.jetbrains.uast.getContainingUClass
 import org.jetbrains.uast.util.isConstructorCall
 import org.jetbrains.uast.visitor.AbstractUastVisitor
 
-class RestoreSceneDetector : Detector(), Detector.UastScanner {
+class RestoreNavigatorDetector : Detector(), Detector.UastScanner {
 
     override fun getApplicableUastTypes(): List<Class<out UElement>>? {
         return listOf(
@@ -28,8 +28,8 @@ class RestoreSceneDetector : Detector(), Detector.UastScanner {
         )
     }
 
-    private val constructedScenes = mutableSetOf<ConstructedScene>()
-    private val referencedScenes = mutableSetOf<PsiType>()
+    private val constructedNavigators = mutableSetOf<ConstructedNavigator>()
+    private val referencedNavigators = mutableSetOf<PsiType>()
 
     private fun PsiClass.allSupers(): List<PsiClass> {
         return supers
@@ -42,16 +42,14 @@ class RestoreSceneDetector : Detector(), Detector.UastScanner {
     override fun createUastHandler(context: JavaContext): UElementHandler? {
         return object : UElementHandler() {
 
-            val sceneType = PsiType.getTypeByName(
-                "com.nhaarman.bravo.presentation.Scene",
+            val navigatorType = PsiType.getTypeByName(
+                "com.nhaarman.bravo.navigation.Navigator",
                 context.uastContext.project,
                 GlobalSearchScope.everythingScope(context.uastContext.project)
             )
 
             private val supportedNavigatorFQNs = listOf(
-                "com.nhaarman.bravo.navigation.StackNavigator",
-                "com.nhaarman.bravo.navigation.ReplacingNavigator",
-                "com.nhaarman.bravo.navigation.WizardNavigator"
+                "com.nhaarman.bravo.navigation.CompositeStackNavigator"
             )
 
             override fun visitCallExpression(node: UCallExpression) {
@@ -64,16 +62,16 @@ class RestoreSceneDetector : Detector(), Detector.UastScanner {
 
                 val returnType = node.returnType ?: return
 
-                val isScene = sceneType.isAssignableFrom(returnType)
-                if (!isScene) {
+                val isNavigator = navigatorType.isAssignableFrom(returnType)
+                if (!isNavigator) {
                     return
                 }
 
-                constructedScenes += ConstructedScene(returnType, node)
+                constructedNavigators += ConstructedNavigator(returnType, node)
             }
 
             override fun visitMethod(node: UMethod) {
-                if (node.name != "instantiateScene") return
+                if (node.name != "instantiateNavigator") return
 
                 val body = node.uastBody ?: return
                 body.accept(object : AbstractUastVisitor() {
@@ -81,10 +79,10 @@ class RestoreSceneDetector : Detector(), Detector.UastScanner {
                     override fun visitCallExpression(node: UCallExpression): Boolean {
                         val type = node.returnType ?: return false
 
-                        val isScene = sceneType.isAssignableFrom(type)
-                        if (!isScene) return false
+                        val isNavigator = navigatorType.isAssignableFrom(type)
+                        if (!isNavigator) return false
 
-                        referencedScenes += type
+                        referencedNavigators += type
 
                         return true
                     }
@@ -94,34 +92,34 @@ class RestoreSceneDetector : Detector(), Detector.UastScanner {
     }
 
     override fun afterCheckFile(context: Context) {
-        constructedScenes
-            .filter { it.type !in referencedScenes }
+        constructedNavigators
+            .filter { it.type !in referencedNavigators }
             .forEach {
                 (context as JavaContext).report(
-                    RestoreSceneDetector.issue,
+                    RestoreNavigatorDetector.issue,
                     it.element,
                     context.getNameLocation(it.element),
-                    "Scene is not restored"
+                    "Navigator is not restored"
                 )
             }
 
-        constructedScenes.clear()
-        referencedScenes.clear()
+        constructedNavigators.clear()
+        referencedNavigators.clear()
     }
 
-    private data class ConstructedScene(val type: PsiType, val element: UElement)
+    private data class ConstructedNavigator(val type: PsiType, val element: UElement)
 
     companion object {
 
         val issue = Issue.create(
-            "Bravo_RestoreScene",
-            "Scene created but not restored",
-            "Scenes used in this Navigator should be restored in instantiateScene.",
+            "Bravo_RestoreNavigator",
+            "Navigator created but not restored",
+            "Sub Navigators used in this Navigator should be restored in instantiateNavigator.",
             Category.CORRECTNESS,
             5,
             Severity.ERROR,
             Implementation(
-                RestoreSceneDetector::class.java,
+                RestoreNavigatorDetector::class.java,
                 Scope.JAVA_FILE_SCOPE
             )
         )
