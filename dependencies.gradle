@@ -15,7 +15,7 @@ dependencyManagement {
 
         dependency "com.jakewharton.timber:timber:4.7.1"
 
-        dependency "io.reactivex.rxjava2:rxjava:2.2.1"
+        dependency "io.reactivex.rxjava2:rxjava:2.2.2"
         dependency "io.reactivex.rxjava2:rxkotlin:2.3.0"
         dependency "io.reactivex.rxjava2:rxandroid:2.1.0"
 
@@ -28,7 +28,7 @@ dependencyManagement {
         dependency "io.arrow-kt:arrow-core:0.7.3"
 
         dependency "com.nhaarman:expect.kt:1.0.0"
-        dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1"
+        dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC2"
         dependency "org.junit.jupiter:junit-jupiter-api:5.3.0"
         dependency "org.junit.jupiter:junit-jupiter-engine:5.3.0"
 

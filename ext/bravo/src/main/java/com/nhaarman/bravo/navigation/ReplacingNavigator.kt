@@ -36,7 +36,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
      *
      * @param sceneClass The class of the [Scene] to instantiate
      * @param state An optional saved state instance to restore the new Scene's
-     *              state from
+     * state from.
      */
     abstract fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<out Container>
 
