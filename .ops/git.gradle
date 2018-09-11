@@ -7,6 +7,7 @@ ext.git = [
             def result = baseTag
 
             if (commitCount != 0 || git.isDirty() || baseTag.startsWith("0.0.")) {
+                result = result.replace("-SNAPSHOT", "")
                 if (commitCount != 0 || git.isDirty()) {
                     result += ".$commitCount"
                 }
