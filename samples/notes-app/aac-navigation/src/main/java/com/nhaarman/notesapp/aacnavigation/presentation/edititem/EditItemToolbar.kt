@@ -16,14 +16,21 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation
+package com.nhaarman.notesapp.aacnavigation.presentation.edititem
 
-import android.support.annotation.LayoutRes
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.content.Context
+import android.support.v7.widget.Toolbar
+import android.util.AttributeSet
+import com.nhaarman.notesapp.aacnavigation.R
 
-@Suppress("UNCHECKED_CAST")
-fun <T : View> ViewGroup.inflate(@LayoutRes layoutResId: Int, attachToParent: Boolean = false): T {
-    return LayoutInflater.from(context).inflate(layoutResId, this, attachToParent) as T
+class EditItemToolbar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet,
+    defStyleAttr: Int = android.support.v7.appcompat.R.attr.toolbarStyle
+) : Toolbar(context, attrs, defStyleAttr) {
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        inflateMenu(R.menu.edititem_menu)
+    }
 }

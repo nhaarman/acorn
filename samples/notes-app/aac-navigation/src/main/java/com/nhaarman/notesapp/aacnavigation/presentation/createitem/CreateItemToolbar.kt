@@ -16,9 +16,21 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation.note
+package com.nhaarman.notesapp.aacnavigation.presentation.createitem
 
-data class NoteItem(
-    val id: Long,
-    val text: String
-)
+import android.content.Context
+import android.support.v7.widget.Toolbar
+import android.util.AttributeSet
+import com.nhaarman.notesapp.aacnavigation.R
+
+class CreateItemToolbar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet,
+    defStyleAttr: Int = android.support.v7.appcompat.R.attr.toolbarStyle
+) : Toolbar(context, attrs, defStyleAttr) {
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        inflateMenu(R.menu.createitem_menu)
+    }
+}

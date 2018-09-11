@@ -16,21 +16,15 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation.presentation.edititem
+package com.nhaarman.notesapp.aacnavigation
 
+import android.app.Application
 import android.content.Context
-import android.support.v7.widget.Toolbar
-import android.util.AttributeSet
-import com.nhaarman.notesapp.aac_navigation.R
 
-class EditItemToolbar @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet,
-    defStyleAttr: Int = android.support.v7.appcompat.R.attr.toolbarStyle
-) : Toolbar(context, attrs, defStyleAttr) {
+val Context.application get() = (applicationContext as NoteApplication)
+val Context.noteAppComponent get() = (applicationContext as NoteApplication).noteAppComponent
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        inflateMenu(R.menu.edititem_menu)
-    }
+class NoteApplication : Application() {
+
+    val noteAppComponent by lazy { AndroidNoteAppComponent(this) }
 }

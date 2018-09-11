@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/itemListFragment"
-        android:name="com.nhaarman.notesapp.aac_navigation.presentation.itemlist.ItemListFragment"
+        android:name="com.nhaarman.notesapp.aacnavigation.presentation.itemlist.ItemListFragment"
         android:label="fragment_itemlist"
         tools:layout="@layout/fragment_itemlist">
 
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/createItemFragment"
-        android:name="com.nhaarman.notesapp.aac_navigation.presentation.createitem.CreateItemFragment"
+        android:name="com.nhaarman.notesapp.aacnavigation.presentation.createitem.CreateItemFragment"
         android:label="CreateItemFragment"
         tools:layout="@layout/fragment_createitem">
 
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/editItemFragment"
-        android:name="com.nhaarman.notesapp.aac_navigation.presentation.edititem.EditItemFragment"
+        android:name="com.nhaarman.notesapp.aacnavigation.presentation.edititem.EditItemFragment"
         android:label="EditItemFragment"
         tools:layout="@layout/fragment_edititem">
 

@@ -4,7 +4,7 @@ adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put 
 adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put global transition_animation_scale 0
 adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put global animator_duration_scale 0
 
-./gradlew test lintKotlin :samples:hello-world:lintRelease :samples:hello-navigation:lintRelease :samples:hello-staterestoration:lintRelease notes-app-bravo-android:lintRelease :samples:notes-app:aac-navigation:lintRelease :samples:notes-app:cicerone:lintRelease :samples:notes-app:conductor:lintRelease :samples:notes-app:mosby:lintRelease publishToMavenLocal transformDexArchiveWithDexMergerForDebug --rerun-tasks && ./gradlew cCheck --max-workers=1
+./gradlew test ktlint :samples:hello-world:lintRelease :samples:hello-navigation:lintRelease :samples:hello-staterestoration:lintRelease notes-app-bravo-android:lintRelease :samples:notes-app:aac-navigation:lintRelease :samples:notes-app:cicerone:lintRelease :samples:notes-app:conductor:lintRelease :samples:notes-app:mosby:lintRelease publishToMavenLocal transformDexArchiveWithDexMergerForDebug --rerun-tasks && ./gradlew cCheck --max-workers=1
 
 adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put global window_animation_scale 1
 adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put global transition_animation_scale 1

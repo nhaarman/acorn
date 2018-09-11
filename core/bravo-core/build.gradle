@@ -5,8 +5,6 @@ plugins {
     id("org.jetbrains.dokka")
     id("org.gradle.maven-publish")
     id("signing")
-
-    id("org.jmailen.kotlinter")
 }
 
 dependencies {

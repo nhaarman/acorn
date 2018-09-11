@@ -16,18 +16,9 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation
+package com.nhaarman.notesapp.aacnavigation.note
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import androidx.navigation.findNavController
-
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-
-    override fun onSupportNavigateUp() = findNavController(R.id.my_nav_host_fragment).navigateUp()
-}
+data class NoteItem(
+    val id: Long,
+    val text: String
+)

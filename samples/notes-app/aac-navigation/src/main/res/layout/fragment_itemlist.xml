@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.nhaarman.notesapp.aac_navigation.presentation.itemlist.ItemsRecyclerView
+    <com.nhaarman.notesapp.aacnavigation.presentation.itemlist.ItemsRecyclerView
         android:id="@+id/itemsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"

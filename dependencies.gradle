@@ -32,6 +32,8 @@ dependencyManagement {
         dependency "org.junit.jupiter:junit-jupiter-api:5.3.0"
         dependency "org.junit.jupiter:junit-jupiter-engine:5.3.0"
 
+        dependency "com.github.shyiko:ktlint:0.28.0"
+
         dependency "com.android.support.test.espresso:espresso-core:3.0.2"
         dependency "com.android.support.test.espresso:espresso-contrib:3.0.2"
         dependency "com.android.support.test:runner:1.0.2"

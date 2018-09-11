@@ -5,8 +5,6 @@ plugins {
     id("org.jetbrains.dokka-android")
     id("digital.wup.android-maven-publish")
     id("signing")
-
-    id("org.jmailen.kotlinter")
 }
 
 android {
