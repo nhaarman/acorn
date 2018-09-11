@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.nhaarman.notesapp.aac_navigation.presentation.createitem.CreateItemToolbar
+    <com.nhaarman.notesapp.aacnavigation.presentation.createitem.CreateItemToolbar
         android:id="@+id/createItemToolbar"
         android:layout_width="0dp"
         android:background="@color/colorPrimary"

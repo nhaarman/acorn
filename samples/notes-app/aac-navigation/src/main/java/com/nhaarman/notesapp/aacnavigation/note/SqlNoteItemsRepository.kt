@@ -16,7 +16,7 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation.note
+package com.nhaarman.notesapp.aacnavigation.note
 
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.database.sqlite.SQLiteDatabase

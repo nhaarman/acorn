@@ -16,21 +16,21 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation.presentation.createitem
+package com.nhaarman.notesapp.aacnavigation.presentation.itemlist
 
 import android.content.Context
-import android.support.v7.widget.Toolbar
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
-import com.nhaarman.notesapp.aac_navigation.R
+import kotlinx.android.synthetic.main.itemlist_itemview.view.*
 
-class CreateItemToolbar @JvmOverloads constructor(
+class ItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
-    defStyleAttr: Int = android.support.v7.appcompat.R.attr.toolbarStyle
-) : Toolbar(context, attrs, defStyleAttr) {
+    defStyle: Int = 0
+) : ConstraintLayout(context, attrs, defStyle) {
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        inflateMenu(R.menu.createitem_menu)
-    }
+    var text: String? = null
+        set(value) {
+            itemTextView.text = value
+        }
 }

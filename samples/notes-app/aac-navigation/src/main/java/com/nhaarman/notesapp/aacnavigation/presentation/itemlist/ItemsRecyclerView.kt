@@ -16,7 +16,7 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation.presentation.itemlist
+package com.nhaarman.notesapp.aacnavigation.presentation.itemlist
 
 import android.content.Context
 import android.support.v7.util.DiffUtil
@@ -24,9 +24,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.ViewGroup
-import com.nhaarman.notesapp.aac_navigation.R
-import com.nhaarman.notesapp.aac_navigation.inflate
-import com.nhaarman.notesapp.aac_navigation.note.NoteItem
+import com.nhaarman.notesapp.aacnavigation.R
+import com.nhaarman.notesapp.aacnavigation.inflate
+import com.nhaarman.notesapp.aacnavigation.note.NoteItem
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.extensions.LayoutContainer

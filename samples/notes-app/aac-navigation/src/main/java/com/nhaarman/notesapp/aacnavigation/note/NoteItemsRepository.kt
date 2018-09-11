@@ -16,21 +16,22 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation.presentation.itemlist
+package com.nhaarman.notesapp.aacnavigation.note
 
-import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.util.AttributeSet
-import kotlinx.android.synthetic.main.itemlist_itemview.view.*
+import arrow.core.Option
+import io.reactivex.Observable
+import io.reactivex.Single
 
-class ItemView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet,
-    defStyle: Int = 0
-) : ConstraintLayout(context, attrs, defStyle) {
+interface NoteItemsRepository {
 
-    var text: String? = null
-        set(value) {
-            itemTextView.text = value
-        }
+    val noteItems: Observable<List<NoteItem>>
+
+    fun create(text: String): Single<NoteItem>
+
+    fun delete(itemId: Long)
+    fun delete(item: NoteItem)
+
+    fun find(itemId: Long): Observable<Option<NoteItem>>
+
+    fun update(itemId: Long, text: String): Single<Boolean>
 }

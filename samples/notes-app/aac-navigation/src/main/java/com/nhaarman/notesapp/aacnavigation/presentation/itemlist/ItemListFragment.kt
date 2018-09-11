@@ -16,7 +16,7 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation.presentation.itemlist
+package com.nhaarman.notesapp.aacnavigation.presentation.itemlist
 
 import android.content.Context
 import android.os.Bundle
@@ -26,9 +26,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.jakewharton.rxbinding2.view.clicks
-import com.nhaarman.notesapp.aac_navigation.R
-import com.nhaarman.notesapp.aac_navigation.note.NoteItemsRepository
-import com.nhaarman.notesapp.aac_navigation.noteAppComponent
+import com.nhaarman.notesapp.aacnavigation.R
+import com.nhaarman.notesapp.aacnavigation.note.NoteItemsRepository
+import com.nhaarman.notesapp.aacnavigation.noteAppComponent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

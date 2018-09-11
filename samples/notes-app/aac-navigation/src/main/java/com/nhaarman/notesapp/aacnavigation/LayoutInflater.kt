@@ -16,22 +16,14 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation.note
+package com.nhaarman.notesapp.aacnavigation
 
-import arrow.core.Option
-import io.reactivex.Observable
-import io.reactivex.Single
+import android.support.annotation.LayoutRes
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 
-interface NoteItemsRepository {
-
-    val noteItems: Observable<List<NoteItem>>
-
-    fun create(text: String): Single<NoteItem>
-
-    fun delete(itemId: Long)
-    fun delete(item: NoteItem)
-
-    fun find(itemId: Long): Observable<Option<NoteItem>>
-
-    fun update(itemId: Long, text: String): Single<Boolean>
+@Suppress("UNCHECKED_CAST")
+fun <T : View> ViewGroup.inflate(@LayoutRes layoutResId: Int, attachToParent: Boolean = false): T {
+    return LayoutInflater.from(context).inflate(layoutResId, this, attachToParent) as T
 }

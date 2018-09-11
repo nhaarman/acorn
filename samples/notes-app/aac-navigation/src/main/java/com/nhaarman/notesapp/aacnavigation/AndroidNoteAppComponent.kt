@@ -16,14 +16,14 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.notesapp.aac_navigation
+package com.nhaarman.notesapp.aacnavigation
 
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.db.SupportSQLiteOpenHelper
 import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory
 import android.content.Context
-import com.nhaarman.notesapp.aac_navigation.note.NoteItemsRepository
-import com.nhaarman.notesapp.aac_navigation.note.SqlNoteItemsRepository
+import com.nhaarman.notesapp.aacnavigation.note.NoteItemsRepository
+import com.nhaarman.notesapp.aacnavigation.note.SqlNoteItemsRepository
 import com.squareup.sqlbrite3.SqlBrite
 import io.reactivex.schedulers.Schedulers
 

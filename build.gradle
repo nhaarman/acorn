@@ -16,7 +16,6 @@ buildscript {
         classpath("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
         classpath("digital.wup:android-maven-publish:3.6.2")
         classpath("android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha05")
-        classpath("gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.15.1")
     }
 }
 
@@ -64,6 +63,10 @@ subprojects {
                     ignore "ObsoleteLintCustomCheck"
                 }
             }
+        }
+
+        if (project.hasProperty("check")) {
+            project.apply from: "$rootDir/.ops/ktlint.gradle"
         }
 
         if (project.hasProperty("test") || project.hasProperty("android")) {
