@@ -16,9 +16,11 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.presentation
+package com.nhaarman.bravo.android.presentation.internal
 
 import android.view.ViewGroup
+import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**

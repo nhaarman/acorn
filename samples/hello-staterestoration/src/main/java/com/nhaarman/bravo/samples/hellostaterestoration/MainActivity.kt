@@ -19,23 +19,13 @@
 package com.nhaarman.bravo.samples.hellostaterestoration
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import com.nhaarman.bravo.android.BravoActivityDelegate
-import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.presentation.bindViews
+import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
-/**
- * The Activity that hosts this sample.
- *
- * Interesting components:
- *
- *  - [HelloStateRestorationNavigator] manages the navigation flow, in this case
- *    managing a stack of Scenes.
- *  - [HelloStateRestorationScene] presents a text to the UI when available.
- *  - [HelloStateRestorationScene] implements the view to show the text, and
- *    includes an editable widget to demonstrate UI state saving.
- */
 class MainActivity : Activity() {
 
     private val delegate by lazy {
@@ -43,7 +33,7 @@ class MainActivity : Activity() {
             bind(defaultKey<HelloStateRestorationScene>(), R.layout.myscene)
         }
 
-        BravoActivityDelegate(
+        BravoActivityDelegate.from(
             this,
             HelloStateRestorationNavigatorProvider,
             viewFactory,
@@ -59,6 +49,10 @@ class MainActivity : Activity() {
     override fun onStart() {
         super.onStart()
         delegate.onStart()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        delegate.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onStop() {

@@ -16,24 +16,31 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.notesapp.android
+package com.nhaarman.bravo.samples.hellostartactivity
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.nhaarman.bravo.android.BravoActivityDelegate
-import com.nhaarman.bravo.notesapp.android.TransitionFactoryProvider.transitionFactory
-import com.nhaarman.bravo.notesapp.android.ViewFactoryProvider.viewFactory
+import com.nhaarman.bravo.android.presentation.bindViews
+import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
+import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
+@SuppressLint("CheckResult")
 class MainActivity : AppCompatActivity() {
 
     private val delegate by lazy {
+        val viewFactory = bindViews {
+            bind(defaultKey<FirstScene>(), R.layout.first_scene)
+        }
+
         BravoActivityDelegate.from(
-            this,
-            notesApplication.navigatorProvider,
-            viewFactory,
-            transitionFactory
+            activity = this,
+            navigatorProvider = HelloStartActivityNavigatorProvider,
+            viewFactory = viewFactory,
+            transitionFactory = DefaultTransitionFactory(viewFactory),
+            intentProvider = MapsIntentProvider
         )
     }
 
@@ -51,11 +58,6 @@ class MainActivity : AppCompatActivity() {
         delegate.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onBackPressed() {
-        val handled = delegate.onBackPressed()
-        if (!handled) super.onBackPressed()
-    }
-
     override fun onStop() {
         super.onStop()
         delegate.onStop()
@@ -69,5 +71,11 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingSuperCall")
     override fun onSaveInstanceState(outState: Bundle) {
         delegate.onSaveInstanceState(outState)
+    }
+
+    override fun onBackPressed() {
+        if (!delegate.onBackPressed()) {
+            super.onBackPressed()
+        }
     }
 }

@@ -19,6 +19,8 @@
 package com.nhaarman.bravo.android.presentation
 
 import android.view.ViewGroup
+import com.nhaarman.bravo.android.presentation.internal.BindingViewFactory
+import com.nhaarman.bravo.android.presentation.internal.ViewCreator
 import com.nhaarman.bravo.presentation.SceneKey
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.mock

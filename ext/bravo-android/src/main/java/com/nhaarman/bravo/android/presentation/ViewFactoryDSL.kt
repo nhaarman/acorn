@@ -21,6 +21,10 @@ package com.nhaarman.bravo.android.presentation
 import android.support.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
+import com.nhaarman.bravo.android.presentation.internal.BindingViewFactory
+import com.nhaarman.bravo.android.presentation.internal.LayoutResourceViewCreator
+import com.nhaarman.bravo.android.presentation.internal.ViewCreator
+import com.nhaarman.bravo.android.presentation.internal.WrappedLayoutResourceViewCreator
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey

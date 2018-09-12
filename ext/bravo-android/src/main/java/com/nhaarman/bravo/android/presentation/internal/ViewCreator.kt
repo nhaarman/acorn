@@ -16,11 +16,12 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.presentation
+package com.nhaarman.bravo.android.presentation.internal
 
 import android.support.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
+import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.android.util.inflate
 import com.nhaarman.bravo.android.util.inflateView
 import com.nhaarman.bravo.presentation.Container
