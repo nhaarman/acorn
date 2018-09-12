@@ -22,6 +22,7 @@ import android.support.test.InstrumentationRegistry
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import com.nhaarman.bravo.android.presentation.internal.WrappedLayoutResourceViewCreator
 import com.nhaarman.bravo.android.test.R
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.expect.expect

@@ -129,8 +129,6 @@ abstract class StackNavigator<E : Navigator.Events>(
         v("StackNavigator", "push $scene")
 
         state = state.push(scene, TransitionData.forwards)
-
-        notifyListenersOfState(TransitionData.forwards)
     }
 
     /**
@@ -152,15 +150,12 @@ abstract class StackNavigator<E : Navigator.Events>(
         v("StackNavigator", "pop")
 
         state = state.pop()
-
-        notifyListenersOfState(TransitionData.backwards)
     }
 
     override fun onStart() {
         v("StackNavigator", "onStart")
 
         state = state.start()
-        notifyListenersOfState(null)
     }
 
     override fun onStop() {
@@ -177,19 +172,7 @@ abstract class StackNavigator<E : Navigator.Events>(
         v("StackNavigator", "onBackPressed")
         state = state.pop()
 
-        notifyListenersOfState(TransitionData.backwards)
-
         return true
-    }
-
-    private fun notifyListenersOfState(data: TransitionData?) {
-//        state.let { state ->
-//            when (state) {
-//                is State.Inactive -> Unit
-//                is State.Active -> state.scene.let { scene -> _listeners.forEach { it.scene(scene, data) } }
-//                is State.Destroyed -> _listeners.forEach { it.finished() }
-//            }
-//        }
     }
 
     override fun isDestroyed(): Boolean {

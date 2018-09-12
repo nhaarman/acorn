@@ -21,6 +21,7 @@ package com.nhaarman.bravo.android.presentation
 import android.support.test.InstrumentationRegistry
 import android.widget.FrameLayout
 import com.nhaarman.bravo.android.LinearLayoutContainer
+import com.nhaarman.bravo.android.presentation.internal.LayoutResourceViewCreator
 import com.nhaarman.bravo.android.test.R
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.expect.expect

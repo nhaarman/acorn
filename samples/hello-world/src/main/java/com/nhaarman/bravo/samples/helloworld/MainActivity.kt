@@ -19,10 +19,11 @@
 package com.nhaarman.bravo.samples.helloworld
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import com.nhaarman.bravo.android.BravoActivityDelegate
-import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.presentation.bindViews
+import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
 /**
@@ -42,7 +43,7 @@ class MainActivity : Activity() {
             bind(defaultKey<HelloWorldScene>(), R.layout.hello_world)
         }
 
-        BravoActivityDelegate(
+        BravoActivityDelegate.from(
             this,
             HelloWorldNavigatorProvider,
             viewFactory,
@@ -58,6 +59,10 @@ class MainActivity : Activity() {
     override fun onStart() {
         super.onStart()
         delegate.onStart()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        delegate.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onStop() {

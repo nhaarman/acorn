@@ -27,7 +27,7 @@ import com.nhaarman.bravo.presentation.SceneKey
  * When a view is requested, the source factories are queried in-order until
  * a valid result is found.
  */
-class ComposingViewFactory(
+class ComposingViewFactory private constructor(
     private val sources: List<ViewFactory>
 ) : ViewFactory {
 
@@ -36,5 +36,11 @@ class ComposingViewFactory(
             .asSequence()
             .mapNotNull { it.viewFor(sceneKey, parent) }
             .firstOrNull()
+    }
+
+    companion object {
+
+        fun from(sources: List<ViewFactory>) = ComposingViewFactory(sources)
+        fun from(vararg sources: ViewFactory) = ComposingViewFactory(sources.asList())
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="firstscene_text">Hello!</string>
+    <string name="firstscene_button">Start Maps</string>
+
+</resources>
