@@ -91,26 +91,21 @@ abstract class StackNavigator<E : Navigator.Events>(
      *
      * @see addListener
      */
-    protected val listeners: List<E> get() = _listeners
+    @Suppress("UNCHECKED_CAST")
+    protected val listeners: List<E>
+        get() = state.listeners as List<E>
 
-    private val _listeners = mutableListOf<E>()
     override fun addListener(listener: E): DisposableHandle {
-        _listeners += listener
-
-        (state as? State.Active)
-            ?.scene
-            ?.let {
-                listener.scene(it, null)
-            }
+        state.addListener(listener)
 
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in _listeners
+                return listener in listeners
             }
 
             override fun dispose() {
-                _listeners -= listener
+                state.removeListener(listener)
             }
         }
     }
@@ -133,7 +128,7 @@ abstract class StackNavigator<E : Navigator.Events>(
     fun push(scene: Scene<out Container>) {
         v("StackNavigator", "push $scene")
 
-        state = state.push(scene)
+        state = state.push(scene, TransitionData.forwards)
 
         notifyListenersOfState(TransitionData.forwards)
     }
@@ -188,13 +183,13 @@ abstract class StackNavigator<E : Navigator.Events>(
     }
 
     private fun notifyListenersOfState(data: TransitionData?) {
-        state.let { state ->
-            when (state) {
-                is State.Inactive -> Unit
-                is State.Active -> state.scene.let { scene -> _listeners.forEach { it.scene(scene, data) } }
-                is State.Destroyed -> _listeners.forEach { it.finished() }
-            }
-        }
+//        state.let { state ->
+//            when (state) {
+//                is State.Inactive -> Unit
+//                is State.Active -> state.scene.let { scene -> _listeners.forEach { it.scene(scene, data) } }
+//                is State.Destroyed -> _listeners.forEach { it.finished() }
+//            }
+//        }
     }
 
     override fun isDestroyed(): Boolean {
@@ -216,30 +211,46 @@ abstract class StackNavigator<E : Navigator.Events>(
     private sealed class State {
 
         abstract val scenes: List<Scene<out Container>>
+        abstract val listeners: List<Navigator.Events>
+
+        abstract fun addListener(listener: Navigator.Events)
+        abstract fun removeListener(listener: Navigator.Events)
 
         abstract fun start(): State
         abstract fun stop(): State
         abstract fun destroy(): State
 
-        abstract fun push(scene: Scene<out Container>): State
+        abstract fun push(scene: Scene<out Container>, data: TransitionData?): State
         abstract fun pop(): State
 
         companion object {
 
             fun create(initialStack: List<Scene<out Container>>): State {
-                return Inactive(initialStack)
+                return Inactive(initialStack, emptyList())
             }
         }
 
-        class Inactive(override val scenes: List<Scene<out Container>>) : State() {
+        class Inactive(
+            override val scenes: List<Scene<out Container>>,
+            override var listeners: List<Navigator.Events>
+        ) : State() {
 
             init {
                 check(scenes.isNotEmpty()) { "Stack may not be empty." }
             }
 
+            override fun addListener(listener: Navigator.Events) {
+                listeners += listener
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+                listeners -= listener
+            }
+
             override fun start(): State {
                 scenes.last().onStart()
-                return Active(scenes)
+                listeners.forEach { it.scene(scenes.last(), null) }
+                return Active(scenes, listeners)
             }
 
             override fun stop(): State {
@@ -251,8 +262,8 @@ abstract class StackNavigator<E : Navigator.Events>(
                 return Destroyed()
             }
 
-            override fun push(scene: Scene<out Container>): State {
-                return Inactive(scenes + scene)
+            override fun push(scene: Scene<out Container>, data: TransitionData?): State {
+                return Inactive(scenes + scene, listeners)
             }
 
             override fun pop(): State {
@@ -260,13 +271,19 @@ abstract class StackNavigator<E : Navigator.Events>(
                 val newScenes = scenes.dropLast(1)
 
                 return when {
-                    newScenes.isEmpty() -> Destroyed()
-                    else -> Inactive(newScenes)
+                    newScenes.isEmpty() -> {
+                        listeners.forEach { it.finished() }
+                        Destroyed()
+                    }
+                    else -> Inactive(newScenes, listeners)
                 }
             }
         }
 
-        class Active(override val scenes: List<Scene<out Container>>) : State() {
+        class Active(
+            override val scenes: List<Scene<out Container>>,
+            override var listeners: List<Navigator.Events>
+        ) : State() {
 
             init {
                 check(scenes.isNotEmpty()) { "Stack may not be empty." }
@@ -274,23 +291,33 @@ abstract class StackNavigator<E : Navigator.Events>(
 
             val scene: Scene<out Container> get() = scenes.last()
 
+            override fun addListener(listener: Navigator.Events) {
+                listeners += listener
+                listener.scene(scene, null)
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+                listeners -= listener
+            }
+
             override fun start(): State {
                 return this
             }
 
             override fun stop(): State {
                 scenes.last().onStop()
-                return Inactive(scenes)
+                return Inactive(scenes, listeners)
             }
 
             override fun destroy(): State {
                 return stop().destroy()
             }
 
-            override fun push(scene: Scene<out Container>): State {
+            override fun push(scene: Scene<out Container>, data: TransitionData?): State {
                 scenes.last().onStop()
                 scene.onStart()
-                return Active(scenes + scene)
+                listeners.forEach { it.scene(scene, data) }
+                return Active(scenes + scene, listeners)
             }
 
             override fun pop(): State {
@@ -301,10 +328,14 @@ abstract class StackNavigator<E : Navigator.Events>(
                 val newScenes = scenes.dropLast(1)
 
                 return when {
-                    newScenes.isEmpty() -> Destroyed()
+                    newScenes.isEmpty() -> {
+                        listeners.forEach { it.finished() }
+                        Destroyed()
+                    }
                     else -> {
                         newScenes.last().onStart()
-                        Active(newScenes)
+                        listeners.forEach { it.scene(newScenes.last(), TransitionData.backwards) }
+                        Active(newScenes, listeners)
                     }
                 }
             }
@@ -313,6 +344,14 @@ abstract class StackNavigator<E : Navigator.Events>(
         class Destroyed : State() {
 
             override val scenes: List<Scene<out Container>> = emptyList()
+            override val listeners: List<Navigator.Events> = emptyList()
+
+            override fun addListener(listener: Navigator.Events) {
+                w("StackNavigator.State", "Warning: Ignoring listener for destroyed navigator.")
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+            }
 
             override fun start(): State {
                 w("StackNavigator.State", "Warning: Cannot start state after navigator is destroyed.")
@@ -327,7 +366,7 @@ abstract class StackNavigator<E : Navigator.Events>(
                 return this
             }
 
-            override fun push(scene: Scene<out Container>): State {
+            override fun push(scene: Scene<out Container>, data: TransitionData?): State {
                 w("StackNavigator.State", "Warning: Cannot push scene after navigator is destroyed.")
                 return this
             }
