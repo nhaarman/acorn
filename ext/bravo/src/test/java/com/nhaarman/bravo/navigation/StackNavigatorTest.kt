@@ -24,6 +24,8 @@ import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.state.navigatorState
 import com.nhaarman.expect.expect
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.spy
@@ -40,7 +42,7 @@ internal class StackNavigatorTest {
     private val scene2 = spy(TestScene(2))
 
     private val navigator = TestStackNavigator(listOf(scene1))
-    private val listener = TestListener()
+    private val listener = spy(TestListener())
 
     @Nested
     inner class TestNavigatorState {
@@ -121,6 +123,19 @@ internal class StackNavigatorTest {
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
+        }
+
+        @Test
+        fun `starting navigator multiple times notifies listeners of scene only once`() {
+            /* Given */
+            navigator.addListener(listener)
+
+            /* When */
+            navigator.onStart()
+            navigator.onStart()
+
+            /* Then */
+            verify(listener, times(1)).scene(any(), anyOrNull())
         }
 
         @Test
@@ -904,7 +919,7 @@ internal class StackNavigatorTest {
         }
     }
 
-    private class TestListener : Navigator.Events {
+    private open class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Pair<Scene<out Container>, TransitionData?>>()
         val lastScene get() = scenes.lastOrNull()?.first as TestScene?
