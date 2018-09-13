@@ -520,7 +520,7 @@ internal class ReplacingNavigatorTest {
             return initialSceneCreator.invoke()
         }
 
-        override fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<*> {
+        override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
                 TestScene::class.java -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
@@ -536,7 +536,7 @@ internal class ReplacingNavigatorTest {
             return initialScene
         }
 
-        override fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<*> {
+        override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
                 TestScene::class.java -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")

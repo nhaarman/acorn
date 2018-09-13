@@ -56,7 +56,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
      * @param state An optional saved state instance to restore the new Scene's
      * state from.
      */
-    abstract fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<out Container>
+    abstract fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container>
 
     /**
      * Replaces the current Scene with [newScene].
@@ -243,8 +243,9 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
 
     companion object {
 
-        private var NavigatorState.sceneClass: Class<*>?
-            get() = get<String>("scene:class")?.let { Class.forName(it) }
+        @Suppress("UNCHECKED_CAST")
+        private var NavigatorState.sceneClass: Class<Scene<*>>?
+            get() = get<String>("scene:class")?.let { Class.forName(it) as Class<Scene<*>>? }
             set(value) {
                 set("scene:class", value?.name)
             }
