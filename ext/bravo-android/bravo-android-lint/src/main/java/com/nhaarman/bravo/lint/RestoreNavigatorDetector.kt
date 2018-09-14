@@ -72,8 +72,6 @@ class RestoreNavigatorDetector : Detector(), Detector.UastScanner {
             )
 
             override fun visitCallExpression(node: UCallExpression) {
-                if (!node.isConstructorCall()) return
-
                 val containingClass = node.getContainingUClass() ?: return
                 if (containingClass.allSupers().none { it.qualifiedName in supportedNavigatorFQNs }) {
                     return
