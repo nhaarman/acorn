@@ -18,6 +18,7 @@
 
 package com.nhaarman.bravo.navigation
 
+import android.support.annotation.CallSuper
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
@@ -56,6 +57,8 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
     private var state by lazyVar { LifecycleState.create(scene) }
 
     protected val listeners = mutableListOf<Events>()
+
+    @CallSuper
     override fun addListener(listener: Events): DisposableHandle {
         listeners += listener
 
@@ -75,6 +78,7 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
         }
     }
 
+    @CallSuper
     override fun onStart() {
         v("SingleSceneNavigator", "onStart")
 
@@ -82,16 +86,19 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
         listeners.forEach { it.scene(scene, null) }
     }
 
+    @CallSuper
     override fun onStop() {
         v("SingleSceneNavigator", "onStop")
         state = state.stop()
     }
 
+    @CallSuper
     override fun onDestroy() {
         v("SingleSceneNavigator", "onDestroy")
         state = state.destroy()
     }
 
+    @CallSuper
     override fun onBackPressed(): Boolean {
         v("SingleSceneNavigator", "onBackPressed")
         state = state.stop().destroy()
@@ -100,12 +107,14 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
         return true
     }
 
+    @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return navigatorState {
             it.sceneState = (scene as? SaveableScene)?.saveInstanceState()
         }
     }
 
+    @CallSuper
     override fun isDestroyed(): Boolean {
         return state is LifecycleState.Destroyed
     }

@@ -18,6 +18,7 @@
 
 package com.nhaarman.bravo.navigation
 
+import android.support.annotation.CallSuper
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
@@ -98,6 +99,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
     protected val listeners: List<E>
         get() = state.listeners as List<E>
 
+    @CallSuper
     override fun addListener(listener: E): DisposableHandle {
         state.addListener(listener)
 
@@ -114,15 +116,14 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
     }
 
     /**
-     * // TODO
-     * Pushes given [navigator] onto the stack.
+     * Replaces the current [Navigator] with given [navigator].
      *
      * If the receiving Navigator is currently active, the current child
-     * Navigator will be stopped, and given [navigator] will receive a call to
-     * [Navigator.onStart].
+     * Navigator will be stopped and destroyed, and given [navigator] will
+     * receive a call to [Navigator.onStart].
      *
-     * If the receiving Navigator is currently inactive, no Navigator lifecycle
-     * events will be called at all. Starting the receiving Navigator will trigger
+     * If the receiving Navigator is currently inactive, the current child
+     * Navigator will be destroyed. Starting the receiving Navigator will trigger
      * a call to the [Navigator.onStart] method of given [navigator].
      *
      * Calling this method when the receiving Navigator has been destroyed will
@@ -133,36 +134,43 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
         state = state.replace(navigator)
     }
 
+    @CallSuper
     override fun onStart() {
         v("CompositeReplacingNavigator", "onStart")
         state = state.start()
     }
 
+    @CallSuper
     override fun onStop() {
         v("CompositeReplacingNavigator", "onStop")
         state = state.stop()
     }
 
+    @CallSuper
     override fun onDestroy() {
         v("CompositeReplacingNavigator", "onDestroy")
         state = state.destroy()
     }
 
+    @CallSuper
     override fun scene(scene: Scene<out Container>, data: TransitionData?) {
         v("CompositeReplacingNavigator", "Scene change: $scene, $data")
         state.scene(scene, data)
     }
 
+    @CallSuper
     override fun finished() {
         v("CompositeReplacingNavigator", "Finished")
         state.finished()
     }
 
+    @CallSuper
     override fun onBackPressed(): Boolean {
         v("CompositeReplacingNavigator", "onBackPressed")
         return state.onBackPressed()
     }
 
+    @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return navigatorState {
             it.navigatorClass = state.navigator?.javaClass
