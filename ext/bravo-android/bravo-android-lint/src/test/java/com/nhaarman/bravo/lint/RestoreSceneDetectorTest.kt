@@ -72,7 +72,7 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.StackNavigator
-                class MyScene: StackNavigator<Unit>()
+                class MyNavigator: StackNavigator<Unit>()
                 """
             )
         ).expectClean()
@@ -273,7 +273,47 @@ class RestoreSceneDetectorTest {
                     }
 
                     override fun instantiateScene(sceneClass: Class<Scene<*>>, savedState: SceneState<*>) : Scene<*> {
-                       return MyScene.create()
+                       return MyScene()
+                    }
+                }
+                """
+            )
+        ).expectMatches("Scene is not restored")
+    }
+
+    @Test
+    fun `forgetting to restore a Scene class created through non-constructor in a StackNavigator gives warning`() {
+        runOn(
+            kt(
+                """
+                    import $presentationPkg.Scene
+                    class MyScene : Scene
+            """
+            ),
+            kt(
+                """
+                    import $presentationPkg.Scene
+                    class MyScene2 : Scene {
+
+                        companion object {
+
+                            fun create() = MyScene2()
+                        }
+                    }
+            """
+            ),
+            kt(
+                """
+                import $navigationPkg.StackNavigator
+                class MyNavigator : StackNavigator<Unit> {
+
+                    fun foo() {
+                       val a = MyScene()
+                       val b = MyScene2.create()
+                    }
+
+                    override fun instantiateScene(sceneClass: Class<Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                       return MyScene()
                     }
                 }
                 """

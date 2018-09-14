@@ -67,12 +67,11 @@ class RestoreNavigatorDetector : Detector(), Detector.UastScanner {
             )
 
             private val supportedNavigatorFQNs = listOf(
-                "com.nhaarman.bravo.navigation.CompositeStackNavigator"
+                "com.nhaarman.bravo.navigation.CompositeStackNavigator",
+                "com.nhaarman.bravo.navigation.CompositeReplacingNavigator"
             )
 
             override fun visitCallExpression(node: UCallExpression) {
-                if (!node.isConstructorCall()) return
-
                 val containingClass = node.getContainingUClass() ?: return
                 if (containingClass.allSupers().none { it.qualifiedName in supportedNavigatorFQNs }) {
                     return
