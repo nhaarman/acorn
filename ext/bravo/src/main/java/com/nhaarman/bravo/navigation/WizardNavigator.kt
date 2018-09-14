@@ -18,6 +18,7 @@
 
 package com.nhaarman.bravo.navigation
 
+import android.support.annotation.CallSuper
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
@@ -99,6 +100,8 @@ abstract class WizardNavigator<E : Navigator.Events>(
     protected val listeners: List<E> get() = _listeners
 
     private val _listeners = mutableListOf<E>()
+
+    @CallSuper
     override fun addListener(listener: E): DisposableHandle {
         _listeners += listener
 
@@ -163,6 +166,7 @@ abstract class WizardNavigator<E : Navigator.Events>(
         notifyListenersOfState(TransitionData.backwards)
     }
 
+    @CallSuper
     override fun onStart() {
         v("WizardNavigator", "onStart")
 
@@ -170,18 +174,21 @@ abstract class WizardNavigator<E : Navigator.Events>(
         notifyListenersOfState(null)
     }
 
+    @CallSuper
     override fun onStop() {
         v("WizardNavigator", "onStop")
 
         state = state.stop()
     }
 
+    @CallSuper
     override fun onDestroy() {
         v("WizardNavigator", "onDestroy")
 
         state = state.destroy()
     }
 
+    @CallSuper
     override fun onBackPressed(): Boolean {
         v("WizardNavigator", "onBackPressed")
         if (state.activeIndex == 0) {
@@ -209,6 +216,7 @@ abstract class WizardNavigator<E : Navigator.Events>(
         }
     }
 
+    @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return state.scenes
             .foldIndexed(NavigatorState()) { index, bundle, scene ->

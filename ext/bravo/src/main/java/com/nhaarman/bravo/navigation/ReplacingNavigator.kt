@@ -18,6 +18,7 @@
 
 package com.nhaarman.bravo.navigation
 
+import android.support.annotation.CallSuper
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
@@ -101,6 +102,8 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         get() = _listeners as List<E>
 
     private val _listeners = mutableListOf<Navigator.Events>()
+
+    @CallSuper
     override fun addListener(listener: E): DisposableHandle {
         _listeners += listener
 
@@ -120,6 +123,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         }
     }
 
+    @CallSuper
     override fun onStart() {
         v("ReplacingNavigator", "onStart")
 
@@ -127,16 +131,19 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         _listeners.forEach { it.scene(state.scene) }
     }
 
+    @CallSuper
     override fun onStop() {
         v("ReplacingNavigator", "onStop")
         state = state.stop()
     }
 
+    @CallSuper
     override fun onDestroy() {
         v("ReplacingNavigator", "onDestroy")
         state = state.destroy()
     }
 
+    @CallSuper
     override fun onBackPressed(): Boolean {
         v("ReplacingNavigator", "onBackPressed")
         state = state.stop().destroy()
@@ -145,6 +152,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         return true
     }
 
+    @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return navigatorState {
             it.sceneClass = state.scene.javaClass

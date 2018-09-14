@@ -18,6 +18,7 @@
 
 package com.nhaarman.bravo.navigation
 
+import android.support.annotation.CallSuper
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w
@@ -102,6 +103,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
     protected val listeners: List<E>
         get() = state.listeners as List<E>
 
+    @CallSuper
     override fun addListener(listener: E): DisposableHandle {
         state.addListener(listener)
 
@@ -156,35 +158,42 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
         state = state.pop()
     }
 
+    @CallSuper
     override fun onStart() {
         v("CompositeStackNavigator", "onStart")
         state = state.start()
     }
 
+    @CallSuper
     override fun onStop() {
         v("CompositeStackNavigator", "onStop")
         state = state.stop()
     }
 
+    @CallSuper
     override fun onDestroy() {
         v("CompositeStackNavigator", "onDestroy")
         state = state.destroy()
     }
 
+    @CallSuper
     override fun scene(scene: Scene<out Container>, data: TransitionData?) {
         v("CompositeStackNavigator", "Scene change: $scene, $data")
         state.scene(scene, data)
     }
 
+    @CallSuper
     override fun finished() {
         state = state.pop()
     }
 
+    @CallSuper
     override fun onBackPressed(): Boolean {
         v("CompositeStackNavigator", "onBackPressed")
         return state.onBackPressed()
     }
 
+    @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return state.navigators
             .foldIndexed(NavigatorState()) { index, bundle, navigator ->

@@ -95,6 +95,7 @@ abstract class StackNavigator<E : Navigator.Events>(
     protected val listeners: List<E>
         get() = state.listeners as List<E>
 
+    @CallSuper
     override fun addListener(listener: E): DisposableHandle {
         state.addListener(listener)
 
@@ -152,22 +153,26 @@ abstract class StackNavigator<E : Navigator.Events>(
         state = state.pop()
     }
 
+    @CallSuper
     override fun onStart() {
         v("StackNavigator", "onStart")
 
         state = state.start()
     }
 
+    @CallSuper
     override fun onStop() {
         v("StackNavigator", "onStop")
         state = state.stop()
     }
 
+    @CallSuper
     override fun onDestroy() {
         v("StackNavigator", "onDestroy")
         state = state.destroy()
     }
 
+    @CallSuper
     override fun onBackPressed(): Boolean {
         v("StackNavigator", "onBackPressed")
         state = state.pop()
