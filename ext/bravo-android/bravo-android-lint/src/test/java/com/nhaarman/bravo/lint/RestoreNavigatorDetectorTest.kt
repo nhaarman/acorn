@@ -33,6 +33,12 @@ class RestoreNavigatorDetectorTest {
        class CompositeStackNavigator<T> : Navigator<T>
        """
     )
+    private val compositeReplacingNavigator = kt(
+        """
+       package $navigationPkg
+       class CompositeReplacingNavigator<T> : Navigator<T>
+       """
+    )
     private val stackNavigator = kt(
         """
        package $navigationPkg
@@ -64,6 +70,7 @@ class RestoreNavigatorDetectorTest {
         .allowMissingSdk()
         .files(
             compositeStackNavigator,
+            compositeReplacingNavigator,
             stackNavigator,
             replacingNavigator,
             wizardNavigator,
@@ -227,6 +234,41 @@ class RestoreNavigatorDetectorTest {
                 """
                 import $navigationPkg.CompositeStackNavigator
                 class MyNavigator : CompositeStackNavigator<Unit> {
+
+                    fun foo() {
+                       val a = MyNavigator()
+                       val b = MyNavigator2()
+                    }
+
+                    override fun instantiateNavigator(navigatorClass: Class<Navigator<*>>, savedState: NavigatorState<*>) : Navigator<*> {
+                       return MyNavigator.create()
+                    }
+                }
+                """
+            )
+        ).expectMatches("Navigator is not restored")
+    }
+
+
+    @Test
+    fun `forgetting to restore a Navigator class in a CompositeReplacingNavigator gives warning`() {
+        runOn(
+            kt(
+                """
+                    import $navigationPkg.Navigator
+                    class MyNavigator : Navigator
+            """
+            ),
+            kt(
+                """
+                    import $navigationPkg.Navigator
+                    class MyNavigator2 : Navigator
+            """
+            ),
+            kt(
+                """
+                import $navigationPkg.CompositeReplacingNavigator
+                class MyNavigator : CompositeReplacingNavigator<Unit> {
 
                     fun foo() {
                        val a = MyNavigator()
