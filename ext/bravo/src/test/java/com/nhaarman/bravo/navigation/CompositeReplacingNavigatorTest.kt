@@ -233,6 +233,18 @@ internal class CompositeReplacingNavigatorTest {
             }
 
             @Test
+            fun `finish notifies listeners of finished`() {
+                /* Given */
+                navigator.addNavigatorEventsListener(listener)
+
+                /* When */
+                navigator.finish()
+
+                /* Then */
+                verify(listener).finished()
+            }
+
+            @Test
             fun `onBackPressed for a single scene does not notify screen`() {
                 /* Given */
                 navigator.onStart()
@@ -305,6 +317,35 @@ internal class CompositeReplacingNavigatorTest {
                     verify(listener, atLeastOnce()).scene(any(), capture())
                     expect(lastValue.isBackwards).toBe(true)
                 }
+            }
+
+            @Test
+            fun `onBackPressed after navigator is destroyed does not notify listeners`() {
+                /* Given */
+                navigator.addNavigatorEventsListener(listener)
+                navigator.onStart()
+                navigator.onDestroy()
+
+                /* When */
+                val result = navigator.onBackPressed()
+
+                /* Then */
+                expect(result).toBe(false)
+                verify(listener, never()).finished()
+            }
+
+            @Test
+            fun `finish after navigator is destroyed does not notify listeners`() {
+                /* Given */
+                navigator.addNavigatorEventsListener(listener)
+                navigator.onStart()
+                navigator.onDestroy()
+
+                /* When */
+                navigator.finish()
+
+                /* Then */
+                verify(listener, never()).finished()
             }
         }
 

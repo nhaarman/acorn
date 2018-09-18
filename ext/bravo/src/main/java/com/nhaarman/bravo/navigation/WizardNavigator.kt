@@ -92,11 +92,9 @@ abstract class WizardNavigator(
         State.create(scenes, activeIndex) { index -> createScene(index) }
     }
 
-    private var listeners = listOf<Navigator.Events>()
-
     @CallSuper
     override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
-        listeners += listener
+        state.addListener(listener)
 
         (state as? State.Active)
             ?.let { state -> state.scenes[state.activeIndex] }
@@ -105,11 +103,11 @@ abstract class WizardNavigator(
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in listeners
+                return listener in state.listeners
             }
 
             override fun dispose() {
-                listeners -= listener
+                state.removeListener(listener)
             }
         }
     }
@@ -134,7 +132,6 @@ abstract class WizardNavigator(
         v("WizardNavigator", "next")
 
         state = state.next()
-        notifyListenersOfState(TransitionData.forwards)
     }
 
     /**
@@ -156,7 +153,22 @@ abstract class WizardNavigator(
         v("WizardNavigator", "previous")
 
         state = state.previous()
-        notifyListenersOfState(TransitionData.backwards)
+    }
+
+    /**
+     * Finishes this Navigator.
+     *
+     * If this Navigator is currently active, the current Scene will go through
+     * its destroying lifecycle calling [Scene.onStop] and [Scene.onDestroy].
+     *
+     * If this Navigator is currently not active, the current Scene will only
+     * have its [Scene.onDestroy] method called.
+     *
+     * Calling this method when the Navigator has been destroyed will have no
+     * effect.
+     */
+    fun finish() {
+        state = state.finish()
     }
 
     @CallSuper
@@ -164,7 +176,6 @@ abstract class WizardNavigator(
         v("WizardNavigator", "onStart")
 
         state = state.start()
-        notifyListenersOfState(null)
     }
 
     @CallSuper
@@ -183,31 +194,31 @@ abstract class WizardNavigator(
 
     @CallSuper
     override fun onBackPressed(): Boolean {
+        if (state is State.Destroyed) return false
+
         v("WizardNavigator", "onBackPressed")
         if (state.activeIndex == 0) {
-            state = state.destroy()
+            state = state.finish()
         } else {
             state = state.previous()
         }
 
-        notifyListenersOfState(TransitionData.backwards)
-
         return true
     }
 
-    private fun notifyListenersOfState(data: TransitionData?) {
-        state.let { state ->
-            when (state) {
-                is State.Inactive -> Unit
-                is State.Active -> state.scenes[state.activeIndex].let { scene ->
-                    listeners.forEach {
-                        it.scene(scene, data)
-                    }
-                }
-                is State.Destroyed -> listeners.forEach { it.finished() }
-            }
-        }
-    }
+//    private fun notifyListenersOfState(data: TransitionData?) {
+//        state.let { state ->
+//            when (state) {
+//                is State.Inactive -> Unit
+//                is State.Active -> state.scenes[state.activeIndex].let { scene ->
+//                    listeners.forEach {
+//                        it.scene(scene, data)
+//                    }
+//                }
+//                is State.Destroyed -> listeners.forEach { it.finished() }
+//            }
+//        }
+//    }
 
     @CallSuper
     override fun saveInstanceState(): NavigatorState {
@@ -233,12 +244,19 @@ abstract class WizardNavigator(
         abstract val scenes: List<Scene<out Container>>
         abstract val activeIndex: Int
 
+        abstract val listeners: List<Navigator.Events>
+
+        abstract fun addListener(listener: Navigator.Events)
+        abstract fun removeListener(listener: Navigator.Events)
+
         abstract fun start(): State
         abstract fun stop(): State
         abstract fun destroy(): State
 
         abstract fun next(): State
         abstract fun previous(): State
+
+        abstract fun finish(): State
 
         companion object {
 
@@ -247,13 +265,14 @@ abstract class WizardNavigator(
                 initialIndex: Int,
                 factory: (Int) -> Scene<out Container>?
             ): State {
-                return Inactive(scenes, initialIndex, factory)
+                return Inactive(scenes, initialIndex, emptyList(), factory)
             }
         }
 
         class Inactive(
             override val scenes: List<Scene<out Container>>,
             override val activeIndex: Int,
+            override var listeners: List<Navigator.Events>,
             private val factory: (Int) -> Scene<out Container>?
         ) : State() {
 
@@ -262,9 +281,18 @@ abstract class WizardNavigator(
                 if (activeIndex >= scenes.size) throw ArrayIndexOutOfBoundsException("Scene index out of range: $activeIndex.")
             }
 
+            override fun addListener(listener: Navigator.Events) {
+                listeners += listener
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+                listeners -= listener
+            }
+
             override fun start(): State {
                 scenes[activeIndex].onStart()
-                return Active(scenes, activeIndex, factory)
+                listeners.forEach { it.scene(scenes[activeIndex], null) }
+                return Active(scenes, activeIndex, listeners, factory)
             }
 
             override fun stop(): State {
@@ -284,23 +312,37 @@ abstract class WizardNavigator(
                     return Destroyed()
                 }
 
-                return Inactive(newScenes, activeIndex + 1, factory)
+                return Inactive(newScenes, activeIndex + 1, listeners, factory)
             }
 
             override fun previous(): State {
                 val newIndex = Math.max(0, activeIndex - 1)
-                return Inactive(scenes, newIndex, factory)
+                return Inactive(scenes, newIndex, listeners, factory)
+            }
+
+            override fun finish(): State {
+                listeners.forEach { it.finished() }
+                return destroy()
             }
         }
 
         class Active(
             override val scenes: List<Scene<out Container>>,
             override val activeIndex: Int,
+            override var listeners: List<Navigator.Events>,
             private val factory: (Int) -> Scene<out Container>?
         ) : State() {
 
             init {
                 check(scenes.isNotEmpty()) { "List of Scenes may not be empty." }
+            }
+
+            override fun addListener(listener: Navigator.Events) {
+                listeners += listener
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+                listeners -= listener
             }
 
             override fun start(): State {
@@ -309,7 +351,7 @@ abstract class WizardNavigator(
 
             override fun stop(): State {
                 scenes[activeIndex].onStop()
-                return Inactive(scenes, activeIndex, factory)
+                return Inactive(scenes, activeIndex, listeners, factory)
             }
 
             override fun destroy(): State {
@@ -318,15 +360,18 @@ abstract class WizardNavigator(
 
             override fun next(): State {
                 scenes[activeIndex].onStop()
-                val newScenes = scenes.filledUpTo(activeIndex + 1, factory)
+                val newIndex = activeIndex + 1
+                val newScenes = scenes.filledUpTo(newIndex, factory)
 
                 if (newScenes == null) {
                     scenes.asReversed().forEach { it.onDestroy() }
+                    listeners.forEach { it.finished() }
                     return Destroyed()
                 }
 
-                newScenes[activeIndex + 1].onStart()
-                return Active(newScenes, activeIndex + 1, factory)
+                newScenes[newIndex].onStart()
+                listeners.forEach { it.scene(newScenes[newIndex], TransitionData.forwards) }
+                return Active(newScenes, newIndex, listeners, factory)
             }
 
             override fun previous(): State {
@@ -334,7 +379,13 @@ abstract class WizardNavigator(
 
                 scenes[activeIndex].onStop()
                 scenes[activeIndex - 1].onStart()
-                return Active(scenes, activeIndex - 1, factory)
+                listeners.forEach { it.scene(scenes[activeIndex - 1], TransitionData.backwards) }
+                return Active(scenes, activeIndex - 1, listeners, factory)
+            }
+
+            override fun finish(): State {
+                listeners.forEach { it.finished() }
+                return destroy()
             }
         }
 
@@ -342,6 +393,14 @@ abstract class WizardNavigator(
 
             override val scenes: List<Scene<out Container>> = emptyList()
             override val activeIndex: Int = -1
+
+            override val listeners: List<Navigator.Events> = emptyList()
+
+            override fun addListener(listener: Navigator.Events) {
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+            }
 
             override fun start(): State {
                 w("WizardNavigator.State", "Warning: Cannot start state after navigator is destroyed.")
@@ -363,6 +422,11 @@ abstract class WizardNavigator(
 
             override fun previous(): State {
                 w("WizardNavigator.State", "Warning: Cannot go to previous scene after navigator is destroyed.")
+                return this
+            }
+
+            override fun finish(): State {
+                w("WizardNavigator.State", "Warning: Cannot finish navigator after navigator is destroyed.")
                 return this
             }
         }
