@@ -230,9 +230,10 @@ internal class WizardNavigatorTest {
         }
 
         @Test
-        fun `going to next for last scene notifies for active navigator notifies finished`() {
+        fun `going to next for last scene for active navigator notifies finished`() {
             /* Given */
             navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
             navigator.next()
 
             /* When */
@@ -257,6 +258,18 @@ internal class WizardNavigatorTest {
         }
 
         @Test
+        fun `finish notifies listeners of finished`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            navigator.finish()
+
+            /* Then */
+            expect(listener.finished).toBe(true)
+        }
+
+        @Test
         fun `onBackPressed for single scene stack for inactive navigator notifies listeners of finished`() {
             /* Given */
             navigator.addNavigatorEventsListener(listener)
@@ -267,6 +280,35 @@ internal class WizardNavigatorTest {
             /* Then */
             expect(result).toBe(true)
             expect(listener.finished).toBe(true)
+        }
+
+        @Test
+        fun `onBackPressed after navigator is destroyed does not notify listeners`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
+            navigator.onDestroy()
+
+            /* When */
+            val result = navigator.onBackPressed()
+
+            /* Then */
+            expect(result).toBe(false)
+            expect(listener.finished).toBe(false)
+        }
+
+        @Test
+        fun `finish after navigator is destroyed does not notify listeners`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
+            navigator.onDestroy()
+
+            /* When */
+            navigator.finish()
+
+            /* Then */
+            expect(listener.finished).toBe(false)
         }
     }
 

@@ -52,15 +52,29 @@ abstract class SingleSceneNavigator(
      */
     protected abstract fun createScene(state: SceneState?): Scene<out Container>
 
+    /**
+     * Finishes this Navigator.
+     *
+     * If this Navigator is currently active, the current Scene will go through
+     * its destroying lifecycle calling [Scene.onStop] and [Scene.onDestroy].
+     *
+     * If this Navigator is currently not active, the current Scene will only
+     * have its [Scene.onDestroy] method called.
+     *
+     * Calling this method when the Navigator has been destroyed will have no
+     * effect.
+     */
+    fun finish() {
+        state = state.finish()
+    }
+
     private val scene by lazy { createScene(savedState?.sceneState) }
 
     private var state by lazyVar { LifecycleState.create(scene) }
 
-    private var listeners = listOf<Navigator.Events>()
-
     @CallSuper
     override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
-        listeners += listener
+        state.addListener(listener)
 
         if (state is LifecycleState.Active) {
             listener.scene(scene, null)
@@ -69,11 +83,11 @@ abstract class SingleSceneNavigator(
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in listeners
+                return listener in state.listeners
             }
 
             override fun dispose() {
-                listeners -= listener
+                state.removeListener(listener)
             }
         }
     }
@@ -83,7 +97,6 @@ abstract class SingleSceneNavigator(
         v("SingleSceneNavigator", "onStart")
 
         state = state.start()
-        listeners.forEach { it.scene(scene, null) }
     }
 
     @CallSuper
@@ -100,10 +113,11 @@ abstract class SingleSceneNavigator(
 
     @CallSuper
     override fun onBackPressed(): Boolean {
-        v("SingleSceneNavigator", "onBackPressed")
-        state = state.stop().destroy()
+        if (state is LifecycleState.Destroyed) return false
 
-        listeners.forEach { it.finished() }
+        v("SingleSceneNavigator", "onBackPressed")
+        state = state.finish()
+
         return true
     }
 
@@ -121,22 +135,41 @@ abstract class SingleSceneNavigator(
 
     private sealed class LifecycleState {
 
+        abstract val listeners: List<Navigator.Events>
+
+        abstract fun addListener(listener: Navigator.Events)
+        abstract fun removeListener(listener: Navigator.Events)
+
         abstract fun start(): LifecycleState
         abstract fun stop(): LifecycleState
         abstract fun destroy(): LifecycleState
 
+        abstract fun finish(): LifecycleState
+
         companion object {
 
             fun create(scene: Scene<out Container>): LifecycleState {
-                return Inactive(scene)
+                return Inactive(scene, emptyList())
             }
         }
 
-        class Inactive(val scene: Scene<out Container>) : LifecycleState() {
+        class Inactive(
+            private val scene: Scene<out Container>,
+            override var listeners: List<Navigator.Events>
+        ) : LifecycleState() {
+
+            override fun addListener(listener: Navigator.Events) {
+                listeners += listener
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+                listeners -= listener
+            }
 
             override fun start(): LifecycleState {
                 scene.onStart()
-                return Active(scene)
+                listeners.forEach { it.scene(scene, null) }
+                return Active(scene, listeners)
             }
 
             override fun stop(): LifecycleState {
@@ -147,9 +180,25 @@ abstract class SingleSceneNavigator(
                 scene.onDestroy()
                 return Destroyed()
             }
+
+            override fun finish(): LifecycleState {
+                listeners.forEach { it.finished() }
+                return destroy()
+            }
         }
 
-        class Active(val scene: Scene<out Container>) : LifecycleState() {
+        class Active(
+            private val scene: Scene<out Container>,
+            override var listeners: List<Navigator.Events>
+        ) : LifecycleState() {
+
+            override fun addListener(listener: Navigator.Events) {
+                listeners += listener
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+                listeners -= listener
+            }
 
             override fun start(): LifecycleState {
                 return this
@@ -157,17 +206,30 @@ abstract class SingleSceneNavigator(
 
             override fun stop(): LifecycleState {
                 scene.onStop()
-                return Inactive(scene)
+                return Inactive(scene, listeners)
             }
 
             override fun destroy(): LifecycleState {
                 scene.onStop()
                 scene.onDestroy()
                 return Destroyed()
+            }
+
+            override fun finish(): LifecycleState {
+                listeners.forEach { it.finished() }
+                return destroy()
             }
         }
 
         class Destroyed : LifecycleState() {
+
+            override val listeners: List<Navigator.Events> = emptyList()
+
+            override fun addListener(listener: Navigator.Events) {
+            }
+
+            override fun removeListener(listener: Navigator.Events) {
+            }
 
             override fun start(): LifecycleState {
                 w("LifecycleState", "Warning: Cannot start state after it is destroyed.")
@@ -179,6 +241,10 @@ abstract class SingleSceneNavigator(
             }
 
             override fun destroy(): LifecycleState {
+                return this
+            }
+
+            override fun finish(): LifecycleState {
                 return this
             }
         }

@@ -147,6 +147,22 @@ abstract class StackNavigator(
         state = state.pop()
     }
 
+    /**
+     * Finishes this Navigator.
+     *
+     * If this Navigator is currently active, the current Scene will go through
+     * its destroying lifecycle calling [Scene.onStop] and [Scene.onDestroy].
+     *
+     * If this Navigator is currently not active, the current Scene will only
+     * have its [Scene.onDestroy] method called.
+     *
+     * Calling this method when the Navigator has been destroyed will have no
+     * effect.
+     */
+    fun finish() {
+        state = state.finish()
+    }
+
     @CallSuper
     override fun onStart() {
         v("StackNavigator", "onStart")
@@ -168,6 +184,8 @@ abstract class StackNavigator(
 
     @CallSuper
     override fun onBackPressed(): Boolean {
+        if (state is State.Destroyed) return false
+
         v("StackNavigator", "onBackPressed")
         state = state.pop()
 
@@ -205,6 +223,8 @@ abstract class StackNavigator(
         abstract fun push(scene: Scene<out Container>, data: TransitionData?): State
         abstract fun pop(): State
 
+        abstract fun finish(): State
+
         companion object {
 
             fun create(initialStack: List<Scene<out Container>>): State {
@@ -237,6 +257,11 @@ abstract class StackNavigator(
 
             override fun stop(): State {
                 return this
+            }
+
+            override fun finish(): State {
+                listeners.forEach { it.finished() }
+                return destroy()
             }
 
             override fun destroy(): State {
@@ -321,6 +346,11 @@ abstract class StackNavigator(
                     }
                 }
             }
+
+            override fun finish(): State {
+                listeners.forEach { it.finished() }
+                return destroy()
+            }
         }
 
         class Destroyed : State() {
@@ -355,6 +385,11 @@ abstract class StackNavigator(
 
             override fun pop(): State {
                 w("StackNavigator.State", "Warning: Cannot pop scene after navigator is destroyed.")
+                return this
+            }
+
+            override fun finish(): State {
+                w("StackNavigator.State", "Warning: Cannot finish navigator after navigator is destroyed.")
                 return this
             }
         }

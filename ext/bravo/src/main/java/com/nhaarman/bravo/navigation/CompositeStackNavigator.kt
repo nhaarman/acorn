@@ -149,6 +149,22 @@ abstract class CompositeStackNavigator(
         state = state.pop()
     }
 
+    /**
+     * Finishes this Navigator.
+     *
+     * If this Navigator is currently active, the current child Navigator will
+     * be stopped and destroyed, and the receiving Navigator will be destroyed.
+     *
+     * If this Navigator is currently not active, the current navigator will only
+     * have its [Scene.onDestroy] method called.
+     *
+     * Calling this method when the Navigator has been destroyed will have no
+     * effect.
+     */
+    fun finish() {
+        state = state.finish()
+    }
+
     @CallSuper
     override fun onStart() {
         v("CompositeStackNavigator", "onStart")
@@ -216,6 +232,7 @@ abstract class CompositeStackNavigator(
 
         abstract fun push(navigator: Navigator): LifecycleState
         abstract fun pop(): LifecycleState
+        abstract fun finish(): LifecycleState
 
         abstract fun onBackPressed(): Boolean
 
@@ -279,6 +296,11 @@ abstract class CompositeStackNavigator(
                     }
                     else -> Inactive(newScenes, listeners, activeScene)
                 }
+            }
+
+            override fun finish(): LifecycleState {
+                listeners.forEach { it.finished() }
+                return destroy()
             }
 
             override fun onBackPressed(): Boolean {
@@ -370,6 +392,11 @@ abstract class CompositeStackNavigator(
                 }
             }
 
+            override fun finish(): LifecycleState {
+                listeners.forEach { it.finished() }
+                return destroy()
+            }
+
             override fun onBackPressed(): Boolean {
                 return (navigator as? OnBackPressListener)?.onBackPressed() ?: false
             }
@@ -413,6 +440,14 @@ abstract class CompositeStackNavigator(
 
             override fun pop(): LifecycleState {
                 w("CompositeStackNavigator.LifecycleState", "Warning: Cannot pop scene after navigator is destroyed.")
+                return this
+            }
+
+            override fun finish(): LifecycleState {
+                w(
+                    "CompositeStackNavigator.LifecycleState",
+                    "Warning: Cannot finish navigator after navigator is destroyed."
+                )
                 return this
             }
 

@@ -125,6 +125,22 @@ abstract class CompositeReplacingNavigator(
         state = state.replace(navigator)
     }
 
+    /**
+     * Finishes this Navigator.
+     *
+     * If this Navigator is currently active, the current child Navigator will
+     * be stopped and destroyed, and the receiving Navigator will be destroyed.
+     *
+     * If this Navigator is currently not active, the current navigator will only
+     * have its [Scene.onDestroy] method called.
+     *
+     * Calling this method when the Navigator has been destroyed will have no
+     * effect.
+     */
+    fun finish() {
+        state = state.finish()
+    }
+
     @CallSuper
     override fun onStart() {
         v("CompositeReplacingNavigator", "onStart")
@@ -184,6 +200,7 @@ abstract class CompositeReplacingNavigator(
         abstract fun start(): LifecycleState
         abstract fun stop(): LifecycleState
         abstract fun destroy(): LifecycleState
+        abstract fun finish(): LifecycleState
 
         abstract fun scene(scene: Scene<out Container>, data: TransitionData?)
         abstract fun finished()
@@ -230,6 +247,11 @@ abstract class CompositeReplacingNavigator(
                 return Destroyed()
             }
 
+            override fun finish(): LifecycleState {
+                listeners.forEach { it.finished() }
+                return destroy()
+            }
+
             override fun scene(scene: Scene<out Container>, data: TransitionData?) {
                 this.activeScene = scene
             }
@@ -254,14 +276,6 @@ abstract class CompositeReplacingNavigator(
             private var activeScene: Scene<out Container>?
         ) : LifecycleState() {
 
-            init {
-                activeScene?.let {
-                    listeners.forEach { listener ->
-                        //                        listener.scene(it, null)
-                    }
-                }
-            }
-
             override fun addListener(listener: Navigator.Events) {
                 listeners += listener
                 activeScene?.let { listener.scene(it, null) }
@@ -282,6 +296,11 @@ abstract class CompositeReplacingNavigator(
 
             override fun destroy(): LifecycleState {
                 return stop().destroy()
+            }
+
+            override fun finish(): LifecycleState {
+                listeners.forEach { it.finished() }
+                return destroy()
             }
 
             override fun scene(scene: Scene<out Container>, data: TransitionData?) {
@@ -331,6 +350,10 @@ abstract class CompositeReplacingNavigator(
             }
 
             override fun destroy(): LifecycleState {
+                return this
+            }
+
+            override fun finish(): LifecycleState {
                 return this
             }
 
