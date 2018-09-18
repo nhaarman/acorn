@@ -42,9 +42,9 @@ import com.nhaarman.bravo.util.lazyVar
  * @param savedState An optional instance that contains saved state as returned
  *                   by this class's saveInstanceState() method.
  */
-abstract class CompositeReplacingNavigator<E : Navigator.Events>(
+abstract class CompositeReplacingNavigator(
     private val savedState: NavigatorState?
-) : Navigator<E>, Navigator.Events, SaveableNavigator, OnBackPressListener {
+) : Navigator, Navigator.Events, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the initial [Navigator] for this CompositeReplacingNavigator.
@@ -52,7 +52,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
      * Will only be called once in the lifetime of this Navigator, and zero
      * times if this Navigator is being restored from a saved state.
      */
-    protected abstract fun initialNavigator(): Navigator<out Navigator.Events>
+    protected abstract fun initialNavigator(): Navigator
 
     /**
      * Instantiates a [Navigator] instance for given [navigatorClass] and [state].
@@ -62,16 +62,16 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
      *
      * @param navigatorClass The Class of the [Navigator] to instantiate.
      * @param state The saved state of the [Navigator] if applicable. This will
-     * be the instance as returned from [StateSaveable.saveInstanceState] if
+     * be the instance as returned from [SaveableNavigator.saveInstanceState] if
      * its state was saved.
      */
-    abstract fun instantiateNavigator(
-        navigatorClass: Class<Navigator<*>>,
+    protected abstract fun instantiateNavigator(
+        navigatorClass: Class<Navigator>,
         state: NavigatorState?
-    ): Navigator<out Navigator.Events>
+    ): Navigator
 
     private var state by lazyVar {
-        fun initialNavigator(): Navigator<out Navigator.Events> {
+        fun initialNavigator(): Navigator {
             val savedClass = savedState?.navigatorClass ?: return this@CompositeReplacingNavigator.initialNavigator()
             val savedState = savedState.navigatorState
 
@@ -83,30 +83,21 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
             .let { LifecycleState.create(it) }
     }
 
-    private fun <T : Navigator.Events> addListenerTo(navigator: Navigator<T>) {
+    private fun addListenerTo(navigator: Navigator) {
         // Child navigators have a shorter lifetime than their parent navigators,
         // so it is not necessary to unregister the listener.
         // noinspection CheckResult
-        navigator.addListener(this@CompositeReplacingNavigator as T)
+        navigator.addNavigatorEventsListener(this@CompositeReplacingNavigator)
     }
 
-    /**
-     * The list of [E] instances that have registered with this Navigator.
-     *
-     * @see addListener
-     */
-    @Suppress("UNCHECKED_CAST")
-    protected val listeners: List<E>
-        get() = state.listeners as List<E>
-
     @CallSuper
-    override fun addListener(listener: E): DisposableHandle {
+    override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
         state.addListener(listener)
 
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in listeners
+                return listener in state.listeners
             }
 
             override fun dispose() {
@@ -129,7 +120,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
      * Calling this method when the receiving Navigator has been destroyed will
      * have no effect.
      */
-    fun replace(navigator: Navigator<out Navigator.Events>) {
+    fun replace(navigator: Navigator) {
         addListenerTo(navigator)
         state = state.replace(navigator)
     }
@@ -184,7 +175,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
 
     private sealed class LifecycleState {
 
-        abstract val navigator: Navigator<out Navigator.Events>?
+        abstract val navigator: Navigator?
         abstract val listeners: List<Navigator.Events>
 
         abstract fun addListener(listener: Navigator.Events)
@@ -197,19 +188,19 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
         abstract fun scene(scene: Scene<out Container>, data: TransitionData?)
         abstract fun finished()
 
-        abstract fun replace(navigator: Navigator<out Navigator.Events>): LifecycleState
+        abstract fun replace(navigator: Navigator): LifecycleState
 
         abstract fun onBackPressed(): Boolean
 
         companion object {
 
-            fun create(initialNavigator: Navigator<out Navigator.Events>): LifecycleState {
+            fun create(initialNavigator: Navigator): LifecycleState {
                 return Inactive(initialNavigator, emptyList(), null)
             }
         }
 
         class Inactive(
-            override val navigator: Navigator<out Navigator.Events>,
+            override val navigator: Navigator,
             override var listeners: List<Navigator.Events>,
             private var activeScene: Scene<out Container>?
         ) : LifecycleState() {
@@ -248,7 +239,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
                 listeners.forEach { it.finished() }
             }
 
-            override fun replace(navigator: Navigator<out Navigator.Events>): LifecycleState {
+            override fun replace(navigator: Navigator): LifecycleState {
                 return Inactive(navigator, listeners, activeScene)
             }
 
@@ -258,7 +249,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
         }
 
         class Active(
-            override var navigator: Navigator<out Navigator.Events>,
+            override var navigator: Navigator,
             override var listeners: List<Navigator.Events>,
             private var activeScene: Scene<out Container>?
         ) : LifecycleState() {
@@ -304,7 +295,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
                 listeners.forEach { it.finished() }
             }
 
-            override fun replace(navigator: Navigator<out Navigator.Events>): LifecycleState {
+            override fun replace(navigator: Navigator): LifecycleState {
                 this.navigator.onStop()
                 navigator.onStart()
                 return Active(navigator, listeners, activeScene)
@@ -317,7 +308,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
 
         class Destroyed : LifecycleState() {
 
-            override val navigator: Navigator<out Navigator.Events>? = null
+            override val navigator: Navigator? = null
             override val listeners: List<Navigator.Events> = emptyList()
 
             override fun addListener(listener: Navigator.Events) {
@@ -349,7 +340,7 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
             override fun finished() {
             }
 
-            override fun replace(navigator: Navigator<out Navigator.Events>): LifecycleState {
+            override fun replace(navigator: Navigator): LifecycleState {
                 w(
                     "CompositeReplacingNavigator.LifecycleState",
                     "Warning: Cannot replace navigator after parent navigator is destroyed."
@@ -366,8 +357,8 @@ abstract class CompositeReplacingNavigator<E : Navigator.Events>(
     companion object {
 
         @Suppress("UNCHECKED_CAST")
-        private var NavigatorState.navigatorClass: Class<Navigator<*>>?
-            get() = get<String>("navigator:class")?.let { Class.forName(it) as Class<Navigator<*>>? }
+        private var NavigatorState.navigatorClass: Class<Navigator>?
+            get() = get<String>("navigator:class")?.let { Class.forName(it) as Class<Navigator>? }
             set(value) {
                 set("navigator:class", value?.name)
             }

@@ -30,7 +30,7 @@ import com.nhaarman.bravo.presentation.Scene
  * This Navigator does not handle any state restoration, since there is no state
  * worth saving.
  */
-class HelloWorldNavigator : SingleSceneNavigator<Navigator.Events>(null) {
+class HelloWorldNavigator : SingleSceneNavigator(null) {
 
     override fun createScene(state: SceneState?): Scene<out Container> {
         return HelloWorldScene()

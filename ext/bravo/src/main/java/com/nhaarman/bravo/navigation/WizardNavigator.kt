@@ -47,9 +47,9 @@ import com.nhaarman.bravo.util.lazyVar
  * @param savedState An optional instance that contains saved state as returned
  *                   by this class's saveInstanceState() method.
  */
-abstract class WizardNavigator<E : Navigator.Events>(
+abstract class WizardNavigator(
     private val savedState: NavigatorState?
-) : Navigator<E>, SaveableNavigator, OnBackPressListener {
+) : Navigator, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the Scene for given [index], starting at `0`.
@@ -68,10 +68,10 @@ abstract class WizardNavigator<E : Navigator.Events>(
      *
      * @param sceneClass The class of the [Scene] to instantiate.
      * @param state The saved state of the [Scene] if applicable. This will be
-     *              the instance as returned from [StateSaveable.saveInstanceState]
-     *              if its state was saved.
+     * the instance as returned from [SaveableScene.saveInstanceState] if its
+     * state was saved.
      */
-    abstract fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<out Container>
+    protected abstract fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<out Container>
 
     private var state by lazyVar {
         val size: Int? = savedState?.get("size")
@@ -92,18 +92,11 @@ abstract class WizardNavigator<E : Navigator.Events>(
         State.create(scenes, activeIndex) { index -> createScene(index) }
     }
 
-    /**
-     * The list of [E] instances that have registered with this Navigator.
-     *
-     * @see addListener
-     */
-    protected val listeners: List<E> get() = _listeners
-
-    private val _listeners = mutableListOf<E>()
+    private var listeners = listOf<Navigator.Events>()
 
     @CallSuper
-    override fun addListener(listener: E): DisposableHandle {
-        _listeners += listener
+    override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
+        listeners += listener
 
         (state as? State.Active)
             ?.let { state -> state.scenes[state.activeIndex] }
@@ -112,11 +105,11 @@ abstract class WizardNavigator<E : Navigator.Events>(
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in _listeners
+                return listener in listeners
             }
 
             override fun dispose() {
-                _listeners -= listener
+                listeners -= listener
             }
         }
     }
@@ -207,11 +200,11 @@ abstract class WizardNavigator<E : Navigator.Events>(
             when (state) {
                 is State.Inactive -> Unit
                 is State.Active -> state.scenes[state.activeIndex].let { scene ->
-                    _listeners.forEach {
+                    listeners.forEach {
                         it.scene(scene, data)
                     }
                 }
-                is State.Destroyed -> _listeners.forEach { it.finished() }
+                is State.Destroyed -> listeners.forEach { it.finished() }
             }
         }
     }

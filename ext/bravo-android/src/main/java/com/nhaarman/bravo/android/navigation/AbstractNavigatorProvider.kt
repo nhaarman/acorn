@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit
  * saved Navigator state. This means that if the saved state is older than 30
  * minutes, the state is dropped and a fresh instance is created.
  */
-abstract class AbstractNavigatorProvider<N : Navigator<out Navigator.Events>> : NavigatorProvider {
+abstract class AbstractNavigatorProvider<N : Navigator> : NavigatorProvider {
 
     private var navigator: N? = null
 

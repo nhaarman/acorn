@@ -18,22 +18,21 @@
 
 package com.nhaarman.bravo.notesapp.navigation
 
-import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.state.SceneState
-import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.SingleSceneNavigator
 import com.nhaarman.bravo.notesapp.NotesAppComponent
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.presentation.createitem.CreateItemScene
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.NavigatorState
+import com.nhaarman.bravo.state.SceneState
 
 class CreateItemNavigator(
     private val text: String?,
     private val notesAppComponent: NotesAppComponent,
     private val savedState: NavigatorState?,
     private val listener: Events
-) : SingleSceneNavigator<CreateItemNavigator.Events>(savedState),
+) : SingleSceneNavigator(savedState),
     CreateItemScene.Events {
 
     override fun createScene(state: SceneState?): Scene<out Container> {
@@ -49,7 +48,7 @@ class CreateItemNavigator(
         listener.created(noteItem)
     }
 
-    interface Events : Navigator.Events {
+    interface Events {
 
         fun created(noteItem: NoteItem)
     }

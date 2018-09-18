@@ -49,7 +49,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `inactive navigator is not finished`() {
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.finished).toBe(false)
@@ -58,7 +58,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `inactive navigator does not notify newly added listener of scene`() {
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBeNull()
@@ -70,7 +70,7 @@ internal class WizardNavigatorTest {
             navigator.onStart()
 
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
@@ -79,7 +79,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `starting navigator notifies listeners of scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -91,7 +91,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `starting navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -103,7 +103,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `stopping navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStop()
@@ -115,7 +115,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `destroying navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onDestroy()
@@ -127,7 +127,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `going to next scene for inactive navigator does not notify listeners`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.next()
@@ -139,7 +139,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `going to next scene for destroyed navigator does not notify listeners`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onDestroy()
 
             /* When */
@@ -152,7 +152,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `going to next scene for active navigator does notify listeners`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
             /* When */
@@ -165,7 +165,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `start navigator after going to next scene notifies pushed scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.next()
 
             /* When */
@@ -178,7 +178,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `going to previous screen when on first screen does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.previous()
@@ -190,7 +190,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `going back from second screen does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.next()
 
@@ -204,7 +204,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `going back from second screen for active navigator notifies proper scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.next()
 
@@ -218,7 +218,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `going back from second screen for destroyed navigator does not notify scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onDestroy()
             navigator.next()
 
@@ -232,7 +232,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `going to next for last scene notifies for active navigator notifies finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.next()
 
             /* When */
@@ -245,7 +245,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `onBackPressed for single scene stack notifies listeners of finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
             /* When */
@@ -259,7 +259,7 @@ internal class WizardNavigatorTest {
         @Test
         fun `onBackPressed for single scene stack for inactive navigator notifies listeners of finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             val result = navigator.onBackPressed()
@@ -805,7 +805,7 @@ internal class WizardNavigatorTest {
             scene1.foo = 6
             val restoredNavigator = TestWizardNavigator(listOf(scene1), bundle)
             restoredNavigator.onStart()
-            restoredNavigator.addListener(listener)
+            restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene?.foo).toBe(3)
@@ -826,7 +826,7 @@ internal class WizardNavigatorTest {
 
             val restoredNavigator = TestWizardNavigator(listOf(scene1, scene2), bundle)
             restoredNavigator.onStart()
-            restoredNavigator.addListener(listener)
+            restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene?.foo).toBe(42)
@@ -836,7 +836,7 @@ internal class WizardNavigatorTest {
     class TestWizardNavigator(
         private val initialStack: List<TestScene>,
         savedState: NavigatorState? = null
-    ) : WizardNavigator<Navigator.Events>(savedState) {
+    ) : WizardNavigator(savedState) {
 
         override fun createScene(index: Int): Scene<out Container>? {
             return initialStack.getOrNull(index)

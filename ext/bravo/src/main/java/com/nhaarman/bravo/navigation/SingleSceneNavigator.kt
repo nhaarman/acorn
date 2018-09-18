@@ -40,9 +40,9 @@ import com.nhaarman.bravo.util.lazyVar
  * @param savedState An optional instance that contains saved state as returned
  *                   by [saveInstanceState].
  */
-abstract class SingleSceneNavigator<Events : Navigator.Events>(
+abstract class SingleSceneNavigator(
     private val savedState: NavigatorState?
-) : Navigator<Events>, SaveableNavigator, OnBackPressListener {
+) : Navigator, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the [Scene] instance to host.
@@ -50,16 +50,16 @@ abstract class SingleSceneNavigator<Events : Navigator.Events>(
      * @param state An optional saved state instance to restore the Scene's
      *              state from.
      */
-    abstract fun createScene(state: SceneState?): Scene<out Container>
+    protected abstract fun createScene(state: SceneState?): Scene<out Container>
 
     private val scene by lazy { createScene(savedState?.sceneState) }
 
     private var state by lazyVar { LifecycleState.create(scene) }
 
-    protected val listeners = mutableListOf<Events>()
+    private var listeners = listOf<Navigator.Events>()
 
     @CallSuper
-    override fun addListener(listener: Events): DisposableHandle {
+    override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
         listeners += listener
 
         if (state is LifecycleState.Active) {

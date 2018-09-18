@@ -36,7 +36,7 @@ import com.nhaarman.bravo.state.SceneState
  */
 class HelloStartActivityNavigator(
     savedState: NavigatorState?
-) : StackNavigator<Navigator.Events>(savedState),
+) : StackNavigator(savedState),
     FirstScene.Events,
     MapsScene.Events {
 

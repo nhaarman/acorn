@@ -38,7 +38,7 @@ interface NavigatorProvider {
      * @param savedState If not null, the saved state for the Navigator as returned
      * by [saveNavigatorState].
      */
-    fun navigatorFor(savedState: NavigatorState?): Navigator<*>
+    fun navigatorFor(savedState: NavigatorState?): Navigator
 
     /**
      * Returns the saved state for the [Navigator] as returned by [navigatorFor].

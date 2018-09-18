@@ -35,7 +35,7 @@ import com.nhaarman.bravo.presentation.Scene
  */
 class HelloNavigationNavigator :
 // Extends StackNavigator to allow for pushing and popping Scenes of a stack.
-    StackNavigator<Navigator.Events>(null),
+    StackNavigator(null),
     // Implements the callbacks for the Scene to execute Scene transitions.
     FirstScene.Events,
     SecondScene.Events {
