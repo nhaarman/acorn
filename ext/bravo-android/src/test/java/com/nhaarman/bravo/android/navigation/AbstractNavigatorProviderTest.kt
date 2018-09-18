@@ -18,7 +18,6 @@
 
 package com.nhaarman.bravo.android.navigation
 
-import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.SingleSceneNavigator
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
@@ -55,7 +54,7 @@ internal class AbstractNavigatorProviderTest {
         expect(result1).toNotBeTheSameAs(result2)
     }
 
-    private class TestNavigator : SingleSceneNavigator<Navigator.Events>(null) {
+    private class TestNavigator : SingleSceneNavigator(null) {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
             return mock()

@@ -35,7 +35,7 @@ import com.nhaarman.bravo.state.get
 class HelloStateRestorationNavigator private constructor(
     private var counter: Int,
     savedState: NavigatorState?
-) : StackNavigator<Navigator.Events>(savedState),
+) : StackNavigator(savedState),
     HelloStateRestorationScene.Events {
 
     override fun initialStack(): List<Scene<out Container>> {

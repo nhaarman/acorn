@@ -50,7 +50,7 @@ internal class StackNavigatorTest {
         @Test
         fun `inactive navigator is not finished`() {
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.finished).toBe(false)
@@ -95,7 +95,7 @@ internal class StackNavigatorTest {
         @Test
         fun `inactive navigator does not notify newly added listener of scene`() {
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBeNull()
@@ -107,7 +107,7 @@ internal class StackNavigatorTest {
             navigator.onStart()
 
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
@@ -116,7 +116,7 @@ internal class StackNavigatorTest {
         @Test
         fun `starting navigator notifies listeners of scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -128,7 +128,7 @@ internal class StackNavigatorTest {
         @Test
         fun `starting navigator multiple times notifies listeners of scene only once`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -141,7 +141,7 @@ internal class StackNavigatorTest {
         @Test
         fun `starting navigator - scene notification has no transition data`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -153,7 +153,7 @@ internal class StackNavigatorTest {
         @Test
         fun `starting navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -165,7 +165,7 @@ internal class StackNavigatorTest {
         @Test
         fun `stopping navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStop()
@@ -177,7 +177,7 @@ internal class StackNavigatorTest {
         @Test
         fun `destroying navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onDestroy()
@@ -189,7 +189,7 @@ internal class StackNavigatorTest {
         @Test
         fun `pushing a scene for inactive navigator does not notify listeners`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.push(scene2)
@@ -201,7 +201,7 @@ internal class StackNavigatorTest {
         @Test
         fun `pushing a scene for destroyed navigator does not notify listeners`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onDestroy()
 
             /* When */
@@ -214,7 +214,7 @@ internal class StackNavigatorTest {
         @Test
         fun `pushing a scene for active navigator does notify listeners`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
             /* When */
@@ -227,7 +227,7 @@ internal class StackNavigatorTest {
         @Test
         fun `pushing a scene for active navigator - scene notification has forward transition data`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
             /* When */
@@ -240,7 +240,7 @@ internal class StackNavigatorTest {
         @Test
         fun `start navigator after scene push notifies pushed scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.push(scene2)
 
             /* When */
@@ -253,7 +253,7 @@ internal class StackNavigatorTest {
         @Test
         fun `popping from single item stack for inactive navigator notifies finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.pop()
@@ -265,7 +265,7 @@ internal class StackNavigatorTest {
         @Test
         fun `popping from multi item stack for inactive navigator does not notify finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.push(scene2)
 
             /* When */
@@ -278,7 +278,7 @@ internal class StackNavigatorTest {
         @Test
         fun `popping from multi item stack for inactive navigator does not notify scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.push(scene2)
 
             /* When */
@@ -291,7 +291,7 @@ internal class StackNavigatorTest {
         @Test
         fun `popping from single item stack for active navigator notifies finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
             /* When */
@@ -304,7 +304,7 @@ internal class StackNavigatorTest {
         @Test
         fun `popping from multi item stack for active navigator does not notify finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.push(scene2)
 
@@ -318,7 +318,7 @@ internal class StackNavigatorTest {
         @Test
         fun `popping from multi item stack for active navigator notifies proper scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.push(scene2)
 
@@ -332,7 +332,7 @@ internal class StackNavigatorTest {
         @Test
         fun `popping from multi item stack for active navigator - scene notification has backward transition data`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.push(scene2)
 
@@ -346,7 +346,7 @@ internal class StackNavigatorTest {
         @Test
         fun `popping from multi item stack for destroyed navigator does not notify scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onDestroy()
             navigator.push(scene2)
 
@@ -360,7 +360,7 @@ internal class StackNavigatorTest {
         @Test
         fun `onBackPressed for single scene stack notifies listeners of finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
             /* When */
@@ -374,7 +374,7 @@ internal class StackNavigatorTest {
         @Test
         fun `onBackPressed for single scene stack for inactive navigator notifies listeners of finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             val result = navigator.onBackPressed()
@@ -850,7 +850,7 @@ internal class StackNavigatorTest {
 
             val restoredNavigator = TestStackNavigator(listOf(scene1), bundle)
             restoredNavigator.onStart()
-            restoredNavigator.addListener(listener)
+            restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene?.foo).toBe(3)
@@ -868,7 +868,7 @@ internal class StackNavigatorTest {
             val bundle = navigator.saveInstanceState()
             val restoredNavigator = TestStackNavigator(listOf(scene1), bundle)
             restoredNavigator.onStart()
-            restoredNavigator.addListener(listener)
+            restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene?.foo).toBe(42)
@@ -879,7 +879,7 @@ internal class StackNavigatorTest {
             /* When */
             val result = TestStackNavigator(listOf(scene1), NavigatorState())
             result.onStart()
-            result.addListener(listener)
+            result.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
@@ -895,7 +895,7 @@ internal class StackNavigatorTest {
             /* When */
             val result = TestStackNavigator(listOf(scene1), state)
             result.onStart()
-            result.addListener(listener)
+            result.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
@@ -905,7 +905,7 @@ internal class StackNavigatorTest {
     class TestStackNavigator(
         private val initialStack: List<TestScene>,
         savedState: NavigatorState? = null
-    ) : StackNavigator<Navigator.Events>(savedState) {
+    ) : StackNavigator(savedState) {
 
         override fun initialStack(): List<Scene<out Container>> {
             return initialStack

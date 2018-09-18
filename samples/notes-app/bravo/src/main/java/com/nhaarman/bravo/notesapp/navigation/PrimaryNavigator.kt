@@ -18,7 +18,6 @@
 
 package com.nhaarman.bravo.notesapp.navigation
 
-import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.navigation.StackNavigator
 import com.nhaarman.bravo.notesapp.NotesAppComponent
 import com.nhaarman.bravo.notesapp.note.NoteItem
@@ -35,8 +34,9 @@ import com.nhaarman.bravo.state.SceneState
  */
 class PrimaryNavigator(
     private val notesAppComponent: NotesAppComponent,
+    private val listener: Events,
     savedState: NavigatorState?
-) : StackNavigator<PrimaryNavigator.Events>(savedState),
+) : StackNavigator(savedState),
     ItemListScene.Events,
     EditItemScene.Events {
 
@@ -54,7 +54,7 @@ class PrimaryNavigator(
     override fun deleted() = pop()
 
     override fun createItemRequested() {
-        listeners.forEach { it.createItemRequested() }
+        listener.createItemRequested()
     }
 
     override fun showItemRequested(item: NoteItem) {
@@ -83,7 +83,7 @@ class PrimaryNavigator(
         }
     }
 
-    interface Events : Navigator.Events {
+    interface Events {
 
         fun createItemRequested()
     }

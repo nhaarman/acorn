@@ -54,7 +54,7 @@ class BravoActivityDelegate private constructor(
     private val sceneTransformer: SceneTransformer = DefaultSceneTransformer(intentProvider)
 ) {
 
-    private lateinit var navigator: Navigator<Navigator.Events>
+    private lateinit var navigator: Navigator
 
     private var state by lazyVar {
         ViewState.create(activity.root, viewFactory, transitionFactory)
@@ -80,9 +80,9 @@ class BravoActivityDelegate private constructor(
     fun onCreate(savedInstanceState: Bundle?) {
         lastExternalSceneClass = savedInstanceState.lastExternalSceneClass
 
-        navigator = navigatorProvider.navigatorFor(savedInstanceState.navigatorState) as Navigator<Navigator.Events>
+        navigator = navigatorProvider.navigatorFor(savedInstanceState.navigatorState)
 
-        disposable = navigator.addListener(sceneDispatcher)
+        disposable = navigator.addNavigatorEventsListener(sceneDispatcher)
     }
 
     fun onStart() {

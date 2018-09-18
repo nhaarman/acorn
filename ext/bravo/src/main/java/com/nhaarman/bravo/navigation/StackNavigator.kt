@@ -43,9 +43,9 @@ import com.nhaarman.bravo.util.lazyVar
  * @param savedState An optional instance that contains saved state as returned
  *                   by this class's saveInstanceState() method.
  */
-abstract class StackNavigator<E : Navigator.Events>(
+abstract class StackNavigator(
     private val savedState: NavigatorState?
-) : Navigator<E>, SaveableNavigator, OnBackPressListener {
+) : Navigator, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the initial stack of [Scene]s for this StackNavigator.
@@ -61,10 +61,13 @@ abstract class StackNavigator<E : Navigator.Events>(
      *
      * @param sceneClass The class of the [Scene] to instantiate.
      * @param state The saved state of the [Scene] if applicable. This will be
-     *              the instance as returned from [StateSaveable.saveInstanceState]
-     *              if its state was saved.
+     * the instance as returned from [SaveableScene.saveInstanceState] if its
+     * state was saved.
      */
-    abstract fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container>
+    protected abstract fun instantiateScene(
+        sceneClass: Class<Scene<*>>,
+        state: SceneState?
+    ): Scene<out Container>
 
     private var state by lazyVar {
         @Suppress("UNCHECKED_CAST")
@@ -86,23 +89,14 @@ abstract class StackNavigator<E : Navigator.Events>(
         State.create(initialStack())
     }
 
-    /**
-     * The list of [E] instances that have registered with this Navigator.
-     *
-     * @see addListener
-     */
-    @Suppress("UNCHECKED_CAST")
-    protected val listeners: List<E>
-        get() = state.listeners as List<E>
-
     @CallSuper
-    override fun addListener(listener: E): DisposableHandle {
+    override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
         state.addListener(listener)
 
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in listeners
+                return listener in state.listeners
             }
 
             override fun dispose() {

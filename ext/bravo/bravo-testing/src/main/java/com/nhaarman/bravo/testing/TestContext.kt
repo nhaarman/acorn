@@ -30,7 +30,7 @@ import com.nhaarman.bravo.presentation.Scene
  * A class that provides simple Scene/Container management for tests.
  */
 class TestContext private constructor(
-    private val navigator: Navigator<Navigator.Events>,
+    private val navigator: Navigator,
     private val containerProvider: ContainerProvider
 ) : Navigator.Events {
 
@@ -39,7 +39,7 @@ class TestContext private constructor(
     fun <T> container(): T = container as T
 
     init {
-        navigator.addListener(this)
+        navigator.addNavigatorEventsListener(this)
         navigator.onStart()
     }
 
@@ -60,8 +60,8 @@ class TestContext private constructor(
 
     companion object {
 
-        fun create(navigator: Navigator<*>, containerProvider: ContainerProvider): TestContext {
-            return TestContext(navigator as Navigator<Navigator.Events>, containerProvider)
+        fun create(navigator: Navigator, containerProvider: ContainerProvider): TestContext {
+            return TestContext(navigator as Navigator, containerProvider)
         }
     }
 }

@@ -44,7 +44,7 @@ class SingleSceneNavigatorTest {
         @Test
         fun `inactive navigator is not finished`() {
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.finished).toBe(false)
@@ -89,7 +89,7 @@ class SingleSceneNavigatorTest {
         @Test
         fun `inactive navigator does not notify newly added listener of scene`() {
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBeNull()
@@ -101,7 +101,7 @@ class SingleSceneNavigatorTest {
             navigator.onStart()
 
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBe(navigator.scene)
@@ -110,7 +110,7 @@ class SingleSceneNavigatorTest {
         @Test
         fun `starting navigator notifies listeners of scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -122,7 +122,7 @@ class SingleSceneNavigatorTest {
         @Test
         fun `starting navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -134,7 +134,7 @@ class SingleSceneNavigatorTest {
         @Test
         fun `stopping navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStop()
@@ -146,7 +146,7 @@ class SingleSceneNavigatorTest {
         @Test
         fun `destroying navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onDestroy()
@@ -158,7 +158,7 @@ class SingleSceneNavigatorTest {
         @Test
         fun `onBackPressed notifies listeners of finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             val result = navigator.onBackPressed()
@@ -355,7 +355,7 @@ class SingleSceneNavigatorTest {
         }
     }
 
-    class TestSingleSceneNavigator(savedState: NavigatorState?) : SingleSceneNavigator<Navigator.Events>(savedState) {
+    class TestSingleSceneNavigator(savedState: NavigatorState?) : SingleSceneNavigator(savedState) {
 
         lateinit var scene: TestScene
 

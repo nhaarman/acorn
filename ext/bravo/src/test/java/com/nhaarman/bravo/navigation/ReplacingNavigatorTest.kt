@@ -47,7 +47,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `inactive navigator is not finished`() {
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.finished).toBe(false)
@@ -92,7 +92,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `inactive navigator does not notify newly added listener of scene`() {
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBeNull()
@@ -104,7 +104,7 @@ internal class ReplacingNavigatorTest {
             navigator.onStart()
 
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBe(initialScene)
@@ -113,7 +113,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `starting navigator notifies listeners of scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -125,7 +125,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `starting navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStart()
@@ -137,7 +137,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `stopping navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onStop()
@@ -149,7 +149,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `destroying navigator does not finish`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             navigator.onDestroy()
@@ -161,7 +161,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `onBackPressed notifies listeners of finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* When */
             val result = navigator.onBackPressed()
@@ -174,7 +174,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `replacing scene notifies listener of new scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
             /* When */
@@ -191,7 +191,7 @@ internal class ReplacingNavigatorTest {
             navigator.replace(scene1)
 
             /* When */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
@@ -200,7 +200,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `replacing scene after navigator stopped does not notify listener of new scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onStop()
 
@@ -214,7 +214,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `replacing scene after navigator destroyed does not notify listener of new scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onDestroy()
 
@@ -228,7 +228,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `starting navigator after scene changed in inactive state notifies listeners of new scene`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onStop()
             navigator.replace(scene1)
@@ -243,7 +243,7 @@ internal class ReplacingNavigatorTest {
         @Test
         fun `onBackPressed after scene change notifies listeners of finished`() {
             /* Given */
-            navigator.addListener(listener)
+            navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.replace(scene1)
 
@@ -461,7 +461,7 @@ internal class ReplacingNavigatorTest {
             val bundle = navigator.saveInstanceState()
             val restoredNavigator = RestorableReplacingNavigator(bundle)
             restoredNavigator.onStart()
-            restoredNavigator.addListener(listener)
+            restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene?.foo).toBe(3)
@@ -478,7 +478,7 @@ internal class ReplacingNavigatorTest {
             val bundle = navigator.saveInstanceState()
             val restoredNavigator = RestorableReplacingNavigator(bundle)
             restoredNavigator.onStart()
-            restoredNavigator.addListener(listener)
+            restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
             expect(listener.lastScene?.foo).toBe(42)
@@ -502,7 +502,7 @@ internal class ReplacingNavigatorTest {
     }
 
     private class TestReplacingNavigator(savedState: com.nhaarman.bravo.state.NavigatorState?) :
-        ReplacingNavigator<Navigator.Events>(savedState) {
+        ReplacingNavigator(savedState) {
 
         val initialScenes = listOf(
             spy(TestScene(0)),
@@ -529,7 +529,7 @@ internal class ReplacingNavigatorTest {
     }
 
     private class RestorableReplacingNavigator(savedState: com.nhaarman.bravo.state.NavigatorState?) :
-        ReplacingNavigator<Navigator.Events>(savedState) {
+        ReplacingNavigator(savedState) {
 
         val initialScene = TestScene(0)
         override fun initialScene(): Scene<*> {

@@ -41,16 +41,16 @@ import com.nhaarman.bravo.util.lazyVar
  * @param savedState An optional instance that contains saved state as returned
  *                   by this class's saveInstanceState() method.
  */
-abstract class CompositeStackNavigator<E : Navigator.Events>(
+abstract class CompositeStackNavigator(
     private val savedState: NavigatorState?
-) : Navigator<E>, Navigator.Events, SaveableNavigator, OnBackPressListener {
+) : Navigator, Navigator.Events, SaveableNavigator, OnBackPressListener {
 
     /**
      * Creates the initial stack of [Navigator]s for this CompositeStackNavigator.
      *
      * The last Navigator in the resulting list is regarded as the top element.
      */
-    protected abstract fun initialStack(): List<Navigator<out Navigator.Events>>
+    protected abstract fun initialStack(): List<Navigator>
 
     /**
      * Instantiates a [Navigator] instance for given [navigatorClass] and [state].
@@ -60,23 +60,23 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
      *
      * @param navigatorClass The Class of the [Navigator] to instantiate.
      * @param state The saved state of the [Navigator] if applicable. This will
-     *              be the instance as returned from [StateSaveable.saveInstanceState]
-     *              if its state was saved.
+     * be the instance as returned from [SaveableNavigator.saveInstanceState] if
+     * its state was saved.
      */
-    abstract fun instantiateNavigator(
-        navigatorClass: Class<Navigator<*>>,
+    protected abstract fun instantiateNavigator(
+        navigatorClass: Class<Navigator>,
         state: NavigatorState?
-    ): Navigator<out Navigator.Events>
+    ): Navigator
 
     private var state by lazyVar {
         @Suppress("UNCHECKED_CAST")
-        fun initialStack(): List<Navigator<out Navigator.Events>> {
+        fun initialStack(): List<Navigator> {
             val size: Int = savedState?.get("size") ?: return this@CompositeStackNavigator.initialStack()
 
             return (0 until size)
                 .map { index ->
                     instantiateNavigator(
-                        navigatorClass = Class.forName(savedState["${index}_class"]) as Class<Navigator<*>>,
+                        navigatorClass = Class.forName(savedState["${index}_class"]) as Class<Navigator>,
                         state = savedState["${index}_state"]
                     )
                 }
@@ -87,30 +87,21 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
             .let { LifecycleState.create(it) }
     }
 
-    private fun <T : Navigator.Events> addListenerTo(navigator: Navigator<T>) {
+    private fun addListenerTo(navigator: Navigator) {
         // Child navigators have a shorter lifetime than their parent navigators,
         // so it is not necessary to unregister the listener.
         // noinspection CheckResult
-        navigator.addListener(this@CompositeStackNavigator as T)
+        navigator.addNavigatorEventsListener(this@CompositeStackNavigator)
     }
 
-    /**
-     * The list of [E] instances that have registered with this Navigator.
-     *
-     * @see addListener
-     */
-    @Suppress("UNCHECKED_CAST")
-    protected val listeners: List<E>
-        get() = state.listeners as List<E>
-
     @CallSuper
-    override fun addListener(listener: E): DisposableHandle {
+    override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
         state.addListener(listener)
 
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in listeners
+                return listener in state.listeners
             }
 
             override fun dispose() {
@@ -133,7 +124,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
      * Calling this method when the receiving Navigator has been destroyed will
      * have no effect.
      */
-    fun push(navigator: Navigator<out Navigator.Events>) {
+    fun push(navigator: Navigator) {
         addListenerTo(navigator)
         state = state.push(navigator)
     }
@@ -211,7 +202,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
 
     private sealed class LifecycleState {
 
-        abstract val navigators: List<Navigator<out Navigator.Events>>
+        abstract val navigators: List<Navigator>
         abstract val listeners: List<Navigator.Events>
 
         abstract fun addListener(listener: Navigator.Events)
@@ -223,20 +214,20 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
 
         abstract fun scene(scene: Scene<out Container>, data: TransitionData?)
 
-        abstract fun push(navigator: Navigator<out Navigator.Events>): LifecycleState
+        abstract fun push(navigator: Navigator): LifecycleState
         abstract fun pop(): LifecycleState
 
         abstract fun onBackPressed(): Boolean
 
         companion object {
 
-            fun create(initialStack: List<Navigator<out Navigator.Events>>): LifecycleState {
+            fun create(initialStack: List<Navigator>): LifecycleState {
                 return Inactive(initialStack, emptyList(), null)
             }
         }
 
         class Inactive(
-            override val navigators: List<Navigator<out Navigator.Events>>,
+            override val navigators: List<Navigator>,
             override var listeners: List<Navigator.Events>,
             private var activeScene: Scene<out Container>?
         ) : LifecycleState() {
@@ -245,7 +236,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
                 check(navigators.isNotEmpty()) { "Stack may not be empty." }
             }
 
-            private val navigator: Navigator<out Navigator.Events> get() = navigators.last()
+            private val navigator: Navigator get() = navigators.last()
 
             override fun addListener(listener: Navigator.Events) {
                 listeners += listener
@@ -273,7 +264,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
                 this.activeScene = scene
             }
 
-            override fun push(navigator: Navigator<out Navigator.Events>): LifecycleState {
+            override fun push(navigator: Navigator): LifecycleState {
                 return Inactive(navigators + navigator, listeners, activeScene)
             }
 
@@ -296,7 +287,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
         }
 
         class Active(
-            override var navigators: List<Navigator<out Navigator.Events>>,
+            override var navigators: List<Navigator>,
             override var listeners: List<Navigator.Events>,
             private var activeScene: Scene<out Container>?
         ) : LifecycleState() {
@@ -311,7 +302,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
                 }
             }
 
-            val navigator: Navigator<out Navigator.Events> get() = navigators.last()
+            val navigator: Navigator get() = navigators.last()
 
             override fun addListener(listener: Navigator.Events) {
                 listeners += listener
@@ -348,7 +339,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
             }
 
             private var backward: Boolean? = null
-            override fun push(navigator: Navigator<out Navigator.Events>): LifecycleState {
+            override fun push(navigator: Navigator): LifecycleState {
                 backward = false
 
                 navigators.last().onStop()
@@ -386,7 +377,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
 
         class Destroyed : LifecycleState() {
 
-            override val navigators: List<Navigator<out Navigator.Events>> = emptyList()
+            override val navigators: List<Navigator> = emptyList()
             override val listeners: List<Navigator.Events> = emptyList()
 
             override fun addListener(listener: Navigator.Events) {
@@ -412,7 +403,7 @@ abstract class CompositeStackNavigator<E : Navigator.Events>(
             override fun scene(scene: Scene<out Container>, data: TransitionData?) {
             }
 
-            override fun push(navigator: Navigator<out Navigator.Events>): LifecycleState {
+            override fun push(navigator: Navigator): LifecycleState {
                 w(
                     "CompositeStackNavigator.LifecycleState",
                     "Warning: Cannot push navigator after parent navigator is destroyed."

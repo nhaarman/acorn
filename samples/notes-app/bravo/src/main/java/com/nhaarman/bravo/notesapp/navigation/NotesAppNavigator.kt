@@ -18,30 +18,31 @@
 
 package com.nhaarman.bravo.notesapp.navigation
 
-import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.navigation.CompositeStackNavigator
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.notesapp.NotesAppComponent
 import com.nhaarman.bravo.notesapp.note.NoteItem
+import com.nhaarman.bravo.state.NavigatorState
 
 class NotesAppNavigator(
     private val notesAppComponent: NotesAppComponent,
     savedState: NavigatorState?
-) : CompositeStackNavigator<Navigator.Events>(savedState),
+) : CompositeStackNavigator(savedState),
     PrimaryNavigator.Events,
     CreateItemNavigator.Events {
 
-    override fun initialStack(): List<Navigator<out Navigator.Events>> {
-        return listOf(PrimaryNavigator(notesAppComponent, null))
+    override fun initialStack(): List<Navigator> {
+        return listOf(PrimaryNavigator(notesAppComponent, this, null))
     }
 
     override fun instantiateNavigator(
-        navigatorClass: Class<Navigator<*>>,
+        navigatorClass: Class<Navigator>,
         state: NavigatorState?
-    ): Navigator<out Navigator.Events> {
+    ): Navigator {
         return when (navigatorClass) {
             PrimaryNavigator::class.java -> PrimaryNavigator(
                 notesAppComponent,
+                this,
                 state
             )
             CreateItemNavigator::class.java -> CreateItemNavigator(

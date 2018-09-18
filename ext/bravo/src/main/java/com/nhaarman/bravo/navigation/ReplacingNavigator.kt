@@ -35,9 +35,9 @@ import com.nhaarman.bravo.util.lazyVar
  * A navigator class that can switch between [Scene]s, but has no 'back'
  * behavior.
  */
-abstract class ReplacingNavigator<E : Navigator.Events>(
+abstract class ReplacingNavigator(
     private val savedState: NavigatorState?
-) : Navigator<E>, SaveableNavigator, OnBackPressListener {
+) : Navigator, SaveableNavigator, OnBackPressListener {
 
     /**
      * Returns the Scene this Navigator should start with.
@@ -45,7 +45,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
      * Will only be called once in the lifetime of the Navigator, and zero times
      * if the Navigator is being restored from a saved state.
      */
-    abstract fun initialScene(): Scene<out Container>
+    protected abstract fun initialScene(): Scene<out Container>
 
     /**
      * Instantiates the Scene for given [sceneClass] and [state].
@@ -57,7 +57,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
      * @param state An optional saved state instance to restore the new Scene's
      * state from.
      */
-    abstract fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container>
+    protected abstract fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container>
 
     /**
      * Replaces the current Scene with [newScene].
@@ -82,7 +82,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         state = state.replaceWith(newScene)
 
         if (state is LifecycleState.Active) {
-            _listeners.forEach { it.scene(state.scene, data) }
+            listeners.forEach { it.scene(state.scene, data) }
         }
     }
 
@@ -97,15 +97,11 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         LifecycleState.create(initialScene())
     }
 
-    @Suppress("UNCHECKED_CAST")
-    protected val listeners: List<E>
-        get() = _listeners as List<E>
-
-    private val _listeners = mutableListOf<Navigator.Events>()
+    private var listeners = listOf<Navigator.Events>()
 
     @CallSuper
-    override fun addListener(listener: E): DisposableHandle {
-        _listeners += listener
+    override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
+        listeners += listener
 
         if (state is LifecycleState.Active) {
             listener.scene(state.scene, null)
@@ -114,11 +110,11 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in _listeners
+                return listener in listeners
             }
 
             override fun dispose() {
-                _listeners -= listener
+                listeners -= listener
             }
         }
     }
@@ -128,7 +124,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         v("ReplacingNavigator", "onStart")
 
         state = state.start()
-        _listeners.forEach { it.scene(state.scene) }
+        listeners.forEach { it.scene(state.scene) }
     }
 
     @CallSuper
@@ -148,7 +144,7 @@ abstract class ReplacingNavigator<E : Navigator.Events>(
         v("ReplacingNavigator", "onBackPressed")
         state = state.stop().destroy()
 
-        _listeners.forEach { it.finished() }
+        listeners.forEach { it.finished() }
         return true
     }
 

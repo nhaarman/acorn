@@ -27,7 +27,7 @@ import com.nhaarman.bravo.presentation.Scene
  *
  * The Navigator is a class that takes care of navigating the user through an
  * application by showing a sequence of Scenes.
- * Interested parties may subscribe a listener using [addListener], through which
+ * Interested parties may subscribe a listener using [addNavigatorEventsListener], through which
  * Scene changes will be published.
  *
  * Navigators are responsible for handling the lifecycles of the Scenes they
@@ -53,7 +53,7 @@ import com.nhaarman.bravo.presentation.Scene
  * can be saved. When this is the case, [SaveableNavigator.saveInstanceState] will
  * be called at the appropriate time.
  */
-interface Navigator<E : Navigator.Events> {
+interface Navigator {
 
     /**
      * Registers given [listener] with this Navigator.
@@ -62,7 +62,7 @@ interface Navigator<E : Navigator.Events> {
      * [listener] is not interested in events anymore.
      */
     @CheckResult
-    fun addListener(listener: E): DisposableHandle
+    fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle
 
     /**
      * Starts this Navigator.
@@ -70,7 +70,7 @@ interface Navigator<E : Navigator.Events> {
      * Calling this method when the Navigator is not started or destroyed triggers
      * a call to [Scene.onStart] for the [Scene] that is currently active in the
      * Navigator.
-     * Listeners registered with [addListener] will be notified of that Scene
+     * Listeners registered with [addNavigatorEventsListener] will be notified of that Scene
      * through [Events.scene].
      *
      * Calling this method when the Navigator is started or destroyed has no effect.

@@ -58,7 +58,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `navigator is not finished`() {
                 /* When */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* Then */
                 verify(listener, never()).finished()
@@ -73,7 +73,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `added listener does not get notified of scene`() {
                 /* When */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* Then */
                 verify(listener, never()).scene(any(), any())
@@ -82,7 +82,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `pushing a navigator does not notify listeners of scene`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 navigator.replace(navigator2)
@@ -94,7 +94,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `onBackPressed notifies listeners of finished`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 val result = navigator.onBackPressed()
@@ -107,7 +107,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `onBackPressed does not notify screen`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 val result = navigator.onBackPressed()
@@ -120,7 +120,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `onBackPressed for replaced navigator does not notify screen`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
 
                 /* When */
@@ -141,7 +141,7 @@ internal class CompositeReplacingNavigatorTest {
                 navigator.onStart()
 
                 /* When */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* Then */
                 verify(listener, never()).finished()
@@ -162,7 +162,7 @@ internal class CompositeReplacingNavigatorTest {
                 navigator.onStart()
 
                 /* When */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* Then */
                 verify(listener).scene(navigator1Scene1, null)
@@ -171,7 +171,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `starting navigator notifies listeners of scene`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 navigator.onStart()
@@ -183,7 +183,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `starting navigator does not finish`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 navigator.onStart()
@@ -195,7 +195,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `replacing a navigator notifies listeners of scene`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
                 /* When */
@@ -208,7 +208,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `start navigator after navigator replaced notifies pushed scene`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
 
                 /* When */
@@ -222,7 +222,7 @@ internal class CompositeReplacingNavigatorTest {
             fun `onBackPressed for a single scene notifies finished`() {
                 /* Given */
                 navigator.onStart()
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 val result = navigator.onBackPressed()
@@ -236,7 +236,7 @@ internal class CompositeReplacingNavigatorTest {
             fun `onBackPressed for a single scene does not notify screen`() {
                 /* Given */
                 navigator.onStart()
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 val result = navigator.onBackPressed()
@@ -254,7 +254,7 @@ internal class CompositeReplacingNavigatorTest {
             fun `onBackPressed for multiple navigators notifies proper scenes`() {
                 /* Given */
                 navigator.onStart()
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
 
                 /* When */
@@ -274,7 +274,7 @@ internal class CompositeReplacingNavigatorTest {
             fun `forwards from nested navigator is propagated`() {
                 /* Given */
                 navigator.onStart()
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
 
                 /* When */
@@ -292,7 +292,7 @@ internal class CompositeReplacingNavigatorTest {
             fun `backwards from nested navigator is propagated`() {
                 /* Given */
                 navigator.onStart()
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
                 navigator2.push(navigator2Scene2)
 
@@ -314,7 +314,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `stopping navigator does not finish`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 navigator.onStop()
@@ -339,7 +339,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `destroying navigator does not finish`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
 
                 /* When */
                 navigator.onDestroy()
@@ -360,7 +360,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `pushing a scene for destroyed navigator does not notify listeners`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
                 navigator.onDestroy()
 
                 /* When */
@@ -373,7 +373,7 @@ internal class CompositeReplacingNavigatorTest {
             @Test
             fun `onBackPressed for replaced Navigator for destroyed navigator does not notify scene`() {
                 /* Given */
-                navigator.addListener(listener)
+                navigator.addNavigatorEventsListener(listener)
                 navigator.onDestroy()
                 navigator.replace(navigator2)
 
@@ -609,7 +609,7 @@ internal class CompositeReplacingNavigatorTest {
             val bundle = navigator.saveInstanceState()
             val restoredNavigator = RestorableTestCompositeReplacingNavigator(navigator1, bundle)
             restoredNavigator.onStart()
-            restoredNavigator.addListener(listener)
+            restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
             argumentCaptor<Scene<out Container>> {
@@ -623,17 +623,17 @@ internal class CompositeReplacingNavigatorTest {
     }
 
     class TestCompositeReplacingNavigator(
-        private val initialNavigator: Navigator<out Navigator.Events>
-    ) : CompositeReplacingNavigator<Navigator.Events>(null) {
+        private val initialNavigator: Navigator
+    ) : CompositeReplacingNavigator(null) {
 
-        override fun initialNavigator(): Navigator<out Navigator.Events> {
+        override fun initialNavigator(): Navigator {
             return initialNavigator
         }
 
         override fun instantiateNavigator(
-            navigatorClass: Class<Navigator<*>>,
+            navigatorClass: Class<Navigator>,
             state: NavigatorState?
-        ): Navigator<out Navigator.Events> {
+        ): Navigator {
             error("Not supported")
         }
     }
@@ -641,7 +641,7 @@ internal class CompositeReplacingNavigatorTest {
     open class TestSingleSceneNavigator(
         private val scene: Scene<out Container>,
         savedState: NavigatorState? = null
-    ) : SingleSceneNavigator<Navigator.Events>(savedState) {
+    ) : SingleSceneNavigator(savedState) {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
             return scene
@@ -651,7 +651,7 @@ internal class CompositeReplacingNavigatorTest {
     open class TestStackNavigator(
         private val initialStack: List<TestScene>,
         savedState: NavigatorState? = null
-    ) : StackNavigator<Navigator.Events>(savedState) {
+    ) : StackNavigator(savedState) {
 
         override fun initialStack(): List<Scene<out Container>> {
             return initialStack
@@ -666,18 +666,18 @@ internal class CompositeReplacingNavigatorTest {
     }
 
     class RestorableTestCompositeReplacingNavigator(
-        private val initialNavigator: Navigator<out Navigator.Events>,
+        private val initialNavigator: Navigator,
         savedState: NavigatorState?
-    ) : CompositeReplacingNavigator<Navigator.Events>(savedState) {
+    ) : CompositeReplacingNavigator(savedState) {
 
-        override fun initialNavigator(): Navigator<out Navigator.Events> {
+        override fun initialNavigator(): Navigator {
             return initialNavigator
         }
 
         override fun instantiateNavigator(
-            navigatorClass: Class<Navigator<*>>,
+            navigatorClass: Class<Navigator>,
             state: NavigatorState?
-        ): Navigator<out Navigator.Events> {
+        ): Navigator {
             return when (navigatorClass) {
                 RestorableTestSingleSceneNavigator::class.java -> RestorableTestSingleSceneNavigator(
                     TestScene(0),
@@ -692,7 +692,7 @@ internal class CompositeReplacingNavigatorTest {
     open class RestorableTestSingleSceneNavigator(
         private val scene: Scene<out Container>,
         savedState: NavigatorState? = null
-    ) : SingleSceneNavigator<Navigator.Events>(savedState) {
+    ) : SingleSceneNavigator(savedState) {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
             return state?.let { TestScene.create(it) } ?: scene
