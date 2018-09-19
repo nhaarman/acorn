@@ -1,6 +1,6 @@
 apply plugin: "io.spring.dependency-management"
 
-def androidSupportVersion = "28.0.0-rc01"
+def androidSupportVersion = "28.0.0-rc02"
 
 dependencyManagement {
     dependencies {
