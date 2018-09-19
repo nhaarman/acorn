@@ -18,61 +18,21 @@
 
 package com.nhaarman.bravo.samples.hellostaterestoration
 
-import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
-import com.nhaarman.bravo.android.BravoActivityDelegate
+import com.nhaarman.bravo.android.BravoActivity
+import com.nhaarman.bravo.android.navigation.NavigatorProvider
+import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.presentation.bindViews
-import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
-class MainActivity : Activity() {
+class MainActivity : BravoActivity() {
 
-    private val delegate by lazy {
-        val viewFactory = bindViews {
+    override fun provideNavigatorProvider(): NavigatorProvider {
+        return HelloStateRestorationNavigatorProvider
+    }
+
+    override fun provideViewFactory(): ViewFactory {
+        return bindViews {
             bind(defaultKey<HelloStateRestorationScene>(), R.layout.myscene)
-        }
-
-        BravoActivityDelegate.from(
-            this,
-            HelloStateRestorationNavigatorProvider,
-            viewFactory,
-            DefaultTransitionFactory(viewFactory)
-        )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        delegate.onCreate(savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        delegate.onStart()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        delegate.onActivityResult(requestCode, resultCode, data)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        delegate.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        delegate.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        delegate.onSaveInstanceState(outState)
-    }
-
-    override fun onBackPressed() {
-        if (!delegate.onBackPressed()) {
-            super.onBackPressed()
         }
     }
 }
