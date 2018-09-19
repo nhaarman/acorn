@@ -16,6 +16,7 @@ include(":samples:hello-world")
 include(":samples:hello-navigation")
 include(":samples:hello-staterestoration")
 include(":samples:hello-startactivity")
+include(":samples:hello-sharedata")
 
 include(":notes-app-bravo")
 include(":notes-app-bravo-android")

@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#1de9b6</item>
+        <item name="colorPrimaryDark">#009688</item>
+    </style>
+
+    <style name="SecondAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#f4511e</item>
+        <item name="colorPrimaryDark">#bf360c</item>
+    </style>
+
+</resources>

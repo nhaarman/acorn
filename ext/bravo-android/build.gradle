@@ -31,7 +31,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 
-    androidTestImplementation "junit:junit:4.12"
+    androidTestImplementation "junit:junit"
     androidTestImplementation "com.nhaarman:expect.kt"
     androidTestImplementation "com.android.support.test.espresso:espresso-core"
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib"

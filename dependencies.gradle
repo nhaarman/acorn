@@ -27,6 +27,8 @@ dependencyManagement {
 
         dependency "io.arrow-kt:arrow-core:0.7.3"
 
+        dependency "com.squareup.picasso:picasso:2.71828"
+
         dependency "com.nhaarman:expect.kt:1.0.0"
         dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC2"
         dependency "org.junit.jupiter:junit-jupiter-api:5.3.1"

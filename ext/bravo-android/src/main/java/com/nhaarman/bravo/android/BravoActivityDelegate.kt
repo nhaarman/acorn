@@ -54,7 +54,8 @@ class BravoActivityDelegate private constructor(
     private val sceneTransformer: SceneTransformer = DefaultSceneTransformer(intentProvider)
 ) {
 
-    private lateinit var navigator: Navigator
+    lateinit var navigator: Navigator
+        private set
 
     private var state by lazyVar {
         ViewState.create(activity.root, viewFactory, transitionFactory)
