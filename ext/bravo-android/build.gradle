@@ -21,6 +21,7 @@ dependencies {
     implementation "androidx.core:core-ktx"
 
     implementation "com.android.support:interpolator"
+    compileOnly "com.android.support:appcompat-v7"
 
     compileOnly "com.android.support:support-annotations"
 

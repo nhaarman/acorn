@@ -19,41 +19,25 @@
 package com.nhaarman.bravo.samples.hellosharedata
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import com.nhaarman.bravo.android.BravoActivityDelegate
+import com.nhaarman.bravo.android.BravoAppCompatActivity
+import com.nhaarman.bravo.android.navigation.NavigatorProvider
+import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.samples.hellosharedata.presentation.viewFactory
 
 /**
  * The Activity that is started when the application is launched from the
  * launcher.
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : BravoAppCompatActivity() {
 
-    private val delegate by lazy {
-        BravoActivityDelegate.from(
-            activity = this,
-            navigatorProvider = mainNavigatorProvider,
-            viewFactory = viewFactory
-        )
+    override fun provideNavigatorProvider(): NavigatorProvider {
+        return mainNavigatorProvider
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        delegate.onCreate(savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        delegate.onStart()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        delegate.onActivityResult(requestCode, resultCode, data)
+    override fun provideViewFactory(): ViewFactory {
+        return viewFactory
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -65,27 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         if (ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), 42)
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        delegate.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        delegate.onDestroy()
-    }
-
-    @SuppressLint("MissingSuperCall")
-    override fun onSaveInstanceState(outState: Bundle) {
-        delegate.onSaveInstanceState(outState)
-    }
-
-    override fun onBackPressed() {
-        if (!delegate.onBackPressed()) {
-            super.onBackPressed()
         }
     }
 }
