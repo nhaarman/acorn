@@ -12,27 +12,34 @@ android {
 
 dependencies {
     implementation project(":ext-bravo-android")
+    implementation project(":ext-bravo-rx")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     implementation "androidx.core:core-ktx"
 
+    implementation "io.reactivex.rxjava2:rxjava"
+    implementation "io.reactivex.rxjava2:rxkotlin"
+    implementation "io.reactivex.rxjava2:rxandroid"
+
     implementation "com.android.support:design"
     implementation "com.android.support.constraint:constraint-layout"
     implementation "com.android.support:appcompat-v7"
+
+    implementation "com.squareup.picasso:picasso"
 
     testImplementation "com.nhaarman:expect.kt"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 
+    debugImplementation project(":ext-bravo-android-testing")
     androidTestImplementation "junit:junit"
     androidTestImplementation "com.nhaarman:expect.kt"
     androidTestImplementation "com.android.support.test.espresso:espresso-core"
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib"
     androidTestImplementation "com.android.support.test:runner"
     androidTestImplementation "com.android.support.test:rules"
-    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18"
     androidTestUtil "com.android.support.test:orchestrator"
 }
 
