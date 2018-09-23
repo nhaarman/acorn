@@ -14,8 +14,8 @@ android {
 }
 
 dependencies {
-    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha05"
-    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0-alpha05"
+    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha06"
+    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0-alpha06"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "androidx.core:core-ktx"
