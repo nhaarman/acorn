@@ -22,6 +22,9 @@ import com.nhaarman.bravo.android.transition.FadeOutToBottomTransition
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.android.transition.hideKeyboardOnStart
 import com.nhaarman.bravo.android.transition.transitionFactory
+import com.nhaarman.bravo.notesapp.android.ui.transition.EditItemItemListTransition
+import com.nhaarman.bravo.notesapp.android.ui.transition.ItemListCreateItemTransition
+import com.nhaarman.bravo.notesapp.android.ui.transition.ItemListEditItemTransition
 import com.nhaarman.bravo.notesapp.presentation.createitem.CreateItemScene
 import com.nhaarman.bravo.notesapp.presentation.edititem.EditItemScene
 import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListScene
@@ -30,6 +33,11 @@ object TransitionFactoryProvider {
 
     val transitionFactory: TransitionFactory by lazy {
         transitionFactory(ViewFactoryProvider.viewFactory) {
+            (ItemListScene::class to CreateItemScene::class) use ItemListCreateItemTransition
+
+            (ItemListScene::class to EditItemScene::class) use ItemListEditItemTransition
+            (EditItemScene::class to ItemListScene::class) use EditItemItemListTransition
+
             val fadeOutToBottom =
                 FadeOutToBottomTransition.from(ViewFactoryProvider.viewFactory)
                     .hideKeyboardOnStart()
