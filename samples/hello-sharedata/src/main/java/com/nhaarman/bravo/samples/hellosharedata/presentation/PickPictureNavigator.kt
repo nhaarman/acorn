@@ -27,6 +27,7 @@ import com.nhaarman.bravo.samples.hellosharedata.presentation.picturedetail.Pict
 import com.nhaarman.bravo.samples.hellosharedata.presentation.picturegallery.PictureGalleryScene
 import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.SceneState
+import kotlin.reflect.KClass
 
 class PickPictureNavigator(
     private val picturesProvider: PicturesProvider,
@@ -49,10 +50,10 @@ class PickPictureNavigator(
         return listOf(PictureGalleryScene(picturesProvider, this))
     }
 
-    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container> {
+    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
         return when (sceneClass) {
-            PictureGalleryScene::class.java -> PictureGalleryScene(picturesProvider, this, state)
-            PictureDetailScene::class.java -> PictureDetailScene.pick(state!!, this)
+            PictureGalleryScene::class -> PictureGalleryScene(picturesProvider, this, state)
+            PictureDetailScene::class -> PictureDetailScene.pick(state!!, this)
             else -> error("Unknown Scene class: $sceneClass")
         }
     }

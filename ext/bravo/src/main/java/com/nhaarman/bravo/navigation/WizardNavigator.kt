@@ -29,6 +29,7 @@ import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.util.lazyVar
+import kotlin.reflect.KClass
 
 /**
  * An abstract [Navigator] class that is able to go back and forth through a
@@ -71,7 +72,7 @@ abstract class WizardNavigator(
      * the instance as returned from [SaveableScene.saveInstanceState] if its
      * state was saved.
      */
-    protected abstract fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<out Container>
+    protected abstract fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container>
 
     private var state by lazyVar {
         val size: Int? = savedState?.get("size")
@@ -81,10 +82,11 @@ abstract class WizardNavigator(
             return@lazyVar State.create(listOf(scene), 0) { index -> createScene(index) }
         }
 
+        @Suppress("UNCHECKED_CAST")
         val scenes = (0 until size)
             .map { index ->
                 instantiateScene(
-                    sceneClass = Class.forName(savedState["${index}_class"]),
+                    sceneClass = Class.forName(savedState["${index}_class"]).kotlin as KClass<out Scene<*>>,
                     state = savedState["${index}_state"]
                 )
             }

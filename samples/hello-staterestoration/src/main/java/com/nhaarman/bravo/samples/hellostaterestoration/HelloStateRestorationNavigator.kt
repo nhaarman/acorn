@@ -25,6 +25,7 @@ import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.state.get
+import kotlin.reflect.KClass
 
 /**
  * A [Navigator] implementation that can be saved and restored.
@@ -57,9 +58,9 @@ class HelloStateRestorationNavigator private constructor(
      *
      * This function is called when restoring the Navigator from a saved state.
      */
-    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container> {
+    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
         return when (sceneClass) {
-            HelloStateRestorationScene::class.java -> HelloStateRestorationScene.create(state!!, this)
+            HelloStateRestorationScene::class -> HelloStateRestorationScene.create(state!!, this)
             else -> error("Unknown Scene class: $sceneClass")
         }
     }

@@ -30,6 +30,7 @@ import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.state.navigatorState
 import com.nhaarman.bravo.util.lazyVar
+import kotlin.reflect.KClass
 
 /**
  * A navigator class that can switch between [Scene]s, but has no 'back'
@@ -57,7 +58,7 @@ abstract class ReplacingNavigator(
      * @param state An optional saved state instance to restore the new Scene's
      * state from.
      */
-    protected abstract fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container>
+    protected abstract fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container>
 
     /**
      * Replaces the current Scene with [newScene].
@@ -166,7 +167,7 @@ abstract class ReplacingNavigator(
     @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return navigatorState {
-            it.sceneClass = state.scene.javaClass
+            it.sceneClass = state.scene::class
             it.sceneState = (state.scene as? SaveableScene)?.saveInstanceState()
         }
     }
@@ -313,10 +314,10 @@ abstract class ReplacingNavigator(
     companion object {
 
         @Suppress("UNCHECKED_CAST")
-        private var NavigatorState.sceneClass: Class<Scene<*>>?
-            get() = get<String>("scene:class")?.let { Class.forName(it) as Class<Scene<*>>? }
+        private var NavigatorState.sceneClass: KClass<out Scene<*>>?
+            get() = get<String>("scene:class")?.let { Class.forName(it).kotlin as KClass<out Scene<*>>? }
             set(value) {
-                set("scene:class", value?.name)
+                set("scene:class", value?.java?.name)
             }
 
         private var NavigatorState.sceneState: SceneState?

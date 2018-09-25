@@ -27,6 +27,7 @@ import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.util.lazyVar
+import kotlin.reflect.KClass
 
 /**
  * An abstract [Navigator] class that uses a stack to navigate through [Navigator]s.
@@ -64,7 +65,7 @@ abstract class CompositeStackNavigator(
      * its state was saved.
      */
     protected abstract fun instantiateNavigator(
-        navigatorClass: Class<Navigator>,
+        navigatorClass: KClass<out Navigator>,
         state: NavigatorState?
     ): Navigator
 
@@ -76,7 +77,7 @@ abstract class CompositeStackNavigator(
             return (0 until size)
                 .map { index ->
                     instantiateNavigator(
-                        navigatorClass = Class.forName(savedState["${index}_class"]) as Class<Navigator>,
+                        navigatorClass = Class.forName(savedState["${index}_class"]).kotlin as KClass<out Navigator>,
                         state = savedState["${index}_state"]
                     )
                 }

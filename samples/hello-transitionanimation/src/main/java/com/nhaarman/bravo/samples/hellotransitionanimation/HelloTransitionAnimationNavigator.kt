@@ -22,6 +22,7 @@ import com.nhaarman.bravo.navigation.StackNavigator
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.SceneState
+import kotlin.reflect.KClass
 
 class HelloTransitionAnimationNavigator :
     StackNavigator(null),
@@ -40,10 +41,10 @@ class HelloTransitionAnimationNavigator :
         pop()
     }
 
-    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container> {
+    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
         return when (sceneClass) {
-            FirstScene::class.java -> FirstScene(this)
-            SecondScene::class.java -> SecondScene(this)
+            FirstScene::class -> FirstScene(this)
+            SecondScene::class -> SecondScene(this)
             else -> error("Unknown scene: $sceneClass")
         }
     }

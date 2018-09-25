@@ -59,6 +59,7 @@ class DevicePicturesProvider(
         refreshSubject.onNext(Unit)
     }
 
+    @Suppress("NAME_SHADOWING")
     private fun getPictures(): List<Picture> {
         if (checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
             return emptyList()

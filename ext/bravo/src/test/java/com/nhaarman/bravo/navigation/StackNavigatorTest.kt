@@ -35,6 +35,7 @@ import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import kotlin.reflect.KClass
 
 internal class StackNavigatorTest {
 
@@ -952,9 +953,9 @@ internal class StackNavigatorTest {
             return initialStack
         }
 
-        override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<*> {
+        override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
-                TestScene::class.java -> TestScene.create(state)
+                TestScene::class -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
             }
         }

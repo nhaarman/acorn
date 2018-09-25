@@ -36,6 +36,7 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import kotlin.reflect.KClass
 
 internal class CompositeReplacingNavigatorTest {
 
@@ -672,7 +673,7 @@ internal class CompositeReplacingNavigatorTest {
         }
 
         override fun instantiateNavigator(
-            navigatorClass: Class<Navigator>,
+            navigatorClass: KClass<out Navigator>,
             state: NavigatorState?
         ): Navigator {
             error("Not supported")
@@ -698,9 +699,9 @@ internal class CompositeReplacingNavigatorTest {
             return initialStack
         }
 
-        override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<*> {
+        override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
-                TestScene::class.java -> TestScene.create(state)
+                TestScene::class -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
             }
         }
@@ -716,15 +717,15 @@ internal class CompositeReplacingNavigatorTest {
         }
 
         override fun instantiateNavigator(
-            navigatorClass: Class<Navigator>,
+            navigatorClass: KClass<out Navigator>,
             state: NavigatorState?
         ): Navigator {
             return when (navigatorClass) {
-                RestorableTestSingleSceneNavigator::class.java -> RestorableTestSingleSceneNavigator(
+                RestorableTestSingleSceneNavigator::class -> RestorableTestSingleSceneNavigator(
                     TestScene(0),
                     state
                 )
-                TestStackNavigator::class.java -> TestStackNavigator(emptyList(), state)
+                TestStackNavigator::class -> TestStackNavigator(emptyList(), state)
                 else -> error("Unknown navigator class: $navigatorClass.")
             }
         }

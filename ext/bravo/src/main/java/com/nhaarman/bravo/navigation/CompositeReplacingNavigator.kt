@@ -28,16 +28,11 @@ import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.state.navigatorState
 import com.nhaarman.bravo.util.lazyVar
+import kotlin.reflect.KClass
 
 /**
- * An abstract [Navigator] class that uses a stack to navigate through [Navigator]s.
- *
- * Like [StackNavigator] this class supports basic [pop] and [push] operations
- * to manipulate the stack. Implementers must implement [initialStack] to provide
- * the initial stack to work with.
- *
- * This Navigator implements [SaveableNavigator] and thus can have its state saved
- * and restored when necessary.
+ * A navigator class that can switch between [Scene]s, but has no 'back'
+ * behavior of its own.
  *
  * @param savedState An optional instance that contains saved state as returned
  *                   by this class's saveInstanceState() method.
@@ -66,7 +61,7 @@ abstract class CompositeReplacingNavigator(
      * its state was saved.
      */
     protected abstract fun instantiateNavigator(
-        navigatorClass: Class<Navigator>,
+        navigatorClass: KClass<out Navigator>,
         state: NavigatorState?
     ): Navigator
 
@@ -180,7 +175,7 @@ abstract class CompositeReplacingNavigator(
     @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return navigatorState {
-            it.navigatorClass = state.navigator?.javaClass
+            it.navigatorClass = state.navigator?.let { navigator -> navigator::class }
             it.navigatorState = (state.navigator as? SaveableNavigator)?.saveInstanceState()
         }
     }
@@ -380,10 +375,10 @@ abstract class CompositeReplacingNavigator(
     companion object {
 
         @Suppress("UNCHECKED_CAST")
-        private var NavigatorState.navigatorClass: Class<Navigator>?
-            get() = get<String>("navigator:class")?.let { Class.forName(it) as Class<Navigator>? }
+        private var NavigatorState.navigatorClass: KClass<out Navigator>?
+            get() = get<String>("navigator:class")?.let { Class.forName(it).kotlin as KClass<out Navigator>? }
             set(value) {
-                set("navigator:class", value?.name)
+                set("navigator:class", value?.java?.name)
             }
 
         private var NavigatorState.navigatorState: NavigatorState?
