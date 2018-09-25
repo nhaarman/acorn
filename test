@@ -9,6 +9,7 @@ adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put 
     :samples:hello-world:lintRelease \
     :samples:hello-navigation:lintRelease \
     :samples:hello-staterestoration:lintRelease \
+    :samples:hello-transitionanimation:lintRelease \
     :samples:hello-startactivity:lintRelease \
     :samples:hello-sharedata:lintRelease \
     :samples:notes-app:aac-navigation:lintRelease \
