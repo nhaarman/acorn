@@ -34,8 +34,8 @@ object TransitionFactoryProvider {
                 FadeOutToBottomTransition.from(ViewFactoryProvider.viewFactory)
                     .hideKeyboardOnStart()
 
-            (CreateItemScene::class.java to ItemListScene::class.java) use fadeOutToBottom
-            (EditItemScene::class.java to ItemListScene::class.java) use fadeOutToBottom
+            (CreateItemScene::class to ItemListScene::class) use fadeOutToBottom
+            (EditItemScene::class to ItemListScene::class) use fadeOutToBottom
         }
     }
 }
