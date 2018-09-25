@@ -23,6 +23,11 @@ import android.view.ViewGroup
 /**
  * A [Transition] implementation that can execute an action before a delegate
  * Transition is executed.
+ *
+ * This can be used to hide the keyboard before the transition starts, for
+ * example.
+ *
+ * @see [doOnStart]
  */
 class DoBeforeTransition private constructor(
     private val delegate: Transition,

@@ -23,12 +23,17 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import com.nhaarman.bravo.presentation.Scene
 
+/**
+ * Returns a new [Transition] instance that hides the keyboard before the
+ * receiving Transition is invoked.
+ */
 fun Transition.hideKeyboardOnStart(): Transition {
     return doOnStart(hideKeyboard)
 }
 
-fun ((Scene<*>) -> Transition).hideKeyboardOnStart() =
-    { scene: Scene<*> -> invoke(scene).doOnStart(hideKeyboard) }
+fun ((Scene<*>) -> Transition).hideKeyboardOnStart(): (Scene<*>) -> Transition {
+    return { scene: Scene<*> -> invoke(scene).doOnStart(hideKeyboard) }
+}
 
 private val hideKeyboard: (ViewGroup) -> Unit = { viewGroup ->
     (viewGroup

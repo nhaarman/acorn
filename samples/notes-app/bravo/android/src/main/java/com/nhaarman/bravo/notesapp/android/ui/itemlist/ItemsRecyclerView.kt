@@ -23,6 +23,7 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.util.inflate
 import com.nhaarman.bravo.notesapp.android.R
@@ -55,6 +56,9 @@ class ItemsRecyclerView @JvmOverloads constructor(
                 }
             }).dispatchUpdatesTo(adapter!!)
         }
+
+    var clickedView: View? = null
+        private set
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -98,8 +102,9 @@ class ItemsRecyclerView @JvmOverloads constructor(
             }
 
         init {
-            containerView.setOnClickListener { _ ->
+            containerView.setOnClickListener { view ->
                 item?.let {
+                    clickedView = view
                     listeners.forEach { listener -> listener.onItemClicked(it) }
                 }
             }

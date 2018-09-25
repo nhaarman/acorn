@@ -16,23 +16,15 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.notesapp.android.ui.edititem
+package com.nhaarman.bravo.samples.hellotransitionanimation
 
-import android.content.Context
-import android.support.v7.widget.Toolbar
-import android.util.AttributeSet
-import com.nhaarman.bravo.notesapp.android.R
+import android.app.Application
+import com.nhaarman.bravo.android.AndroidLogger
 
-class EditItemToolbar @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet,
-    defStyleAttr: Int = android.support.v7.appcompat.R.attr.toolbarStyle
-) : Toolbar(context, attrs, defStyleAttr) {
+class MyApplication : Application() {
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        if (isInEditMode) return
-
-        inflateMenu(R.menu.edititem_menu)
+    override fun onCreate() {
+        bravo.logger = AndroidLogger()
+        super.onCreate()
     }
 }
