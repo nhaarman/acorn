@@ -27,7 +27,7 @@ import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
 
-class HelloNavigationTest {
+class HelloTransitionAnimationTest {
 
     @Rule @JvmField val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
 

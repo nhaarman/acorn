@@ -23,6 +23,7 @@ import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.notesapp.NotesAppComponent
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.state.NavigatorState
+import kotlin.reflect.KClass
 
 class NotesAppNavigator(
     private val notesAppComponent: NotesAppComponent,
@@ -36,16 +37,16 @@ class NotesAppNavigator(
     }
 
     override fun instantiateNavigator(
-        navigatorClass: Class<Navigator>,
+        navigatorClass: KClass<out Navigator>,
         state: NavigatorState?
     ): Navigator {
         return when (navigatorClass) {
-            PrimaryNavigator::class.java -> PrimaryNavigator(
+            PrimaryNavigator::class -> PrimaryNavigator(
                 notesAppComponent,
                 this,
                 state
             )
-            CreateItemNavigator::class.java -> CreateItemNavigator(
+            CreateItemNavigator::class -> CreateItemNavigator(
                 null,
                 notesAppComponent,
                 state,

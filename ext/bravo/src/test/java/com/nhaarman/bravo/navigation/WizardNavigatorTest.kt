@@ -33,6 +33,7 @@ import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import kotlin.reflect.KClass
 
 internal class WizardNavigatorTest {
 
@@ -884,9 +885,9 @@ internal class WizardNavigatorTest {
             return initialStack.getOrNull(index)
         }
 
-        override fun instantiateScene(sceneClass: Class<*>, state: SceneState?): Scene<*> {
+        override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
-                TestScene::class.java -> TestScene.create(state)
+                TestScene::class -> TestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
             }
         }
@@ -896,7 +897,6 @@ internal class WizardNavigatorTest {
 
         val scenes = mutableListOf<Pair<Scene<out Container>, TransitionData?>>()
         val lastScene get() = scenes.lastOrNull()?.first as TestScene?
-        val lastTransitionData get() = scenes.lastOrNull()?.second
 
         var finished = false
 

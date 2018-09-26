@@ -24,6 +24,7 @@ import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.SceneState
+import kotlin.reflect.KClass
 
 /**
  * a [Navigator] that manages navigation between [FirstScene] and [SecondScene].
@@ -52,10 +53,10 @@ class HelloStartActivityNavigator(
         pop()
     }
 
-    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container> {
+    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
         return when (sceneClass) {
-            FirstScene::class.java -> FirstScene(this)
-            MapsScene::class.java -> MapsScene(this)
+            FirstScene::class -> FirstScene(this)
+            MapsScene::class -> MapsScene(this)
             else -> error("Unknown scene: $sceneClass")
         }
     }

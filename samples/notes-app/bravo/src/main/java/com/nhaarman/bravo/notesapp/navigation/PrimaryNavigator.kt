@@ -27,6 +27,7 @@ import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.SceneState
+import kotlin.reflect.KClass
 
 /**
  * A Navigator that starts at the [ItemListScene], and can navigate to
@@ -67,14 +68,14 @@ class PrimaryNavigator(
         )
     }
 
-    override fun instantiateScene(sceneClass: Class<Scene<*>>, state: SceneState?): Scene<out Container> {
+    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
         return when (sceneClass) {
-            ItemListScene::class.java -> ItemListScene(
+            ItemListScene::class -> ItemListScene(
                 notesAppComponent.noteItemsRepository,
                 this,
                 state
             )
-            EditItemScene::class.java -> EditItemScene.create(
+            EditItemScene::class -> EditItemScene.create(
                 notesAppComponent.noteItemsRepository,
                 this,
                 state!!

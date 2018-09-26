@@ -136,7 +136,7 @@ class RestoreSceneDetectorTest {
                        val a = MyScene()
                     }
 
-                    override fun instantiateScene(sceneClass: Class<Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, savedState: SceneState<*>) : Scene<*> {
                         return MyScene()
                     }
                 }
@@ -169,7 +169,7 @@ class RestoreSceneDetectorTest {
                        val a = MyScene()
                     }
 
-                    override fun instantiateScene(sceneClass: Class<Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, savedState: SceneState<*>) : Scene<*> {
                         return MyScene.create()
                     }
                 }
@@ -272,7 +272,7 @@ class RestoreSceneDetectorTest {
                        val b = MyScene2()
                     }
 
-                    override fun instantiateScene(sceneClass: Class<Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, savedState: SceneState<*>) : Scene<*> {
                        return MyScene()
                     }
                 }
@@ -312,7 +312,7 @@ class RestoreSceneDetectorTest {
                        val b = MyScene2.create()
                     }
 
-                    override fun instantiateScene(sceneClass: Class<Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, savedState: SceneState<*>) : Scene<*> {
                        return MyScene()
                     }
                 }
