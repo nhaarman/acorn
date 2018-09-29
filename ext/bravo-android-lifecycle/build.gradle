@@ -1,0 +1,29 @@
+plugins {
+    id("com.android.library")
+    id("kotlin-android")
+
+    id("org.jetbrains.dokka-android")
+    id("digital.wup.android-maven-publish")
+    id("signing")
+}
+
+android {
+    defaultConfig {
+        minSdkVersion(21)
+    }
+}
+
+dependencies {
+    api project(':ext-bravo')
+
+    api "android.arch.lifecycle:runtime"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    compileOnly "com.android.support:support-annotations"
+
+    testImplementation "com.nhaarman:expect.kt"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+}

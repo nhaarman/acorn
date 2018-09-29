@@ -60,7 +60,7 @@ subprojects {
 
                     ignoreTestSources true
 
-                    ignore "ObsoleteLintCustomCheck"
+                    ignore "ObsoleteLintCustomCheck", "GradleDependency"
                 }
             }
         }
