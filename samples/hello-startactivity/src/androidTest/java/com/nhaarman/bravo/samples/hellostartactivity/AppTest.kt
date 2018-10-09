@@ -73,7 +73,7 @@ class AppTest {
 
     private fun clickMapsButton() {
         val mapsButton = device.findObject(
-            UiSelector().text("Start Maps").className("android.widget.Button")
+            UiSelector().text("START MAPS").className("android.widget.Button")
         )
 
         mapsButton.click()
@@ -86,10 +86,17 @@ class AppTest {
 
     private fun exitMaps() {
         device.pressBack()
-        device.pressBack()
-        device.wait(
+        val isAppPackage = device.wait(
             Until.hasObject(By.pkg(appPackage)),
             3000
         )
+
+        if (isAppPackage != true) {
+            device.pressBack()
+            device.wait(
+                Until.hasObject(By.pkg(appPackage)),
+                3000
+            )
+        }
     }
 }
