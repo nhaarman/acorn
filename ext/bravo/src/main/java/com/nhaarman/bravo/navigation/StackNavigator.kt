@@ -135,8 +135,8 @@ abstract class StackNavigator(
      * destroyed, otherwise the new top Scene will be started.
      *
      * If this Navigator is currently inactive and there is only one element on
-     * the stack, the Navigator will be destroyed. Otherwise, no events will be
-     * called at all. Starting this Navigator will trigger a call to the
+     * the stack, the Navigator will be destroyed. Otherwise, the current Scene
+     * will be destroyed. Starting this Navigator will trigger a call to the
      * [Scene.onStart] method of the new top Scene.
      *
      * Calling this method when the receiving Navigator has been destroyed will
@@ -146,6 +146,22 @@ abstract class StackNavigator(
         v("StackNavigator", "pop")
 
         state = state.pop()
+    }
+
+    /**
+     * Replaces the top most [Scene] with given [scene].
+     *
+     * If this Navigator is currently active, the current active child Scene
+     * will be stopped and destroyed, and given [scene] will be started.
+     *
+     * If this Navigator is currently inactive, the current active child Scene
+     * will be destroyed. Starting this Navigator will trigger a call to the
+     * [Scene.onStart] method of given [scene].
+     */
+    fun replace(scene: Scene<out Container>) {
+        v("StackNavigator", "replace $scene")
+
+        state = state.replace(scene, TransitionData.forwards)
     }
 
     /**
@@ -223,6 +239,7 @@ abstract class StackNavigator(
 
         abstract fun push(scene: Scene<out Container>, data: TransitionData?): State
         abstract fun pop(): State
+        abstract fun replace(scene: Scene<out Container>, data: TransitionData?): State
 
         abstract fun finish(): State
 
@@ -286,6 +303,13 @@ abstract class StackNavigator(
                     else -> Inactive(newScenes, listeners)
                 }
             }
+
+            override fun replace(scene: Scene<out Container>, data: TransitionData?): State {
+                scenes.last().onDestroy()
+                val newScenes = scenes.dropLast(1) + scene
+
+                return Inactive(newScenes, listeners)
+            }
         }
 
         class Active(
@@ -348,6 +372,18 @@ abstract class StackNavigator(
                 }
             }
 
+            override fun replace(scene: Scene<out Container>, data: TransitionData?): State {
+                val poppedScene = scenes.last()
+                poppedScene.onStop()
+                poppedScene.onDestroy()
+
+                val newScenes = scenes.dropLast(1) + scene
+
+                scene.onStart()
+                listeners.forEach { it.scene(scene, data) }
+                return Active(newScenes, listeners)
+            }
+
             override fun finish(): State {
                 listeners.forEach { it.finished() }
                 return destroy()
@@ -386,6 +422,11 @@ abstract class StackNavigator(
 
             override fun pop(): State {
                 w("StackNavigator.State", "Warning: Cannot pop scene after navigator is destroyed.")
+                return this
+            }
+
+            override fun replace(scene: Scene<out Container>, data: TransitionData?): State {
+                w("StackNavigator.State", "Warning: Cannot replace scene after navigator is destroyed.")
                 return this
             }
 

@@ -41,6 +41,7 @@ internal class StackNavigatorTest {
 
     private val scene1 = spy(TestScene(1))
     private val scene2 = spy(TestScene(2))
+    private val scene3 = spy(TestScene(3))
 
     private val navigator = TestStackNavigator(listOf(scene1))
     private val listener = spy(TestListener())
@@ -759,6 +760,81 @@ internal class StackNavigatorTest {
                 verify(scene2).onStop()
                 verify(scene2).onDestroy()
                 verify(scene1).onStart()
+            }
+        }
+
+        @Test
+        fun `replacing top item from a single item stack for inactive navigator destroys original scene`() {
+            /* When */
+            navigator.replace(scene2)
+
+            /* When */
+            verify(scene1).onDestroy()
+        }
+
+        @Test
+        fun `replacing top item from a single item stack for inactive navigator does not stop original scene`() {
+            /* When */
+            navigator.replace(scene2)
+
+            /* When */
+            verify(scene1, never()).onStop()
+        }
+
+        @Test
+        fun `replacing top item from a multi item stack for inactive navigator destroys latest scene`() {
+            /* Given */
+            val navigator = TestStackNavigator(listOf(scene1, scene2))
+
+            /* When */
+            navigator.replace(scene3)
+
+            /* When */
+            verify(scene2).onDestroy()
+        }
+
+        @Test
+        fun `replacing top item from a multi item stack for inactive navigator does not start replacing scene`() {
+            /* Given */
+            val navigator = TestStackNavigator(listOf(scene1, scene2))
+
+            /* When */
+            navigator.replace(scene3)
+
+            /* When */
+            verifyNoMoreInteractions(scene3)
+        }
+
+        @Test
+        fun `replacing top item from a single item stack for active navigator stops and destroys original scene, and starts replacing scene`() {
+            /* Given */
+            navigator.onStart()
+
+            /* When */
+            navigator.replace(scene2)
+
+            /* When */
+            inOrder(scene1, scene2) {
+                verify(scene1).onStop()
+                verify(scene1).onDestroy()
+                verify(scene2).onStart()
+            }
+        }
+
+        @Test
+        fun `replacing top item from a multi item stack for active navigator stops and destroys latest scene, and starts replacing scene`() {
+            /* Given */
+            val navigator = TestStackNavigator(listOf(scene1, scene2))
+            navigator.onStart()
+
+            /* When */
+            navigator.replace(scene3)
+
+            /* When */
+            inOrder(scene1, scene2, scene3) {
+                verify(scene2).onStop()
+                verify(scene2).onDestroy()
+                verify(scene3).onStart()
             }
         }
 
