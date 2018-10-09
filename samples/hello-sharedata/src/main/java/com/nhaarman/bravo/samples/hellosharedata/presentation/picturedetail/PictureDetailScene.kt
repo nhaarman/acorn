@@ -38,7 +38,7 @@ class PictureDetailScene private constructor(
         v.isPicking = isPicking
 
         v.setOnUpClickedListener { listener.upClicked() }
-        v.setPicturePickedListener { listener.picturePicked(picture)}
+        v.setPicturePickedListener { listener.picturePicked(picture) }
     }
 
     override fun saveInstanceState(): SceneState {

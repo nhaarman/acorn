@@ -20,14 +20,8 @@ include(":samples:hello-transitionanimation")
 include(":samples:hello-startactivity")
 include(":samples:hello-sharedata")
 
-include(":notes-app-bravo")
-include(":notes-app-bravo-android")
-//include(":notes-app-bravo-cli")
-
-include(":samples:notes-app:aac-navigation")
-include(":samples:notes-app:cicerone")
-include(":samples:notes-app:conductor")
-include(":samples:notes-app:mosby")
+include(":samples:notes-app")
+include(":samples:notes-app:android")
 
 project(":bravo").projectDir = file("core/bravo-core")
 project(":bravo-android").projectDir = file("core/bravo-android-core")
@@ -41,9 +35,5 @@ project(":ext-bravo-android-testing").projectDir = file("ext/bravo-android/bravo
 project(":ext-bravo-android-lint").projectDir = file("ext/bravo-android/bravo-android-lint")
 project(":ext-bravo-android-timber").projectDir = file("ext/bravo-android-timber")
 project(":ext-bravo-android-lifecycle").projectDir = file("ext/bravo-android-lifecycle")
-
-project(":notes-app-bravo").projectDir = file("samples/notes-app/bravo")
-project(":notes-app-bravo-android").projectDir = file("samples/notes-app/bravo/android")
-//project(":notes-app-bravo-cli").projectDir = file("notes-app/bravo/cli")
 
 enableFeaturePreview("STABLE_PUBLISHING")
