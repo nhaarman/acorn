@@ -43,9 +43,11 @@ internal class CompositeStackNavigatorTest {
     private val navigator1Scene1 = spy(TestScene(11))
     private val navigator2Scene1 = spy(TestScene(21))
     private val navigator2Scene2 = spy(TestScene(22))
+    private val navigator3Scene1 = spy(TestScene(31))
 
     private val navigator1 = spy(TestSingleSceneNavigator(navigator1Scene1))
     private val navigator2 = spy(TestStackNavigator(listOf(navigator2Scene1)))
+    private val navigator3 = spy(TestStackNavigator(listOf(navigator3Scene1)))
 
     private val navigator = TestCompositeStackNavigator(listOf(navigator1))
     private val listener = mock<Navigator.Events>()
@@ -293,6 +295,23 @@ internal class CompositeStackNavigatorTest {
 
                 /* When */
                 navigator.push(navigator2)
+
+                /* Then */
+                argumentCaptor<TransitionData> {
+                    verify(listener, atLeastOnce()).scene(any(), capture())
+
+                    expect(lastValue.isBackwards).toBe(false)
+                }
+            }
+
+            @Test
+            fun `replacing a navigator - scene notification has forward transition data`() {
+                /* Given */
+                navigator.addNavigatorEventsListener(listener)
+                navigator.onStart()
+
+                /* When */
+                navigator.replace(navigator2)
 
                 /* Then */
                 argumentCaptor<TransitionData> {
@@ -886,6 +905,81 @@ internal class CompositeStackNavigatorTest {
                 verify(navigator2).onStop()
                 verify(navigator2).onDestroy()
                 verify(navigator1).onStart()
+            }
+        }
+
+        @Test
+        fun `replacing top item from a single item stack for inactive navigator destroys original navigator`() {
+            /* When */
+            navigator.replace(navigator2)
+
+            /* When */
+            verify(navigator1).onDestroy()
+        }
+
+        @Test
+        fun `replacing top item from a single item stack for inactive navigator does not stop original navigator`() {
+            /* When */
+            navigator.replace(navigator2)
+
+            /* When */
+            verify(navigator1, never()).onStop()
+        }
+
+        @Test
+        fun `replacing top item from a multi item stack for inactive navigator destroys latest navigator`() {
+            /* Given */
+            val navigator = TestCompositeStackNavigator(listOf(navigator1, navigator2))
+
+            /* When */
+            navigator.replace(navigator3)
+
+            /* When */
+            verify(navigator2).onDestroy()
+        }
+
+        @Test
+        fun `replacing top item from a multi item stack for inactive navigator does not start replacing navigator`() {
+            /* Given */
+            val navigator = TestCompositeStackNavigator(listOf(navigator1, navigator2))
+
+            /* When */
+            navigator.replace(navigator3)
+
+            /* When */
+            verify(navigator3, never()).onStart()
+        }
+
+        @Test
+        fun `replacing top item from a single item stack for active navigator stops and destroys original navigator, and starts replacing navigator`() {
+            /* Given */
+            navigator.onStart()
+
+            /* When */
+            navigator.replace(navigator2)
+
+            /* When */
+            inOrder(navigator1, navigator2) {
+                verify(navigator1).onStop()
+                verify(navigator1).onDestroy()
+                verify(navigator2).onStart()
+            }
+        }
+
+        @Test
+        fun `replacing top item from a multi item stack for active navigator stops and destroys latest navigator, and starts replacing navigator`() {
+            /* Given */
+            val navigator = TestCompositeStackNavigator(listOf(navigator1, navigator2))
+            navigator.onStart()
+
+            /* When */
+            navigator.replace(navigator3)
+
+            /* When */
+            inOrder(navigator1, navigator2, navigator3) {
+                verify(navigator2).onStop()
+                verify(navigator2).onDestroy()
+                verify(navigator3).onStart()
             }
         }
 
