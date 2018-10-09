@@ -41,7 +41,7 @@ object EditItemItemListTransition : Transition {
 
     override fun execute(parent: ViewGroup, callback: Transition.Callback) {
         val editItemLayout = parent.getChildAt(0)
-        val clickedItemViewData = editItemLayout.tag  as? ClickedItemViewData
+        val clickedItemViewData = editItemLayout.tag as? ClickedItemViewData
 
         if (clickedItemViewData == null) {
             FadeOutToBottomTransition { _ ->

@@ -33,4 +33,3 @@ val viewFactory = bindViews {
         R.layout.picturedetail_scene
     )
 }
-

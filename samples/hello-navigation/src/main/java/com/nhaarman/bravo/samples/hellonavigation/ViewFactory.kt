@@ -25,4 +25,3 @@ val viewFactory = bindViews {
     bind(defaultKey<FirstScene>(), R.layout.first_scene)
     bind(defaultKey<SecondScene>(), R.layout.second_scene)
 }
-
