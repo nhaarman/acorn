@@ -28,7 +28,7 @@ dependencies {
     implementation project(":ext-bravo-android")
     implementation project(":ext-bravo-android-timber")
 
-    implementation project(":notes-app-bravo")
+    implementation project(":samples:notes-app")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "androidx.core:core-ktx"

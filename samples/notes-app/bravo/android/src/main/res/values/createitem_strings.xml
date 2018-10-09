@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="createitem_title">Create item</string>
-
-    <string name="createitem_create">Create</string>
-    <string name="createitem_text_hint">Take a note</string>
-
-</resources>

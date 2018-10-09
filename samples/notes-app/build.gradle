@@ -17,8 +17,10 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "io.reactivex.rxjava2:rxjava"
+    api "io.reactivex.rxjava2:rxjava"
     implementation "io.reactivex.rxjava2:rxkotlin"
+    
+    api "io.arrow-kt:arrow-core"
 
     testImplementation project(":ext-bravo-testing")
     testImplementation "org.junit.jupiter:junit-jupiter-api"

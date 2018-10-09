@@ -16,13 +16,9 @@ adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put 
     :samples:hello-transitionanimation:lintRelease \
     :samples:hello-startactivity:lintRelease \
     :samples:hello-sharedata:lintRelease \
-    :samples:notes-app:aac-navigation:lintRelease \
-    :samples:notes-app:cicerone:lintRelease \
-    :samples:notes-app:conductor:lintRelease \
-    :samples:notes-app:mosby:lintRelease \
-    :notes-app-bravo-android:lintRelease \
+    :samples:notes-app:android:lintRelease \
     publishToMavenLocal \
-    transformDexArchiveWithDexMergerForDebug \
+    packageDebugAndroidTest \
     --rerun-tasks \
     && ./gradlew cCheck --max-workers=1
 

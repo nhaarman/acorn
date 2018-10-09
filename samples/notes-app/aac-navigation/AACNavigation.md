@@ -1,2 +1,0 @@
- - Deep linking when in progress of composing a message loses that message.
- - Seems to have no way of acting as an `android.intent.action.SEND` consumer.

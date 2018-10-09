@@ -16,11 +16,9 @@
     :samples:hello-startactivity:lintRelease \
     :samples:hello-sharedata:lintRelease \
     \
-    :samples:notes-app:aac-navigation:lintRelease \
-    :samples:notes-app:cicerone:lintRelease \
-    :samples:notes-app:conductor:lintRelease \
-    :samples:notes-app:mosby:lintRelease \
-    :notes-app-bravo-android:lintRelease \
+    :samples:notes-app:android:lintRelease \
+    \
+    packageDebugAndroidTest \
     \
     publishToMavenLocal \
     --max-workers=1 --rerun-tasks
