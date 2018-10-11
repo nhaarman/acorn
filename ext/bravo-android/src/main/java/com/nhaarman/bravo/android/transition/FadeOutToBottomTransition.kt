@@ -21,12 +21,11 @@ package com.nhaarman.bravo.android.transition
 import android.support.v4.view.animation.FastOutLinearInInterpolator
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
-import androidx.core.view.doOnPreDraw
 import com.nhaarman.bravo.android.R
 import com.nhaarman.bravo.android.internal.applyWindowBackground
 import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.presentation.ViewResult
+import com.nhaarman.bravo.android.transition.internal.doOnPreDraw
 import com.nhaarman.bravo.presentation.Scene
 
 /**
@@ -46,7 +45,7 @@ class FadeOutToBottomTransition(
 
     override fun execute(parent: ViewGroup, callback: Transition.Callback) {
         // We're assuming a single View is present.
-        val originalChildren = parent.children.asIterable().toList()
+        val originalChildren = (0..parent.childCount).map { parent.getChildAt(it) }
         val originalView = originalChildren.firstOrNull()
 
         val newViewResult = view(parent)

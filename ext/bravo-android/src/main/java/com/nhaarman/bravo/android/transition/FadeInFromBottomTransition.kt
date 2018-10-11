@@ -21,11 +21,10 @@ package com.nhaarman.bravo.android.transition
 import android.support.v4.view.animation.LinearOutSlowInInterpolator
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
-import androidx.core.view.doOnPreDraw
 import com.nhaarman.bravo.android.R
 import com.nhaarman.bravo.android.internal.applyWindowBackground
 import com.nhaarman.bravo.android.presentation.ViewResult
+import com.nhaarman.bravo.android.transition.internal.doOnPreDraw
 
 /**
  * A transition that fades the new [View] from the bottom.
@@ -38,7 +37,7 @@ class FadeInFromBottomTransition(
 ) : Transition {
 
     override fun execute(parent: ViewGroup, callback: Transition.Callback) {
-        val originalChildren = parent.children.asIterable().toList()
+        val originalChildren = (0..parent.childCount).map { parent.getChildAt(it) }
 
         val newViewResult = view(parent)
 
