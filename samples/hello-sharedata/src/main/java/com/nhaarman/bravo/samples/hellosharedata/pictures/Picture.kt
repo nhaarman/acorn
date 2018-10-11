@@ -1,5 +1,5 @@
 /*
- * Bravo - Decoupling navigation view Android
+ * Bravo - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
  * Bravo is free software: you can redistribute it and/or modify
