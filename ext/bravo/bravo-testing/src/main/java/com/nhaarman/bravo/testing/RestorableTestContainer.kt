@@ -16,10 +16,24 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.samples.hellosharedata.pictures
+package com.nhaarman.bravo.testing
 
-import java.io.File
+import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.RestorableContainer
+import com.nhaarman.bravo.state.ContainerState
 
-data class Picture(
-    val file: File
-)
+/**
+ * An interface with default implementations for [RestorableContainer].
+ *
+ * Test implementations of [Container] can also implement this interface to
+ * avoid writing boilerplate code for state saving.
+ */
+interface RestorableTestContainer : RestorableContainer {
+
+    override fun restoreInstanceState(bundle: ContainerState) {
+    }
+
+    override fun saveInstanceState(): ContainerState {
+        return ContainerState()
+    }
+}

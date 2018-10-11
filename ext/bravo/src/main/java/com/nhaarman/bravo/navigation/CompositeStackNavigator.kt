@@ -126,6 +126,8 @@ abstract class CompositeStackNavigator(
      * have no effect.
      */
     fun push(navigator: Navigator) {
+        v("CompositeStackNavigator", "push $navigator")
+
         addListenerTo(navigator)
         state = state.push(navigator)
     }
@@ -147,6 +149,8 @@ abstract class CompositeStackNavigator(
      * have no effect.
      */
     fun pop() {
+        v("CompositeStackNavigator", "pop")
+
         state = state.pop()
     }
 
@@ -165,6 +169,8 @@ abstract class CompositeStackNavigator(
      * have no effect.
      */
     fun replace(navigator: Navigator) {
+        v("CompositeStackNavigator", "replace $navigator")
+
         addListenerTo(navigator)
         state = state.replace(navigator)
     }
@@ -182,6 +188,8 @@ abstract class CompositeStackNavigator(
      * effect.
      */
     fun finish() {
+        v("CompositeStackNavigator", "finish")
+
         state = state.finish()
     }
 
