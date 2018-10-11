@@ -61,6 +61,10 @@ allprojects { project ->
                 if (dependency.requested.group == "com.android.support") {
                     dependency.useVersion(androidSupportVersion)
                 }
+
+                if (dependency.requested.name in ["kotlin-stdlib", "kotlin-stdlib-jdk7", "kotlin-stdlib-jdk8", "kotlin-reflect"]) {
+                    dependency.useVersion(kotlinVersion)
+                }
             }
         }
     }
