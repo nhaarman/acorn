@@ -23,22 +23,7 @@ import kotlin.reflect.KClass
 /**
  * A class representing the key for a Scene.
  */
-class SceneKey(val value: String) {
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as SceneKey
-
-        if (value != other.value) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return value.hashCode()
-    }
+inline class SceneKey(val value: String) {
 
     override fun toString(): String {
         return "SceneKey(value='$value')"

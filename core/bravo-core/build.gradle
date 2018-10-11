@@ -11,4 +11,7 @@ dependencies {
     compileOnly "com.android.support:support-annotations"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
 }
