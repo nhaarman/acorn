@@ -1,9 +1,9 @@
 package com.nhaarman.bravo.notesapp.presentation.createitem
 
-import com.nhaarman.bravo.state.ContainerState
+import com.nhaarman.bravo.testing.RestorableTestContainer
 import io.reactivex.subjects.PublishSubject
 
-class TestCreateItemContainer : CreateItemContainer {
+class TestCreateItemContainer : CreateItemContainer, RestorableTestContainer {
 
     override fun setInitialText(text: String?) {
     }
@@ -11,11 +11,4 @@ class TestCreateItemContainer : CreateItemContainer {
     override val textChanges = PublishSubject.create<String>()
 
     override val createClicks = PublishSubject.create<Unit>()
-
-    override fun saveInstanceState(): ContainerState {
-        return ContainerState()
-    }
-
-    override fun restoreInstanceState(bundle: ContainerState) {
-    }
 }

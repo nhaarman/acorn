@@ -37,6 +37,6 @@ class ItemListRobot(private val context: TestContext) {
     }
 
     fun pressBack() {
-        context.onBackPressed()
+        context.pressBack()
     }
 }

@@ -1,9 +1,9 @@
 package com.nhaarman.bravo.notesapp.presentation.edititem
 
-import com.nhaarman.bravo.state.ContainerState
+import com.nhaarman.bravo.testing.RestorableTestContainer
 import io.reactivex.subjects.PublishSubject
 
-class TestEditItemContainer : EditItemContainer {
+class TestEditItemContainer : EditItemContainer, RestorableTestContainer {
 
     override var initialText: String? = null
         set(value) {
@@ -20,12 +20,5 @@ class TestEditItemContainer : EditItemContainer {
 
     fun clickSave() {
         saveClicks.onNext(text)
-    }
-
-    override fun saveInstanceState(): ContainerState {
-        return ContainerState()
-    }
-
-    override fun restoreInstanceState(bundle: ContainerState) {
     }
 }

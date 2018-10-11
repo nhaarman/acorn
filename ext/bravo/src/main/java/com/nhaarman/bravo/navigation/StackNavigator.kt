@@ -177,6 +177,8 @@ abstract class StackNavigator(
      * effect.
      */
     fun finish() {
+        v("StackNavigator", "finish")
+
         state = state.finish()
     }
 

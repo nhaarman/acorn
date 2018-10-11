@@ -5,6 +5,7 @@ import com.nhaarman.bravo.notesapp.presentation.createitem.createItem
 import com.nhaarman.bravo.notesapp.presentation.edititem.editItem
 import com.nhaarman.bravo.notesapp.presentation.itemlist.itemList
 import com.nhaarman.bravo.testing.TestContext
+import com.nhaarman.bravo.testing.TestContext.Companion.testWith
 import org.junit.jupiter.api.Test
 
 class NotesAppTest {
@@ -14,7 +15,7 @@ class NotesAppTest {
     val context = TestContext.create(navigator, NotesAppTestContainerProvider)
 
     @Test
-    fun `creating an item`() = with(context) {
+    fun `creating an item`() = testWith(context) {
         itemList {
             verifyVisible(emptyList())
             requestCreateItem()
@@ -31,7 +32,7 @@ class NotesAppTest {
     }
 
     @Test
-    fun `editing an item`() = with(context) {
+    fun `editing an item`() = testWith(context) {
         itemList {
             verifyVisible(emptyList())
             requestCreateItem()
@@ -59,7 +60,7 @@ class NotesAppTest {
     }
 
     @Test
-    fun `deleting an item`() = with(context) {
+    fun `deleting an item`() = testWith(context) {
         itemList {
             verifyVisible(emptyList())
             requestCreateItem()
@@ -78,7 +79,7 @@ class NotesAppTest {
     }
 
     @Test
-    fun `creating multiple items`() = with(context) {
+    fun `creating multiple items`() = testWith(context) {
         itemList {
             verifyVisible(emptyList())
             requestCreateItem()
