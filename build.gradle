@@ -40,6 +40,12 @@ subprojects {
     project.apply from: "$rootDir/dependencies.gradle"
 
     afterEvaluate { project ->
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+            kotlinOptions {
+                freeCompilerArgs += ["-progressive"]
+            }
+        }
+
         if (project.hasProperty("android")) {
             android {
                 compileSdkVersion(28)
