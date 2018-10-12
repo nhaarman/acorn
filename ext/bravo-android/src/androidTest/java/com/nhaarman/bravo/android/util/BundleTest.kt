@@ -21,7 +21,6 @@ package com.nhaarman.bravo.android.util
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.SparseArray
-import androidx.core.util.set
 import com.nhaarman.bravo.state.NavigatorState
 import com.nhaarman.bravo.state.containerState
 import com.nhaarman.bravo.state.navigatorState
@@ -50,6 +49,21 @@ class BundleTest {
         /* Given */
         val state = navigatorState {
             it["transformToBravo"] = 3.14
+        }
+
+        /* When */
+        val result = state.toBundle().toNavigatorState()
+
+        /* Then */
+        expect(result).toBe(state)
+    }
+
+    @Test
+    fun toAndFromBundle_multipleKeys() {
+        /* Given */
+        val state = navigatorState {
+            it["key1"] = 3.14
+            it["key2"] = "test"
         }
 
         /* When */
@@ -100,7 +114,7 @@ class BundleTest {
     fun toAndFromBundle_sparseParcelableArray() {
         /* Given */
         val array = SparseArray<Parcelable>(3)
-        array[0] = MyParcelable(3)
+        array.put(0, MyParcelable(3))
 
         val state = navigatorState {
             it.setUnchecked("array", array)
