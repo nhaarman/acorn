@@ -20,25 +20,14 @@ package com.nhaarman.bravo.samples.hellostartactivity
 
 import android.content.Intent
 import android.net.Uri
-import com.nhaarman.bravo.android.presentation.IntentProvider
+import com.nhaarman.bravo.android.presentation.ExternalSceneIntentProvider
 import com.nhaarman.bravo.navigation.TransitionData
-import com.nhaarman.bravo.presentation.Container
-import com.nhaarman.bravo.presentation.Scene
 
-object MapsIntentProvider : IntentProvider {
+object MapsIntentProvider : ExternalSceneIntentProvider<MapsScene>(MapsScene::class) {
 
-    override fun intentFor(scene: Scene<out Container>, data: TransitionData?): Intent? {
-        if (scene !is MapsScene) return null
-
+    override fun intentFor(scene: MapsScene, data: TransitionData?): Intent? {
         return Intent(Intent.ACTION_VIEW).apply {
             setData(Uri.parse("https://www.google.com/maps/search/?api=1&query=taj+mahal+agra"))
         }
-    }
-
-    override fun onActivityResult(scene: Scene<out Container>, resultCode: Int, data: Intent?): Boolean {
-        if (scene !is MapsScene) return false
-
-        scene.finished()
-        return true
     }
 }
