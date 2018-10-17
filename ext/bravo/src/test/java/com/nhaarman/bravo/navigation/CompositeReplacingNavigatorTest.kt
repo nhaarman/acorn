@@ -563,6 +563,15 @@ internal class CompositeReplacingNavigatorTest {
         }
 
         @Test
+        fun `onBackPressed for inactive navigator destroys parent navigator`() {
+            /* When */
+            navigator.onBackPressed()
+
+            /* When */
+            expect(navigator.isDestroyed()).toBe(true)
+        }
+
+        @Test
         fun `onBackPressed for inactive navigator does not stop child navigator`() {
             /* When */
             navigator.onBackPressed()
@@ -584,6 +593,18 @@ internal class CompositeReplacingNavigatorTest {
                 verify().onStop()
                 verify().onDestroy()
             }
+        }
+
+        @Test
+        fun `onBackPressed for active navigator destroys parent navigator`() {
+            /* Given */
+            navigator.onStart()
+
+            /* When */
+            navigator.onBackPressed()
+
+            /* When */
+            expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test

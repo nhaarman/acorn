@@ -163,7 +163,7 @@ abstract class CompositeReplacingNavigator(
     @CallSuper
     override fun finished() {
         v(this.javaClass.simpleName, "Finished")
-        state.finished()
+        state = state.finish()
     }
 
     @CallSuper
@@ -198,7 +198,6 @@ abstract class CompositeReplacingNavigator(
         abstract fun finish(): LifecycleState
 
         abstract fun scene(scene: Scene<out Container>, data: TransitionData?)
-        abstract fun finished()
 
         abstract fun replace(navigator: Navigator): LifecycleState
 
@@ -251,11 +250,6 @@ abstract class CompositeReplacingNavigator(
                 this.activeScene = scene
             }
 
-            override fun finished() {
-                navigator.onDestroy()
-                listeners.forEach { it.finished() }
-            }
-
             override fun replace(navigator: Navigator): LifecycleState {
                 return Inactive(navigator, listeners, activeScene)
             }
@@ -303,12 +297,6 @@ abstract class CompositeReplacingNavigator(
                 listeners.onEach { it.scene(scene, data) }
             }
 
-            override fun finished() {
-                navigator.onStop()
-                navigator.onDestroy()
-                listeners.forEach { it.finished() }
-            }
-
             override fun replace(navigator: Navigator): LifecycleState {
                 this.navigator.onStop()
                 navigator.onStart()
@@ -353,9 +341,6 @@ abstract class CompositeReplacingNavigator(
             }
 
             override fun scene(scene: Scene<out Container>, data: TransitionData?) {
-            }
-
-            override fun finished() {
             }
 
             override fun replace(navigator: Navigator): LifecycleState {
