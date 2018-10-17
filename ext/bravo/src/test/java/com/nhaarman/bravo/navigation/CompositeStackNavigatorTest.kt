@@ -856,6 +856,15 @@ internal class CompositeStackNavigatorTest {
         }
 
         @Test
+        fun `popping from a single item stack for inactive navigator destroys parent navigator`() {
+            /* When */
+            navigator.pop()
+
+            /* When */
+            expect(navigator.isDestroyed()).toBe(true)
+        }
+
+        @Test
         fun `popping from a single item stack for inactive navigator does not stop child navigator`() {
             /* When */
             navigator.pop()
@@ -889,6 +898,18 @@ internal class CompositeStackNavigatorTest {
                 verify().onStop()
                 verify().onDestroy()
             }
+        }
+
+        @Test
+        fun `popping from a single item stack for active navigator destroys parent navigator`() {
+            /* Given */
+            navigator.onStart()
+
+            /* When */
+            navigator.pop()
+
+            /* When */
+            expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test
@@ -993,6 +1014,15 @@ internal class CompositeStackNavigatorTest {
         }
 
         @Test
+        fun `onBackPressed from a single item stack for inactive navigator destroys parent navigator`() {
+            /* When */
+            navigator.onBackPressed()
+
+            /* When */
+            expect(navigator.isDestroyed()).toBe(true)
+        }
+
+        @Test
         fun `onBackPressed from a single item stack for inactive navigator does not stop child navigator`() {
             /* When */
             navigator.onBackPressed()
@@ -1026,6 +1056,18 @@ internal class CompositeStackNavigatorTest {
                 verify().onStop()
                 verify().onDestroy()
             }
+        }
+
+        @Test
+        fun `onBackPressed from a single item stack for active navigator destroys parent navigator`() {
+            /* Given */
+            navigator.onStart()
+
+            /* When */
+            navigator.onBackPressed()
+
+            /* When */
+            expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test
