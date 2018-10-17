@@ -16,11 +16,20 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.samples.hellostartactivity
+package com.nhaarman.bravo.android.presentation
 
-import com.nhaarman.bravo.android.presentation.ExternalScene
+import com.nhaarman.bravo.presentation.Scene
 
-class MapsScene(listener: Events) : ExternalScene(listener) {
+abstract class ExternalScene(
+    private val listener: Events
+) : Scene<Nothing> {
 
-    interface Events : ExternalScene.Events
+    fun finished() {
+        listener.finished()
+    }
+
+    interface Events {
+
+        fun finished()
+    }
 }

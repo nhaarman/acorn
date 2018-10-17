@@ -24,6 +24,7 @@ import android.content.Intent
 import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import kotlin.reflect.KClass
 
 /**
  * Provides [Intent] instances for starting external Activities.
@@ -86,6 +87,34 @@ class ComposingIntentProvider private constructor(
         fun from(vararg intentProviders: IntentProvider): ComposingIntentProvider {
             return ComposingIntentProvider(intentProviders.asSequence())
         }
+    }
+}
+
+/**
+ * An [IntentProvider] that facilitates intent providing for [ExternalScene]
+ * instances.
+ */
+abstract class ExternalSceneIntentProvider<T : ExternalScene>(
+    private val sceneClass: Class<T>
+) : IntentProvider {
+
+    constructor(sceneClass: KClass<T>) : this(sceneClass.java)
+
+    override fun intentFor(scene: Scene<out Container>, data: TransitionData?): Intent? {
+        if (scene.javaClass != sceneClass) return null
+
+        @Suppress("UNCHECKED_CAST")
+        return intentFor(scene as T, data)
+    }
+
+    abstract fun intentFor(scene: T, data: TransitionData?): Intent?
+
+    override fun onActivityResult(scene: Scene<out Container>, resultCode: Int, data: Intent?): Boolean {
+        if (scene.javaClass != sceneClass) return false
+
+        (scene as ExternalScene).finished()
+
+        return true
     }
 }
 
