@@ -126,7 +126,7 @@ abstract class CompositeStackNavigator(
      * have no effect.
      */
     fun push(navigator: Navigator) {
-        v("CompositeStackNavigator", "push $navigator")
+        v(this.javaClass.simpleName, "push $navigator")
 
         addListenerTo(navigator)
         state = state.push(navigator)
@@ -149,7 +149,7 @@ abstract class CompositeStackNavigator(
      * have no effect.
      */
     fun pop() {
-        v("CompositeStackNavigator", "pop")
+        v(this.javaClass.simpleName, "pop")
 
         state = state.pop()
     }
@@ -169,7 +169,7 @@ abstract class CompositeStackNavigator(
      * have no effect.
      */
     fun replace(navigator: Navigator) {
-        v("CompositeStackNavigator", "replace $navigator")
+        v(this.javaClass.simpleName, "replace $navigator")
 
         addListenerTo(navigator)
         state = state.replace(navigator)
@@ -188,32 +188,32 @@ abstract class CompositeStackNavigator(
      * effect.
      */
     fun finish() {
-        v("CompositeStackNavigator", "finish")
+        v(this.javaClass.simpleName, "finish")
 
         state = state.finish()
     }
 
     @CallSuper
     override fun onStart() {
-        v("CompositeStackNavigator", "onStart")
+        v(this.javaClass.simpleName, "onStart")
         state = state.start()
     }
 
     @CallSuper
     override fun onStop() {
-        v("CompositeStackNavigator", "onStop")
+        v(this.javaClass.simpleName, "onStop")
         state = state.stop()
     }
 
     @CallSuper
     override fun onDestroy() {
-        v("CompositeStackNavigator", "onDestroy")
+        v(this.javaClass.simpleName, "onDestroy")
         state = state.destroy()
     }
 
     @CallSuper
     override fun scene(scene: Scene<out Container>, data: TransitionData?) {
-        v("CompositeStackNavigator", "Scene change: $scene, $data")
+        v(this.javaClass.simpleName, "Scene change: $scene, $data")
         state.scene(scene, data)
     }
 
@@ -224,7 +224,7 @@ abstract class CompositeStackNavigator(
 
     @CallSuper
     override fun onBackPressed(): Boolean {
-        v("CompositeStackNavigator", "onBackPressed")
+        v(this.javaClass.simpleName, "onBackPressed")
         return state.onBackPressed()
     }
 

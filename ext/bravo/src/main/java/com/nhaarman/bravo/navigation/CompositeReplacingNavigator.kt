@@ -138,37 +138,37 @@ abstract class CompositeReplacingNavigator(
 
     @CallSuper
     override fun onStart() {
-        v("CompositeReplacingNavigator", "onStart")
+        v(this.javaClass.simpleName, "onStart")
         state = state.start()
     }
 
     @CallSuper
     override fun onStop() {
-        v("CompositeReplacingNavigator", "onStop")
+        v(this.javaClass.simpleName, "onStop")
         state = state.stop()
     }
 
     @CallSuper
     override fun onDestroy() {
-        v("CompositeReplacingNavigator", "onDestroy")
+        v(this.javaClass.simpleName, "onDestroy")
         state = state.destroy()
     }
 
     @CallSuper
     override fun scene(scene: Scene<out Container>, data: TransitionData?) {
-        v("CompositeReplacingNavigator", "Scene change: $scene, $data")
+        v(this.javaClass.simpleName, "Scene change: $scene, $data")
         state.scene(scene, data)
     }
 
     @CallSuper
     override fun finished() {
-        v("CompositeReplacingNavigator", "Finished")
+        v(this.javaClass.simpleName, "Finished")
         state.finished()
     }
 
     @CallSuper
     override fun onBackPressed(): Boolean {
-        v("CompositeReplacingNavigator", "onBackPressed")
+        v(this.javaClass.simpleName, "onBackPressed")
         return state.onBackPressed()
     }
 
