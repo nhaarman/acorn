@@ -31,7 +31,7 @@ internal inline fun View.doOnPreDraw(crossinline f: () -> Unit) {
             f()
             when {
                 viewTreeObserver.isAlive -> viewTreeObserver.removeOnPreDrawListener(this)
-                else -> viewTreeObserver.removeOnPreDrawListener(this)
+                else -> this@doOnPreDraw.viewTreeObserver.removeOnPreDrawListener(this)
             }
             return true
         }
