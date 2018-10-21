@@ -23,6 +23,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import com.nhaarman.bravo.OnBackPressListener
+import com.nhaarman.bravo.android.internal.d
 import com.nhaarman.bravo.android.internal.v
 import com.nhaarman.bravo.android.internal.w
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
@@ -124,6 +125,8 @@ class BravoActivityDelegate private constructor(
         private var lastScene: Scene<*>? = null
 
         override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+            d("BravoActivityDelegate", "New active scene: $scene")
+
             lastScene = scene
 
             val transformedScene = sceneTransformer.transform(scene, data)
