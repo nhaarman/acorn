@@ -33,7 +33,9 @@ class MainActivity : BravoAppCompatActivity() {
 
     override fun provideViewFactory(): ViewFactory {
         return bindViews {
-            bind(defaultKey<FirstScene>(), R.layout.first_scene)
+            bindView(defaultKey<FirstScene>(), R.layout.first_scene) {
+                FirstSceneViewController(it)
+            }
         }
     }
 

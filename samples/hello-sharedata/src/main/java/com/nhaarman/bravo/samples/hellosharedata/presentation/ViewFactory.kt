@@ -22,14 +22,21 @@ import com.nhaarman.bravo.android.presentation.bindViews
 import com.nhaarman.bravo.presentation.SceneKey
 import com.nhaarman.bravo.samples.hellosharedata.R
 import com.nhaarman.bravo.samples.hellosharedata.presentation.picturedetail.PictureDetailScene
+import com.nhaarman.bravo.samples.hellosharedata.presentation.picturedetail.PictureDetailViewController
 import com.nhaarman.bravo.samples.hellosharedata.presentation.picturegallery.PictureGalleryScene
+import com.nhaarman.bravo.samples.hellosharedata.presentation.picturegallery.PictureGalleryViewController
 
 val viewFactory = bindViews {
 
-    bind(SceneKey.defaultKey<PictureGalleryScene>(),
-        R.layout.picturegallery_scene
+    bind(
+        SceneKey.defaultKey<PictureGalleryScene>(),
+        R.layout.picturegallery_scene,
+        ::PictureGalleryViewController
     )
-    bind(SceneKey.defaultKey<PictureDetailScene>(),
-        R.layout.picturedetail_scene
+
+    bind(
+        SceneKey.defaultKey<PictureDetailScene>(),
+        R.layout.picturedetail_scene,
+        ::PictureDetailViewController
     )
 }

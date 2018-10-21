@@ -42,7 +42,11 @@ class MainActivity : BravoActivity() {
 
     override fun provideViewFactory(): ViewFactory {
         return bindViews {
-            bind(defaultKey<HelloWorldScene>(), R.layout.hello_world)
+            bind(
+                defaultKey<HelloWorldScene>(),
+                R.layout.hello_world,
+                ::HelloWorldViewController
+            )
         }
     }
 }

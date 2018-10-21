@@ -21,11 +21,10 @@ package com.nhaarman.bravo.notesapp.android.ui.transition
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import androidx.core.animation.addListener
-import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.util.inflateView
 import com.nhaarman.bravo.notesapp.android.R
-import com.nhaarman.bravo.notesapp.android.ui.createitem.CreateItemView
+import com.nhaarman.bravo.notesapp.android.ui.createitem.CreateItemViewController
 import kotlinx.android.synthetic.main.itemlist_scene.view.*
 
 /**
@@ -49,19 +48,19 @@ object ItemListCreateItemTransition : Transition {
 
         anim.duration = parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
         anim.addListener(onEnd = {
-            val viewResult = ViewResult.from(parent, CreateItemView(parent))
+            val viewController = CreateItemViewController(parent)
 
             parent.removeView(itemListLayout)
             val createItemLayout = parent.inflateView(R.layout.createitem_scene)
             parent.addView(createItemLayout, 0)
-            callback.attach(viewResult)
+            callback.attach(viewController)
 
             view.animate()
                 .alpha(0f)
                 .setDuration(parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
                 .withEndAction {
                     parent.removeView(view)
-                    callback.onComplete(viewResult)
+                    callback.onComplete(viewController)
                 }
         })
         anim.start()

@@ -22,6 +22,6 @@ import com.nhaarman.bravo.android.presentation.bindViews
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
 val viewFactory = bindViews {
-    bind(defaultKey<FirstScene>(), R.layout.first_scene)
-    bind(defaultKey<SecondScene>(), R.layout.second_scene)
+    bind(defaultKey<FirstScene>(), R.layout.first_scene, ::FirstSceneViewController)
+    bind(defaultKey<SecondScene>(), R.layout.second_scene, ::SecondSceneViewController)
 }

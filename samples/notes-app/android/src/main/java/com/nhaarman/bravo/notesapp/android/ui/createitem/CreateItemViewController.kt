@@ -18,20 +18,19 @@
 
 package com.nhaarman.bravo.notesapp.android.ui.createitem
 
-import android.view.ViewGroup
+import android.view.View
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar
 import com.jakewharton.rxbinding2.widget.textChanges
-import com.nhaarman.bravo.state.ContainerState
-import com.nhaarman.bravo.android.presentation.RestorableLayoutContainer
+import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.notesapp.android.R
 import com.nhaarman.bravo.notesapp.presentation.createitem.CreateItemContainer
+import com.nhaarman.bravo.state.ContainerState
 import io.reactivex.Observable
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.createitem_scene.*
 
-class CreateItemView(
-    override val containerView: ViewGroup
-) : CreateItemContainer, LayoutContainer, RestorableLayoutContainer {
+class CreateItemViewController(
+    override val view: View
+) : CreateItemContainer, RestorableViewController {
 
     private var stateRestored = false
 
@@ -61,9 +60,5 @@ class CreateItemView(
     override fun restoreInstanceState(bundle: ContainerState) {
         super.restoreInstanceState(bundle)
         stateRestored = true
-    }
-
-    override fun toString(): String {
-        return "CreateItemView@${Integer.toHexString(hashCode())}"
     }
 }

@@ -23,12 +23,11 @@ import android.support.constraint.ConstraintLayout
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
-import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.android.transition.FadeOutToBottomTransition
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.util.inflate
 import com.nhaarman.bravo.notesapp.android.R
-import com.nhaarman.bravo.notesapp.android.ui.itemlist.ItemListView
+import com.nhaarman.bravo.notesapp.android.ui.itemlist.ItemListViewController
 import kotlinx.android.synthetic.main.edititem_scene.view.*
 
 /**
@@ -44,9 +43,9 @@ object EditItemItemListTransition : Transition {
         val clickedItemViewData = editItemLayout.tag as? ClickedItemViewData
 
         if (clickedItemViewData == null) {
-            FadeOutToBottomTransition { _ ->
+            FadeOutToBottomTransition {
                 val view = parent.inflate<ConstraintLayout>(R.layout.itemlist_scene)
-                ViewResult.from(view, ItemListView(view))
+                ItemListViewController(view)
             }.execute(parent, callback)
             return
         }
@@ -54,8 +53,8 @@ object EditItemItemListTransition : Transition {
         val itemListLayout = parent.inflate<ConstraintLayout>(R.layout.itemlist_scene)
         parent.addView(itemListLayout, 0)
 
-        val viewResult = ViewResult.from(parent, ItemListView(parent))
-        callback.attach(viewResult)
+        val viewController = ItemListViewController(parent)
+        callback.attach(viewController)
 
         val shortAnimationDuration = parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
 
@@ -65,7 +64,7 @@ object EditItemItemListTransition : Transition {
 
         editItemLayout.editText.visibility = View.INVISIBLE
 
-        parent.doOnPreDraw { _ ->
+        parent.doOnPreDraw {
             editItemToolbar.animate()
                 .translationY((-editItemToolbar.height).toFloat())
                 .setDuration(shortAnimationDuration)
@@ -84,7 +83,7 @@ object EditItemItemListTransition : Transition {
                         .setDuration(shortAnimationDuration)
                         .withEndAction {
                             parent.removeView(editItemLayout)
-                            callback.onComplete(viewResult)
+                            callback.onComplete(viewController)
                         }
                 }
         }

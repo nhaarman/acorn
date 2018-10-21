@@ -18,14 +18,13 @@
 
 package com.nhaarman.bravo.samples.hellonavigation
 
-import android.content.Context
-import android.util.AttributeSet
-import android.widget.FrameLayout
+import android.view.View
+import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.navigation.Navigator
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
-import kotlinx.android.synthetic.main.second_scene.view.*
+import kotlinx.android.synthetic.main.second_scene.*
 
 /**
  * A Scene that shows a button to navigate to the first Scene.
@@ -58,11 +57,9 @@ interface SecondSceneContainer : Container {
     fun onFirstSceneClicked(f: () -> Unit)
 }
 
-class SecondSceneView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), SecondSceneContainer {
+class SecondSceneViewController(
+    override val view: View
+) : RestorableViewController, SecondSceneContainer {
 
     override fun onFirstSceneClicked(f: () -> Unit) {
         firstSceneButton.setOnClickListener { f() }

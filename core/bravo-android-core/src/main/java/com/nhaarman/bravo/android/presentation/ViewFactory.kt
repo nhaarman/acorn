@@ -18,17 +18,22 @@
 
 package com.nhaarman.bravo.android.presentation
 
+import android.view.View
 import android.view.ViewGroup
+import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**
- * A factory interface that can create view instances for [Scene]s.
+ * A factory interface that can create [Container] instances for [Scene]s.
+ *
+ * This interface uses the [ViewController] interface to be able to provide both
+ * the attachable [Container] and the [View] to be displayed to the user.
  */
 interface ViewFactory {
 
     /**
-     * Creates a [ViewResult] for given Scene key.
+     * Creates a [ViewController] for given Scene key.
      *
      * @param sceneKey The key of the [Scene] instance for which the
      * corresponding view should be created.
@@ -37,8 +42,8 @@ interface ViewFactory {
      * to the parent itself, but this can be used to generate the LayoutParams
      * of the view.
      *
-     * @return The resulting [ViewResult]. `null` if no result could be created
+     * @return The resulting [ViewController]. `null` if no result could be created
      * for given [sceneKey].
      */
-    fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewResult?
+    fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController?
 }

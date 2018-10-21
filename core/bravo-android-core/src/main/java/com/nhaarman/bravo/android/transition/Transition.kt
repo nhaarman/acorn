@@ -19,7 +19,7 @@
 package com.nhaarman.bravo.android.transition
 
 import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.ViewResult
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.presentation.Scene
 
 /**
@@ -54,25 +54,25 @@ interface Transition {
     interface Callback {
 
         /**
-         * An optional function to attach given [viewResult] to the [Scene] at
-         * any time during the transition.
+         * An optional function to attach given [viewController] to the [Scene]
+         * at any time during the transition.
          *
          * When invoking this method, this must be done before [onComplete],
          * otherwise its invocation is ignored.
          * If this method is not invoked at all, [onComplete] will take care of
          * attaching the view to the [Scene].
          *
-         * @param viewResult The [ViewResult] which contains the View that is
-         * shown and the instance that can be attached to the [Scene].
+         * @param viewController The [ViewController] which contains the View
+         * that is shown and the instance that can be attached to the [Scene].
          */
-        fun attach(viewResult: ViewResult)
+        fun attach(viewController: ViewController)
 
         /**
          * Implementers of [Transition.execute] must invoke this method when the
          * transition is finished. If no call to [attach] was made before
-         * invoking this method, given [viewResult] will be attached to the
+         * invoking this method, given [viewController] will be attached to the
          * [Scene].
          */
-        fun onComplete(viewResult: ViewResult)
+        fun onComplete(viewController: ViewController)
     }
 }

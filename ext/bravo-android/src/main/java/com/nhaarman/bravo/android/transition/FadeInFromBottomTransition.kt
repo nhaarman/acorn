@@ -23,7 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.R
 import com.nhaarman.bravo.android.internal.applyWindowBackground
-import com.nhaarman.bravo.android.presentation.ViewResult
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.transition.internal.doOnPreDraw
 
 /**
@@ -33,13 +33,13 @@ import com.nhaarman.bravo.android.transition.internal.doOnPreDraw
  * wil be removed.
  */
 class FadeInFromBottomTransition(
-    private val view: (ViewGroup) -> ViewResult
+    private val viewController: (ViewGroup) -> ViewController
 ) : Transition {
 
     override fun execute(parent: ViewGroup, callback: Transition.Callback) {
         val originalChildren = (0..parent.childCount).map { parent.getChildAt(it) }
 
-        val newViewResult = view(parent)
+        val newViewResult = viewController(parent)
 
         val newView = newViewResult.view
         parent.addView(newView)

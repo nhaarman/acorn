@@ -23,8 +23,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.R
 import com.nhaarman.bravo.android.internal.applyWindowBackground
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.presentation.ViewFactory
-import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.android.transition.internal.doOnPreDraw
 import com.nhaarman.bravo.presentation.Scene
 
@@ -40,7 +40,7 @@ import com.nhaarman.bravo.presentation.Scene
  * wil be removed.
  */
 class FadeOutToBottomTransition(
-    private val view: (ViewGroup) -> ViewResult
+    private val viewController: (ViewGroup) -> ViewController
 ) : Transition {
 
     override fun execute(parent: ViewGroup, callback: Transition.Callback) {
@@ -48,12 +48,12 @@ class FadeOutToBottomTransition(
         val originalChildren = (0..parent.childCount).map { parent.getChildAt(it) }
         val originalView = originalChildren.firstOrNull()
 
-        val newViewResult = view(parent)
-        val newView = newViewResult.view
+        val newViewController = viewController(parent)
+        val newView = newViewController.view
 
         if (originalView == null) {
             parent.addView(newView)
-            callback.onComplete(newViewResult)
+            callback.onComplete(newViewController)
             return
         }
 
@@ -61,7 +61,7 @@ class FadeOutToBottomTransition(
         originalView.translationZ = parent.resources.getDimension(R.dimen.bravo_fadeinfrombottomtransition_translationz)
         if (originalView.background == null) originalView.applyWindowBackground()
 
-        callback.attach(newViewResult)
+        callback.attach(newViewController)
 
         parent.doOnPreDraw {
             originalView.animate()
@@ -72,7 +72,7 @@ class FadeOutToBottomTransition(
                 .withEndAction {
                     originalChildren.forEach { child -> parent.removeView(child) }
 
-                    callback.onComplete(newViewResult)
+                    callback.onComplete(newViewController)
                 }
         }
     }

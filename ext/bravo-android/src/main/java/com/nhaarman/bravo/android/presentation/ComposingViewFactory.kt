@@ -31,7 +31,7 @@ class ComposingViewFactory private constructor(
     private val sources: List<ViewFactory>
 ) : ViewFactory {
 
-    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewResult? {
+    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController? {
         return sources
             .asSequence()
             .mapNotNull { it.viewFor(sceneKey, parent) }

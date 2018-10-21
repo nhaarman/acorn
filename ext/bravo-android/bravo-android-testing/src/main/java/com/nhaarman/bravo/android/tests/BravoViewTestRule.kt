@@ -35,7 +35,7 @@ class BravoViewTestRule<C : Container>(
 
     @Suppress("UNCHECKED_CAST")
     val container: C
-        get() = viewResult.container as C
+        get() = viewResult as C
 
     override fun afterActivityLaunched() {
         runOnUiThread { activity.setContentView(viewResult.view) }

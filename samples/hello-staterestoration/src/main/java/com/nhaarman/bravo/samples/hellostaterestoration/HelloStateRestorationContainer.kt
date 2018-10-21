@@ -18,13 +18,11 @@
 
 package com.nhaarman.bravo.samples.hellostaterestoration
 
-import android.content.Context
-import android.util.AttributeSet
 import android.view.View
-import android.widget.FrameLayout
-import com.nhaarman.bravo.android.presentation.RestorableView
+import com.nhaarman.bravo.android.presentation.RestorableViewController
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.presentation.RestorableContainer
-import kotlinx.android.synthetic.main.myscene.view.*
+import kotlinx.android.synthetic.main.myscene.*
 
 /**
  * An interface describing the view.
@@ -45,18 +43,16 @@ interface HelloStateRestorationContainer : RestorableContainer {
 }
 
 /**
- * A [View] implementation implementing the [HelloStateRestorationContainer].
+ * A [ViewController] implementation implementing the
+ * [HelloStateRestorationContainer].
  *
- * Implements [RestorableView] to use a default implementation of saving and
- * restoring view state.
+ * Implements [RestorableViewController] to use a default implementation of
+ * saving and restoring view state.
  */
-class HelloStateRestorationView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr),
-    HelloStateRestorationContainer,
-    RestorableView {
+class HelloStateRestorationViewController(
+    override val view: View
+) : HelloStateRestorationContainer,
+    RestorableViewController {
 
     override var counterValue: Int = 0
         set(value) {
