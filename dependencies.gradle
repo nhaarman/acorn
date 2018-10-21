@@ -33,7 +33,7 @@ dependencyManagement {
         dependency "com.squareup.picasso:picasso:2.71828"
 
         dependency "com.nhaarman:expect.kt:1.0.0"
-        dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC2"
+        dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC3"
         dependency "org.junit.jupiter:junit-jupiter-api:5.3.1"
         dependency "org.junit.jupiter:junit-jupiter-engine:5.3.1"
 
@@ -46,7 +46,7 @@ dependencyManagement {
         dependency "com.android.support.test:orchestrator:1.0.2"
         dependency "com.android.support.test.uiautomator:uiautomator-v18:2.1.3"
 
-        def androidToolsVersion = "26.3.0-alpha13"
+        def androidToolsVersion = "26.4.0-alpha01"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"
