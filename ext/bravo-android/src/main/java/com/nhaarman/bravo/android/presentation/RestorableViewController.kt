@@ -18,6 +18,8 @@
 
 package com.nhaarman.bravo.android.presentation
 
+import android.content.Context
+import android.content.res.Resources
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.View
@@ -26,31 +28,57 @@ import com.nhaarman.bravo.presentation.RestorableContainer
 import com.nhaarman.bravo.state.ContainerState
 import com.nhaarman.bravo.state.containerState
 import com.nhaarman.bravo.state.get
+import kotlinx.android.extensions.LayoutContainer
 
 /**
  * A helper interface that offers default implementations for [View] state saving
  * and restoration.
  *
- * Views that implement a [RestorableContainer] need to manually
- * implement saving the hierarchy state. To make this easier, you can implement
- * this interface instead:
+ * Classes that utilize the [ViewController] interface and implement
+ * [RestorableContainer] need to manually implement saving the hierarchy
+ * state. To make this easier, you can implement this interface instead:
  *
  * ```
- * interface MyContainer: Container, StateRestorable
+ * interface MyContainer: RestorableContainer
  *
- * class MyView : View(...), MyContainer, RestorableView
+ * class MyViewController : MyContainer, RestorableViewController
  * ```
- *
- * Note: Classes implementing this interface *must* also extend [View].
  */
-interface RestorableView : RestorableContainer {
+interface RestorableViewController
+    : ViewController, RestorableContainer, LayoutContainer {
+
+    /**
+     * This property is included from the [LayoutContainer] interface.
+     * To ensure a uniform API, we hide this property.
+     */
+    @Deprecated("Use view instead", level = DeprecationLevel.HIDDEN)
+    override val containerView: View?
+        get() = view
+
+    /**
+     * A handle to the [Context] the [view] is running in.
+     * @see [View.getContext].
+     */
+    val context: Context
+        get() = view.context
+
+    /**
+     * A handle to the [Resources] associated to the [view].
+     * @see [View.getResources].
+     */
+    val resources: Resources
+        get() = view.resources
 
     override fun saveInstanceState() = containerState {
-        it.hierarchyState = (this as View).saveHierarchyState()
+        it.hierarchyState = view.saveHierarchyState()
     }
 
     override fun restoreInstanceState(bundle: ContainerState) {
-        bundle.hierarchyState?.let { (this as View).restoreHierarchyState(it) }
+        bundle.hierarchyState?.let { view.restoreHierarchyState(it) }
+    }
+
+    fun getHierarchyState(bundle: ContainerState): SparseArray<Parcelable>? {
+        return bundle.hierarchyState
     }
 
     companion object {

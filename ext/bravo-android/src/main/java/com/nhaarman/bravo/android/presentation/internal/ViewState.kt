@@ -21,8 +21,8 @@ package com.nhaarman.bravo.android.presentation.internal
 import android.app.Activity
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.internal.v
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.presentation.ViewFactory
-import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.navigation.TransitionData
@@ -80,10 +80,10 @@ internal sealed class ViewState {
          * Creates the initial [ViewState].
          *
          * @param root The [ViewGroup] to show Scene views in, usually
-         *             [android.R.id.content].
+         * [android.R.id.content].
          * @param viewFactory A [ViewFactory] that provides views for Scenes.
          * @param transitionFactory a [TransitionFactory] that provides
-         *        [Transition] instances for transition animations.
+         * [Transition] instances for transition animations.
          */
         fun create(
             root: ViewGroup,
@@ -166,7 +166,7 @@ internal class IdleWithScene(
         root.removeAllViews()
         root.addView(result.view)
 
-        scene.forceAttach(result.container)
+        scene.forceAttach(result)
         return StartedWithScene(
             root,
             viewFactory,
@@ -241,7 +241,7 @@ internal class Started(
 
         root.removeAllViews()
         root.addView(result.view)
-        scene.forceAttach(result.container)
+        scene.forceAttach(result)
 
         return StartedWithScene(
             root,
@@ -261,14 +261,15 @@ internal class Started(
  * application is in the foreground.
  *
  * @param currentScene The active [Scene].
- * @param currentView The view, must be attached to [currentScene].
+ * @param currentViewController The [ViewController], must be attached to
+ * [currentScene].
  */
 internal class StartedWithScene(
     private val root: ViewGroup,
     private val viewFactory: ViewFactory,
     private val transitionFactory: TransitionFactory,
     private var currentScene: Scene<out Container>,
-    private var currentView: ViewResult
+    private var currentViewController: ViewController
 ) : ViewState() {
 
     private var transitionCallback: CancellableTransitionCallback? = null
@@ -293,7 +294,7 @@ internal class StartedWithScene(
             "StartedWithScene",
             "Activity stopped, detaching container from $currentScene."
         )
-        currentScene.forceDetach(currentView.container)
+        currentScene.forceDetach(currentViewController)
         transitionCallback = null
 
         return StoppedWithScene(
@@ -301,7 +302,7 @@ internal class StartedWithScene(
             viewFactory,
             transitionFactory,
             currentScene,
-            currentView
+            currentViewController
         )
     }
 
@@ -326,7 +327,7 @@ internal class StartedWithScene(
             "ViewState.StartedWithScene",
             "Starting transition from $currentScene to $scene."
         )
-        currentScene.forceDetach(currentView.container)
+        currentScene.forceDetach(currentViewController)
 
         val callback = MyCallback(scene).also { transitionCallback = it }
         transitionFactory.transitionFor(currentScene, scene, data)
@@ -369,7 +370,7 @@ internal class StartedWithScene(
         }
 
         private var attached = false
-        override fun attach(viewResult: ViewResult) {
+        override fun attach(viewController: ViewController) {
             if (done) return
             if (attached) return
 
@@ -380,11 +381,11 @@ internal class StartedWithScene(
             attached = true
 
             currentScene = newScene
-            currentView = viewResult
-            newScene.forceAttach(viewResult.container)
+            currentViewController = viewController
+            newScene.forceAttach(viewController)
         }
 
-        override fun onComplete(viewResult: ViewResult) {
+        override fun onComplete(viewController: ViewController) {
             if (done) return
             done = true
 
@@ -396,8 +397,8 @@ internal class StartedWithScene(
                     "Container not attached to $newScene; attaching."
                 )
                 currentScene = newScene
-                currentView = viewResult
-                currentScene.forceAttach(viewResult.container)
+                currentViewController = viewController
+                currentScene.forceAttach(viewController)
             }
 
             scheduledScene?.let { (scene, data) ->
@@ -425,7 +426,7 @@ internal class StoppedWithScene(
     private val viewFactory: ViewFactory,
     private val transitionFactory: TransitionFactory,
     private val scene: Scene<out Container>,
-    private val view: ViewResult
+    private val viewController: ViewController
 ) : ViewState() {
 
     /**
@@ -435,13 +436,13 @@ internal class StoppedWithScene(
     override fun started(): ViewState {
         v("StoppedWithScene", "Activity started, attaching container to $scene.")
 
-        scene.forceAttach(view.container)
+        scene.forceAttach(viewController)
         return StartedWithScene(
             root,
             viewFactory,
             transitionFactory,
             scene,
-            view
+            viewController
         )
     }
 

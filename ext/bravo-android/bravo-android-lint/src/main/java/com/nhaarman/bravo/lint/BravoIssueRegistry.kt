@@ -28,7 +28,6 @@ class BravoIssueRegistry : IssueRegistry() {
 
     override val issues: List<Issue>
         get() = listOf(
-            RestorableViewUsageDetector.issue,
             RxSceneDisposablesUsageDetector.issue,
             RestoreSceneDetector.issue,
             RestoreNavigatorDetector.issue

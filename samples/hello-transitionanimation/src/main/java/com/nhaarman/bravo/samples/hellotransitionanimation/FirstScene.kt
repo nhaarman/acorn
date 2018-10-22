@@ -18,12 +18,11 @@
 
 package com.nhaarman.bravo.samples.hellotransitionanimation
 
-import android.content.Context
-import android.util.AttributeSet
-import android.widget.FrameLayout
+import android.view.View
+import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
-import kotlinx.android.synthetic.main.first_scene.view.*
+import kotlinx.android.synthetic.main.first_scene.*
 
 class FirstScene(
     private val listener: Events
@@ -44,11 +43,9 @@ interface FirstSceneContainer : Container {
     fun onSecondSceneClicked(f: () -> Unit)
 }
 
-class FirstSceneView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), FirstSceneContainer {
+class FirstSceneViewController(
+    override val view: View
+) : RestorableViewController, FirstSceneContainer {
 
     override fun onSecondSceneClicked(f: () -> Unit) {
         secondSceneButton.setOnClickListener { f() }

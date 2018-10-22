@@ -18,20 +18,19 @@
 
 package com.nhaarman.bravo.notesapp.android.ui.edititem
 
-import android.view.ViewGroup
+import android.view.View
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar
 import com.jakewharton.rxbinding2.widget.textChanges
-import com.nhaarman.bravo.android.presentation.RestorableLayoutContainer
+import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.notesapp.android.R
 import com.nhaarman.bravo.notesapp.presentation.edititem.EditItemContainer
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.withLatestFrom
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.edititem_scene.*
 
-class EditItemView(
-    override val containerView: ViewGroup
-) : EditItemContainer, LayoutContainer, RestorableLayoutContainer {
+class EditItemViewController(
+    override val view: View
+) : EditItemContainer, RestorableViewController {
 
     override var initialText: String? = null
         set(value) {
@@ -58,9 +57,5 @@ class EditItemView(
             .filter { it.itemId == R.id.delete }
             .map { Unit }
             .share()
-    }
-
-    override fun toString(): String {
-        return "CreateItemView@${Integer.toHexString(hashCode())}"
     }
 }

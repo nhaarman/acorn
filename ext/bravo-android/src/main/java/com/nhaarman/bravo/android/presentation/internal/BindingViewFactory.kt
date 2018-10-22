@@ -19,8 +19,8 @@
 package com.nhaarman.bravo.android.presentation.internal
 
 import android.view.ViewGroup
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.presentation.ViewFactory
-import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**
@@ -31,7 +31,7 @@ internal class BindingViewFactory(
     private val bindings: Map<SceneKey, ViewCreator>
 ) : ViewFactory {
 
-    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewResult? {
+    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController? {
         return bindings[sceneKey]?.create(parent)
     }
 }

@@ -19,54 +19,47 @@
 package com.nhaarman.bravo.android.presentation
 
 import android.support.test.InstrumentationRegistry
+import android.view.View
 import android.widget.FrameLayout
-import com.nhaarman.bravo.android.LinearLayoutContainer
-import com.nhaarman.bravo.android.presentation.internal.LayoutResourceViewCreator
+import android.widget.LinearLayout
+import com.nhaarman.bravo.android.presentation.internal.ViewControllerViewCreator
 import com.nhaarman.bravo.android.test.R
-import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.expect.expect
-import com.nhaarman.expect.expectErrorWithMessage
 import org.junit.Test
 
-internal class LayoutResourceViewCreatorTest {
-
-    @Test
-    fun errorIsThrownWhenResultIsNoContainer() {
-        /* Given */
-        val viewGroup = FrameLayout(InstrumentationRegistry.getContext())
-        val creator = LayoutResourceViewCreator(R.layout.linearlayout)
-
-        /* Then */
-        expectErrorWithMessage("View should implement com.nhaarman.bravo.presentation.Container") on {
-
-            /* When */
-            creator.create(viewGroup)
-        }
-    }
+internal class ViewControllerViewCreatorTest {
 
     @Test
     fun properViewIsReturned() {
         /* Given */
         val viewGroup = FrameLayout(InstrumentationRegistry.getContext())
-        val creator = LayoutResourceViewCreator(R.layout.linearlayoutcontainer)
+        val creator = ViewControllerViewCreator<View>(R.layout.linearlayout) {
+            MyContainer(it)
+        }
 
         /* When */
         val result = creator.create(viewGroup)
 
         /* Then */
-        expect(result.view).toBeInstanceOf<LinearLayoutContainer>()
+        expect(result.view).toBeInstanceOf<LinearLayout>()
     }
 
     @Test
-    fun viewIsTheContainer() {
+    fun properContainerIsReturned() {
         /* Given */
         val viewGroup = FrameLayout(InstrumentationRegistry.getContext())
-        val creator = LayoutResourceViewCreator(R.layout.linearlayoutcontainer)
+        val creator = ViewControllerViewCreator<View>(R.layout.linearlayout) {
+            MyContainer(it)
+        }
 
         /* When */
         val result = creator.create(viewGroup)
 
         /* Then */
-        expect(result.container).toBeTheSameAs(result.view as Container)
+        expect(result).toBeInstanceOf<MyContainer> {
+            expect(it.view).toBe(result.view)
+        }
     }
+
+    private class MyContainer(override val view: View) : ViewController
 }

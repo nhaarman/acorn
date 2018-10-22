@@ -18,15 +18,13 @@
 
 package com.nhaarman.bravo.samples.hellosharedata.presentation.picturedetail
 
-import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.util.AttributeSet
-import com.nhaarman.bravo.android.presentation.RestorableView
+import android.view.View
+import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.presentation.RestorableContainer
 import com.nhaarman.bravo.samples.hellosharedata.R
 import com.nhaarman.bravo.samples.hellosharedata.pictures.Picture
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.picturedetail_scene.view.*
+import kotlinx.android.synthetic.main.picturedetail_scene.*
 
 interface PictureDetailContainer : RestorableContainer {
 
@@ -37,11 +35,9 @@ interface PictureDetailContainer : RestorableContainer {
     fun setPicturePickedListener(function: () -> Unit)
 }
 
-class PictureDetailView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), PictureDetailContainer, RestorableView {
+class PictureDetailViewController(
+    override val view: View
+) : RestorableViewController, PictureDetailContainer {
 
     override var picture: Picture? = null
         set(value) {

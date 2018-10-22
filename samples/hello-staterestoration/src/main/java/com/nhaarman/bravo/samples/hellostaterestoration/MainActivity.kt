@@ -32,7 +32,11 @@ class MainActivity : BravoActivity() {
 
     override fun provideViewFactory(): ViewFactory {
         return bindViews {
-            bind(defaultKey<HelloStateRestorationScene>(), R.layout.myscene)
+            bind(
+                defaultKey<HelloStateRestorationScene>(),
+                R.layout.myscene,
+                ::HelloStateRestorationViewController
+            )
         }
     }
 }

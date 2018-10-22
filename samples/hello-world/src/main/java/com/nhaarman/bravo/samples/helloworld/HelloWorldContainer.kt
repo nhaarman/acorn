@@ -18,13 +18,10 @@
 
 package com.nhaarman.bravo.samples.helloworld
 
-import android.content.Context
-import android.util.AttributeSet
 import android.view.View
-import android.widget.FrameLayout
+import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.presentation.Container
-import com.nhaarman.bravo.presentation.RestorableContainer
-import kotlinx.android.synthetic.main.hello_world.view.*
+import kotlinx.android.synthetic.main.hello_world.*
 
 /** An interface describing the "Hello, world!" view. */
 interface HelloWorldContainer : Container {
@@ -34,17 +31,10 @@ interface HelloWorldContainer : Container {
 
 /**
  * A [View] implementation implementing the [HelloWorldContainer].
- *
- * This implementation does not handle any state restoration, as there is no
- * state worth saving.
- * In cases where _is_ state worth saving, your [Container] should generally
- * implement [RestorableContainer].
  */
-class HelloWorldView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), HelloWorldContainer {
+class HelloWorldViewController(
+    override val view: View
+) : RestorableViewController, HelloWorldContainer {
 
     override var text: String = ""
         set(value) {

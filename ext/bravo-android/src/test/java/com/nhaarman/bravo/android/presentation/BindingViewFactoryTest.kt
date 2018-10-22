@@ -71,9 +71,9 @@ internal class BindingViewFactoryTest {
 
     class MyViewCreator : ViewCreator {
 
-        var result: ViewResult = mock()
+        var result: ViewController = mock()
 
-        override fun create(parent: ViewGroup): ViewResult {
+        override fun create(parent: ViewGroup): ViewController {
             return result
         }
     }

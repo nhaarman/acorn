@@ -22,10 +22,8 @@ import android.support.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.presentation.internal.BindingViewFactory
-import com.nhaarman.bravo.android.presentation.internal.LayoutResourceViewCreator
+import com.nhaarman.bravo.android.presentation.internal.ViewControllerViewCreator
 import com.nhaarman.bravo.android.presentation.internal.ViewCreator
-import com.nhaarman.bravo.android.presentation.internal.WrappedLayoutResourceViewCreator
-import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
 
@@ -50,44 +48,56 @@ class ViewFactoryBuilder internal constructor() {
      * Binds [Scene]s with given [sceneKey] to the layout with given
      * [layoutResId].
      *
-     * @param sceneKey The key of the [Scene], as provided by [Scene.key].
-     * @param layoutResId The layout resource identifier to inflate for the
-     * [Scene]. The root view of the inflated layout must implement the
-     * [Container] contract for the [Scene].
-     */
-    fun bind(sceneKey: SceneKey, @LayoutRes layoutResId: Int) {
-        bindings[sceneKey] = LayoutResourceViewCreator(layoutResId)
-    }
-
-    /**
-     * Binds [Scene]s with given [sceneKey] to the layout with given
-     * [layoutResId]. The resulting [View] is wrapped into a [Container] that
-     * can be attached to the [Scene] using [wrapper].
-     *
-     * @param sceneKey The key of the [Scene], as provided by [Scene.key].
+     * @param sceneKey The key of the scene, as provided by [Scene.key].
      * @param layoutResId The layout resource identifier to inflate for the
      * [Scene].
      * @param wrapper A function that takes in the inflated layout and returns
-     * a [Container] instance that can be passed to the [Scene].
+     * a [ViewController] instance that can be passed to the Scene.
      */
-    fun bind(sceneKey: SceneKey, @LayoutRes layoutResId: Int, wrapper: (View) -> Container) {
-        bindings[sceneKey] = WrappedLayoutResourceViewCreator(layoutResId, wrapper)
+    fun bindView(
+        sceneKey: SceneKey,
+        @LayoutRes layoutResId: Int,
+        wrapper: (View) -> ViewController
+    ) {
+        bindings[sceneKey] = ViewControllerViewCreator(layoutResId, wrapper)
     }
 
     /**
      * Binds [Scene]s with given [sceneKey] to the layout with given
-     * [layoutResId]. The resulting [ViewGroup] is wrapped into a [Container]
-     * that can be attached to the [Scene] using [wrapper].
+     * [layoutResId].
      *
-     * @param sceneKey The key of the [Scene], as provided by [Scene.key].
+     * @param sceneKey The key of the scene, as provided by [Scene.key].
      * @param layoutResId The layout resource identifier to inflate for the
      * [Scene].
-     * @param wrapper A function that takes in the inflated layout as a
-     * [ViewGroup] and returns a [Container] instance that can be passed to the
-     * [Scene].
+     * @param wrapper A function that takes in the inflated layout and returns
+     * a [ViewController] instance that can be passed to the Scene.
      */
-    fun bindViewGroup(sceneKey: SceneKey, @LayoutRes layoutResId: Int, wrapper: (ViewGroup) -> Container) {
-        bindings[sceneKey] = WrappedLayoutResourceViewCreator(layoutResId, wrapper)
+    fun bindViewGroup(
+        sceneKey: SceneKey,
+        @LayoutRes layoutResId: Int,
+        wrapper: (ViewGroup) -> ViewController
+    ) {
+        bindings[sceneKey] = ViewControllerViewCreator(layoutResId, wrapper)
+    }
+
+    /**
+     * Binds [Scene]s with given [sceneKey] to the layout with given
+     * [layoutResId].
+     *
+     * @param sceneKey The key of the scene, as provided by [Scene.key].
+     * @param layoutResId The layout resource identifier to inflate for the
+     * [Scene].
+     * @param wrapper A function that takes in the inflated layout and returns
+     * a [ViewController] instance that can be passed to the Scene.
+     * @param V The specialized [View] type to pass to the [wrapper] function.
+     * The inflated view will be cast to this type.
+     */
+    fun <V : View> bind(
+        sceneKey: SceneKey,
+        @LayoutRes layoutResId: Int,
+        wrapper: (V) -> ViewController
+    ) {
+        bindings[sceneKey] = ViewControllerViewCreator(layoutResId, wrapper)
     }
 
     /** Constructs the [ViewFactory] instance. */

@@ -16,38 +16,28 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.samples.hellostartactivity
+package com.nhaarman.bravo.android.presentation
 
 import android.view.View
-import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
-import kotlinx.android.synthetic.main.first_scene.*
 
-class FirstScene(
-    private val listener: Events
-) : Scene<FirstSceneContainer> {
+/**
+ * A [Container] specialization that acts as a wrapper around a [View].
+ *
+ * The term 'ViewController' here is used in the sense that it acts as a bridge
+ * between a [Scene] and a [View], being some sort of 'controller' of the view.
+ *
+ * When creating a [ViewController], the [view] property must reference the root
+ * of the scene layout.
+ */
+interface ViewController : Container {
 
-    override fun attach(v: FirstSceneContainer) {
-        v.onButtonClicked { listener.mapsRequested() }
-    }
-
-    interface Events {
-
-        fun mapsRequested()
-    }
-}
-
-interface FirstSceneContainer : Container {
-
-    fun onButtonClicked(f: () -> Unit)
-}
-
-class FirstSceneViewController(
-    override val view: View
-) : RestorableViewController, FirstSceneContainer {
-
-    override fun onButtonClicked(f: () -> Unit) {
-        mapsButton.setOnClickListener { f() }
-    }
+    /**
+     * The root [View] of the scene that can be used to control the contents
+     * of the View.
+     *
+     * This property must return the root of the scene layout.
+     */
+    val view: View
 }

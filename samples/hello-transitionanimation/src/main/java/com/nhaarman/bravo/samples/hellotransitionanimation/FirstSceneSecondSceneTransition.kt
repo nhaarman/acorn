@@ -21,7 +21,6 @@ package com.nhaarman.bravo.samples.hellotransitionanimation
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
-import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.android.transition.Transition
 
 object FirstSceneSecondSceneTransition : Transition {
@@ -44,7 +43,7 @@ object FirstSceneSecondSceneTransition : Transition {
                 .animate()
                 .translationX(0f)
                 .withEndAction {
-                    callback.onComplete(ViewResult.from(newLayout))
+                    callback.onComplete(SecondSceneViewController(newLayout))
                 }
         }
     }

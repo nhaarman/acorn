@@ -18,22 +18,11 @@
 
 package com.nhaarman.bravo.samples.hellosharedata.presentation.picturegallery
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.ImageView
-import com.nhaarman.bravo.android.presentation.RestorableView
+import android.view.View
+import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.presentation.RestorableContainer
-import com.nhaarman.bravo.samples.hellosharedata.R
 import com.nhaarman.bravo.samples.hellosharedata.pictures.Picture
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Transformation
-import kotlinx.android.synthetic.main.picturegallery_scene.view.*
+import kotlinx.android.synthetic.main.picturegallery_scene.*
 
 interface PictureGalleryContainer : RestorableContainer {
 
@@ -42,94 +31,16 @@ interface PictureGalleryContainer : RestorableContainer {
     fun addOnPictureSelectedListener(f: (Picture) -> Unit)
 }
 
-class PictureGalleryView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), PictureGalleryContainer, RestorableView {
+class PictureGalleryViewController(
+    override val view: View
+) : RestorableViewController, PictureGalleryContainer {
 
     override var pictures: List<Picture> = emptyList()
         set(value) {
-            field = value
-            picturesRecyclerView.adapter?.notifyDataSetChanged()
+            picturesRecyclerView.pictures = value
         }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (isInEditMode) return
-
-        picturesRecyclerView.layoutManager = GridLayoutManager(context, 2)
-        picturesRecyclerView.adapter = PicturesAdapter()
-    }
-
-    private var listeners = listOf<(Picture) -> Unit>()
     override fun addOnPictureSelectedListener(f: (Picture) -> Unit) {
-        listeners += f
-    }
-
-    private inner class PicturesAdapter : RecyclerView.Adapter<MyViewHolder>() {
-
-        override fun getItemCount(): Int {
-            return pictures.size
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            return LayoutInflater.from(context)
-                .inflate(R.layout.picturegallery_picture, parent, false)
-                .let { MyViewHolder(it as ImageView) }
-        }
-
-        override fun onBindViewHolder(viewHolder: MyViewHolder, position: Int) {
-            viewHolder.picture = pictures[position]
-        }
-    }
-
-    private inner class MyViewHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
-
-        var picture: Picture? = null
-            set(value) {
-                if (value == null) {
-                    imageView.setImageDrawable(null)
-                    return
-                }
-
-                Picasso.get()
-                    .load(value.file)
-                    .transform(SquareTransformation(this@PictureGalleryView.width / 2))
-                    .into(imageView)
-
-                imageView.setOnClickListener {
-                    listeners.forEach { listener ->
-                        listener.invoke(value)
-                    }
-                }
-            }
-    }
-
-    private class SquareTransformation(
-        private val maxWidth: Int
-    ) : Transformation {
-
-        private var size = 0
-        private var x = 0
-        private var y = 0
-
-        override fun transform(source: Bitmap): Bitmap {
-            size = Math.min(Math.min(source.width, source.height), maxWidth)
-            x = (source.width - size) / 2
-            y = (source.height - size) / 2
-
-            return Bitmap.createBitmap(source, x, y, size, size)
-                .also {
-                    if (it != source) {
-                        source.recycle()
-                    }
-                }
-        }
-
-        override fun key(): String {
-            return "SquareTransformation(size=$size, x=$x, y=$y)"
-        }
+        picturesRecyclerView.addOnPictureSelectedListener(f)
     }
 }

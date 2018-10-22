@@ -12,11 +12,11 @@ well.
 
 The interesting components in the application:
 
- - `HelloStateRestorationContainer` and `HelloStateRestorationView`
+ - `HelloStateRestorationContainer` and `HelloStateRestorationViewController`
 
    These are the interface and Android View implementation that will be drawn on
-   screen. The View implements `RestorableView` which allows for saving its
-   hierarchy state automatically.
+   screen. The ViewController implements `RestorableViewController` which allows
+   for saving its hierarchy state automatically.
 
  - `HelloStateRestorationScene`
 

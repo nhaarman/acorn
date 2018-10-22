@@ -18,18 +18,17 @@
 
 package com.nhaarman.bravo.notesapp.android.ui.itemlist
 
-import android.view.ViewGroup
+import android.view.View
 import com.jakewharton.rxbinding2.view.clicks
-import com.nhaarman.bravo.android.presentation.RestorableLayoutContainer
+import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListContainer
 import io.reactivex.Observable
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.itemlist_scene.*
 
-class ItemListView(
-    override val containerView: ViewGroup
-) : ItemListContainer, LayoutContainer, RestorableLayoutContainer {
+class ItemListViewController(
+    override val view: View
+) : ItemListContainer, RestorableViewController {
 
     override var items: List<NoteItem> = emptyList()
         set(value) {

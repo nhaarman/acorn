@@ -21,9 +21,8 @@ package com.nhaarman.bravo.android.presentation.internal
 import android.support.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.ViewResult
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.util.inflate
-import com.nhaarman.bravo.android.util.inflateView
 import com.nhaarman.bravo.presentation.Container
 
 /**
@@ -38,28 +37,17 @@ internal interface ViewCreator {
      * @param parent The parent [ViewGroup] the result will be added to.
      * Implementers must not add the result to the parent manually.
      */
-    fun create(parent: ViewGroup): ViewResult
+    fun create(parent: ViewGroup): ViewController
 }
 
-internal class LayoutResourceViewCreator(
-    @LayoutRes private val layoutResId: Int
-) : ViewCreator {
-
-    override fun create(parent: ViewGroup): ViewResult {
-        return parent
-            .inflateView(layoutResId)
-            .let { ViewResult.from(it) }
-    }
-}
-
-internal class WrappedLayoutResourceViewCreator<V : View>(
+internal class ViewControllerViewCreator<V : View>(
     @LayoutRes private val layoutResId: Int,
-    private val wrapper: (V) -> Container
+    private val wrapper: (V) -> ViewController
 ) : ViewCreator {
 
-    override fun create(parent: ViewGroup): ViewResult {
+    override fun create(parent: ViewGroup): ViewController {
         return parent
             .inflate<V>(layoutResId)
-            .let { view -> ViewResult.from(view, wrapper.invoke(view)) }
+            .let { view -> wrapper.invoke(view) }
     }
 }

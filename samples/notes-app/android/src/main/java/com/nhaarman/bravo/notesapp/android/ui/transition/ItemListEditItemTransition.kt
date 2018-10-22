@@ -23,12 +23,11 @@ import android.support.constraint.ConstraintLayout
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
-import com.nhaarman.bravo.android.presentation.ViewResult
 import com.nhaarman.bravo.android.transition.FadeInFromBottomTransition
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.util.inflate
 import com.nhaarman.bravo.notesapp.android.R
-import com.nhaarman.bravo.notesapp.android.ui.edititem.EditItemView
+import com.nhaarman.bravo.notesapp.android.ui.edititem.EditItemViewController
 import kotlinx.android.synthetic.main.edititem_scene.view.*
 import kotlinx.android.synthetic.main.itemlist_scene.view.*
 
@@ -42,9 +41,8 @@ object ItemListEditItemTransition : Transition {
         val itemsRecyclerView = itemListLayout.itemsRecyclerView
         val clickedView = itemsRecyclerView.clickedView
         if (clickedView == null) {
-            FadeInFromBottomTransition { _ ->
-                val view = parent.inflate<ConstraintLayout>(R.layout.edititem_scene)
-                ViewResult.from(view, EditItemView(view))
+            FadeInFromBottomTransition {
+                EditItemViewController(parent.inflate(R.layout.createitem_scene))
             }.execute(parent, callback)
             return
         }
@@ -52,10 +50,10 @@ object ItemListEditItemTransition : Transition {
         val editItemLayout = parent.inflate<ConstraintLayout>(R.layout.edititem_scene)
         parent.addView(editItemLayout)
 
-        val viewResult = ViewResult.from(parent, EditItemView(parent))
-        callback.attach(viewResult)
+        val viewController = EditItemViewController(parent)
+        callback.attach(viewController)
 
-        parent.doOnPreDraw { _ ->
+        parent.doOnPreDraw {
             val shortAnimationDuration = parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
 
             val editItemToolbar = editItemLayout.editItemToolbar
@@ -98,7 +96,7 @@ object ItemListEditItemTransition : Transition {
                             scrollView.background = null
                             editItemET.visibility = View.VISIBLE
                             parent.removeView(itemListLayout)
-                            callback.onComplete(viewResult)
+                            callback.onComplete(viewController)
                         }
                 }
         }
