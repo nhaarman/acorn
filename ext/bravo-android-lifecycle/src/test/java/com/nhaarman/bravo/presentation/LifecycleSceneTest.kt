@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.presentation
 
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.expect.expect
 import org.junit.jupiter.api.Test

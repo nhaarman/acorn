@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.presentation
 
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import com.nhaarman.bravo.state.ContainerState
 
 /**

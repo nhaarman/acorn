@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.navigation
 
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.internal.v
 import com.nhaarman.bravo.internal.w

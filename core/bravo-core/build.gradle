@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly "com.android.support:support-annotations"
+    compileOnly "androidx.annotation:annotation"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 

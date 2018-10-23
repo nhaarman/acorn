@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.navigation
 
-import android.support.annotation.CheckResult
+import androidx.annotation.CheckResult
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 

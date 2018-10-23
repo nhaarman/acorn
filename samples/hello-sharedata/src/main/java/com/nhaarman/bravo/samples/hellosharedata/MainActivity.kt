@@ -20,7 +20,7 @@ package com.nhaarman.bravo.samples.hellosharedata
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.content.pm.PackageManager
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.nhaarman.bravo.android.BravoAppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.ViewFactory

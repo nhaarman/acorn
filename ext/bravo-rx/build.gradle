@@ -15,7 +15,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "io.reactivex.rxjava2:rxkotlin"
 
-    compileOnly "com.android.support:support-annotations"
+    compileOnly "androidx.annotation:annotation"
 
     testImplementation "com.nhaarman:expect.kt"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"

@@ -22,9 +22,9 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin"
     implementation "io.reactivex.rxjava2:rxandroid"
 
-    implementation "com.android.support:design"
-    implementation "com.android.support.constraint:constraint-layout"
-    implementation "com.android.support:appcompat-v7"
+    implementation "com.google.android.material:material"
+    implementation "androidx.constraintlayout:constraintlayout"
+    implementation "androidx.appcompat:appcompat"
 
     implementation "com.squareup.picasso:picasso"
 

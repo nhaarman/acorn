@@ -19,7 +19,7 @@
 package com.nhaarman.bravo.notesapp.android.ui.itemlist
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import android.util.AttributeSet
 import kotlinx.android.synthetic.main.itemlist_itemview.view.*
 

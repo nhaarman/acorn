@@ -18,9 +18,9 @@
 
 package com.nhaarman.bravo.notesapp.android
 
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.db.SupportSQLiteOpenHelper
-import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteOpenHelper
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import android.content.Context
 import com.nhaarman.bravo.notesapp.NotesAppComponent
 import com.nhaarman.bravo.notesapp.android.note.SqlNoteItemsRepository

@@ -12,5 +12,5 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    compileOnly "com.android.support:support-annotations"
+    compileOnly "androidx.annotation:annotation"
 }

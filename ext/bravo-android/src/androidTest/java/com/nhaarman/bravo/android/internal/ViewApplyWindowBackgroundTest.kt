@@ -19,7 +19,7 @@
 package com.nhaarman.bravo.android.internal
 
 import android.graphics.drawable.ColorDrawable
-import android.support.test.rule.ActivityTestRule
+import androidx.test.rule.ActivityTestRule
 import android.view.View
 import com.nhaarman.bravo.android.test.R
 import com.nhaarman.bravo.android.TestActivity

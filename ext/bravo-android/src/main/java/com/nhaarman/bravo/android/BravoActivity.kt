@@ -21,7 +21,7 @@ package com.nhaarman.bravo.android
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.IntentProvider
 import com.nhaarman.bravo.android.presentation.NoIntentProvider

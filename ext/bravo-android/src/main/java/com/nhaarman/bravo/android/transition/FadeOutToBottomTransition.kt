@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.android.transition
 
-import android.support.v4.view.animation.FastOutLinearInInterpolator
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.R
