@@ -18,8 +18,8 @@
 
 package com.nhaarman.bravo.android.internal
 
-import android.support.annotation.AnyRes
-import android.support.annotation.ColorInt
+import androidx.annotation.AnyRes
+import androidx.annotation.ColorInt
 import android.util.TypedValue
 import android.view.View
 

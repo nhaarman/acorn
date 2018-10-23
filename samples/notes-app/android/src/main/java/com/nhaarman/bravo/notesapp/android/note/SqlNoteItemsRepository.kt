@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.notesapp.android.note
 
-import android.arch.persistence.db.SupportSQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import arrow.core.Option

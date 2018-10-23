@@ -21,8 +21,8 @@ package com.nhaarman.bravo.android
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.CallSuper
+import androidx.appcompat.app.AppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.IntentProvider
 import com.nhaarman.bravo.android.presentation.NoIntentProvider

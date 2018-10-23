@@ -25,7 +25,7 @@ import android.database.Cursor
 import android.provider.MediaStore.Images.Media.BUCKET_DISPLAY_NAME
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.provider.MediaStore.MediaColumns
-import android.support.v4.content.ContextCompat.checkSelfPermission
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.database.getStringOrNull
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

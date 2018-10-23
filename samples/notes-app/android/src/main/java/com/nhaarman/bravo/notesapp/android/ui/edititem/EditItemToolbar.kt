@@ -19,14 +19,14 @@
 package com.nhaarman.bravo.notesapp.android.ui.edititem
 
 import android.content.Context
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import android.util.AttributeSet
 import com.nhaarman.bravo.notesapp.android.R
 
 class EditItemToolbar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
-    defStyleAttr: Int = android.support.v7.appcompat.R.attr.toolbarStyle
+    defStyleAttr: Int = androidx.appcompat.R.attr.toolbarStyle
 ) : Toolbar(context, attrs, defStyleAttr) {
 
     override fun onFinishInflate() {

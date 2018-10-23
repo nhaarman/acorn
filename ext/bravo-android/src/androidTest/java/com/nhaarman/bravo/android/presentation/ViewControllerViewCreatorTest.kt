@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.android.presentation
 
-import android.support.test.InstrumentationRegistry
+import androidx.test.InstrumentationRegistry
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout

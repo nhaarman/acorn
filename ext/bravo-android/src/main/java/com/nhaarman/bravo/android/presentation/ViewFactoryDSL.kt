@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.android.presentation
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.presentation.internal.BindingViewFactory

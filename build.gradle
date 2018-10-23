@@ -55,11 +55,7 @@ subprojects {
                     versionName = git.versionName()
                     versionCode = git.commitCount()
 
-                    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
-                }
-
-                testOptions {
-                    execution "ANDROID_TEST_ORCHESTRATOR"
+                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
 
                 lintOptions {

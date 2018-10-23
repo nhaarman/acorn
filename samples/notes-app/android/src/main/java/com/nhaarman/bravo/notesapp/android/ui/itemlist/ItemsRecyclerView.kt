@@ -19,9 +19,9 @@
 package com.nhaarman.bravo.notesapp.android.ui.itemlist
 
 import android.content.Context
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +35,7 @@ class ItemsRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
     defStyle: Int = 0
-) : RecyclerView(context, attrs, defStyle) {
+) : androidx.recyclerview.widget.RecyclerView(context, attrs, defStyle) {
 
     var items: List<NoteItem> = emptyList()
         set(new) {
@@ -63,7 +63,7 @@ class ItemsRecyclerView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        layoutManager = LinearLayoutManager(context)
+        layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         adapter = ItemsAdapter()
     }
 
@@ -76,7 +76,7 @@ class ItemsRecyclerView @JvmOverloads constructor(
         listeners -= listener
     }
 
-    private inner class ItemsAdapter : RecyclerView.Adapter<NoteViewHolder>() {
+    private inner class ItemsAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<NoteViewHolder>() {
 
         override fun getItemCount() = items.size
 

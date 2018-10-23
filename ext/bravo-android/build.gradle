@@ -20,10 +20,10 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "com.android.support:interpolator"
-    compileOnly "com.android.support:appcompat-v7"
+    implementation "androidx.interpolator:interpolator"
+    compileOnly "androidx.appcompat:appcompat"
 
-    compileOnly "com.android.support:support-annotations"
+    compileOnly "androidx.annotation:annotation"
 
     lintChecks project(":ext-bravo-android-lint")
 

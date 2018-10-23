@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.presentation
 
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import arrow.core.Option
 import arrow.core.toOption
 import com.nhaarman.bravo.presentation.RxScene.Event.Attached

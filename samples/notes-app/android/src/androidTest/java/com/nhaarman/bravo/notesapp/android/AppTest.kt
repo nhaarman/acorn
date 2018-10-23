@@ -18,18 +18,18 @@
 
 package com.nhaarman.bravo.notesapp.android
 
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.typeText
-import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.contrib.RecyclerViewActions.scrollToPosition
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withHint
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
-import android.support.test.rule.ActivityTestRule
-import android.support.v7.widget.RecyclerView
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withHint
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.rule.ActivityTestRule
+import androidx.recyclerview.widget.RecyclerView
 import org.junit.Rule
 import org.junit.Test
 
@@ -43,7 +43,7 @@ class AppTest {
         onView(withId(R.id.createButton)).perform(click())
         onView(withHint("Take a note")).perform(typeText("My note"))
         onView(withId(R.id.save)).perform(click())
-        onView(withId(R.id.itemsRecyclerView)).perform(scrollToPosition<RecyclerView.ViewHolder>(100))
+        onView(withId(R.id.itemsRecyclerView)).perform(scrollToPosition<androidx.recyclerview.widget.RecyclerView.ViewHolder>(100))
         onView(withText("My note")).check(matches(isDisplayed()))
         onView(withText("My note")).perform(click())
         onView(withText("My note")).check(matches(isDisplayed()))

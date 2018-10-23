@@ -15,9 +15,9 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "com.android.support:design"
-    implementation "com.android.support.constraint:constraint-layout"
-    implementation "com.android.support:appcompat-v7"
+    implementation "com.google.android.material:material"
+    implementation "androidx.constraintlayout:constraintlayout"
+    implementation "androidx.appcompat:appcompat"
 
     implementation "com.jakewharton.timber:timber"
 
