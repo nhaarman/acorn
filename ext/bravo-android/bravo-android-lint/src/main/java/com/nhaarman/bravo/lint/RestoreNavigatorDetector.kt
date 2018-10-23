@@ -77,7 +77,7 @@ class RestoreNavigatorDetector : Detector(), Detector.UastScanner {
                 }
 
                 val returnType = node.returnType ?: return
-                if(returnType == navigatorType) {
+                if (returnType == navigatorType) {
                     return
                 }
 

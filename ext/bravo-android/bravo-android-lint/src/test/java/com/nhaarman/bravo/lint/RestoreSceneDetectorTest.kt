@@ -29,20 +29,20 @@ class RestoreSceneDetectorTest {
     private val stackNavigator = kt(
         """
        package $navigationPkg
-       class StackNavigator<T>
+       class StackNavigator
        """
     )
 
     private val replacingNavigator = kt(
         """
        package $navigationPkg
-       class ReplacingNavigator<T>
+       class ReplacingNavigator
        """
     )
     private val wizardNavigator = kt(
         """
        package $navigationPkg
-       class WizardNavigator<T>
+       class WizardNavigator
        """
     )
 
@@ -72,7 +72,7 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.StackNavigator
-                class MyNavigator: StackNavigator<Unit>()
+                class MyNavigator: StackNavigator()
                 """
             )
         ).expectClean()
@@ -85,7 +85,7 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.StackNavigator
-                class MyNavigator: StackNavigator<Unit>() {
+                class MyNavigator: StackNavigator() {
 
                     fun foo() {
                        val a = MyNonScene()
@@ -130,13 +130,13 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.StackNavigator
-                class MyNavigator : StackNavigator<Unit> {
+                class MyNavigator : StackNavigator {
 
                     fun foo() {
                        val a = MyScene()
                     }
 
-                    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                    override fun instantiateScene(sceneClass: KClass<out Scene>, savedState: SceneState) : Scene {
                         return MyScene()
                     }
                 }
@@ -163,13 +163,13 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.StackNavigator
-                class MyNavigator : StackNavigator<Unit> {
+                class MyNavigator : StackNavigator {
 
                     fun foo() {
                        val a = MyScene()
                     }
 
-                    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                    override fun instantiateScene(sceneClass: KClass<out Scene>, savedState: SceneState) : Scene {
                         return MyScene.create()
                     }
                 }
@@ -190,7 +190,7 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.StackNavigator
-                class MyNavigator : StackNavigator<Unit> {
+                class MyNavigator : StackNavigator {
 
                     fun foo() {
                        val a = MyScene()
@@ -213,7 +213,7 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.ReplacingNavigator
-                class MyNavigator : ReplacingNavigator<Unit> {
+                class MyNavigator : ReplacingNavigator {
 
                     fun foo() {
                        val a = MyScene()
@@ -236,7 +236,7 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.WizardNavigator
-                class MyNavigator : WizardNavigator<Unit> {
+                class MyNavigator : WizardNavigator {
 
                     fun foo() {
                        val a = MyScene()
@@ -265,14 +265,14 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.StackNavigator
-                class MyNavigator : StackNavigator<Unit> {
+                class MyNavigator : StackNavigator {
 
                     fun foo() {
                        val a = MyScene()
                        val b = MyScene2()
                     }
 
-                    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                    override fun instantiateScene(sceneClass: KClass<out Scene>, savedState: SceneState) : Scene {
                        return MyScene()
                     }
                 }
@@ -305,19 +305,51 @@ class RestoreSceneDetectorTest {
             kt(
                 """
                 import $navigationPkg.StackNavigator
-                class MyNavigator : StackNavigator<Unit> {
+                class MyNavigator : StackNavigator {
 
                     fun foo() {
                        val a = MyScene()
                        val b = MyScene2.create()
                     }
 
-                    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, savedState: SceneState<*>) : Scene<*> {
+                    override fun instantiateScene(sceneClass: KClass<out Scene>, savedState: SceneState) : Scene {
                        return MyScene()
                     }
                 }
                 """
             )
         ).expectMatches("Scene is not restored")
+    }
+
+    @Test
+    fun `creating but not restoring a Scene class in a function with a Scene return type does not warn`() {
+        runOn(
+            kt(
+                """
+                    import $presentationPkg.Scene
+                    class MyScene : Scene
+            """
+            ),
+            kt(
+                """
+                import $presentationPkg.Scene
+                import $navigationPkg.StackNavigator
+                class MyNavigator : StackNavigator {
+
+                    fun foo() {
+                       val a = create()
+                    }
+
+                    fun create(): Scene {
+                       return MyScene()
+                    }
+
+                    override fun instantiateScene(sceneClass: KClass<out Scene>, savedState: SceneState) : Scene {
+                       return MyScene()
+                    }
+                }
+                """
+            )
+        ).expectClean()
     }
 }

@@ -78,6 +78,9 @@ class RestoreSceneDetector : Detector(), Detector.UastScanner {
                 }
 
                 val returnType = node.returnType ?: return
+                if (returnType == sceneType) {
+                    return
+                }
 
                 val isScene = sceneType.isAssignableFrom(returnType)
                 if (!isScene) {
