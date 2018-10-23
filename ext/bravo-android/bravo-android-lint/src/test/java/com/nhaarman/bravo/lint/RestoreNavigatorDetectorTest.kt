@@ -27,56 +27,39 @@ class RestoreNavigatorDetectorTest {
 
     private val navigationPkg = "com.nhaarman.bravo.navigation"
 
-    private val compositeStackNavigator = kt(
-        """
-       package $navigationPkg
-       class CompositeStackNavigator<T> : Navigator<T>
-       """
-    )
-    private val compositeReplacingNavigator = kt(
-        """
-       package $navigationPkg
-       class CompositeReplacingNavigator<T> : Navigator<T>
-       """
-    )
-    private val stackNavigator = kt(
-        """
-       package $navigationPkg
-       class StackNavigator<T> : Navigator<T>
-       """
-    )
-
-    private val replacingNavigator = kt(
-        """
-       package $navigationPkg
-       class ReplacingNavigator<T> : Navigator<T>
-       """
-    )
-    private val wizardNavigator = kt(
-        """
-       package $navigationPkg
-       class WizardNavigator<T> : Navigator<T>
-       """
-    )
-
     private val navigator = kt(
         """
         package $navigationPkg
-        interface Navigator<T>
+        interface Navigator
         """
     )
 
+    private val Navigator = "$navigationPkg.Navigator"
+
+    private val compositeStackNavigator = kt(
+        """
+       package $navigationPkg
+       class CompositeStackNavigator : $Navigator
+       """
+    )
+    private val CompositeStackNavigator = "$navigationPkg.CompositeStackNavigator"
+
+    private val compositeReplacingNavigator = kt(
+        """
+       package $navigationPkg
+       class CompositeReplacingNavigator : Navigator
+       """
+    )
+    private val CompositeReplacingNavigator = "$navigationPkg.CompositeReplacingNavigator"
+
     private fun runOn(vararg files: TestFile) = lint()
-        .allowMissingSdk()
         .files(
+            navigator,
             compositeStackNavigator,
             compositeReplacingNavigator,
-            stackNavigator,
-            replacingNavigator,
-            wizardNavigator,
-            navigator,
             *files
         )
+        .allowSystemErrors(false)
         .allowCompilationErrors(false)
         .issues(RestoreNavigatorDetector.issue)
         .run()
@@ -86,8 +69,7 @@ class RestoreNavigatorDetectorTest {
         runOn(
             kt(
                 """
-                import $navigationPkg.CompositeStackNavigator
-                class MyNavigator: CompositeStackNavigator<Unit>()
+                class MyNavigator: $CompositeStackNavigator()
                 """
             )
         ).expectClean()
@@ -99,8 +81,7 @@ class RestoreNavigatorDetectorTest {
             kt("class MyNonNavigator"),
             kt(
                 """
-                import $navigationPkg.CompositeStackNavigator
-                class MyCompositeNavigator: CompositeStackNavigator<Unit>() {
+                class MyCompositeNavigator: $CompositeStackNavigator() {
 
                     fun foo() {
                        val a = MyNonNavigator()
@@ -116,8 +97,7 @@ class RestoreNavigatorDetectorTest {
         runOn(
             kt(
                 """
-                    import $navigationPkg.Navigator
-                    class MyNavigator<T> : Navigator<T>
+                    class MyNavigator : $Navigator
                 """
             ),
             kt(
@@ -125,7 +105,7 @@ class RestoreNavigatorDetectorTest {
                 class MyOtherClass {
 
                     fun foo() {
-                       val a = MyNavigator<Unit>()
+                       val a = MyNavigator()
                     }
                 }
                 """
@@ -138,21 +118,19 @@ class RestoreNavigatorDetectorTest {
         runOn(
             kt(
                 """
-                import $navigationPkg.Navigator
-                class MyNavigator<T> : Navigator<T>
+                class MyNavigator : $Navigator
                 """
             ),
             kt(
                 """
-                import $navigationPkg.CompositeStackNavigator
-                class MyCompositeNavigator : CompositeStackNavigator<Unit>() {
+                class MyCompositeNavigator : $CompositeStackNavigator() {
 
                     fun foo() {
-                       val a = MyNavigator<Unit>()
+                       val a = MyNavigator()
                     }
 
-                    override fun instantiateNavigator(navigatorClass: Class<Navigator<*>>, savedState: NavigatorState<*>) : Navigator<T> {
-                        return MyNavigator<Unit>()
+                    override fun instantiateNavigator(navigatorClass: Class<$Navigator>, savedState: NavigatorState) : $Navigator {
+                        return MyNavigator()
                     }
                 }
                 """
@@ -165,26 +143,24 @@ class RestoreNavigatorDetectorTest {
         runOn(
             kt(
                 """
-                import $navigationPkg.Navigator
-                class MyNavigator<T> : Navigator<T> {
+                class MyNavigator : $Navigator {
 
                   companion object {
 
-                    fun create() : MyNavigator<Unit> = MyNavigator<Unit>()
+                    fun create() : MyNavigator = MyNavigator()
                   }
                 }
                 """
             ),
             kt(
                 """
-                import $navigationPkg.CompositeStackNavigator
-                class MyCompositeNavigator : CompositeStackNavigator<Unit>() {
+                class MyCompositeNavigator : $CompositeStackNavigator() {
 
                     fun foo() {
-                       val a = MyNavigator<Unit>()
+                       val a = MyNavigator()
                     }
 
-                    override fun instantiateNavigator(navigatorClass: Class<Navigator<*>>, savedState: NavigatorState<*>) : Navigator<T> {
+                    override fun instantiateNavigator(navigatorClass: Class<$Navigator>, savedState: NavigatorState) : $Navigator {
                         return MyNavigator.create()
                     }
                 }
@@ -198,17 +174,15 @@ class RestoreNavigatorDetectorTest {
         runOn(
             kt(
                 """
-                    import $navigationPkg.Navigator
-                    class MyNavigator<T> : Navigator<T>
+                    class MyNavigator : $Navigator
             """
             ),
             kt(
                 """
-                import $navigationPkg.CompositeStackNavigator
-                class MyCompositeNavigator : CompositeStackNavigator<Unit>() {
+                class MyCompositeNavigator : $CompositeStackNavigator() {
 
                     fun foo() {
-                       val a = MyNavigator<Unit>()
+                       val a = MyNavigator()
                     }
                 }
                 """
@@ -221,13 +195,12 @@ class RestoreNavigatorDetectorTest {
         runOn(
             kt(
                 """
-                    import $navigationPkg.Navigator
-                    class MyNavigator<T> : Navigator<T> {
+                    class MyNavigator : $Navigator {
 
                         companion object {
 
-                            fun create(): MyNavigator<Unit> {
-                                return MyNavigator<Unit>()
+                            fun create(): MyNavigator {
+                                return MyNavigator()
                             }
                         }
                     }
@@ -235,8 +208,7 @@ class RestoreNavigatorDetectorTest {
             ),
             kt(
                 """
-                import $navigationPkg.CompositeStackNavigator
-                class MyCompositeNavigator : CompositeStackNavigator<Unit>() {
+                class MyCompositeNavigator : $CompositeStackNavigator() {
 
                     fun foo() {
                        val a = MyNavigator.create()
@@ -252,27 +224,24 @@ class RestoreNavigatorDetectorTest {
         runOn(
             kt(
                 """
-                    import $navigationPkg.Navigator
-                    class MyNavigator<T> : Navigator<T>
+                    class MyNavigator : $Navigator
             """
             ),
             kt(
                 """
-                    import $navigationPkg.Navigator
-                    class MyNavigator2 : Navigator<T>
+                    class MyNavigator2 : $Navigator
             """
             ),
             kt(
                 """
-                import $navigationPkg.CompositeStackNavigator
-                class MyCompositeNavigator : CompositeStackNavigator<Unit>() {
+                class MyCompositeNavigator : $CompositeStackNavigator() {
 
                     fun foo() {
-                       val a = MyNavigator<Unit>()
+                       val a = MyNavigator()
                        val b = MyNavigator2()
                     }
 
-                    override fun instantiateNavigator(navigatorClass: Class<Navigator<*>>, savedState: NavigatorState<*>) : Navigator<T> {
+                    override fun instantiateNavigator(navigatorClass: Class<$Navigator>, savedState: NavigatorState) : $Navigator {
                        return MyNavigator.create()
                     }
                 }
@@ -286,32 +255,58 @@ class RestoreNavigatorDetectorTest {
         runOn(
             kt(
                 """
-                    import $navigationPkg.Navigator
-                    class MyNavigator<T> : Navigator<T>
+                    class MyNavigator : $Navigator
             """
             ),
             kt(
                 """
-                    import $navigationPkg.Navigator
-                    class MyNavigator2 : Navigator<T>
+                    class MyNavigator2 : $Navigator
             """
             ),
             kt(
                 """
-                import $navigationPkg.CompositeReplacingNavigator
-                class MyCompositeNavigator : CompositeReplacingNavigator<Unit> {
+                class MyCompositeNavigator : $CompositeReplacingNavigator {
 
                     fun foo() {
-                       val a = MyNavigator<Unit>()
+                       val a = MyNavigator()
                        val b = MyNavigator2()
                     }
 
-                    override fun instantiateNavigator(navigatorClass: Class<Navigator<*>>, savedState: NavigatorState<*>) : Navigator<T> {
+                    override fun instantiateNavigator(navigatorClass: Class<$Navigator>, savedState: NavigatorState) : $Navigator {
                        return MyNavigator.create()
                     }
                 }
                 """
             )
         ).expectMatches("Navigator is not restored")
+    }
+
+    @Test
+    fun `creating but not restoring a Navigator in a function with a Navigator return type does not warn`() {
+        runOn(
+            kt(
+                """
+                class MyNavigator : $Navigator
+                """
+            ),
+            kt(
+                """
+                class MyCompositeNavigator : $CompositeStackNavigator() {
+
+                    fun foo() {
+                       val a = create()
+                    }
+
+                    fun create() : $Navigator {
+                       return MyNavigator()
+                    }
+
+                    override fun instantiateNavigator(navigatorClass: Class<$Navigator>, savedState: NavigatorState) : $Navigator {
+                        return MyNavigator()
+                    }
+                }
+                """
+            )
+        ).expectClean()
     }
 }
