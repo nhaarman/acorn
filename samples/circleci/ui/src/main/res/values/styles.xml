@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?android:colorPrimaryDark</item>
+        <item name="android:elevation">4dp</item>
+        <item name="titleTextAppearance">@android:style/TextAppearance.Material.Widget.ActionBar.Title.Inverse</item>
+    </style>
+
+</resources>

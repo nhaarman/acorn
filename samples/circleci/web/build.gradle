@@ -1,0 +1,25 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+    id("org.jetbrains.kotlin.kapt")
+}
+
+dependencies {
+    api project(':circleci:business')
+
+    implementation "com.squareup.okhttp3:okhttp:3.11.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.11.0"
+    implementation "com.squareup.retrofit2:retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi"
+    implementation "com.nhaarman:httpmonads-retrofit-rx"
+    implementation "com.squareup.moshi:moshi"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "io.reactivex.rxjava2:rxkotlin"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "com.nhaarman:expect.kt"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}

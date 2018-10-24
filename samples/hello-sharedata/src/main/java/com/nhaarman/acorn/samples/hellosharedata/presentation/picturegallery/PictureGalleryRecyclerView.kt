@@ -20,12 +20,12 @@ package com.nhaarman.acorn.samples.hellosharedata.presentation.picturegallery
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nhaarman.acorn.samples.hellosharedata.R
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
 import com.squareup.picasso.Picasso
@@ -36,7 +36,7 @@ class PictureGalleryRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : androidx.recyclerview.widget.RecyclerView(context, attrs, defStyleAttr) {
+) : RecyclerView(context, attrs, defStyleAttr) {
 
     var pictures: List<Picture> = emptyList()
         set(value) {
@@ -49,7 +49,7 @@ class PictureGalleryRecyclerView @JvmOverloads constructor(
 
         if (isInEditMode) return
 
-        layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 2)
+        layoutManager = GridLayoutManager(context, 2)
         adapter = PicturesAdapter()
     }
 
@@ -58,7 +58,7 @@ class PictureGalleryRecyclerView @JvmOverloads constructor(
         listeners += f
     }
 
-    private inner class PicturesAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<MyViewHolder>() {
+    private inner class PicturesAdapter : RecyclerView.Adapter<MyViewHolder>() {
 
         override fun getItemCount(): Int {
             return pictures.size
@@ -75,7 +75,8 @@ class PictureGalleryRecyclerView @JvmOverloads constructor(
         }
     }
 
-    private inner class MyViewHolder(val imageView: ImageView) : androidx.recyclerview.widget.RecyclerView.ViewHolder(imageView) {
+    private inner class MyViewHolder(val imageView: ImageView) :
+        RecyclerView.ViewHolder(imageView) {
 
         var picture: Picture? = null
             set(value) {

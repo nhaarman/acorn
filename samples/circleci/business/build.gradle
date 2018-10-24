@@ -1,0 +1,20 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+}
+
+dependencies {
+    api project(":circleci:domain")
+
+    api "io.reactivex.rxjava2:rxjava"
+    api "com.nhaarman:httpmonads"
+    api "io.arrow-kt:arrow-core"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "io.reactivex.rxjava2:rxkotlin"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "com.nhaarman:expect.kt"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}

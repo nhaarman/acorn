@@ -1,0 +1,21 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+}
+
+dependencies {
+    api project(":circleci:business")
+
+    api project(":acorn")
+    api project(":ext-acorn-rx")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "io.reactivex.rxjava2:rxkotlin"
+    implementation "io.reactivex.rxjava2:rxkotlin"
+
+    testImplementation project(":ext-acorn-testing")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "com.nhaarman:expect.kt"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}

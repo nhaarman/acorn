@@ -1,0 +1,37 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+}
+
+def circleCIToken = findProperty("circleci.apitoken")
+if (circleCIToken == null) {
+    System.err.println("Warning: No CircleCI api token available.")
+}
+
+android {
+    defaultConfig {
+        minSdkVersion(21)
+
+        buildConfigField 'String', 'CIRCLECI_API_TOKEN', "\"$circleCIToken\""
+    }
+}
+
+dependencies {
+    implementation project(":circleci:ui")
+    implementation project(":circleci:web")
+
+    implementation project(":ext-acorn-android-appcompat")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    implementation "io.reactivex.rxjava2:rxandroid"
+
+    implementation "com.google.android.material:material"
+    implementation "androidx.constraintlayout:constraintlayout"
+    implementation "androidx.appcompat:appcompat"
+}
+
+androidExtensions {
+    experimental = true
+}

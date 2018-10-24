@@ -1,0 +1,23 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+}
+
+sourceSets {
+    test {
+        kotlin {
+            srcDir file("src/integrationTest/java")
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    api "org.threeten:threetenbp"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "com.nhaarman:expect.kt"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}

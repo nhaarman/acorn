@@ -25,6 +25,19 @@ include(":samples:hello-transitionanimation")
 include(":samples:notes-app")
 include(":samples:notes-app:android")
 
+include(":circleci")
+include(":circleci:domain")
+include(":circleci:business")
+include(":circleci:web")
+include(":circleci:presentation")
+include(":circleci:ui")
+include(":circleci:app")
+
+include(":samples:notes-app:aac-navigation")
+include(":samples:notes-app:cicerone")
+include(":samples:notes-app:conductor")
+include(":samples:notes-app:mosby")
+
 project(":acorn").projectDir = file("core/acorn-core")
 project(":acorn-android").projectDir = file("core/acorn-android-core")
 
@@ -38,5 +51,13 @@ project(":ext-acorn-android-lint").projectDir = file("ext/acorn-android/acorn-an
 project(":ext-acorn-android-timber").projectDir = file("ext/acorn-android/acorn-android-timber")
 project(":ext-acorn-android-appcompat").projectDir = file("ext/acorn-android/acorn-android-appcompat")
 project(":ext-acorn-android-lifecycle").projectDir = file("ext/acorn-android/acorn-android-lifecycle")
+
+project(":circleci").projectDir = file("samples/circleci")
+project(":circleci:domain").projectDir = file("samples/circleci/domain")
+project(":circleci:business").projectDir = file("samples/circleci/business")
+project(":circleci:web").projectDir = file("samples/circleci/web")
+project(":circleci:presentation").projectDir = file("samples/circleci/presentation")
+project(":circleci:ui").projectDir = file("samples/circleci/ui")
+project(":circleci:app").projectDir = file("samples/circleci/app")
 
 enableFeaturePreview("STABLE_PUBLISHING")

@@ -18,6 +18,7 @@ adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put 
     :samples:hello-transitionanimation:lintRelease \
     :samples:hello-viewfactory:lintRelease \
     :samples:notes-app:android:lintRelease \
+    :circleci:app:lintRelease \
     packageDebugAndroidTest \
     --rerun-tasks \
     && ./gradlew cCheck --max-workers=1 \

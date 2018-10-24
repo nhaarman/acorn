@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.Design.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/grey_light</item>
+        <item name="android:colorPrimaryDark">@color/grey_dark</item>
+
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+    </style>
+
+</resources>
