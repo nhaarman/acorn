@@ -19,8 +19,8 @@
 package com.nhaarman.bravo.notesapp.android.ui.edititem
 
 import android.view.View
-import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar
-import com.jakewharton.rxbinding2.widget.textChanges
+import com.jakewharton.rxbinding3.appcompat.itemClicks
+import com.jakewharton.rxbinding3.widget.textChanges
 import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.notesapp.android.R
 import com.nhaarman.bravo.notesapp.presentation.edititem.EditItemContainer
@@ -41,7 +41,7 @@ class EditItemViewController(
         }
 
     private val menuClicks by lazy {
-        RxToolbar.itemClicks(editItemToolbar)
+        editItemToolbar.itemClicks()
             .share()
     }
 
