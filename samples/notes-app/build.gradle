@@ -3,14 +3,6 @@ plugins {
     id("org.gradle.java-library")
 }
 
-sourceSets {
-    test {
-        kotlin {
-            srcDir file("src/integrationTest/java")
-        }
-    }
-}
-
 dependencies {
     implementation project(":ext-bravo")
     implementation project(":ext-bravo-rx")
