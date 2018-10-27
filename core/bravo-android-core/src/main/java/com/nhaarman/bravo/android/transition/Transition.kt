@@ -20,10 +20,11 @@ package com.nhaarman.bravo.android.transition
 
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.presentation.ViewController
+import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 
 /**
- * An interface to manually implement Scene transition animations.
+ * An interface to manually implement [Scene] transition animations.
  */
 interface Transition {
 
@@ -35,7 +36,9 @@ interface Transition {
      * be removed and new views must be inflated and added to the [parent].
      *
      * When the transition is done, implementers must always invoke
-     * [Callback.onComplete].
+     * [Callback.onComplete]. Optionally, [Callback.attach] can be invoked to
+     * attach the resulting [Container] to the [Scene] before the transition
+     * has finished.
      *
      * @param parent The [ViewGroup] that hosts the application UI, with the
      * views from the previous [Scene] still attached.
@@ -54,8 +57,8 @@ interface Transition {
     interface Callback {
 
         /**
-         * An optional function to attach given [viewController] to the [Scene]
-         * at any time during the transition.
+         * An function that can optionally  be invoked to attach given
+         * [viewController] to the [Scene] at any time during the transition.
          *
          * When invoking this method, this must be done before [onComplete],
          * otherwise its invocation is ignored.

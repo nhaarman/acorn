@@ -37,10 +37,10 @@ interface ViewFactory {
      *
      * @param sceneKey The key of the [Scene] instance for which the
      * corresponding view should be created.
-     * @param parent If non-null, this is the parent view that the resulting
-     * view should be attached to. The implementation must not add the view
-     * to the parent itself, but this can be used to generate the LayoutParams
-     * of the view.
+     * @param parent This is the parent [View] that the resulting View should
+     * be attached to. The implementation must not add the View to the parent
+     * itself, but it can use the parent to generate the LayoutParams of the
+     * view.
      *
      * @return The resulting [ViewController]. `null` if no result could be created
      * for given [sceneKey].
