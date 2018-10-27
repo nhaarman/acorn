@@ -41,8 +41,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin"
     implementation "io.reactivex.rxjava2:rxandroid"
 
-    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin"
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin"
+    implementation "com.jakewharton.rxbinding3:rxbinding"
+    implementation "com.jakewharton.rxbinding3:rxbinding-appcompat"
 
     implementation "com.squareup.sqlbrite3:sqlbrite-kotlin"
     implementation "android.arch.persistence:db-framework"

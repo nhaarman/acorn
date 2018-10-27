@@ -19,7 +19,7 @@
 package com.nhaarman.bravo.notesapp.android.ui.itemlist
 
 import android.view.View
-import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding3.view.clicks
 import com.nhaarman.bravo.android.presentation.RestorableViewController
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListContainer
