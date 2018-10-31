@@ -11,7 +11,7 @@ android {
 }
 
 dependencies {
-    implementation project(":ext-bravo-android")
+    implementation project(":ext-bravo-android-appcompat")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
