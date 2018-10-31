@@ -21,8 +21,8 @@ package com.nhaarman.bravo.android
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
 import com.nhaarman.bravo.OnBackPressListener
+import com.nhaarman.bravo.android.internal.contentView
 import com.nhaarman.bravo.android.internal.d
 import com.nhaarman.bravo.android.internal.v
 import com.nhaarman.bravo.android.internal.w
@@ -33,9 +33,9 @@ import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.presentation.internal.DefaultSceneTransformer
 import com.nhaarman.bravo.android.presentation.internal.SceneTransformer
 import com.nhaarman.bravo.android.presentation.internal.TransformedScene
-import com.nhaarman.bravo.android.presentation.internal.ViewState
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.TransitionFactory
+import com.nhaarman.bravo.android.uistate.UIState
 import com.nhaarman.bravo.android.util.toBundle
 import com.nhaarman.bravo.android.util.toNavigatorState
 import com.nhaarman.bravo.navigation.DisposableHandle
@@ -66,7 +66,7 @@ class BravoActivityDelegate private constructor(
     }
 
     private var state by lazyVar {
-        ViewState.create(activity.root, viewFactory, transitionFactory)
+        UIState.create(activity.contentView, viewFactory, transitionFactory)
     }
 
     private val sceneDispatcher = SceneDispatcher()
@@ -96,7 +96,7 @@ class BravoActivityDelegate private constructor(
 
     fun onStart() {
         navigator.onStart()
-        state = state.started()
+        state = state.uiVisible()
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,7 +108,7 @@ class BravoActivityDelegate private constructor(
     }
 
     fun onStop() {
-        state = state.stopped()
+        state = state.uiNotVisible()
     }
 
     fun onDestroy() {
@@ -200,7 +200,5 @@ class BravoActivityDelegate private constructor(
             set(value) {
                 this?.putString("last_external_scene", value)
             }
-
-        private val Activity.root get() = findViewById<ViewGroup>(android.R.id.content)
     }
 }
