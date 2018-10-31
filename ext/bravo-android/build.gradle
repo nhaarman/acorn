@@ -21,7 +21,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     implementation "androidx.interpolator:interpolator"
-    compileOnly "androidx.appcompat:appcompat"
 
     compileOnly "androidx.annotation:annotation"
 
