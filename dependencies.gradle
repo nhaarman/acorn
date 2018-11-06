@@ -8,7 +8,7 @@ dependencyManagement {
         dependency "androidx.annotation:annotation:1.0.0"
 
         // ext-bravo
-        dependency "io.arrow-kt:arrow-core:0.7.3"
+        dependency "io.arrow-kt:arrow-core:0.8.0"
 
         // ext-bravo-android
         dependency "androidx.appcompat:appcompat:1.0.0"
