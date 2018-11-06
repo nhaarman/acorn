@@ -28,11 +28,11 @@ dependencies {
 
     androidTestImplementation "junit:junit"
     androidTestImplementation "com.nhaarman:expect.kt"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib"
-    androidTestImplementation "com.android.support.test:runner"
-    androidTestImplementation "com.android.support.test:rules"
-    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18"
+    androidTestImplementation "androidx.test.espresso:espresso-core"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib"
+    androidTestImplementation "androidx.test:runner"
+    androidTestImplementation "androidx.test:rules"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator"
     androidTestUtil "com.android.support.test:orchestrator"
 }
 

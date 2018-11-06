@@ -16,5 +16,5 @@ android {
 dependencies {
     api project(":ext-bravo-android")
 
-    compileOnly "com.android.support.test:rules"
+    compileOnly "androidx.test:rules"
 }
