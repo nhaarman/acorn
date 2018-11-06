@@ -37,7 +37,7 @@ import com.nhaarman.bravo.android.presentation.internal.SceneTransformer
 import com.nhaarman.bravo.android.presentation.internal.TransformedScene
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.TransitionFactory
-import com.nhaarman.bravo.android.uistate.UIState
+import com.nhaarman.bravo.android.uistate.UIStateUIHandler
 import com.nhaarman.bravo.android.uistate.ViewControllerProvider
 import com.nhaarman.bravo.android.util.toBundle
 import com.nhaarman.bravo.android.util.toNavigatorState
@@ -47,7 +47,6 @@ import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.util.lazyVar
 
 class BravoActivityDelegate private constructor(
     private val activity: Activity,
@@ -68,8 +67,8 @@ class BravoActivityDelegate private constructor(
         return navigator
     }
 
-    private var state by lazyVar {
-        UIState.create(activity.contentView, transitionFactory)
+    private val uiHandler by lazy {
+        UIStateUIHandler.create(activity.contentView, transitionFactory)
     }
 
     private val sceneDispatcher = SceneDispatcher()
@@ -99,7 +98,7 @@ class BravoActivityDelegate private constructor(
 
     fun onStart() {
         navigator.onStart()
-        state = state.uiVisible()
+        uiHandler.onUIVisible()
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -111,7 +110,7 @@ class BravoActivityDelegate private constructor(
     }
 
     fun onStop() {
-        state = state.uiNotVisible()
+        uiHandler.onUINotVisible()
     }
 
     fun onDestroy() {
@@ -150,7 +149,7 @@ class BravoActivityDelegate private constructor(
                 }
             }
 
-            state = state.withScene(
+            uiHandler.withScene(
                 scene.scene,
                 provider,
                 scene.data
@@ -167,7 +166,7 @@ class BravoActivityDelegate private constructor(
             }
 
             lastExternalSceneClass = scene.javaClass.name
-            state = state.withoutScene()
+            uiHandler.withoutScene()
             activity.startActivityForResult(scene.intent, 42)
         }
 
