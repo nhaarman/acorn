@@ -21,6 +21,7 @@ package com.nhaarman.bravo.android
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import com.nhaarman.bravo.OnBackPressListener
 import com.nhaarman.bravo.android.internal.contentView
 import com.nhaarman.bravo.android.internal.d
@@ -29,6 +30,7 @@ import com.nhaarman.bravo.android.internal.w
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.IntentProvider
 import com.nhaarman.bravo.android.presentation.NoIntentProvider
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.presentation.internal.DefaultSceneTransformer
 import com.nhaarman.bravo.android.presentation.internal.SceneTransformer
@@ -36,6 +38,7 @@ import com.nhaarman.bravo.android.presentation.internal.TransformedScene
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.android.uistate.UIState
+import com.nhaarman.bravo.android.uistate.ViewControllerProvider
 import com.nhaarman.bravo.android.util.toBundle
 import com.nhaarman.bravo.android.util.toNavigatorState
 import com.nhaarman.bravo.navigation.DisposableHandle
@@ -66,7 +69,7 @@ class BravoActivityDelegate private constructor(
     }
 
     private var state by lazyVar {
-        UIState.create(activity.contentView, viewFactory, transitionFactory)
+        UIState.create(activity.contentView, transitionFactory)
     }
 
     private val sceneDispatcher = SceneDispatcher()
@@ -138,7 +141,20 @@ class BravoActivityDelegate private constructor(
 
         private fun dispatchContainerScene(scene: TransformedScene.ContainerScene) {
             lastExternalSceneClass = null
-            state = state.withScene(scene.scene, scene.data)
+
+            val provider = object : ViewControllerProvider {
+
+                override fun provideFor(parent: ViewGroup): ViewController {
+                    return viewFactory.viewFor(scene.scene.key, parent)
+                        ?: error("Could not create view for Scene with key ${scene.scene.key}.")
+                }
+            }
+
+            state = state.withScene(
+                scene.scene,
+                provider,
+                scene.data
+            )
         }
 
         private fun dispatchExternalScene(scene: TransformedScene.ExternalScene) {

@@ -18,10 +18,16 @@
 
 package com.nhaarman.bravo.android.uistate
 
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 
+/**
+ * An interface that provides UI handling when working with Scenes.
+ *
+ * @see UIStateUIHandler
+ */
 interface UIHandler {
 
     /**
@@ -38,8 +44,21 @@ interface UIHandler {
 
     /**
      * Applies given [scene] to the UI.
+     *
+     * Depending on the current internal state the Scene change may occur
+     * directly or be scheduled, for example when a transition animation is
+     * running.
+     *
+     * @param scene The new [Scene] to apply.
+     * @param viewControllerProvider The [ViewControllerProvider] that can provide
+     * the [ViewController] for given [scene].
+     * @param data Any [TransitionData] to be used for transitions.
      */
-    fun withScene(scene: Scene<out Container>, data: TransitionData?)
+    fun withScene(
+        scene: Scene<out Container>,
+        viewControllerProvider: ViewControllerProvider,
+        data: TransitionData?
+    )
 
     /**
      * Indicates that there is no local [Scene] currently active.

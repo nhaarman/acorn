@@ -21,7 +21,6 @@ package com.nhaarman.bravo.android.uistate
 import android.app.Activity
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.internal.contentView
-import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
@@ -33,12 +32,11 @@ import com.nhaarman.bravo.util.lazyVar
  */
 class UIStateUIHandler private constructor(
     private val root: ViewGroup,
-    private val viewFactory: ViewFactory,
     private val transitionFactory: TransitionFactory
 ) : UIHandler {
 
     private var state by lazyVar {
-        UIState.create(root, viewFactory, transitionFactory)
+        UIState.create(root, transitionFactory)
     }
 
     override fun onUIVisible() {
@@ -49,8 +47,12 @@ class UIStateUIHandler private constructor(
         state = state.uiNotVisible()
     }
 
-    override fun withScene(scene: Scene<out Container>, data: TransitionData?) {
-        state = state.withScene(scene, data)
+    override fun withScene(
+        scene: Scene<out Container>,
+        viewControllerProvider: ViewControllerProvider,
+        data: TransitionData?
+    ) {
+        state = state.withScene(scene, viewControllerProvider, data)
     }
 
     override fun withoutScene() {
@@ -61,24 +63,20 @@ class UIStateUIHandler private constructor(
 
         fun create(
             root: ViewGroup,
-            viewFactory: ViewFactory,
             transitionFactory: TransitionFactory
         ): UIStateUIHandler {
             return UIStateUIHandler(
                 root,
-                viewFactory,
                 transitionFactory
             )
         }
 
         fun create(
             activity: Activity,
-            viewFactory: ViewFactory,
             transitionFactory: TransitionFactory
         ): UIStateUIHandler {
             return UIStateUIHandler(
                 activity.contentView,
-                viewFactory,
                 transitionFactory
             )
         }

@@ -18,40 +18,38 @@
 
 package com.nhaarman.bravo.android.uistate
 
+import com.nhaarman.bravo.android.uistate.internal.Destination
 import com.nhaarman.bravo.android.util.RootViewGroup
 import com.nhaarman.bravo.android.util.TestScene
 import com.nhaarman.bravo.android.util.TestTransitionFactory
 import com.nhaarman.bravo.android.util.TestView
 import com.nhaarman.bravo.android.util.TestViewController
-import com.nhaarman.bravo.android.util.TestViewFactory
+import com.nhaarman.bravo.android.util.TestViewControllerProvider
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class NotVisibleWithSceneTest {
+internal class NotVisibleWithDestinationTest {
 
     val root = spy(RootViewGroup())
-    val viewFactory = TestViewFactory()
     val scene = spy(TestScene())
     val sceneView = TestView()
-
-    val state = NotVisibleWithScene(
-        root,
-        viewFactory,
-        TestTransitionFactory(),
+    val destination = Destination(
         scene,
+        TestViewControllerProvider(TestViewController(sceneView)),
         null
     )
 
-    @BeforeEach
-    fun setup() {
-        viewFactory.views += scene.key to sceneView
-    }
+    val state = NotVisibleWithDestination(
+        root,
+        TestTransitionFactory(),
+        destination,
+        null
+    )
 
     @Test
     fun `'uiNotVisible' makes no transition`() {
@@ -64,7 +62,7 @@ internal class NotVisibleWithSceneTest {
     }
 
     @Test
-    fun `'withoutScene' does not touch root viewgroup`() {
+    fun `'withoutScene' does not touch root view group`() {
         /* When */
         state.withoutScene()
 
@@ -73,22 +71,22 @@ internal class NotVisibleWithSceneTest {
     }
 
     @Test
-    fun `'withScene' results in NotVisibleWithScene state`() {
-        expect(state.withScene(mock(), null)).toBeInstanceOf<NotVisibleWithScene>()
+    fun `'withScene' results in NotVisibleWithDestination state`() {
+        expect(state.withScene(mock(), mock(), null)).toBeInstanceOf<NotVisibleWithDestination>()
     }
 
     @Test
-    fun `'withScene' does not touch root viewgroup`() {
+    fun `'withScene' does not touch root view group`() {
         /* When */
-        state.withScene(mock(), null)
+        state.withScene(mock(), mock(), null)
 
         /* Then */
         verifyZeroInteractions(root)
     }
 
     @Test
-    fun `'uiVisible' results in VisibleWithScene state`() {
-        expect(state.uiVisible()).toBeInstanceOf<VisibleWithScene>()
+    fun `'uiVisible' results in VisibleWithDestination state`() {
+        expect(state.uiVisible()).toBeInstanceOf<VisibleWithDestination>()
     }
 
     @Test
@@ -115,11 +113,10 @@ internal class NotVisibleWithSceneTest {
         val existingView = TestView()
         root.addView(existingView)
 
-        val state = NotVisibleWithScene(
+        val state = NotVisibleWithDestination(
             root,
-            viewFactory,
             TestTransitionFactory(),
-            scene,
+            destination,
             TestViewController(TestView())
         )
 
@@ -134,11 +131,10 @@ internal class NotVisibleWithSceneTest {
     fun `'uiVisible' for state with existing view controller attaches that controller`() {
         /* Given */
         val viewController = TestViewController(TestView())
-        val state = NotVisibleWithScene(
+        val state = NotVisibleWithDestination(
             root,
-            viewFactory,
             TestTransitionFactory(),
-            scene,
+            destination,
             viewController
         )
 

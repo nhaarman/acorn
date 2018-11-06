@@ -18,13 +18,14 @@
 
 package com.nhaarman.bravo.android.uistate
 
+import com.nhaarman.bravo.android.uistate.internal.Destination
 import com.nhaarman.bravo.android.util.RootViewGroup
 import com.nhaarman.bravo.android.util.TestScene
 import com.nhaarman.bravo.android.util.TestTransition
 import com.nhaarman.bravo.android.util.TestTransitionFactory
 import com.nhaarman.bravo.android.util.TestView
 import com.nhaarman.bravo.android.util.TestViewController
-import com.nhaarman.bravo.android.util.TestViewFactory
+import com.nhaarman.bravo.android.util.TestViewControllerProvider
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.spy
@@ -34,10 +35,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class VisibleWithSceneTest {
+internal class VisibleWithDestinationTest {
 
     val root = spy(RootViewGroup())
-    val viewFactory = TestViewFactory()
 
     val transitionTo2 = TestTransition()
     val transition2To3 = TestTransition()
@@ -46,18 +46,24 @@ internal class VisibleWithSceneTest {
     val scene = spy(TestScene())
     val sceneView = TestView()
     val sceneViewController = TestViewController(sceneView)
+    val uiDestination = Destination(
+        scene,
+        TestViewControllerProvider(sceneViewController),
+        null
+    )
 
     val scene2 = spy(TestScene())
     val sceneView2 = TestView()
     val sceneViewController2 = TestViewController(sceneView2)
+    val sceneViewControllerProvider2 = TestViewControllerProvider(sceneViewController2)
 
     val scene3 = spy(TestScene())
+    val sceneViewControllerProvider3 = TestViewControllerProvider(TestViewController(TestView()))
 
-    val state = VisibleWithScene(
+    val state = VisibleWithDestination(
         root,
-        viewFactory,
         transitionFactory,
-        scene,
+        uiDestination,
         sceneViewController
     )
 
@@ -79,8 +85,8 @@ internal class VisibleWithSceneTest {
     inner class NoTransitionInProgress {
 
         @Test
-        fun `'uiNotVisible' results in NotVisibleWithScene state`() {
-            expect(state.uiNotVisible()).toBeInstanceOf<NotVisibleWithScene>()
+        fun `'uiNotVisible' results in NotVisibleWithDestination state`() {
+            expect(state.uiNotVisible()).toBeInstanceOf<NotVisibleWithDestination>()
         }
 
         @Test
@@ -100,7 +106,7 @@ internal class VisibleWithSceneTest {
         @Test
         fun `'withScene' detaches current view controller`() {
             /* When */
-            state.withScene(scene2, null)
+            state.withScene(scene2, sceneViewControllerProvider2, null)
 
             /* Then */
             verify(scene).detach(sceneViewController)
@@ -109,7 +115,7 @@ internal class VisibleWithSceneTest {
         @Test
         fun `'withScene' executes transition`() {
             /* When */
-            state.withScene(scene2, null)
+            state.withScene(scene2, sceneViewControllerProvider2, null)
 
             /* Then */
             expect(transitionTo2.isStarted()).toHold()
@@ -121,7 +127,7 @@ internal class VisibleWithSceneTest {
 
         @BeforeEach
         fun setup() {
-            state.withScene(scene2, null)
+            state.withScene(scene2, sceneViewControllerProvider2, null)
         }
 
         @Test
@@ -189,7 +195,7 @@ internal class VisibleWithSceneTest {
 
         @BeforeEach
         fun setup() {
-            state.withScene(scene2, null)
+            state.withScene(scene2, sceneViewControllerProvider2, null)
         }
 
         @Test
@@ -243,7 +249,7 @@ internal class VisibleWithSceneTest {
         @Test
         fun `'withScene' schedules transition`() {
             /* When */
-            state.withScene(scene3, null)
+            state.withScene(scene3, sceneViewControllerProvider3, null)
 
             /* Then */
             expect(transition2To3.isStarted()).notToHold()
@@ -252,7 +258,7 @@ internal class VisibleWithSceneTest {
         @Test
         fun `first transition completed executes scheduled transition`() {
             /* Given */
-            state.withScene(scene3, null)
+            state.withScene(scene3, sceneViewControllerProvider3, null)
 
             /* When */
             transitionTo2.complete(sceneViewController2)

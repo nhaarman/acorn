@@ -20,7 +20,6 @@ package com.nhaarman.bravo.android.uistate
 
 import com.nhaarman.bravo.android.util.RootViewGroup
 import com.nhaarman.bravo.android.util.TestTransitionFactory
-import com.nhaarman.bravo.android.util.TestViewFactory
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.spy
@@ -33,7 +32,6 @@ internal class NotVisibleTest {
 
     val state = NotVisible(
         root,
-        TestViewFactory(),
         TestTransitionFactory()
     )
 
@@ -53,14 +51,14 @@ internal class NotVisibleTest {
     }
 
     @Test
-    fun `'withScene' results in NotVisibleWithScene state`() {
-        expect(state.withScene(mock(), null)).toBeInstanceOf<NotVisibleWithScene>()
+    fun `'withScene' results in NotVisibleWithDestination state`() {
+        expect(state.withScene(mock(), mock(), null)).toBeInstanceOf<NotVisibleWithDestination>()
     }
 
     @Test
     fun `'withScene' does not touch root viewgroup`() {
         /* When */
-        state.withScene(mock(), null)
+        state.withScene(mock(), mock(), null)
 
         /* Then */
         verifyZeroInteractions(root)

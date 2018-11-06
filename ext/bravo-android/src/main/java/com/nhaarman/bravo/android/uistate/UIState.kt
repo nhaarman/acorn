@@ -23,9 +23,9 @@ import androidx.annotation.CheckResult
 import com.nhaarman.bravo.android.internal.v
 import com.nhaarman.bravo.android.internal.w
 import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.transition.TransitionFactory
+import com.nhaarman.bravo.android.uistate.internal.Destination
 import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
@@ -69,7 +69,21 @@ sealed class UIState {
      * @return the new state.
      */
     @CheckResult
-    abstract fun withScene(scene: Scene<out Container>, data: TransitionData?): UIState
+    fun withScene(
+        scene: Scene<out Container>,
+        viewControllerProvider: ViewControllerProvider,
+        data: TransitionData?
+    ): UIState {
+        return withDestination(
+            Destination(
+                scene,
+                viewControllerProvider,
+                data
+            )
+        )
+    }
+
+    internal abstract fun withDestination(destination: Destination): UIState
 
     /**
      * Indicates that there is no local [Scene] currently active.
@@ -86,38 +100,31 @@ sealed class UIState {
          *
          * @param root The [ViewGroup] to show Scene views in, usually
          * [android.R.id.content].
-         * @param viewFactory A [ViewFactory] that provides views for Scenes.
          * @param transitionFactory a [TransitionFactory] that provides
          * [Transition] instances for transition animations.
          */
         fun create(
             root: ViewGroup,
-            viewFactory: ViewFactory,
             transitionFactory: TransitionFactory
-        ): UIState =
-            NotVisible(
-                root,
-                viewFactory,
-                transitionFactory
-            )
+        ): UIState = NotVisible(root, transitionFactory)
     }
 }
 
 /**
- * Represents the initial state where the UI is not visible, and has no Scene.
+ * Represents the initial state where the UI is not visible, and represents no
+ * destination.
  */
 internal class NotVisible(
     private val root: ViewGroup,
-    private val viewFactory: ViewFactory,
     private val transitionFactory: TransitionFactory
 ) : UIState() {
 
     /**
-     * Transitions to the [Visible] state, which has no active [Scene].
+     * Transitions to the [Visible] state, which has no active [Destination].
      */
     override fun uiVisible(): UIState {
-        v("UIState.NotVisible", "UI visible.")
-        return Visible(root, viewFactory, transitionFactory)
+        v("UIState.NotVisible", "UI becomes visible.")
+        return Visible(root, transitionFactory)
     }
 
     /**
@@ -126,15 +133,14 @@ internal class NotVisible(
     override fun uiNotVisible() = this
 
     /**
-     * Transitions to the [NotVisibleWithScene] state.
+     * Transitions to the [NotVisibleWithDestination] state.
      */
-    override fun withScene(scene: Scene<out Container>, data: TransitionData?): UIState {
-        v("UIState.NotVisible", "Scene changed while not visible: $scene.")
-        return NotVisibleWithScene(
+    override fun withDestination(destination: Destination): UIState {
+        v("UIState.NotVisible", "Destination changed while not visible: $destination.")
+        return NotVisibleWithDestination(
             root,
-            viewFactory,
             transitionFactory,
-            scene,
+            destination,
             null
         )
     }
@@ -143,57 +149,55 @@ internal class NotVisible(
 }
 
 /**
- * Represents the state where the UI is not visible, but does have a Scene.
- * When the UI becomes visible, the scene must be shown directly * without any
- * animations.
+ * Represents the state where the UI is not visible, but does represent a
+ * destination. When the UI becomes visible, the scene must be shown directly
+ * without any animations.
  */
-internal class NotVisibleWithScene(
+internal class NotVisibleWithDestination(
     private val root: ViewGroup,
-    private val viewFactory: ViewFactory,
     private val transitionFactory: TransitionFactory,
-    private val scene: Scene<out Container>,
+    private val destination: Destination,
     private val existingViewController: ViewController?
 ) : UIState() {
 
     /**
-     * Immediately shows the view for the active [Scene] without a transition
-     * animation, and transitions to the [VisibleWithScene] state.
+     * Immediately shows the view for the active [Destination] without a
+     * transition animation, and transitions to the [VisibleWithDestination] state.
      */
     override fun uiVisible(): UIState {
         if (existingViewController != null) {
             v(
-                "UIState.NotVisibleWithScene",
-                "UI visible, attaching container to $scene."
+                "UIState.NotVisibleWithDestination",
+                "UI becomes visible, attaching container to ${destination.scene}."
             )
 
-            scene.forceAttach(existingViewController)
-            return VisibleWithScene(
+            destination.forceAttach(existingViewController)
+            return VisibleWithDestination(
                 root,
-                viewFactory,
                 transitionFactory,
-                scene,
+                destination,
                 existingViewController
             )
         }
 
         v(
-            "UIState.NotVisibleWithScene",
-            "UI becomes visible with active scene: $scene"
+            "UIState.NotVisibleWithDestination",
+            "UI becomes visible with active destination: $destination"
         )
-        v("UIState.NotVisibleWithScene", "Showing scene without animation.")
+        v("UIState.NotVisibleWithDestination", "Showing destination UI without animation.")
 
-        val viewController = viewFactory.viewFor(scene.key, root)
-            ?: error("No view could be created for Scene with key ${scene.key}.")
+        val viewController = destination.viewControllerProvider.provideFor(root)
 
         root.removeAllViews()
         root.addView(viewController.view)
 
-        scene.forceAttach(viewController)
-        return VisibleWithScene(
+        v("UIState.NotVisibleWithDestination", "Attaching container to ${destination.scene}.")
+        destination.forceAttach(viewController)
+
+        return VisibleWithDestination(
             root,
-            viewFactory,
             transitionFactory,
-            scene,
+            destination,
             viewController
         )
     }
@@ -204,34 +208,32 @@ internal class NotVisibleWithScene(
     override fun uiNotVisible() = this
 
     /**
-     * Discards the current scene and transitions to a new [NotVisibleWithScene]
-     * state with the new given [Scene].
+     * Discards the current scene and transitions to a new [NotVisibleWithDestination]
+     * state with the new given [destination].
      */
-    override fun withScene(scene: Scene<out Container>, data: TransitionData?): UIState {
-        v("UIState.NotVisibleWithScene", "Scene changed while not visible to: $scene.")
-        return NotVisibleWithScene(
+    override fun withDestination(destination: Destination): UIState {
+        v("UIState.NotVisibleWithDestination", "Destination changed while not visible to: $destination.")
+        return NotVisibleWithDestination(
             root,
-            viewFactory,
             transitionFactory,
-            scene,
+            destination,
             null
         )
     }
 
     override fun withoutScene(): UIState {
-        v("UIState.NotVisibleWithScene", "Scene lost while not visible.")
-        return NotVisible(root, viewFactory, transitionFactory)
+        v("UIState.NotVisibleWithDestination", "Destination lost while not visible.")
+        return NotVisible(root, transitionFactory)
     }
 }
 
 /**
  * Represents the state where the UI is visible without a Scene or View.
  * Entering this state should usually be followed directly with a call to
- * [withScene], as otherwise the UI would show a blank view.
+ * [withDestination], as otherwise the UI would show a blank view.
  */
 internal class Visible(
     private val root: ViewGroup,
-    private val viewFactory: ViewFactory,
     private val transitionFactory: TransitionFactory
 ) : UIState() {
 
@@ -244,33 +246,31 @@ internal class Visible(
      * Transitions to the [NotVisible] state.
      */
     override fun uiNotVisible(): UIState {
-        v("UIState.Visible", "UI not visible.")
-        return NotVisible(root, viewFactory, transitionFactory)
+        v("UIState.Visible", "UI becomes not visible.")
+        return NotVisible(root, transitionFactory)
     }
 
     /**
      * Immediately shows the view for given [Scene] without a transition
-     * animation, and transitions to the [VisibleWithScene] state.
+     * animation, and transitions to the [VisibleWithDestination] state.
      */
-    override fun withScene(scene: Scene<out Container>, data: TransitionData?): UIState {
-        v("UIState.Visible", "Scene changed while the UI was visible to: $scene.")
+    override fun withDestination(destination: Destination): UIState {
+        v("UIState.Visible", "Destination changed with UI visible to: $destination.")
         v(
             "UIState.Visible",
             "No current scene active, showing scene without animation."
         )
 
-        val viewController = viewFactory.viewFor(scene.key, root)
-            ?: error("No view could be created for Scene with key ${scene.key}.")
+        val viewController = destination.viewControllerProvider.provideFor(root)
 
         root.removeAllViews()
         root.addView(viewController.view)
-        scene.forceAttach(viewController)
+        destination.forceAttach(viewController)
 
-        return VisibleWithScene(
+        return VisibleWithDestination(
             root,
-            viewFactory,
             transitionFactory,
-            scene,
+            destination,
             viewController
         )
     }
@@ -283,15 +283,14 @@ internal class Visible(
  * Scene. This is the state the UI is in most of the time when the application
  * is in the foreground.
  *
- * @param currentScene The active [Scene].
+ * @param currentDestination The active [Destination].
  * @param currentViewController The [ViewController], must already be attached to
- * [currentScene].
+ * the [currentDestination]'s [Scene].
  */
-internal class VisibleWithScene(
+internal class VisibleWithDestination(
     private val root: ViewGroup,
-    private val viewFactory: ViewFactory,
     private val transitionFactory: TransitionFactory,
-    private var currentScene: Scene<out Container>,
+    private var currentDestination: Destination,
     private var currentViewController: ViewController
 ) : UIState() {
 
@@ -301,7 +300,7 @@ internal class VisibleWithScene(
             field = value
         }
 
-    private var scheduledScene: Pair<Scene<out Container>, TransitionData?>? = null
+    private var scheduledDestination: Destination? = null
 
     /**
      * Makes no transition.
@@ -310,74 +309,75 @@ internal class VisibleWithScene(
 
     /**
      * Detaches the current view from the current [Scene] and transitions to the
-     * [NotVisibleWithScene] state.
+     * [NotVisibleWithDestination] state.
      */
     override fun uiNotVisible(): UIState {
         v(
-            "VisibleWithScene",
-            "UI becomes invisible, detaching container from $currentScene."
+            "VisibleWithDestination",
+            "UI becomes invisible, detaching container from ${currentDestination.scene}."
         )
-        currentScene.forceDetach(currentViewController)
+        currentDestination.forceDetach(currentViewController)
         transitionCallback = null
 
-        return NotVisibleWithScene(
+        return NotVisibleWithDestination(
             root,
-            viewFactory,
             transitionFactory,
-            currentScene,
+            currentDestination,
             currentViewController
         )
     }
 
     /**
-     * Executes a transition from the current [Scene] to the given [Scene].
+     * Executes a transition from the current [Destination] to the given
+     * [Destination].
      *
-     * If a transition animation is currently active, the transition to [scene]
-     * is scheduled.
+     * If a transition animation is currently active, the transition to
+     * [destination] is scheduled.
      */
-    override fun withScene(scene: Scene<out Container>, data: TransitionData?): UIState {
-        v("UIState.VisibleWithScene", "Scene changed to: $scene.")
+    override fun withDestination(destination: Destination): UIState {
+        v("UIState.VisibleWithDestination", "Scene changed to: $destination.")
         if (transitionCallback != null) {
             v(
-                "UIState.VisibleWithScene",
-                "Transition already in progress, scheduling transition to $scene."
+                "UIState.VisibleWithDestination",
+                "Transition already in progress, scheduling transition to $destination."
             )
-            if (scheduledScene != null) {
+            if (scheduledDestination != null) {
                 w(
-                    "UIState.VisibleWithScene",
-                    "Dropping transition to ${scheduledScene?.first}."
+                    "UIState.VisibleWithDestination",
+                    "Dropping transition to $scheduledDestination."
                 )
             }
-            scheduledScene = scene to data
+            scheduledDestination = destination
             return this
         }
 
-        v(
-            "UIState.VisibleWithScene",
-            "Starting transition from $currentScene to $scene."
-        )
-        currentScene.forceDetach(currentViewController)
+        v("UIState.VisibleWithDestination", "Detaching container from ${currentDestination.scene}.")
+        currentDestination.forceDetach(currentViewController)
 
-        val callback = MyCallback(scene).also { transitionCallback = it }
-        transitionFactory.transitionFor(currentScene, scene, data)
+        v(
+            "UIState.VisibleWithDestination",
+            "Starting transition from $currentDestination to $destination."
+        )
+        val callback = MyCallback(destination).also { transitionCallback = it }
+        transitionFactory.transitionFor(currentDestination.scene, destination.scene, destination.transitionData)
             .execute(root, callback)
 
         return this
     }
 
     override fun withoutScene(): UIState {
-        v("UIState.VisibleWithScene", "Scene lost.")
+        v("UIState.VisibleWithDestination", "Destination lost.")
         if (transitionCallback != null) {
-            v("UIState.VisibleWithScene", "Transition in progress, canceling.")
+            v("UIState.VisibleWithDestination", "Transition in progress, canceling.")
             transitionCallback = null
-            scheduledScene = null
+            scheduledDestination = null
         }
 
-        return Visible(root, viewFactory, transitionFactory)
+        return Visible(root, transitionFactory)
     }
 
     private inner class MyCallback(
-        private val newScene: Scene<out Container>
+        private val newDestination: Destination
     ) : CancellableTransitionCallback {
 
         private var done = false
@@ -393,8 +393,8 @@ internal class VisibleWithScene(
             done = true
 
             v(
-                "UIState.VisibleWithScene",
-                "Transition to $newScene cancelled."
+                "UIState.VisibleWithDestination",
+                "Transition to $newDestination cancelled."
             )
         }
 
@@ -404,36 +404,36 @@ internal class VisibleWithScene(
             if (attached) return
 
             v(
-                "UIState.VisibleWithScene",
-                "Attaching container to $newScene before transition end."
+                "UIState.VisibleWithDestination",
+                "Attaching container to ${newDestination.scene} before transition end."
             )
             attached = true
 
-            currentScene = newScene
+            currentDestination = newDestination
             currentViewController = viewController
-            newScene.forceAttach(viewController)
+            newDestination.forceAttach(viewController)
         }
 
         override fun onComplete(viewController: ViewController) {
             if (done) return
             done = true
 
-            v("UIState.VisibleWithScene", "Transition to $newScene complete.")
+            v("UIState.VisibleWithDestination", "Transition to $newDestination complete.")
 
             if (!attached) {
                 v(
-                    "UIState.VisibleWithScene",
-                    "Container not attached to $newScene; attaching."
+                    "UIState.VisibleWithDestination",
+                    "Container not attached to ${newDestination.scene}; attaching."
                 )
-                currentScene = newScene
+                currentDestination = newDestination
                 currentViewController = viewController
-                currentScene.forceAttach(viewController)
+                currentDestination.forceAttach(viewController)
             }
 
-            scheduledScene?.let { (scene, data) ->
-                v("UIState.VisibleWithScene", "Found scheduled scene: $scene")
-                scheduledScene = null
-                withScene(scene, data)
+            scheduledDestination?.let { destination ->
+                v("UIState.VisibleWithDestination", "Found scheduled destination: $destination")
+                scheduledDestination = null
+                withDestination(destination)
             }
         }
     }
@@ -445,11 +445,11 @@ internal class VisibleWithScene(
 }
 
 @Suppress("UNCHECKED_CAST")
-private fun Scene<out Container>.forceAttach(c: Container) {
-    (this as Scene<Container>).attach(c)
+private fun Destination.forceAttach(c: Container) {
+    (scene as Scene<Container>).attach(c)
 }
 
 @Suppress("UNCHECKED_CAST")
-private fun Scene<out Container>.forceDetach(c: Container) {
-    (this as Scene<Container>).detach(c)
+private fun Destination.forceDetach(c: Container) {
+    (scene as Scene<Container>).detach(c)
 }
