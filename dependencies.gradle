@@ -22,7 +22,7 @@ dependencyManagement {
         dependency "com.jakewharton.timber:timber:4.7.1"
 
         // ext-bravo-android-lifecycle
-        dependency "android.arch.lifecycle:runtime:1.1.1"
+        dependency "androidx.lifecycle:lifecycle-runtime:2.0.0"
 
 
 
@@ -53,11 +53,11 @@ dependencyManagement {
 
         dependency "com.github.shyiko:ktlint:0.29.0"
 
-        dependency "com.android.support.test.espresso:espresso-core:3.0.2"
-        dependency "com.android.support.test.espresso:espresso-contrib:3.0.2"
-        dependency "com.android.support.test:runner:1.0.2"
-        dependency "com.android.support.test:rules:1.0.2"
-        dependency "com.android.support.test.uiautomator:uiautomator-v18:2.1.3"
+        dependency "androidx.test.espresso:espresso-core:3.1.0"
+        dependency "androidx.test.espresso:espresso-contrib:3.1.0"
+        dependency "androidx.test:runner:1.1.0"
+        dependency "androidx.test:rules:1.1.0"
+        dependency "androidx.test.uiautomator:uiautomator:2.2.0"
 
         def androidToolsVersion = "26.4.0-alpha02"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"

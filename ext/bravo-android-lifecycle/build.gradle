@@ -16,7 +16,7 @@ android {
 dependencies {
     api project(':ext-bravo')
 
-    api "android.arch.lifecycle:runtime"
+    api "androidx.lifecycle:lifecycle-runtime"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
