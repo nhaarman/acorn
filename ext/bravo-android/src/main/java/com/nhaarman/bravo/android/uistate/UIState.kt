@@ -371,6 +371,9 @@ internal class VisibleWithDestination(
             v("UIState.VisibleWithDestination", "Transition in progress, canceling.")
             transitionCallback = null
             scheduledDestination = null
+        } else {
+            v("UIState.VisibleWithDestination", "Detaching container from ${currentDestination.scene}.")
+            currentDestination.forceDetach(currentViewController)
         }
 
         return Visible(root, transitionFactory)

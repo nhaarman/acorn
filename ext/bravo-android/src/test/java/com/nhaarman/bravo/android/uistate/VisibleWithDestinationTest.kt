@@ -104,6 +104,15 @@ internal class VisibleWithDestinationTest {
         }
 
         @Test
+        fun `'withoutScene' detaches current view controller`() {
+            /* When */
+            state.withoutScene()
+
+            /* Then */
+            verify(scene).detach(sceneViewController)
+        }
+
+        @Test
         fun `'withScene' detaches current view controller`() {
             /* When */
             state.withScene(scene2, sceneViewControllerProvider2, null)
@@ -265,6 +274,15 @@ internal class VisibleWithDestinationTest {
 
             /* Then */
             expect(transition2To3.isStarted()).toHold()
+        }
+
+        @Test
+        fun `'withoutScene' does not detach current view controller for a second time`() {
+            /* When */
+            state.withoutScene()
+
+            /* Then */
+            verify(scene, times(1)).detach(sceneViewController)
         }
     }
 }
