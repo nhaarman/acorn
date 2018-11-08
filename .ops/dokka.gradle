@@ -1,4 +1,4 @@
-def hasAndroid = project.hasProperty("android")
+def hasAndroid = plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")
 
 if (hasAndroid) {
     task("javadoc", type: Javadoc) {
