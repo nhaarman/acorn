@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.notesapp.android.ui.itemlist
 
-import androidx.test.InstrumentationRegistry
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
@@ -27,7 +27,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.recyclerview.widget.RecyclerView
+import androidx.test.platform.app.InstrumentationRegistry
 import com.nhaarman.bravo.android.tests.BravoViewTestRule
 import com.nhaarman.bravo.notesapp.android.R
 import com.nhaarman.bravo.notesapp.android.ViewFactoryProvider
@@ -78,7 +78,9 @@ class ItemListViewTest {
 
         /* When */
         rule.onUiThread { container.items = notes }
-        onView(withId(R.id.itemsRecyclerView)).perform(scrollToPosition<androidx.recyclerview.widget.RecyclerView.ViewHolder>(3000))
+        onView(withId(R.id.itemsRecyclerView)).perform(
+            scrollToPosition<RecyclerView.ViewHolder>(3000)
+        )
 
         /* Then */
         onView(withText("3000")).check(matches(isDisplayed()))

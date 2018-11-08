@@ -18,10 +18,10 @@
 
 package com.nhaarman.bravo.android.presentation
 
-import androidx.test.InstrumentationRegistry
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.test.platform.app.InstrumentationRegistry
 import com.nhaarman.bravo.android.presentation.internal.ViewControllerViewCreator
 import com.nhaarman.bravo.android.test.R
 import com.nhaarman.expect.expect
@@ -32,7 +32,7 @@ internal class ViewControllerViewCreatorTest {
     @Test
     fun properViewIsReturned() {
         /* Given */
-        val viewGroup = FrameLayout(InstrumentationRegistry.getContext())
+        val viewGroup = FrameLayout(InstrumentationRegistry.getInstrumentation().context)
         val creator = ViewControllerViewCreator<View>(R.layout.linearlayout) {
             MyContainer(it)
         }
@@ -47,7 +47,7 @@ internal class ViewControllerViewCreatorTest {
     @Test
     fun properContainerIsReturned() {
         /* Given */
-        val viewGroup = FrameLayout(InstrumentationRegistry.getContext())
+        val viewGroup = FrameLayout(InstrumentationRegistry.getInstrumentation().context)
         val creator = ViewControllerViewCreator<View>(R.layout.linearlayout) {
             MyContainer(it)
         }

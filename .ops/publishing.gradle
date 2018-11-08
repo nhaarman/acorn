@@ -1,4 +1,4 @@
-def hasAndroid = project.hasProperty("android")
+def hasAndroid = plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")
 
 publishing {
     def sonatype_username = "${findProperty('sonatype_username') ?: System.getenv("sonatype_username")}"
