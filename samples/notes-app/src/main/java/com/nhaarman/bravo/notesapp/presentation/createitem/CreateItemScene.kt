@@ -18,12 +18,12 @@
 
 package com.nhaarman.bravo.notesapp.presentation.createitem
 
-import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.notesapp.mainThread
 import com.nhaarman.bravo.notesapp.note.NoteItem
 import com.nhaarman.bravo.notesapp.note.NoteItemsRepository
 import com.nhaarman.bravo.presentation.RxScene
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
+import com.nhaarman.bravo.state.SceneState
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.withLatestFrom
@@ -44,6 +44,8 @@ class CreateItemScene(
     private val createClicks = view.whenAvailable { it.createClicks }
 
     override fun onStart() {
+        super.onStart()
+
         disposables += createClicks
             .withLatestFrom(textObservable) { _, text -> text }
             .firstElement()

@@ -31,6 +31,8 @@ class PictureGalleryScene(
 ) : RxScene<PictureGalleryContainer>(savedState) {
 
     override fun onStart() {
+        super.onStart()
+
         disposables += picturesProvider.pictures
             .combineWithLatestView()
             .subscribe { (pictures, container) ->
