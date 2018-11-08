@@ -19,7 +19,7 @@
 package com.nhaarman.bravo.samples.hellostartactivity
 
 import android.content.Intent
-import androidx.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
@@ -56,7 +56,7 @@ class AppTest {
     private fun startApp() {
         device.pressHome()
 
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         val intent = context.packageManager
             .getLaunchIntentForPackage(appPackage)
             ?.also {
