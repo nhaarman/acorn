@@ -44,6 +44,8 @@ class ItemListScene(
     }
 
     override fun onStart() {
+        super.onStart()
+
         disposables += items
             .combineWithLatestView()
             .subscribe { (items, view) ->

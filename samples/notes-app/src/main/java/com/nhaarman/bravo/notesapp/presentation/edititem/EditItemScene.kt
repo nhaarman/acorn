@@ -43,6 +43,8 @@ class EditItemScene(
     private val deleteClicks = view.whenAvailable { it.deleteClicks }
 
     override fun onStart() {
+        super.onStart()
+
         disposables += originalItem
             .combineWithLatestView()
             .firstElement()

@@ -21,8 +21,8 @@ package com.nhaarman.bravo.presentation
 import androidx.annotation.CallSuper
 import arrow.core.Option
 import arrow.core.toOption
-import com.nhaarman.bravo.presentation.RxScene.Event.Attached
-import com.nhaarman.bravo.presentation.RxScene.Event.Detached
+import com.nhaarman.bravo.presentation.RxScene.ContainerEvent.Attached
+import com.nhaarman.bravo.presentation.RxScene.ContainerEvent.Detached
 import com.nhaarman.bravo.state.SceneState
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -68,13 +68,15 @@ abstract class RxScene<V : RestorableContainer>(
      */
     private val sceneDisposables = CompositeDisposable()
 
-    private val eventsSubject = BehaviorSubject.createDefault<Event<V>>(Detached)
+    private val startedEventsSubject = BehaviorSubject.createDefault(false)
+
+    private val containerEventsSubject = BehaviorSubject.createDefault<ContainerEvent<V>>(Detached)
 
     /**
      * Publishes a stream of optional [V] instances that are attached to this
      * Scene.
      */
-    protected val view: Observable<Option<V>> = eventsSubject
+    protected val view: Observable<Option<V>> = containerEventsSubject
         .map { event ->
             when (event) {
                 is Attached<V> -> event.v.toOption()
@@ -84,20 +86,27 @@ abstract class RxScene<V : RestorableContainer>(
         .replay(1).autoConnect()
 
     @CallSuper
+    override fun onStart() {
+        super.onStart()
+        startedEventsSubject.onNext(true)
+    }
+
+    @CallSuper
     override fun attach(v: V) {
         super.attach(v)
-        eventsSubject.onNext(Attached(v))
+        containerEventsSubject.onNext(Attached(v))
     }
 
     @CallSuper
     override fun detach(v: V) {
-        eventsSubject.onNext(Detached)
+        containerEventsSubject.onNext(Detached)
         super.detach(v)
     }
 
     @CallSuper
     override fun onStop() {
         disposables.clear()
+        startedEventsSubject.onNext(false)
     }
 
     @CallSuper
@@ -106,9 +115,26 @@ abstract class RxScene<V : RestorableContainer>(
     }
 
     @Suppress("unused")
-    private sealed class Event<out V> {
-        class Attached<V>(val v: V) : Event<V>()
-        object Detached : Event<Nothing>()
+    private sealed class ContainerEvent<out V> {
+        class Attached<V>(val v: V) : ContainerEvent<V>()
+        object Detached : ContainerEvent<Nothing>()
+    }
+
+    /**
+     * A utility function to automatically subscribe and dispose of source
+     * [Observable] instance when this Scene starts and stops.
+     *
+     * @param f A function that provides the source [Observable] when this
+     * Scene is started. This function can be called multiple times.
+     */
+    protected fun <T> whenStarted(f: () -> Observable<T>): Observable<T> {
+        return startedEventsSubject
+            .switchMap { started ->
+                when (started) {
+                    true -> f()
+                    false -> Observable.empty()
+                }
+            }
     }
 
     /**
