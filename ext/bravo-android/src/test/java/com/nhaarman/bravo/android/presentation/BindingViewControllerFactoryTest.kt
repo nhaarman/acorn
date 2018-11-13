@@ -19,19 +19,19 @@
 package com.nhaarman.bravo.android.presentation
 
 import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.internal.BindingViewFactory
+import com.nhaarman.bravo.android.presentation.internal.BindingViewControllerFactory
 import com.nhaarman.bravo.android.presentation.internal.ViewCreator
 import com.nhaarman.bravo.presentation.SceneKey
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.Test
 
-internal class BindingViewFactoryTest {
+internal class BindingViewControllerFactoryTest {
 
     @Test
     fun `empty factory`() {
         /* Given */
-        val factory = BindingViewFactory(emptyMap())
+        val factory = BindingViewControllerFactory(emptyMap())
 
         /* When */
         val result = factory.viewFor(SceneKey("test"), mock())
@@ -43,7 +43,7 @@ internal class BindingViewFactoryTest {
     @Test
     fun `factory with missing key`() {
         /* Given */
-        val factory = BindingViewFactory(
+        val factory = BindingViewControllerFactory(
             mapOf(SceneKey("1") to MyViewCreator())
         )
 
@@ -58,7 +58,7 @@ internal class BindingViewFactoryTest {
     fun `proper result`() {
         /* Given */
         val myViewCreator = MyViewCreator()
-        val factory = BindingViewFactory(
+        val factory = BindingViewControllerFactory(
             mapOf(SceneKey("1") to myViewCreator)
         )
 

@@ -23,7 +23,7 @@ import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import com.nhaarman.bravo.android.BravoAppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.samples.hellosharedata.presentation.viewFactory
 
 /**
@@ -36,7 +36,7 @@ class MainActivity : BravoAppCompatActivity() {
         return mainNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return viewFactory
     }
 

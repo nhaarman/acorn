@@ -23,7 +23,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.nhaarman.bravo.android.BravoAppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.samples.hellosharedata.pictures.Picture
 import com.nhaarman.bravo.samples.hellosharedata.pictures.PictureContentProvider
 import com.nhaarman.bravo.samples.hellosharedata.presentation.PickPictureNavigator
@@ -39,7 +39,7 @@ class PickPictureActivity : BravoAppCompatActivity(), PickPictureNavigator.Event
         return pickPictureNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return viewFactory
     }
 

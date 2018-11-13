@@ -16,22 +16,31 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.presentation.internal
+package com.nhaarman.bravo.android.presentation
 
 import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**
- * A [ViewFactory] implementation that binds [SceneKey]s to [ViewCreator]
- * instances to create views.
+ * A [ViewControllerFactory] implementation that can delegate to other implementations.
+ *
+ * When a view is requested, the source factories are queried in-order until
+ * a valid result is found.
  */
-internal class BindingViewFactory(
-    private val bindings: Map<SceneKey, ViewCreator>
-) : ViewFactory {
+class ComposingViewControllerFactory private constructor(
+    private val sources: List<ViewControllerFactory>
+) : ViewControllerFactory {
 
     override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController? {
-        return bindings[sceneKey]?.create(parent)
+        return sources
+            .asSequence()
+            .mapNotNull { it.viewFor(sceneKey, parent) }
+            .firstOrNull()
+    }
+
+    companion object {
+
+        fun from(sources: List<ViewControllerFactory>) = ComposingViewControllerFactory(sources)
+        fun from(vararg sources: ViewControllerFactory) = ComposingViewControllerFactory(sources.asList())
     }
 }

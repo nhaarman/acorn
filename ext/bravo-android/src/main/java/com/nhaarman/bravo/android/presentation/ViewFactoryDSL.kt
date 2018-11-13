@@ -21,23 +21,23 @@ package com.nhaarman.bravo.android.presentation
 import androidx.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.internal.BindingViewFactory
+import com.nhaarman.bravo.android.presentation.internal.BindingViewControllerFactory
 import com.nhaarman.bravo.android.presentation.internal.ViewControllerViewCreator
 import com.nhaarman.bravo.android.presentation.internal.ViewCreator
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**
- * An entry point for the [ViewFactory] DSL.
+ * An entry point for the [ViewControllerFactory] DSL.
  *
  * @see [ViewFactoryBuilder].
  */
-fun bindViews(init: ViewFactoryBuilder.() -> Unit): ViewFactory {
+fun bindViews(init: ViewFactoryBuilder.() -> Unit): ViewControllerFactory {
     return ViewFactoryBuilder().apply(init).build()
 }
 
 /**
- * A DSL that can create [ViewFactory] instances by binding [Scene] keys to
+ * A DSL that can create [ViewControllerFactory] instances by binding [Scene] keys to
  * inflatable layouts.
  */
 class ViewFactoryBuilder internal constructor() {
@@ -100,8 +100,8 @@ class ViewFactoryBuilder internal constructor() {
         bindings[sceneKey] = ViewControllerViewCreator(layoutResId, wrapper)
     }
 
-    /** Constructs the [ViewFactory] instance. */
-    internal fun build(): ViewFactory {
-        return BindingViewFactory(bindings)
+    /** Constructs the [ViewControllerFactory] instance. */
+    internal fun build(): ViewControllerFactory {
+        return BindingViewControllerFactory(bindings)
     }
 }

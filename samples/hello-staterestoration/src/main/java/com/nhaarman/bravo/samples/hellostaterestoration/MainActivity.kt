@@ -20,7 +20,7 @@ package com.nhaarman.bravo.samples.hellostaterestoration
 
 import com.nhaarman.bravo.android.BravoActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.presentation.bindViews
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
@@ -30,7 +30,7 @@ class MainActivity : BravoActivity() {
         return HelloStateRestorationNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewFactory {
+    override fun provideViewFactory(): ViewControllerFactory {
         return bindViews {
             bind(
                 defaultKey<HelloStateRestorationScene>(),

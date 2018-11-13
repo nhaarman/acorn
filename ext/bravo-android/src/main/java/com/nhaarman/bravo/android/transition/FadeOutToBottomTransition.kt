@@ -24,7 +24,7 @@ import android.view.ViewGroup
 import com.nhaarman.bravo.android.R
 import com.nhaarman.bravo.android.internal.applyWindowBackground
 import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.internal.doOnPreDraw
 import com.nhaarman.bravo.presentation.Scene
 
@@ -79,16 +79,16 @@ class FadeOutToBottomTransition(
 
     companion object {
 
-        fun from(viewFactory: ViewFactory): (Scene<*>) -> FadeOutToBottomTransition = { scene ->
+        fun from(viewControllerFactory: ViewControllerFactory): (Scene<*>) -> FadeOutToBottomTransition = { scene ->
             FadeOutToBottomTransition { parent ->
-                viewFactory.viewFor(scene.key, parent)
+                viewControllerFactory.viewFor(scene.key, parent)
                     ?: error("No view could be created for Scene with key ${scene.key}.")
             }
         }
 
-        fun from(viewFactory: ViewFactory, scene: Scene<*>): FadeOutToBottomTransition {
+        fun from(viewControllerFactory: ViewControllerFactory, scene: Scene<*>): FadeOutToBottomTransition {
             return FadeOutToBottomTransition { parent ->
-                viewFactory.viewFor(scene.key, parent)
+                viewControllerFactory.viewFor(scene.key, parent)
                     ?: error("No view could be created for Scene with key ${scene.key}.")
             }
         }

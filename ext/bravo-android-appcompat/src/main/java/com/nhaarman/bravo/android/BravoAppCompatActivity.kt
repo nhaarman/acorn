@@ -26,7 +26,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.IntentProvider
 import com.nhaarman.bravo.android.presentation.NoIntentProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.transition.TransitionFactory
@@ -50,9 +50,9 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
     protected abstract fun provideNavigatorProvider(): NavigatorProvider
 
     /**
-     * Returns the [ViewFactory] that can provide views for this Activity.
+     * Returns the [ViewControllerFactory] that can provide views for this Activity.
      */
-    protected abstract fun provideViewFactory(): ViewFactory
+    protected abstract fun provideViewControllerFactory(): ViewControllerFactory
 
     /**
      * Returns the [TransitionFactory] to create [Transition] instances
@@ -61,7 +61,7 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
      * By default, this returns a [DefaultTransitionFactory].
      */
     protected open fun provideTransitionFactory(): TransitionFactory {
-        return DefaultTransitionFactory(viewFactory)
+        return DefaultTransitionFactory(viewControllerFactory)
     }
 
     /**
@@ -79,8 +79,8 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
         provideNavigatorProvider()
     }
 
-    private val viewFactory: ViewFactory by lazy {
-        provideViewFactory()
+    private val viewControllerFactory: ViewControllerFactory by lazy {
+        provideViewControllerFactory()
     }
 
     private val transitionFactory: TransitionFactory by lazy {
@@ -103,7 +103,7 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
         BravoActivityDelegate.from(
             activity = this,
             navigatorProvider = navigatorProvider,
-            viewFactory = viewFactory,
+            viewControllerFactory = viewControllerFactory,
             transitionFactory = transitionFactory,
             intentProvider = intentProvider
         )

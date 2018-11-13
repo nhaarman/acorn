@@ -31,7 +31,7 @@ import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.IntentProvider
 import com.nhaarman.bravo.android.presentation.NoIntentProvider
 import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.presentation.internal.DefaultSceneTransformer
 import com.nhaarman.bravo.android.presentation.internal.SceneTransformer
 import com.nhaarman.bravo.android.presentation.internal.TransformedScene
@@ -51,7 +51,7 @@ import com.nhaarman.bravo.state.NavigatorState
 class BravoActivityDelegate private constructor(
     private val activity: Activity,
     private val navigatorProvider: NavigatorProvider,
-    private val viewFactory: ViewFactory,
+    private val viewControllerFactory: ViewControllerFactory,
     private val transitionFactory: TransitionFactory,
     private val intentProvider: IntentProvider,
     private val sceneTransformer: SceneTransformer = DefaultSceneTransformer(intentProvider)
@@ -144,7 +144,7 @@ class BravoActivityDelegate private constructor(
             val provider = object : ViewControllerProvider {
 
                 override fun provideFor(parent: ViewGroup): ViewController {
-                    return viewFactory.viewFor(scene.scene.key, parent)
+                    return viewControllerFactory.viewFor(scene.scene.key, parent)
                         ?: error("Could not create view for Scene with key ${scene.scene.key}.")
                 }
             }
@@ -191,14 +191,14 @@ class BravoActivityDelegate private constructor(
         fun from(
             activity: Activity,
             navigatorProvider: NavigatorProvider,
-            viewFactory: ViewFactory,
-            transitionFactory: TransitionFactory = DefaultTransitionFactory(viewFactory),
+            viewControllerFactory: ViewControllerFactory,
+            transitionFactory: TransitionFactory = DefaultTransitionFactory(viewControllerFactory),
             intentProvider: IntentProvider = NoIntentProvider
         ): BravoActivityDelegate {
             return BravoActivityDelegate(
                 activity,
                 navigatorProvider,
-                viewFactory,
+                viewControllerFactory,
                 transitionFactory,
                 intentProvider
             )

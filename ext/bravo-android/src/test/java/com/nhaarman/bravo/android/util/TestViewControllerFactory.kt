@@ -21,10 +21,10 @@ package com.nhaarman.bravo.android.util
 import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.presentation.SceneKey
 
-class TestViewFactory : ViewFactory {
+class TestViewControllerFactory : ViewControllerFactory {
 
     val views = mutableMapOf<SceneKey, View>()
 

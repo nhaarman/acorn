@@ -20,7 +20,7 @@ package com.nhaarman.bravo.samples.hellonavigation
 
 import com.nhaarman.bravo.android.BravoAppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 
 class MainActivity : BravoAppCompatActivity() {
 
@@ -28,7 +28,7 @@ class MainActivity : BravoAppCompatActivity() {
         return HelloNavigationNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return viewFactory
     }
 }

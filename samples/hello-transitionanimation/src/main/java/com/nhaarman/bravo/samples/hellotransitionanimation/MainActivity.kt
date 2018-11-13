@@ -20,7 +20,7 @@ package com.nhaarman.bravo.samples.hellotransitionanimation
 
 import com.nhaarman.bravo.android.BravoAppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.android.transition.transitionFactory
 
@@ -30,7 +30,7 @@ class MainActivity : BravoAppCompatActivity() {
         return HelloTransitionAnimationNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return viewFactory
     }
 

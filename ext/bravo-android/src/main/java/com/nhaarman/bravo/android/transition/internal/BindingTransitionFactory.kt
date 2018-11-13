@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.android.transition.internal
 
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.transition.TransitionFactory
@@ -26,11 +26,11 @@ import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Scene
 
 internal class BindingTransitionFactory(
-    private val viewFactory: ViewFactory,
+    private val viewControllerFactory: ViewControllerFactory,
     private val bindings: Sequence<TransitionBinding>
 ) : TransitionFactory {
 
-    private val delegate by lazy { DefaultTransitionFactory(viewFactory) }
+    private val delegate by lazy { DefaultTransitionFactory(viewControllerFactory) }
 
     override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition {
         return bindings

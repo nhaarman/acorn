@@ -21,7 +21,7 @@ package com.nhaarman.bravo.samples.hellostartactivity
 import com.nhaarman.bravo.android.BravoAppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.IntentProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.presentation.bindViews
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
@@ -31,7 +31,7 @@ class MainActivity : BravoAppCompatActivity() {
         return HelloStartActivityNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return bindViews {
             bindView(defaultKey<FirstScene>(), R.layout.first_scene) {
                 FirstSceneViewController(it)

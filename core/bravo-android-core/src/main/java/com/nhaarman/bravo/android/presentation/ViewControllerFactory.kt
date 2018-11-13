@@ -30,7 +30,7 @@ import com.nhaarman.bravo.presentation.SceneKey
  * This interface uses the [ViewController] interface to be able to provide both
  * the attachable [Container] and the [View] to be displayed to the user.
  */
-interface ViewFactory {
+interface ViewControllerFactory {
 
     /**
      * Creates a [ViewController] for given Scene key.
