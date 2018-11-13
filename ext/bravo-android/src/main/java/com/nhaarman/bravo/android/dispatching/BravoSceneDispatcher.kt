@@ -96,7 +96,7 @@ class BravoSceneDispatcher internal constructor(
 
             if (activityControllerFactory.supports(scene.key)) {
                 uiHandler.withoutScene()
-                activityHandler.withScene(scene, activityControllerFactory.activityControllerFor(scene.key, context))
+                activityHandler.withScene(scene, activityControllerFactory.activityControllerFor(scene, context))
                 return
             }
 

@@ -38,11 +38,11 @@ interface ActivityControllerFactory {
     /**
      * Creates an [ActivityController] for given Scene key.
      *
-     * @param sceneKey The key of the [Scene] instance for which the corresponding
+     * @param scene The [Scene] instance for which the corresponding
      * ActivityController should be created.
      * @param context A [Context] instance.
      */
-    fun activityControllerFor(sceneKey: SceneKey, context: Context): ActivityController
+    fun activityControllerFor(scene: Scene<*>, context: Context): ActivityController
 }
 
 /**
@@ -54,7 +54,7 @@ object NoopActivityControllerFactory : ActivityControllerFactory {
         return false
     }
 
-    override fun activityControllerFor(sceneKey: SceneKey, context: Context): ActivityController {
+    override fun activityControllerFor(scene: Scene<*>, context: Context): ActivityController {
         error("NoopActivityControllerFactory can not create ActivityControllers.")
     }
 }

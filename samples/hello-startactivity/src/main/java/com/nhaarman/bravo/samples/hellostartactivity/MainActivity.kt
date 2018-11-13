@@ -25,6 +25,7 @@ import com.nhaarman.bravo.android.presentation.ActivityController
 import com.nhaarman.bravo.android.presentation.ActivityControllerFactory
 import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.presentation.bindViews
+import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
@@ -49,7 +50,7 @@ class MainActivity : BravoAppCompatActivity() {
                 return sceneKey == SceneKey.from(MapsScene::class)
             }
 
-            override fun activityControllerFor(sceneKey: SceneKey, context: Context): ActivityController {
+            override fun activityControllerFor(scene: Scene<*>, context: Context): ActivityController {
                 return MapsActivityController()
             }
         }

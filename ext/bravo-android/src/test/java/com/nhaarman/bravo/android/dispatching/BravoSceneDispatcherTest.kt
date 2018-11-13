@@ -26,6 +26,7 @@ import com.nhaarman.bravo.android.uistate.UIHandler
 import com.nhaarman.bravo.android.util.TestScene
 import com.nhaarman.bravo.android.util.TestViewControllerFactory
 import com.nhaarman.bravo.navigation.TestNavigator
+import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
 import com.nhaarman.expect.expectErrorWithMessage
 import com.nhaarman.mockitokotlin2.anyOrNull
@@ -106,8 +107,8 @@ internal class BravoSceneDispatcherTest {
             return factories.containsKey(sceneKey)
         }
 
-        override fun activityControllerFor(sceneKey: SceneKey, context: Context): ActivityController {
-            return factories[sceneKey]!!
+        override fun activityControllerFor(scene: Scene<*>, context: Context): ActivityController {
+            return factories[scene.key]!!
         }
     }
 }
