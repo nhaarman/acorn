@@ -49,7 +49,7 @@ class HelloStartActivityNavigator(
         push(MapsScene(this))
     }
 
-    override fun finished() {
+    override fun mapsFinished() {
         pop()
     }
 

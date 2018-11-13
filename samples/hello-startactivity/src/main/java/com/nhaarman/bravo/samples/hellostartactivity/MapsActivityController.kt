@@ -20,14 +20,31 @@ package com.nhaarman.bravo.samples.hellostartactivity
 
 import android.content.Intent
 import android.net.Uri
-import com.nhaarman.bravo.android.presentation.ExternalSceneIntentProvider
-import com.nhaarman.bravo.navigation.TransitionData
+import com.nhaarman.bravo.android.presentation.ActivityController
 
-object MapsIntentProvider : ExternalSceneIntentProvider<MapsScene>(MapsScene::class) {
+class MapsActivityController : MapsContainer, ActivityController {
 
-    override fun intentFor(scene: MapsScene, data: TransitionData?): Intent? {
+    private var done = false
+
+    private var listeners = listOf<() -> Unit>()
+
+    override fun createIntent(): Intent {
         return Intent(Intent.ACTION_VIEW).apply {
-            setData(Uri.parse("https://www.google.com/maps/search/?api=1&query=taj+mahal+agra"))
+            data = Uri.parse("https://www.google.com/maps/search/?api=1&query=taj+mahal+agra")
         }
+    }
+
+    override fun addFinishedEventListener(f: () -> Unit) {
+        listeners += f
+        if (done) f()
+    }
+
+    override fun removeFinishedEventListener(f: () -> Unit) {
+        listeners -= f
+    }
+
+    override fun onResult(resultCode: Int, data: Intent?) {
+        done = true
+        listeners.forEach { it.invoke() }
     }
 }

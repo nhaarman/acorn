@@ -16,20 +16,37 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.presentation
+package com.nhaarman.bravo.navigation
 
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.mockitokotlin2.mock
 
-abstract class ExternalScene(
-    private val listener: Events
-) : Scene<Nothing> {
+class TestNavigator : Navigator {
 
-    fun finished() {
-        listener.finished()
+    private var isDestroyed = false
+
+    private var listeners = listOf<Navigator.Events>()
+
+    fun onScene(scene: Scene<*>, data: TransitionData? = null) {
+        listeners.forEach { it.scene(scene, data) }
     }
 
-    interface Events {
+    override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
+        listeners += listener
+        return mock()
+    }
 
-        fun finished()
+    override fun onStart() {
+    }
+
+    override fun onStop() {
+    }
+
+    override fun onDestroy() {
+        isDestroyed = true
+    }
+
+    override fun isDestroyed(): Boolean {
+        return isDestroyed
     }
 }

@@ -25,6 +25,7 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
 import com.nhaarman.expect.expect
+import org.junit.After
 import org.junit.Test
 
 class AppTest {
@@ -53,6 +54,55 @@ class AppTest {
         expect(device.currentPackageName).toBe(appPackage)
     }
 
+    @Test
+    // Rotating results in a new Activity
+    fun clickThroughAppWithRotation() {
+        setPortrait()
+
+        startApp()
+        clickMapsButton()
+
+        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+
+        rotate()
+
+        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+
+        exitMaps()
+
+        expect(device.currentPackageName).toBe(appPackage)
+    }
+
+    @Test
+    // Force stopping the app simulates process death.
+    fun clickThroughAppWithStoppedApp() {
+        setPortrait()
+
+        startApp()
+        clickMapsButton()
+
+        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+
+        Runtime.getRuntime().exec(arrayOf("am", "force-stop", appPackage))
+
+        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+
+        exitMaps()
+
+        expect(device.currentPackageName).toBe(appPackage)
+    }
+
+    @After
+    fun tearDown() {
+        setPortrait()
+
+        // Ensure any saved state is gone
+        startApp()
+        device.pressBack()
+        device.pressBack()
+        device.pressBack()
+    }
+
     private fun startApp() {
         device.pressHome()
 
@@ -79,7 +129,7 @@ class AppTest {
         mapsButton.click()
 
         device.wait(
-            Until.hasObject(By.pkg("com.nhaarman.bravo.samples.hellostartactivity")),
+            Until.hasObject(By.pkg("com.google.android.apps.maps")),
             3000
         )
     }
@@ -98,5 +148,22 @@ class AppTest {
                 3000
             )
         }
+    }
+
+    private fun setPortrait() {
+        device.setOrientationNatural()
+        Thread.sleep(100)
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+    }
+
+    private fun rotate() {
+        if (device.isNaturalOrientation) {
+            device.setOrientationRight()
+        } else {
+            device.setOrientationNatural()
+        }
+
+        Thread.sleep(100)
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
     }
 }

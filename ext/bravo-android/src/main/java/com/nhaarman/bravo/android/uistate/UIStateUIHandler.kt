@@ -21,6 +21,7 @@ package com.nhaarman.bravo.android.uistate
 import android.app.Activity
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.internal.contentView
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
@@ -49,10 +50,10 @@ class UIStateUIHandler private constructor(
 
     override fun withScene(
         scene: Scene<out Container>,
-        viewControllerProvider: ViewControllerProvider,
+        viewControllerFactory: ViewControllerFactory,
         data: TransitionData?
     ) {
-        state = state.withScene(scene, viewControllerProvider, data)
+        state = state.withScene(scene, viewControllerFactory, data)
     }
 
     override fun withoutScene() {

@@ -24,8 +24,8 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.IntentProvider
-import com.nhaarman.bravo.android.presentation.NoIntentProvider
+import com.nhaarman.bravo.android.presentation.ActivityControllerFactory
+import com.nhaarman.bravo.android.presentation.NoopActivityControllerFactory
 import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.Transition
@@ -50,7 +50,8 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
     protected abstract fun provideNavigatorProvider(): NavigatorProvider
 
     /**
-     * Returns the [ViewControllerFactory] that can provide views for this Activity.
+     * Returns the [ViewControllerFactory] that can provide
+     * [ViewControllerFactory] instances for this Activity.
      */
     protected abstract fun provideViewControllerFactory(): ViewControllerFactory
 
@@ -64,15 +65,8 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
         return DefaultTransitionFactory(viewControllerFactory)
     }
 
-    /**
-     * Returns the [IntentProvider] instance that can create [Intent] instances
-     * for Scenes.
-     *
-     * By default, this function returns an IntentProvider that always returns
-     * `null`.
-     */
-    protected open fun provideIntentProvider(): IntentProvider {
-        return NoIntentProvider
+    protected open fun provideActivityControllerFactory(): ActivityControllerFactory {
+        return NoopActivityControllerFactory
     }
 
     private val navigatorProvider: NavigatorProvider by lazy {
@@ -87,8 +81,8 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
         provideTransitionFactory()
     }
 
-    private val intentProvider: IntentProvider by lazy {
-        provideIntentProvider()
+    private val activityControllerFactory: ActivityControllerFactory by lazy {
+        provideActivityControllerFactory()
     }
 
     /**
@@ -99,13 +93,13 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
         return bravoDelegate.navigator()
     }
 
-    private val bravoDelegate by lazy {
+    private val bravoDelegate: BravoActivityDelegate by lazy {
         BravoActivityDelegate.from(
             activity = this,
             navigatorProvider = navigatorProvider,
             viewControllerFactory = viewControllerFactory,
-            transitionFactory = transitionFactory,
-            intentProvider = intentProvider
+            activityControllerFactory = activityControllerFactory,
+            transitionFactory = transitionFactory
         )
     }
 

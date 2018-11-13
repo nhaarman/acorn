@@ -30,7 +30,7 @@ class MainActivity : BravoActivity() {
         return HelloStateRestorationNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewControllerFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return bindViews {
             bind(
                 defaultKey<HelloStateRestorationScene>(),

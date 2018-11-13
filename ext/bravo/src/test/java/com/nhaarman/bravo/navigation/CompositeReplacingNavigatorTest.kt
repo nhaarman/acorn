@@ -40,9 +40,9 @@ import kotlin.reflect.KClass
 
 internal class CompositeReplacingNavigatorTest {
 
-    private val navigator1Scene1 = spy(TestScene(11))
-    private val navigator2Scene1 = spy(TestScene(21))
-    private val navigator2Scene2 = spy(TestScene(22))
+    private val navigator1Scene1 = spy(SaveableTestScene(11))
+    private val navigator2Scene1 = spy(SaveableTestScene(21))
+    private val navigator2Scene2 = spy(SaveableTestScene(22))
 
     private val navigator1 = spy(TestSingleSceneNavigator(navigator1Scene1))
     private val navigator2 = spy(TestStackNavigator(listOf(navigator2Scene1)))
@@ -658,7 +658,7 @@ internal class CompositeReplacingNavigatorTest {
     @Nested
     inner class SavingState {
 
-        private val navigator1Scene1 = TestScene(11)
+        private val navigator1Scene1 = SaveableTestScene(11)
         private val navigator1 = RestorableTestSingleSceneNavigator(navigator1Scene1)
         private val navigator = RestorableTestCompositeReplacingNavigator(navigator1, null)
 
@@ -678,7 +678,7 @@ internal class CompositeReplacingNavigatorTest {
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toNotBeTheSameAs(navigator1Scene1)
-                expect(lastValue).toBeInstanceOf<TestScene> {
+                expect(lastValue).toBeInstanceOf<SaveableTestScene> {
                     expect(it.foo).toBe(3)
                 }
             }
@@ -712,7 +712,7 @@ internal class CompositeReplacingNavigatorTest {
     }
 
     open class TestStackNavigator(
-        private val initialStack: List<TestScene>,
+        private val initialStack: List<SaveableTestScene>,
         savedState: NavigatorState? = null
     ) : StackNavigator(savedState) {
 
@@ -722,7 +722,7 @@ internal class CompositeReplacingNavigatorTest {
 
         override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
-                TestScene::class -> TestScene.create(state)
+                SaveableTestScene::class -> SaveableTestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
             }
         }
@@ -743,7 +743,7 @@ internal class CompositeReplacingNavigatorTest {
         ): Navigator {
             return when (navigatorClass) {
                 RestorableTestSingleSceneNavigator::class -> RestorableTestSingleSceneNavigator(
-                    TestScene(0),
+                    SaveableTestScene(0),
                     state
                 )
                 TestStackNavigator::class -> TestStackNavigator(emptyList(), state)
@@ -758,7 +758,7 @@ internal class CompositeReplacingNavigatorTest {
     ) : SingleSceneNavigator(savedState) {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
-            return state?.let { TestScene.create(it) } ?: scene
+            return state?.let { SaveableTestScene.create(it) } ?: scene
         }
     }
 }

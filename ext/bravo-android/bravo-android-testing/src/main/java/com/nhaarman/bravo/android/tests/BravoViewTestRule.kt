@@ -28,9 +28,8 @@ class BravoViewTestRule<C : Container>(
     private val sceneKey: SceneKey
 ) : ActivityTestRule<BravoTestActivity>(BravoTestActivity::class.java) {
 
-    val viewController by lazy {
-        viewControllerFactory.viewFor(sceneKey, activity.findViewById(android.R.id.content))
-            ?: error("No view could be created for Scene with key $sceneKey.")
+    private val viewController by lazy {
+        viewControllerFactory.viewControllerFor(sceneKey, activity.findViewById(android.R.id.content))
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -18,7 +18,6 @@
 
 package com.nhaarman.bravo.android.util
 
-import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.presentation.ViewControllerFactory
@@ -26,9 +25,17 @@ import com.nhaarman.bravo.presentation.SceneKey
 
 class TestViewControllerFactory : ViewControllerFactory {
 
-    val views = mutableMapOf<SceneKey, View>()
+    private var controllers = mapOf<SceneKey, ViewController>()
 
-    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController? {
-        return views[sceneKey]?.let { TestViewController(it) }
+    fun register(sceneKey: SceneKey, viewController: ViewController) {
+        controllers += sceneKey to viewController
+    }
+
+    override fun supports(sceneKey: SceneKey): Boolean {
+        return controllers.containsKey(sceneKey)
+    }
+
+    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
+        return controllers[sceneKey]!!
     }
 }

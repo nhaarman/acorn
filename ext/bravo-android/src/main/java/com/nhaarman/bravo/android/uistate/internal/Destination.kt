@@ -18,13 +18,13 @@
 
 package com.nhaarman.bravo.android.uistate.internal
 
-import com.nhaarman.bravo.android.uistate.ViewControllerProvider
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Scene
 
 internal class Destination(
     val scene: Scene<*>,
-    val viewControllerProvider: ViewControllerProvider,
+    val viewControllerFactory: ViewControllerFactory,
     val transitionData: TransitionData?
 ) {
 

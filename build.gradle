@@ -56,6 +56,10 @@ subprojects {
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
 
+                testOptions {
+                    unitTests.returnDefaultValues = true
+                }
+
                 lintOptions {
                     warningsAsErrors = true
                     textReport = true

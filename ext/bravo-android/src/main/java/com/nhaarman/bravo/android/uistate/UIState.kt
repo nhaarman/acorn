@@ -23,6 +23,7 @@ import androidx.annotation.CheckResult
 import com.nhaarman.bravo.android.internal.v
 import com.nhaarman.bravo.android.internal.w
 import com.nhaarman.bravo.android.presentation.ViewController
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.Transition
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.android.uistate.internal.Destination
@@ -71,13 +72,13 @@ sealed class UIState {
     @CheckResult
     fun withScene(
         scene: Scene<out Container>,
-        viewControllerProvider: ViewControllerProvider,
+        viewControllerFactory: ViewControllerFactory,
         data: TransitionData?
     ): UIState {
         return withDestination(
             Destination(
                 scene,
-                viewControllerProvider,
+                viewControllerFactory,
                 data
             )
         )
@@ -186,7 +187,7 @@ internal class NotVisibleWithDestination(
         )
         v("UIState.NotVisibleWithDestination", "Showing destination UI without animation.")
 
-        val viewController = destination.viewControllerProvider.provideFor(root)
+        val viewController = destination.viewControllerFactory.viewControllerFor(destination.scene.key, root)
 
         root.removeAllViews()
         root.addView(viewController.view)
@@ -261,7 +262,7 @@ internal class Visible(
             "No current scene active, showing scene without animation."
         )
 
-        val viewController = destination.viewControllerProvider.provideFor(root)
+        val viewController = destination.viewControllerFactory.viewControllerFor(destination.scene.key, root)
 
         root.removeAllViews()
         root.addView(viewController.view)

@@ -25,12 +25,20 @@ import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**
- * A factory interface that can create [Container] instances for [Scene]s.
+ * A factory interface that can create [ViewController] instances for [Scene]s.
  *
  * This interface uses the [ViewController] interface to be able to provide both
  * the attachable [Container] and the [View] to be displayed to the user.
  */
 interface ViewControllerFactory {
+
+    /**
+     * Returns `true` when this ViewControllerFactory can create a [ViewController]
+     * when [viewControllerFor] is called.
+     * If this method returns false for a specific [SceneKey], no calls to
+     * [viewControllerFor] with the same SceneKey must be made.
+     */
+    fun supports(sceneKey: SceneKey): Boolean
 
     /**
      * Creates a [ViewController] for given Scene key.
@@ -45,5 +53,5 @@ interface ViewControllerFactory {
      * @return The resulting [ViewController]. `null` if no result could be created
      * for given [sceneKey].
      */
-    fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController?
+    fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController
 }

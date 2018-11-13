@@ -39,9 +39,9 @@ import kotlin.reflect.KClass
 
 internal class StackNavigatorTest {
 
-    private val scene1 = spy(TestScene(1))
-    private val scene2 = spy(TestScene(2))
-    private val scene3 = spy(TestScene(3))
+    private val scene1 = spy(SaveableTestScene(1))
+    private val scene2 = spy(SaveableTestScene(2))
+    private val scene3 = spy(SaveableTestScene(3))
 
     private val navigator = TestStackNavigator(listOf(scene1))
     private val listener = spy(TestListener())
@@ -951,8 +951,8 @@ internal class StackNavigatorTest {
     @Nested
     inner class SavingState {
 
-        private val scene1 = TestScene(1)
-        private val scene2 = TestScene(2)
+        private val scene1 = SaveableTestScene(1)
+        private val scene2 = SaveableTestScene(2)
 
         private val navigator = TestStackNavigator(listOf(scene1))
 
@@ -1021,7 +1021,7 @@ internal class StackNavigatorTest {
     }
 
     class TestStackNavigator(
-        private val initialStack: List<TestScene>,
+        private val initialStack: List<SaveableTestScene>,
         savedState: NavigatorState? = null
     ) : StackNavigator(savedState) {
 
@@ -1031,7 +1031,7 @@ internal class StackNavigatorTest {
 
         override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
-                TestScene::class -> TestScene.create(state)
+                SaveableTestScene::class -> SaveableTestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
             }
         }
@@ -1040,7 +1040,7 @@ internal class StackNavigatorTest {
     private open class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Pair<Scene<out Container>, TransitionData?>>()
-        val lastScene get() = scenes.lastOrNull()?.first as TestScene?
+        val lastScene get() = scenes.lastOrNull()?.first as SaveableTestScene?
         val lastTransitionData get() = scenes.lastOrNull()?.second
 
         var finished = false

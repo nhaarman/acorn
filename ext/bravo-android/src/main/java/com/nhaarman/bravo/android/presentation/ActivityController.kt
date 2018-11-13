@@ -16,17 +16,26 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.util
+package com.nhaarman.bravo.android.presentation
 
-import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.uistate.ViewControllerProvider
+import android.app.Activity
+import android.content.Intent
+import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.Scene
 
-class TestViewControllerProvider(
-    private val viewController: ViewController
-) : ViewControllerProvider {
+/**
+ * A [Container] specialization that can be used to dispatch [Scene]s as Activities.
+ */
+interface ActivityController : Container {
 
-    override fun provideFor(parent: ViewGroup): ViewController {
-        return viewController
-    }
+    /**
+     * Creates the [Intent] that can be used to start the [Activity].
+     */
+    fun createIntent(): Intent
+
+    /**
+     * Called when the [Activity] started with the [Intent] provided by
+     * [createIntent] finishes.
+     */
+    fun onResult(resultCode: Int, data: Intent?)
 }

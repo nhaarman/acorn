@@ -26,17 +26,16 @@ import com.nhaarman.bravo.presentation.Scene
  * A [TransitionFactory] that uses the [TransitionData.isBackwards] flag to
  * determine the transition.
  */
-class DefaultTransitionFactory(private val viewControllerFactory: ViewControllerFactory) : TransitionFactory {
+class DefaultTransitionFactory(private val viewControllerFactory: ViewControllerFactory) :
+    TransitionFactory {
 
     override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition {
         return when (data?.isBackwards) {
             true -> FadeOutToBottomTransition { parent ->
-                viewControllerFactory.viewFor(newScene.key, parent)
-                    ?: error("No view could be created for Scene with key ${newScene.key}.")
+                viewControllerFactory.viewControllerFor(newScene.key, parent)
             }
             else -> FadeInFromBottomTransition { parent ->
-                viewControllerFactory.viewFor(newScene.key, parent)
-                    ?: error("No view could be created for Scene with key ${newScene.key}.")
+                viewControllerFactory.viewControllerFor(newScene.key, parent)
             }
         }.hideKeyboardOnStart()
     }

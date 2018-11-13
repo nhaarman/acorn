@@ -18,31 +18,30 @@
 
 package com.nhaarman.bravo.android.presentation
 
-import androidx.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.nhaarman.bravo.android.presentation.internal.BindingViewControllerFactory
-import com.nhaarman.bravo.android.presentation.internal.ViewControllerViewCreator
-import com.nhaarman.bravo.android.presentation.internal.ViewCreator
+import com.nhaarman.bravo.android.presentation.internal.InflatingViewControllerFactory
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**
  * An entry point for the [ViewControllerFactory] DSL.
  *
- * @see [ViewFactoryBuilder].
+ * @see [ViewControllerFactoryBuilder].
  */
-fun bindViews(init: ViewFactoryBuilder.() -> Unit): ViewControllerFactory {
-    return ViewFactoryBuilder().apply(init).build()
+fun bindViews(init: ViewControllerFactoryBuilder.() -> Unit): ViewControllerFactory {
+    return ViewControllerFactoryBuilder().apply(init).build()
 }
 
 /**
- * A DSL that can create [ViewControllerFactory] instances by binding [Scene] keys to
- * inflatable layouts.
+ * A DSL that can create [ViewControllerFactory] instances by binding [Scene]
+ * keys to inflatable layouts.
  */
-class ViewFactoryBuilder internal constructor() {
+class ViewControllerFactoryBuilder internal constructor() {
 
-    private val bindings = mutableMapOf<SceneKey, ViewCreator>()
+    private val bindings = mutableMapOf<SceneKey, ViewControllerFactory>()
 
     /**
      * Binds [Scene]s with given [sceneKey] to the layout with given
@@ -59,7 +58,7 @@ class ViewFactoryBuilder internal constructor() {
         @LayoutRes layoutResId: Int,
         wrapper: (View) -> ViewController
     ) {
-        bindings[sceneKey] = ViewControllerViewCreator(layoutResId, wrapper)
+        bindings[sceneKey] = InflatingViewControllerFactory(layoutResId, wrapper)
     }
 
     /**
@@ -77,7 +76,7 @@ class ViewFactoryBuilder internal constructor() {
         @LayoutRes layoutResId: Int,
         wrapper: (ViewGroup) -> ViewController
     ) {
-        bindings[sceneKey] = ViewControllerViewCreator(layoutResId, wrapper)
+        bindings[sceneKey] = InflatingViewControllerFactory(layoutResId, wrapper)
     }
 
     /**
@@ -97,7 +96,7 @@ class ViewFactoryBuilder internal constructor() {
         @LayoutRes layoutResId: Int,
         wrapper: (V) -> ViewController
     ) {
-        bindings[sceneKey] = ViewControllerViewCreator(layoutResId, wrapper)
+        bindings[sceneKey] = InflatingViewControllerFactory(layoutResId, wrapper)
     }
 
     /** Constructs the [ViewControllerFactory] instance. */

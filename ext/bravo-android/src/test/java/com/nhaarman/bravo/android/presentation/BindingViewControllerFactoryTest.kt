@@ -20,60 +20,78 @@ package com.nhaarman.bravo.android.presentation
 
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.presentation.internal.BindingViewControllerFactory
-import com.nhaarman.bravo.android.presentation.internal.ViewCreator
 import com.nhaarman.bravo.presentation.SceneKey
 import com.nhaarman.expect.expect
+import com.nhaarman.expect.expectErrorWithMessage
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.Test
 
 internal class BindingViewControllerFactoryTest {
 
     @Test
-    fun `empty factory`() {
+    fun `empty factory does not support`() {
         /* Given */
         val factory = BindingViewControllerFactory(emptyMap())
 
         /* When */
-        val result = factory.viewFor(SceneKey("test"), mock())
+        val result = factory.supports(SceneKey("test"))
 
         /* Then */
-        expect(result).toBeNull()
+        expect(result).toBe(false)
     }
 
     @Test
-    fun `factory with missing key`() {
+    fun `empty factory throws for non-supported key`() {
+        /* Given */
+        val factory = BindingViewControllerFactory(emptyMap())
+
+        /* Expect */
+        expectErrorWithMessage("Could not create") on {
+
+            /* When */
+            factory.viewControllerFor(SceneKey("test"), mock())
+        }
+    }
+
+    @Test
+    fun `factory with missing key throws`() {
         /* Given */
         val factory = BindingViewControllerFactory(
-            mapOf(SceneKey("1") to MyViewCreator())
+            mapOf(SceneKey("1") to MyViewControllerFactory())
         )
 
-        /* When */
-        val result = factory.viewFor(SceneKey("2"), mock())
+        /* Expect */
+        expectErrorWithMessage("Could not create") on {
 
-        /* Then */
-        expect(result).toBeNull()
+            /* When */
+            factory.viewControllerFor(SceneKey("2"), mock())
+        }
     }
 
     @Test
     fun `proper result`() {
         /* Given */
-        val myViewCreator = MyViewCreator()
+        val myViewCreator = MyViewControllerFactory()
         val factory = BindingViewControllerFactory(
             mapOf(SceneKey("1") to myViewCreator)
         )
 
         /* When */
-        val result = factory.viewFor(SceneKey("1"), mock())
+        val result = factory.viewControllerFor(SceneKey("1"), mock())
 
         /* Then */
         expect(result).toBe(myViewCreator.result)
     }
 
-    class MyViewCreator : ViewCreator {
+    class MyViewControllerFactory : ViewControllerFactory {
 
         var result: ViewController = mock()
 
-        override fun create(parent: ViewGroup): ViewController {
+        override fun supports(sceneKey: SceneKey): Boolean {
+            return true
+        }
+
+        override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
             return result
         }
     }

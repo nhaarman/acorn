@@ -40,7 +40,7 @@ class MainActivity : BravoActivity() {
         return HelloWorldNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewControllerFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return bindViews {
             bind(
                 defaultKey<HelloWorldScene>(),

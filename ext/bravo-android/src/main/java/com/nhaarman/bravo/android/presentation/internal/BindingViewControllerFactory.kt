@@ -24,14 +24,21 @@ import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**
- * A [ViewControllerFactory] implementation that binds [SceneKey]s to [ViewCreator]
- * instances to create views.
+ * A [ViewControllerFactory] implementation that binds [SceneKey]s to
+ * [ViewControllerFactory] instances to create views.
  */
 internal class BindingViewControllerFactory(
-    private val bindings: Map<SceneKey, ViewCreator>
+    private val bindings: Map<SceneKey, ViewControllerFactory>
 ) : ViewControllerFactory {
 
-    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController? {
-        return bindings[sceneKey]?.create(parent)
+    override fun supports(sceneKey: SceneKey): Boolean {
+        return bindings.containsKey(sceneKey)
+    }
+
+    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
+        val viewControllerFactory = bindings[sceneKey]
+            ?: throw IllegalStateException("Could not create ViewController for Scene with key $sceneKey.")
+
+        return viewControllerFactory.viewControllerFor(sceneKey, parent)
     }
 }

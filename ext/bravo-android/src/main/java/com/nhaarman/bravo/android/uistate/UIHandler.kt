@@ -19,6 +19,7 @@
 package com.nhaarman.bravo.android.uistate
 
 import com.nhaarman.bravo.android.presentation.ViewController
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
@@ -50,13 +51,13 @@ interface UIHandler {
      * running.
      *
      * @param scene The new [Scene] to apply.
-     * @param viewControllerProvider The [ViewControllerProvider] that can provide
+     * @param viewControllerFactory The [ViewControllerFactory] that can provide
      * the [ViewController] for given [scene].
      * @param data Any [TransitionData] to be used for transitions.
      */
     fun withScene(
         scene: Scene<out Container>,
-        viewControllerProvider: ViewControllerProvider,
+        viewControllerFactory: ViewControllerFactory,
         data: TransitionData?
     )
 
