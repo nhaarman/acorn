@@ -23,19 +23,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import com.nhaarman.bravo.OnBackPressListener
+import com.nhaarman.bravo.android.internal.contentView
 import com.nhaarman.bravo.android.internal.d
 import com.nhaarman.bravo.android.internal.v
 import com.nhaarman.bravo.android.internal.w
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
 import com.nhaarman.bravo.android.presentation.IntentProvider
 import com.nhaarman.bravo.android.presentation.NoIntentProvider
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.presentation.ViewFactory
 import com.nhaarman.bravo.android.presentation.internal.DefaultSceneTransformer
 import com.nhaarman.bravo.android.presentation.internal.SceneTransformer
 import com.nhaarman.bravo.android.presentation.internal.TransformedScene
-import com.nhaarman.bravo.android.presentation.internal.ViewState
 import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
 import com.nhaarman.bravo.android.transition.TransitionFactory
+import com.nhaarman.bravo.android.uistate.UIStateUIHandler
+import com.nhaarman.bravo.android.uistate.ViewControllerProvider
 import com.nhaarman.bravo.android.util.toBundle
 import com.nhaarman.bravo.android.util.toNavigatorState
 import com.nhaarman.bravo.navigation.DisposableHandle
@@ -44,7 +47,6 @@ import com.nhaarman.bravo.navigation.TransitionData
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
 import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.util.lazyVar
 
 class BravoActivityDelegate private constructor(
     private val activity: Activity,
@@ -65,8 +67,8 @@ class BravoActivityDelegate private constructor(
         return navigator
     }
 
-    private var state by lazyVar {
-        ViewState.create(activity.root, viewFactory, transitionFactory)
+    private val uiHandler by lazy {
+        UIStateUIHandler.create(activity.contentView, transitionFactory)
     }
 
     private val sceneDispatcher = SceneDispatcher()
@@ -96,7 +98,7 @@ class BravoActivityDelegate private constructor(
 
     fun onStart() {
         navigator.onStart()
-        state = state.started()
+        uiHandler.onUIVisible()
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,7 +110,7 @@ class BravoActivityDelegate private constructor(
     }
 
     fun onStop() {
-        state = state.stopped()
+        uiHandler.onUINotVisible()
     }
 
     fun onDestroy() {
@@ -138,7 +140,20 @@ class BravoActivityDelegate private constructor(
 
         private fun dispatchContainerScene(scene: TransformedScene.ContainerScene) {
             lastExternalSceneClass = null
-            state = state.withScene(scene.scene, scene.data)
+
+            val provider = object : ViewControllerProvider {
+
+                override fun provideFor(parent: ViewGroup): ViewController {
+                    return viewFactory.viewFor(scene.scene.key, parent)
+                        ?: error("Could not create view for Scene with key ${scene.scene.key}.")
+                }
+            }
+
+            uiHandler.withScene(
+                scene.scene,
+                provider,
+                scene.data
+            )
         }
 
         private fun dispatchExternalScene(scene: TransformedScene.ExternalScene) {
@@ -151,7 +166,7 @@ class BravoActivityDelegate private constructor(
             }
 
             lastExternalSceneClass = scene.javaClass.name
-            state = state.withoutScene()
+            uiHandler.withoutScene()
             activity.startActivityForResult(scene.intent, 42)
         }
 
@@ -200,7 +215,5 @@ class BravoActivityDelegate private constructor(
             set(value) {
                 this?.putString("last_external_scene", value)
             }
-
-        private val Activity.root get() = findViewById<ViewGroup>(android.R.id.content)
     }
 }
