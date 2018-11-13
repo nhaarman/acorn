@@ -24,13 +24,14 @@ import com.nhaarman.bravo.android.util.TestScene
 import com.nhaarman.bravo.android.util.TestTransitionFactory
 import com.nhaarman.bravo.android.util.TestView
 import com.nhaarman.bravo.android.util.TestViewController
-import com.nhaarman.bravo.android.util.TestViewControllerProvider
+import com.nhaarman.bravo.android.util.TestViewControllerFactory
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class NotVisibleWithDestinationTest {
@@ -38,9 +39,11 @@ internal class NotVisibleWithDestinationTest {
     val root = spy(RootViewGroup())
     val scene = spy(TestScene())
     val sceneView = TestView()
+    val viewController = TestViewController(sceneView)
+    val viewControllerFactory = TestViewControllerFactory()
     val destination = Destination(
         scene,
-        TestViewControllerProvider(TestViewController(sceneView)),
+        viewControllerFactory,
         null
     )
 
@@ -50,6 +53,11 @@ internal class NotVisibleWithDestinationTest {
         destination,
         null
     )
+
+    @BeforeEach
+    fun setup() {
+        viewControllerFactory.register(scene.key, viewController)
+    }
 
     @Test
     fun `'uiNotVisible' makes no transition`() {

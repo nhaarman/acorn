@@ -18,36 +18,27 @@
 
 package com.nhaarman.bravo.android.presentation.internal
 
-import androidx.annotation.LayoutRes
-import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.util.inflate
-import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
+import com.nhaarman.bravo.presentation.SceneKey
 
 /**
- * Designates a class that can create a [View] and [Container] instance when
- * needed.
+ * A [ViewControllerFactory] implementation that binds [SceneKey]s to
+ * [ViewControllerFactory] instances to create views.
  */
-internal interface ViewCreator {
+internal class BindingViewControllerFactory(
+    private val bindings: Map<SceneKey, ViewControllerFactory>
+) : ViewControllerFactory {
 
-    /**
-     * Creates the [View] and [Container] instances.
-     *
-     * @param parent The parent [ViewGroup] the result will be added to.
-     * Implementers must not add the result to the parent manually.
-     */
-    fun create(parent: ViewGroup): ViewController
-}
+    override fun supports(sceneKey: SceneKey): Boolean {
+        return bindings.containsKey(sceneKey)
+    }
 
-internal class ViewControllerViewCreator<V : View>(
-    @LayoutRes private val layoutResId: Int,
-    private val wrapper: (V) -> ViewController
-) : ViewCreator {
+    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
+        val viewControllerFactory = bindings[sceneKey]
+            ?: throw IllegalStateException("Could not create ViewController for Scene with key $sceneKey.")
 
-    override fun create(parent: ViewGroup): ViewController {
-        return parent
-            .inflate<V>(layoutResId)
-            .let { view -> wrapper.invoke(view) }
+        return viewControllerFactory.viewControllerFor(sceneKey, parent)
     }
 }

@@ -208,20 +208,6 @@ abstract class WizardNavigator(
         return true
     }
 
-//    private fun notifyListenersOfState(data: TransitionData?) {
-//        state.let { state ->
-//            when (state) {
-//                is State.Inactive -> Unit
-//                is State.Active -> state.scenes[state.activeIndex].let { scene ->
-//                    listeners.forEach {
-//                        it.scene(scene, data)
-//                    }
-//                }
-//                is State.Destroyed -> listeners.forEach { it.finished() }
-//            }
-//        }
-//    }
-
     @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return state.scenes

@@ -18,7 +18,7 @@
 
 package com.nhaarman.bravo.android.transition
 
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.internal.BindingTransitionFactory
 import com.nhaarman.bravo.android.transition.internal.ClassBinding
 import com.nhaarman.bravo.android.transition.internal.KeyBinding
@@ -33,19 +33,22 @@ import kotlin.reflect.KClass
  *
  * @see [TransitionFactoryBuilder]
  */
-fun transitionFactory(viewFactory: ViewFactory, init: TransitionFactoryBuilder.() -> Unit): TransitionFactory {
-    return TransitionFactoryBuilder(viewFactory).apply(init).build()
+fun transitionFactory(
+    viewControllerFactory: ViewControllerFactory,
+    init: TransitionFactoryBuilder.() -> Unit
+): TransitionFactory {
+    return TransitionFactoryBuilder(viewControllerFactory).apply(init).build()
 }
 
 /**
  * A DSL that can create [TransitionFactory] instances by binding pairs of Scenes
  * to [Transition] instances.
  *
- * @param viewFactory The [ViewFactory] instance to use for layout inflation for
- * fallback transition animations.
+ * @param viewControllerFactory The [ViewControllerFactory] instance to use for
+ * layout inflation for fallback transition animations.
  */
 class TransitionFactoryBuilder internal constructor(
-    private val viewFactory: ViewFactory
+    private val viewControllerFactory: ViewControllerFactory
 ) {
 
     private val bindings = mutableListOf<TransitionBinding>()
@@ -77,7 +80,7 @@ class TransitionFactoryBuilder internal constructor(
 
     fun build(): TransitionFactory {
         return BindingTransitionFactory(
-            viewFactory,
+            viewControllerFactory,
             bindings.asSequence()
         )
     }

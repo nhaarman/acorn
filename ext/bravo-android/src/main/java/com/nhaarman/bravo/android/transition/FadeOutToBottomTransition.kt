@@ -18,13 +18,13 @@
 
 package com.nhaarman.bravo.android.transition
 
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import android.view.View
 import android.view.ViewGroup
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import com.nhaarman.bravo.android.R
 import com.nhaarman.bravo.android.internal.applyWindowBackground
 import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.internal.doOnPreDraw
 import com.nhaarman.bravo.presentation.Scene
 
@@ -79,17 +79,9 @@ class FadeOutToBottomTransition(
 
     companion object {
 
-        fun from(viewFactory: ViewFactory): (Scene<*>) -> FadeOutToBottomTransition = { scene ->
+        fun from(viewControllerFactory: ViewControllerFactory): (Scene<*>) -> FadeOutToBottomTransition = { scene ->
             FadeOutToBottomTransition { parent ->
-                viewFactory.viewFor(scene.key, parent)
-                    ?: error("No view could be created for Scene with key ${scene.key}.")
-            }
-        }
-
-        fun from(viewFactory: ViewFactory, scene: Scene<*>): FadeOutToBottomTransition {
-            return FadeOutToBottomTransition { parent ->
-                viewFactory.viewFor(scene.key, parent)
-                    ?: error("No view could be created for Scene with key ${scene.key}.")
+                viewControllerFactory.viewControllerFor(scene.key, parent)
             }
         }
     }

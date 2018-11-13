@@ -16,27 +16,28 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.samples.hellostaterestoration
+package com.nhaarman.bravo.android.presentation.internal
 
-import com.nhaarman.bravo.android.BravoActivity
-import com.nhaarman.bravo.android.navigation.NavigatorProvider
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import com.nhaarman.bravo.android.presentation.ViewController
 import com.nhaarman.bravo.android.presentation.ViewControllerFactory
-import com.nhaarman.bravo.android.presentation.bindViews
-import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
+import com.nhaarman.bravo.android.util.inflate
+import com.nhaarman.bravo.presentation.SceneKey
 
-class MainActivity : BravoActivity() {
+internal class InflatingViewControllerFactory<V : View>(
+    @LayoutRes private val layoutResId: Int,
+    private val wrapper: (V) -> ViewController
+) : ViewControllerFactory {
 
-    override fun provideNavigatorProvider(): NavigatorProvider {
-        return HelloStateRestorationNavigatorProvider
+    override fun supports(sceneKey: SceneKey): Boolean {
+        return true
     }
 
-    override fun provideViewControllerFactory(): ViewControllerFactory {
-        return bindViews {
-            bind(
-                defaultKey<HelloStateRestorationScene>(),
-                R.layout.myscene,
-                ::HelloStateRestorationViewController
-            )
-        }
+    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
+        return parent
+            .inflate<V>(layoutResId)
+            .let { view -> wrapper.invoke(view) }
     }
 }

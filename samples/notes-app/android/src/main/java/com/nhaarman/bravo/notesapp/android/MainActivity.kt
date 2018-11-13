@@ -20,7 +20,7 @@ package com.nhaarman.bravo.notesapp.android
 
 import com.nhaarman.bravo.android.BravoAppCompatActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.transition.TransitionFactory
 import com.nhaarman.bravo.notesapp.android.TransitionFactoryProvider.transitionFactory
 import com.nhaarman.bravo.notesapp.android.ViewFactoryProvider.viewFactory
@@ -31,7 +31,7 @@ class MainActivity : BravoAppCompatActivity() {
         return notesApplication.navigatorProvider
     }
 
-    override fun provideViewFactory(): ViewFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return viewFactory
     }
 

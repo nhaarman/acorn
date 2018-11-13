@@ -18,9 +18,32 @@
 
 package com.nhaarman.bravo.samples.hellostartactivity
 
-import com.nhaarman.bravo.android.presentation.ExternalScene
+import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.Scene
 
-class MapsScene(listener: Events) : ExternalScene(listener) {
+interface MapsContainer : Container {
 
-    interface Events : ExternalScene.Events
+    fun addFinishedEventListener(f: () -> Unit)
+
+    fun removeFinishedEventListener(f: () -> Unit)
+}
+
+class MapsScene(
+    private val listener: Events
+) : Scene<MapsContainer> {
+
+    private val finishListener = { listener.mapsFinished() }
+
+    override fun attach(v: MapsContainer) {
+        v.addFinishedEventListener(finishListener)
+    }
+
+    override fun detach(v: MapsContainer) {
+        v.removeFinishedEventListener(finishListener)
+    }
+
+    interface Events {
+
+        fun mapsFinished()
+    }
 }

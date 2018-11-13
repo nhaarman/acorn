@@ -16,22 +16,26 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.presentation.internal
+package com.nhaarman.bravo.android.presentation
 
-import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewFactory
-import com.nhaarman.bravo.presentation.SceneKey
+import android.app.Activity
+import android.content.Intent
+import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.Scene
 
 /**
- * A [ViewFactory] implementation that binds [SceneKey]s to [ViewCreator]
- * instances to create views.
+ * A [Container] specialization that can be used to dispatch [Scene]s as Activities.
  */
-internal class BindingViewFactory(
-    private val bindings: Map<SceneKey, ViewCreator>
-) : ViewFactory {
+interface ActivityController : Container {
 
-    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController? {
-        return bindings[sceneKey]?.create(parent)
-    }
+    /**
+     * Creates the [Intent] that can be used to start the [Activity].
+     */
+    fun createIntent(): Intent
+
+    /**
+     * Called when the [Activity] started with the [Intent] provided by
+     * [createIntent] finishes.
+     */
+    fun onResult(resultCode: Int, data: Intent?)
 }

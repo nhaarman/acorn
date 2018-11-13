@@ -25,7 +25,7 @@ import com.nhaarman.bravo.android.util.TestTransition
 import com.nhaarman.bravo.android.util.TestTransitionFactory
 import com.nhaarman.bravo.android.util.TestView
 import com.nhaarman.bravo.android.util.TestViewController
-import com.nhaarman.bravo.android.util.TestViewControllerProvider
+import com.nhaarman.bravo.android.util.TestViewControllerFactory
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.spy
@@ -48,17 +48,17 @@ internal class VisibleWithDestinationTest {
     val sceneViewController = TestViewController(sceneView)
     val uiDestination = Destination(
         scene,
-        TestViewControllerProvider(sceneViewController),
+        TestViewControllerFactory(),
         null
     )
 
     val scene2 = spy(TestScene())
     val sceneView2 = TestView()
     val sceneViewController2 = TestViewController(sceneView2)
-    val sceneViewControllerProvider2 = TestViewControllerProvider(sceneViewController2)
+    val sceneViewControllerFactory2 = TestViewControllerFactory()
 
     val scene3 = spy(TestScene())
-    val sceneViewControllerProvider3 = TestViewControllerProvider(TestViewController(TestView()))
+    val sceneViewControllerFactory3 = TestViewControllerFactory()
 
     val state = VisibleWithDestination(
         root,
@@ -115,7 +115,7 @@ internal class VisibleWithDestinationTest {
         @Test
         fun `'withScene' detaches current view controller`() {
             /* When */
-            state.withScene(scene2, sceneViewControllerProvider2, null)
+            state.withScene(scene2, sceneViewControllerFactory2, null)
 
             /* Then */
             verify(scene).detach(sceneViewController)
@@ -124,7 +124,7 @@ internal class VisibleWithDestinationTest {
         @Test
         fun `'withScene' executes transition`() {
             /* When */
-            state.withScene(scene2, sceneViewControllerProvider2, null)
+            state.withScene(scene2, sceneViewControllerFactory2, null)
 
             /* Then */
             expect(transitionTo2.isStarted()).toHold()
@@ -136,7 +136,7 @@ internal class VisibleWithDestinationTest {
 
         @BeforeEach
         fun setup() {
-            state.withScene(scene2, sceneViewControllerProvider2, null)
+            state.withScene(scene2, sceneViewControllerFactory2, null)
         }
 
         @Test
@@ -204,7 +204,7 @@ internal class VisibleWithDestinationTest {
 
         @BeforeEach
         fun setup() {
-            state.withScene(scene2, sceneViewControllerProvider2, null)
+            state.withScene(scene2, sceneViewControllerFactory2, null)
         }
 
         @Test
@@ -258,7 +258,7 @@ internal class VisibleWithDestinationTest {
         @Test
         fun `'withScene' schedules transition`() {
             /* When */
-            state.withScene(scene3, sceneViewControllerProvider3, null)
+            state.withScene(scene3, sceneViewControllerFactory3, null)
 
             /* Then */
             expect(transition2To3.isStarted()).notToHold()
@@ -267,7 +267,7 @@ internal class VisibleWithDestinationTest {
         @Test
         fun `first transition completed executes scheduled transition`() {
             /* Given */
-            state.withScene(scene3, sceneViewControllerProvider3, null)
+            state.withScene(scene3, sceneViewControllerFactory3, null)
 
             /* When */
             transitionTo2.complete(sceneViewController2)

@@ -22,23 +22,24 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.test.platform.app.InstrumentationRegistry
-import com.nhaarman.bravo.android.presentation.internal.ViewControllerViewCreator
 import com.nhaarman.bravo.android.test.R
 import com.nhaarman.expect.expect
 import org.junit.Test
+import com.nhaarman.bravo.android.presentation.internal.InflatingViewControllerFactory
+import com.nhaarman.bravo.presentation.SceneKey
 
-internal class ViewControllerViewCreatorTest {
+internal class InflatingViewControllerFactoryTest {
 
     @Test
     fun properViewIsReturned() {
         /* Given */
         val viewGroup = FrameLayout(InstrumentationRegistry.getInstrumentation().context)
-        val creator = ViewControllerViewCreator<View>(R.layout.linearlayout) {
+        val factory = InflatingViewControllerFactory<View>(R.layout.linearlayout) {
             MyContainer(it)
         }
 
         /* When */
-        val result = creator.create(viewGroup)
+        val result = factory.viewControllerFor(SceneKey("test"), viewGroup)
 
         /* Then */
         expect(result.view).toBeInstanceOf<LinearLayout>()
@@ -48,12 +49,12 @@ internal class ViewControllerViewCreatorTest {
     fun properContainerIsReturned() {
         /* Given */
         val viewGroup = FrameLayout(InstrumentationRegistry.getInstrumentation().context)
-        val creator = ViewControllerViewCreator<View>(R.layout.linearlayout) {
+        val factory = InflatingViewControllerFactory<View>(R.layout.linearlayout) {
             MyContainer(it)
         }
 
         /* When */
-        val result = creator.create(viewGroup)
+        val result = factory.viewControllerFor(SceneKey("test"), viewGroup)
 
         /* Then */
         expect(result).toBeInstanceOf<MyContainer> {

@@ -23,11 +23,12 @@ import com.nhaarman.bravo.android.util.TestScene
 import com.nhaarman.bravo.android.util.TestTransitionFactory
 import com.nhaarman.bravo.android.util.TestView
 import com.nhaarman.bravo.android.util.TestViewController
-import com.nhaarman.bravo.android.util.TestViewControllerProvider
+import com.nhaarman.bravo.android.util.TestViewControllerFactory
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class VisibleTest {
@@ -35,12 +36,18 @@ internal class VisibleTest {
     val root = spy(RootViewGroup())
     val scene = spy(TestScene())
     val sceneView = TestView()
-    val sceneViewControllerProvider = TestViewControllerProvider(TestViewController(sceneView))
+    val viewController = TestViewController(sceneView)
+    val viewControllerFactory = TestViewControllerFactory()
 
     val state = Visible(
         root,
         TestTransitionFactory()
     )
+
+    @BeforeEach
+    fun setup() {
+        viewControllerFactory.register(scene.key, viewController)
+    }
 
     @Test
     fun `'uiVisible' makes no transition`() {
@@ -59,13 +66,13 @@ internal class VisibleTest {
 
     @Test
     fun `'withScene' results in VisibleWithDestination state`() {
-        expect(state.withScene(scene, sceneViewControllerProvider, null)).toBeInstanceOf<VisibleWithDestination>()
+        expect(state.withScene(scene, viewControllerFactory, null)).toBeInstanceOf<VisibleWithDestination>()
     }
 
     @Test
     fun `'withScene' replaces root children with new Scene view`() {
         /* When */
-        state.withScene(scene, sceneViewControllerProvider, null)
+        state.withScene(scene, viewControllerFactory, null)
 
         /* Then */
         expect(root.views).toBe(listOf(sceneView))
@@ -74,7 +81,7 @@ internal class VisibleTest {
     @Test
     fun `'withScene' attaches container to scene`() {
         /* When */
-        state.withScene(scene, sceneViewControllerProvider, null)
+        state.withScene(scene, viewControllerFactory, null)
 
         /* Then */
         verify(scene).attach(any())

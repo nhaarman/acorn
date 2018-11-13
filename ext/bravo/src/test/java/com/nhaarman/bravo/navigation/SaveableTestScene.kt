@@ -18,10 +18,10 @@
 
 package com.nhaarman.bravo.navigation
 
-import com.nhaarman.bravo.navigation.TestScene.State.Created
-import com.nhaarman.bravo.navigation.TestScene.State.Destroyed
-import com.nhaarman.bravo.navigation.TestScene.State.Started
-import com.nhaarman.bravo.navigation.TestScene.State.Stopped
+import com.nhaarman.bravo.navigation.SaveableTestScene.State.Created
+import com.nhaarman.bravo.navigation.SaveableTestScene.State.Destroyed
+import com.nhaarman.bravo.navigation.SaveableTestScene.State.Started
+import com.nhaarman.bravo.navigation.SaveableTestScene.State.Stopped
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.SaveableScene
 import com.nhaarman.bravo.presentation.Scene
@@ -29,7 +29,7 @@ import com.nhaarman.bravo.state.SceneState
 import com.nhaarman.bravo.state.get
 import com.nhaarman.bravo.state.sceneState
 
-open class TestScene(var foo: Int) : Scene<Container>, SaveableScene {
+open class SaveableTestScene(var foo: Int) : Scene<Container>, SaveableScene {
 
     var state = Created
 
@@ -46,7 +46,7 @@ open class TestScene(var foo: Int) : Scene<Container>, SaveableScene {
     }
 
     override fun toString(): String {
-        return "TestScene($foo)"
+        return "SaveableTestScene($foo)"
     }
 
     enum class State {
@@ -64,7 +64,7 @@ open class TestScene(var foo: Int) : Scene<Container>, SaveableScene {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as TestScene
+        other as SaveableTestScene
 
         if (foo != other.foo) return false
 
@@ -77,8 +77,8 @@ open class TestScene(var foo: Int) : Scene<Container>, SaveableScene {
 
     companion object {
 
-        fun create(state: SceneState?): TestScene {
-            return TestScene(
+        fun create(state: SceneState?): SaveableTestScene {
+            return SaveableTestScene(
                 foo = state?.get("foo") ?: 0
             )
         }

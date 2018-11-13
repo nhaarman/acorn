@@ -16,19 +16,37 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.util
+package com.nhaarman.bravo.navigation
 
-import android.view.View
-import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewFactory
-import com.nhaarman.bravo.presentation.SceneKey
+import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.mockitokotlin2.mock
 
-class TestViewFactory : ViewFactory {
+class TestNavigator : Navigator {
 
-    val views = mutableMapOf<SceneKey, View>()
+    private var isDestroyed = false
 
-    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController? {
-        return views[sceneKey]?.let { TestViewController(it) }
+    private var listeners = listOf<Navigator.Events>()
+
+    fun onScene(scene: Scene<*>, data: TransitionData? = null) {
+        listeners.forEach { it.scene(scene, data) }
+    }
+
+    override fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle {
+        listeners += listener
+        return mock()
+    }
+
+    override fun onStart() {
+    }
+
+    override fun onStop() {
+    }
+
+    override fun onDestroy() {
+        isDestroyed = true
+    }
+
+    override fun isDestroyed(): Boolean {
+        return isDestroyed
     }
 }

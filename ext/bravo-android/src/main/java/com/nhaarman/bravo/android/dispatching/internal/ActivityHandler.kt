@@ -16,15 +16,24 @@
  * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.uistate
+package com.nhaarman.bravo.android.dispatching.internal
 
-import android.view.ViewGroup
-import com.nhaarman.bravo.android.presentation.ViewController
+import android.content.Intent
+import com.nhaarman.bravo.android.presentation.ActivityController
+import com.nhaarman.bravo.presentation.Container
+import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.state.SavedState
 
-/**
- * An interface that is able to provide [ViewController] instances.
- */
-interface ViewControllerProvider {
+internal interface ActivityHandler {
 
-    fun provideFor(parent: ViewGroup): ViewController
+    fun withScene(
+        scene: Scene<out Container>,
+        activityController: ActivityController
+    )
+
+    fun withoutScene()
+
+    fun onActivityResult(resultCode: Int, data: Intent?)
+
+    fun saveInstanceState(): SavedState
 }

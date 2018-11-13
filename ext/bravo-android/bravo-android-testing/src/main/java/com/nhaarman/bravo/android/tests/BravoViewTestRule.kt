@@ -19,26 +19,25 @@
 package com.nhaarman.bravo.android.tests
 
 import androidx.test.rule.ActivityTestRule
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.SceneKey
 
 class BravoViewTestRule<C : Container>(
-    private val viewFactory: ViewFactory,
+    private val viewControllerFactory: ViewControllerFactory,
     private val sceneKey: SceneKey
 ) : ActivityTestRule<BravoTestActivity>(BravoTestActivity::class.java) {
 
-    val viewResult by lazy {
-        viewFactory.viewFor(sceneKey, activity.findViewById(android.R.id.content))
-            ?: error("No view could be created for Scene with key $sceneKey.")
+    private val viewController by lazy {
+        viewControllerFactory.viewControllerFor(sceneKey, activity.findViewById(android.R.id.content))
     }
 
     @Suppress("UNCHECKED_CAST")
     val container: C
-        get() = viewResult as C
+        get() = viewController as C
 
     override fun afterActivityLaunched() {
-        runOnUiThread { activity.setContentView(viewResult.view) }
+        runOnUiThread { activity.setContentView(viewController.view) }
     }
 
     fun onUiThread(f: BravoViewTestRule<C>.() -> Unit) {

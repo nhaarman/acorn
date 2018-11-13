@@ -23,5 +23,5 @@ The application consists of the following components:
  - `MainActivity`
 
    The `MainActivity` listens to changes in the `Navigator` and inflates and attaches the layout to the scene.
-   Using a `ViewFactory` it binds the `HelloWorldScene` to the proper layout file.
+   Using a `ViewControllerFactory` it binds the `HelloWorldScene` to the proper layout file.
 

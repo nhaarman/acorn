@@ -20,13 +20,22 @@ package com.nhaarman.bravo.android.util
 
 import android.view.ViewGroup
 import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.uistate.ViewControllerProvider
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
+import com.nhaarman.bravo.presentation.SceneKey
 
-class TestViewControllerProvider(
-    private val viewController: ViewController
-) : ViewControllerProvider {
+class TestViewControllerFactory : ViewControllerFactory {
 
-    override fun provideFor(parent: ViewGroup): ViewController {
-        return viewController
+    private var controllers = mapOf<SceneKey, ViewController>()
+
+    fun register(sceneKey: SceneKey, viewController: ViewController) {
+        controllers += sceneKey to viewController
+    }
+
+    override fun supports(sceneKey: SceneKey): Boolean {
+        return controllers.containsKey(sceneKey)
+    }
+
+    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
+        return controllers[sceneKey]!!
     }
 }

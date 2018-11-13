@@ -20,5 +20,18 @@ package com.nhaarman.bravo.android.util
 
 import com.nhaarman.bravo.presentation.Container
 import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.bravo.presentation.SceneKey
 
-open class TestScene : Scene<Container>
+open class TestScene(
+    sceneKey: SceneKey? = null
+) : Scene<Container> {
+
+    override val key: SceneKey = sceneKey ?: super.key
+
+    companion object {
+
+        fun withKey(key: String): TestScene {
+            return TestScene(SceneKey(key))
+        }
+    }
+}

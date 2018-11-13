@@ -20,7 +20,7 @@ package com.nhaarman.bravo.samples.helloworld
 
 import com.nhaarman.bravo.android.BravoActivity
 import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ViewFactory
+import com.nhaarman.bravo.android.presentation.ViewControllerFactory
 import com.nhaarman.bravo.android.presentation.bindViews
 import com.nhaarman.bravo.presentation.SceneKey.Companion.defaultKey
 
@@ -40,7 +40,7 @@ class MainActivity : BravoActivity() {
         return HelloWorldNavigatorProvider
     }
 
-    override fun provideViewFactory(): ViewFactory {
+    override fun provideViewControllerFactory(): ViewControllerFactory {
         return bindViews {
             bind(
                 defaultKey<HelloWorldScene>(),

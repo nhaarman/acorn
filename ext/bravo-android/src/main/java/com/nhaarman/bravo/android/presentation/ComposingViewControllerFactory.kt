@@ -22,25 +22,25 @@ import android.view.ViewGroup
 import com.nhaarman.bravo.presentation.SceneKey
 
 /**
- * A [ViewFactory] implementation that can delegate to other implementations.
- *
- * When a view is requested, the source factories are queried in-order until
- * a valid result is found.
+ * A [ViewControllerFactory] implementation that can delegate to other implementations.
  */
-class ComposingViewFactory private constructor(
-    private val sources: List<ViewFactory>
-) : ViewFactory {
+class ComposingViewControllerFactory private constructor(
+    private val sources: List<ViewControllerFactory>
+) : ViewControllerFactory {
 
-    override fun viewFor(sceneKey: SceneKey, parent: ViewGroup): ViewController? {
+    override fun supports(sceneKey: SceneKey): Boolean {
+        return sources.any { it.supports(sceneKey) }
+    }
+
+    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
         return sources
-            .asSequence()
-            .mapNotNull { it.viewFor(sceneKey, parent) }
-            .firstOrNull()
+            .first { it.supports(sceneKey) }
+            .viewControllerFor(sceneKey, parent)
     }
 
     companion object {
 
-        fun from(sources: List<ViewFactory>) = ComposingViewFactory(sources)
-        fun from(vararg sources: ViewFactory) = ComposingViewFactory(sources.asList())
+        fun from(sources: List<ViewControllerFactory>) = ComposingViewControllerFactory(sources)
+        fun from(vararg sources: ViewControllerFactory) = ComposingViewControllerFactory(sources.asList())
     }
 }
