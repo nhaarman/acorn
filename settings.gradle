@@ -29,13 +29,13 @@ project(":bravo-android").projectDir = file("core/bravo-android-core")
 
 project(":ext-bravo").projectDir = file("ext/bravo")
 project(":ext-bravo-testing").projectDir = file("ext/bravo/bravo-testing")
-project(":ext-bravo-rx").projectDir = file("ext/bravo-rx")
+project(":ext-bravo-rx").projectDir = file("ext/bravo/bravo-rx")
 
 project(":ext-bravo-android").projectDir = file("ext/bravo-android")
 project(":ext-bravo-android-testing").projectDir = file("ext/bravo-android/bravo-android-testing")
 project(":ext-bravo-android-lint").projectDir = file("ext/bravo-android/bravo-android-lint")
-project(":ext-bravo-android-timber").projectDir = file("ext/bravo-android-timber")
-project(":ext-bravo-android-appcompat").projectDir = file("ext/bravo-android-appcompat")
-project(":ext-bravo-android-lifecycle").projectDir = file("ext/bravo-android-lifecycle")
+project(":ext-bravo-android-timber").projectDir = file("ext/bravo-android/bravo-android-timber")
+project(":ext-bravo-android-appcompat").projectDir = file("ext/bravo-android/bravo-android-appcompat")
+project(":ext-bravo-android-lifecycle").projectDir = file("ext/bravo-android/bravo-android-lifecycle")
 
 enableFeaturePreview("STABLE_PUBLISHING")
