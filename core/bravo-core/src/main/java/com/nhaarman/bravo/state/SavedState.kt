@@ -36,6 +36,11 @@ interface SavedState {
     fun clear(key: String)
 
     /**
+     * Sets a boolean value for given [key].
+     */
+    operator fun set(key: String, value: Boolean?)
+
+    /**
      * Sets a number value for given [key].
      */
     operator fun set(key: String, value: Number?)

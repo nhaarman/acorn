@@ -36,6 +36,10 @@ internal class BaseSavedState(
         map[key] = null
     }
 
+    override fun set(key: String, value: Boolean?) {
+        map[key] = value
+    }
+
     override fun set(key: String, value: Number?) {
         map[key] = value
     }
