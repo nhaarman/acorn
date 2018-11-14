@@ -19,7 +19,7 @@
 package com.nhaarman.acorn.android.presentation
 
 import android.view.ViewGroup
-import com.nhaarman.acorn.presentation.SceneKey
+import com.nhaarman.acorn.presentation.Scene
 
 /**
  * A [ViewControllerFactory] implementation that can delegate to other implementations.
@@ -28,14 +28,14 @@ class ComposingViewControllerFactory private constructor(
     private val sources: List<ViewControllerFactory>
 ) : ViewControllerFactory {
 
-    override fun supports(sceneKey: SceneKey): Boolean {
-        return sources.any { it.supports(sceneKey) }
+    override fun supports(scene: Scene<*>): Boolean {
+        return sources.any { it.supports(scene) }
     }
 
-    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
+    override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
         return sources
-            .first { it.supports(sceneKey) }
-            .viewControllerFor(sceneKey, parent)
+            .first { it.supports(scene) }
+            .viewControllerFor(scene, parent)
     }
 
     companion object {

@@ -23,13 +23,19 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
+import com.nhaarman.acorn.android.presentation.ActivityController
 import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
+import com.nhaarman.acorn.android.presentation.ComposingViewControllerFactory
 import com.nhaarman.acorn.android.presentation.NoopActivityControllerFactory
+import com.nhaarman.acorn.android.presentation.NoopViewControllerFactory
+import com.nhaarman.acorn.android.presentation.SceneViewControllerFactory
+import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
 import com.nhaarman.acorn.android.transition.Transition
 import com.nhaarman.acorn.android.transition.TransitionFactory
 import com.nhaarman.acorn.navigation.Navigator
+import com.nhaarman.acorn.presentation.Scene
 
 /**
  * A base [Activity] implementation to simplify Acorn usage.
@@ -50,20 +56,35 @@ abstract class AcornActivity : Activity() {
 
     /**
      * Returns the [ViewControllerFactory] that can provide
-     * [ViewControllerFactory] instances for this Activity.
+     * [ViewController] instances for this Activity.
+     *
+     * The instance returned here will be combined with a
+     * [SceneViewControllerFactory] to be able to use [Scene] instances as
+     * ViewController factories.
+     *
+     * Returns [NoopViewControllerFactory] by default.
      */
-    protected abstract fun provideViewControllerFactory(): ViewControllerFactory
+    protected open fun provideViewControllerFactory(): ViewControllerFactory {
+        return NoopViewControllerFactory
+    }
 
     /**
      * Returns the [TransitionFactory] to create [Transition] instances
      * for this Activity.
      *
      * By default, this returns a [DefaultTransitionFactory].
+     *
+     * @param viewControllerFactory The [ViewControllerFactory] as returned by
+     * [provideViewControllerFactory].
      */
-    protected open fun provideTransitionFactory(): TransitionFactory {
+    protected open fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): TransitionFactory {
         return DefaultTransitionFactory(viewControllerFactory)
     }
 
+    /**
+     * Returns the [ActivityControllerFactory] that can provide
+     * [ActivityController] instances when using external Activities.
+     */
     protected open fun provideActivityControllerFactory(): ActivityControllerFactory {
         return NoopActivityControllerFactory
     }
@@ -73,11 +94,14 @@ abstract class AcornActivity : Activity() {
     }
 
     private val viewControllerFactory: ViewControllerFactory by lazy {
-        provideViewControllerFactory()
+        ComposingViewControllerFactory.from(
+            SceneViewControllerFactory,
+            provideViewControllerFactory()
+        )
     }
 
     private val transitionFactory: TransitionFactory by lazy {
-        provideTransitionFactory()
+        provideTransitionFactory(viewControllerFactory)
     }
 
     private val activityControllerFactory: ActivityControllerFactory by lazy {

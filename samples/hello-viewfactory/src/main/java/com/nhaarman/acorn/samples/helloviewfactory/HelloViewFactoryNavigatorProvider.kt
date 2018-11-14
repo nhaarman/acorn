@@ -16,24 +16,14 @@
  * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.acorn.samples.helloworld
+package com.nhaarman.acorn.samples.helloviewfactory
 
-import com.nhaarman.acorn.android.AcornActivity
-import com.nhaarman.acorn.android.navigation.NavigatorProvider
+import com.nhaarman.acorn.android.navigation.AbstractNavigatorProvider
+import com.nhaarman.acorn.state.NavigatorState
 
-/**
- * The Activity that hosts this sample.
- *
- * Interesting components:
- *
- *  - [HelloWorldNavigator] manages the navigation flow, in this case showing
- *    a simple Scene.
- *  - [HelloWorldScene] presents a text to the UI when available.
- *  - [HelloWorldViewController] implements the view to show the text.
- */
-class MainActivity : AcornActivity() {
+object HelloViewFactoryNavigatorProvider : AbstractNavigatorProvider<HelloViewFactoryNavigator>() {
 
-    override fun provideNavigatorProvider(): NavigatorProvider {
-        return HelloWorldNavigatorProvider
+    override fun createNavigator(savedState: NavigatorState?): HelloViewFactoryNavigator {
+        return HelloViewFactoryNavigator(savedState)
     }
 }

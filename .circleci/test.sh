@@ -12,9 +12,10 @@
     :samples:hello-world:lintRelease \
     :samples:hello-navigation:lintRelease \
     :samples:hello-staterestoration:lintRelease \
-    :samples:hello-transitionanimation:lintRelease \
     :samples:hello-startactivity:lintRelease \
     :samples:hello-sharedata:lintRelease \
+    :samples:hello-viewfactory:lintRelease \
+    :samples:hello-transitionanimation:lintRelease \
     \
     :samples:notes-app:android:lintRelease \
     \

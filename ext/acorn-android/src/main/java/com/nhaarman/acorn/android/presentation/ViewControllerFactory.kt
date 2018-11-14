@@ -38,12 +38,12 @@ interface ViewControllerFactory {
      * If this method returns false for a specific [SceneKey], no calls to
      * [viewControllerFor] with the same SceneKey must be made.
      */
-    fun supports(sceneKey: SceneKey): Boolean
+    fun supports(scene: Scene<*>): Boolean
 
     /**
      * Creates a [ViewController] for given Scene key.
      *
-     * @param sceneKey The key of the [Scene] instance for which the
+     * @param scene The key of the [Scene] instance for which the
      * corresponding view should be created.
      * @param parent This is the parent [View] that the resulting View should
      * be attached to. The implementation must not add the View to the parent
@@ -51,7 +51,39 @@ interface ViewControllerFactory {
      * view.
      *
      * @return The resulting [ViewController]. `null` if no result could be created
-     * for given [sceneKey].
+     * for given [scene].
      */
-    fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController
+    fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController
+}
+
+/**
+ * A [ViewControllerFactory] that uses the [Scene] itself to create [ViewController]
+ * instances.
+ *
+ * This class only supports Scenes that implement the [ViewControllerFactory]
+ * interface.
+ */
+object SceneViewControllerFactory : ViewControllerFactory {
+
+    override fun supports(scene: Scene<*>): Boolean {
+        return scene is ViewControllerFactory
+    }
+
+    override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
+        return (scene as ViewControllerFactory).viewControllerFor(scene, parent)
+    }
+}
+
+/**
+ * A [ViewControllerFactory] that cannot create [ViewController] instances.
+ */
+object NoopViewControllerFactory : ViewControllerFactory {
+
+    override fun supports(scene: Scene<*>): Boolean {
+        return false
+    }
+
+    override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
+        error("NoopViewControllerFactory can not create ViewControllers.")
+    }
 }

@@ -13,14 +13,15 @@ adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put 
     :samples:hello-world:lintRelease \
     :samples:hello-navigation:lintRelease \
     :samples:hello-staterestoration:lintRelease \
-    :samples:hello-transitionanimation:lintRelease \
     :samples:hello-startactivity:lintRelease \
     :samples:hello-sharedata:lintRelease \
+    :samples:hello-transitionanimation:lintRelease \
+    :samples:hello-viewfactory:lintRelease \
     :samples:notes-app:android:lintRelease \
-    publishToMavenLocal \
     packageDebugAndroidTest \
     --rerun-tasks \
-    && ./gradlew cCheck --max-workers=1
+    && ./gradlew cCheck --max-workers=1 \
+    && ./gradlew publishToMavenLocal \
 
 adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put global window_animation_scale 1
 adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put global transition_animation_scale 1

@@ -23,7 +23,7 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import com.nhaarman.acorn.android.transition.Transition
 
-object FirstSceneSecondSceneTransition : Transition {
+object FirstToSecondTransition : Transition {
 
     override fun execute(parent: ViewGroup, callback: Transition.Callback) {
         val currentLayout = parent.getChildAt(0)

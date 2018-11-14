@@ -16,12 +16,8 @@
  * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.acorn.samples.hellonavigation
+package com.nhaarman.acorn.samples.helloviewfactory
 
-import com.nhaarman.acorn.android.presentation.bindViews
-import com.nhaarman.acorn.presentation.SceneKey.Companion.defaultKey
+import com.nhaarman.acorn.presentation.Scene
 
-val viewFactory = bindViews {
-    bind(defaultKey<FirstScene>(), R.layout.first_scene, ::FirstSceneViewController)
-    bind(defaultKey<SecondScene>(), R.layout.second_scene, ::SecondSceneViewController)
-}
+class HelloViewFactoryScene : Scene<HelloViewFactoryContainer>

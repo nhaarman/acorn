@@ -20,15 +20,10 @@ package com.nhaarman.acorn.samples.hellonavigation
 
 import com.nhaarman.acorn.android.AcornAppCompatActivity
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
-import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 
 class MainActivity : AcornAppCompatActivity() {
 
     override fun provideNavigatorProvider(): NavigatorProvider {
         return HelloNavigationNavigatorProvider
-    }
-
-    override fun provideViewControllerFactory(): ViewControllerFactory {
-        return viewFactory
     }
 }

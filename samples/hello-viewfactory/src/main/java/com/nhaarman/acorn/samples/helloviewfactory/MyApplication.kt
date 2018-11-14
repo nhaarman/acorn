@@ -16,12 +16,15 @@
  * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.acorn.samples.hellotransitionanimation
+package com.nhaarman.acorn.samples.helloviewfactory
 
-import com.nhaarman.acorn.android.presentation.bindViews
-import com.nhaarman.acorn.presentation.SceneKey.Companion.defaultKey
+import android.app.Application
+import com.nhaarman.acorn.android.AndroidLogger
 
-val viewFactory = bindViews {
-    bind(defaultKey<FirstScene>(), R.layout.first_scene, ::FirstSceneViewController)
-    bind(defaultKey<SecondScene>(), R.layout.second_scene, ::SecondSceneViewController)
+class MyApplication : Application() {
+
+    override fun onCreate() {
+        acorn.logger = AndroidLogger()
+        super.onCreate()
+    }
 }

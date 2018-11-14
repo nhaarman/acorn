@@ -88,7 +88,7 @@ class AcornSceneDispatcher internal constructor(
 
             lastScene = scene
 
-            if (viewControllerFactory.supports(scene.key)) {
+            if (viewControllerFactory.supports(scene)) {
                 activityHandler.withoutScene()
                 uiHandler.withScene(scene, viewControllerFactory, data)
                 return

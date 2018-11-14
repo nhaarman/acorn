@@ -18,10 +18,14 @@
 
 package com.nhaarman.acorn.samples.hellostaterestoration
 
-import com.nhaarman.acorn.state.SceneState
+import android.view.ViewGroup
+import com.nhaarman.acorn.android.presentation.ProvidesView
+import com.nhaarman.acorn.android.presentation.ViewController
+import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.presentation.BaseSaveableScene
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.get
 
 /**
@@ -34,7 +38,11 @@ class HelloStateRestorationScene private constructor(
     private val counter: Int,
     private val listener: Events,
     savedState: SceneState?
-) : BaseSaveableScene<HelloStateRestorationContainer>(savedState) {
+) : BaseSaveableScene<HelloStateRestorationContainer>(savedState), ProvidesView {
+
+    override fun createViewController(parent: ViewGroup): ViewController {
+        return HelloStateRestorationViewController(parent.inflate(R.layout.myscene))
+    }
 
     override fun attach(v: HelloStateRestorationContainer) {
         super.attach(v)

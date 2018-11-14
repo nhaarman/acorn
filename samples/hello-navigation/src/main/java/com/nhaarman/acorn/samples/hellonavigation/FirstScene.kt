@@ -19,11 +19,14 @@
 package com.nhaarman.acorn.samples.hellonavigation
 
 import android.view.View
+import android.view.ViewGroup
 import com.nhaarman.acorn.android.presentation.RestorableViewController
+import com.nhaarman.acorn.android.presentation.ViewController
+import com.nhaarman.acorn.android.presentation.ViewProvidingScene
+import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.SaveableScene
-import com.nhaarman.acorn.presentation.Scene
 import kotlinx.android.synthetic.main.first_scene.*
 
 /**
@@ -41,7 +44,11 @@ import kotlinx.android.synthetic.main.first_scene.*
 class FirstScene(
     /** The listener callback to be notified when an event happens. */
     private val listener: Events
-) : Scene<FirstSceneContainer> {
+) : ViewProvidingScene<FirstSceneContainer> {
+
+    override fun createViewController(parent: ViewGroup): ViewController {
+        return FirstSceneViewController(parent.inflate(R.layout.first_scene))
+    }
 
     override fun attach(v: FirstSceneContainer) {
         v.onSecondSceneClicked { listener.secondSceneRequested() }
