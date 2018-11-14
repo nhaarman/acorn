@@ -65,6 +65,18 @@ internal class BaseSavedStateTest {
     }
 
     @Test
+    fun `valid Boolean value`() {
+        /* Given */
+        state["key"] = true
+
+        /* When */
+        val result: Boolean? = state["key"]
+
+        /* Then */
+        expect(result).toBe(true)
+    }
+
+    @Test
     fun `valid Byte value`() {
         /* Given */
         state["key"] = 3
