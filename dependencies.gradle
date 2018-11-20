@@ -8,7 +8,7 @@ dependencyManagement {
         dependency "androidx.annotation:annotation:1.0.0"
 
         // ext-bravo
-        dependency "io.arrow-kt:arrow-core:0.8.0"
+        dependency "io.arrow-kt:arrow-core:0.8.1"
 
         // ext-bravo-android
         dependency "androidx.appcompat:appcompat:1.0.2"
@@ -59,7 +59,7 @@ dependencyManagement {
         dependency "androidx.test:rules:1.1.0"
         dependency "androidx.test.uiautomator:uiautomator:2.2.0"
 
-        def androidToolsVersion = "26.4.0-alpha03"
+        def androidToolsVersion = "26.4.0-alpha04"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"
