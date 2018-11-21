@@ -9,6 +9,8 @@
     :ext-acorn-android-lifecycle:lint \
     \
     :samples:hello-world:lintRelease \
+    :samples:hello-mvvm:lintRelease \
+    :samples:hello-mvvm-databinding:lintRelease \
     :samples:hello-navigation:lintRelease \
     :samples:hello-staterestoration:lintRelease \
     :samples:hello-startactivity:lintRelease \
