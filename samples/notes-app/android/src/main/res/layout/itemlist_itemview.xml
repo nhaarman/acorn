@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.nhaarman.bravo.notesapp.android.ui.itemlist.ItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.nhaarman.acorn.notesapp.android.ui.itemlist.ItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#fff"
@@ -36,4 +36,4 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-</com.nhaarman.bravo.notesapp.android.ui.itemlist.ItemView>
+</com.nhaarman.acorn.notesapp.android.ui.itemlist.ItemView>

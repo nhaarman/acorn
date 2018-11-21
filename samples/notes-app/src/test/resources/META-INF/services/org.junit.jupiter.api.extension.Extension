@@ -1,2 +1,2 @@
-com.nhaarman.bravo.notesapp.NoRxErrorsExtension
-com.nhaarman.bravo.notesapp.ImmediateMainThreadExtension
+com.nhaarman.acorn.notesapp.NoRxErrorsExtension
+com.nhaarman.acorn.notesapp.ImmediateMainThreadExtension

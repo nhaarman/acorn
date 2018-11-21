@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nhaarman">
+
+    <application>
+        <activity android:name=".acorn.android.TestActivity" />
+    </application>
+
+</manifest>

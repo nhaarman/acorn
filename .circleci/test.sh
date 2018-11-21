@@ -4,10 +4,10 @@
     test \
     ktlint \
     \
-    :ext-bravo-android:lint \
-    :ext-bravo-android-testing:lint \
-    :ext-bravo-android-timber:lint \
-    :ext-bravo-android-lifecycle:lint \
+    :ext-acorn-android:lint \
+    :ext-acorn-android-testing:lint \
+    :ext-acorn-android-timber:lint \
+    :ext-acorn-android-lifecycle:lint \
     \
     :samples:hello-world:lintRelease \
     :samples:hello-navigation:lintRelease \

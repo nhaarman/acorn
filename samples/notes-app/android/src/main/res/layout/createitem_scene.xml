@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.nhaarman.bravo.notesapp.android.ui.createitem.CreateItemToolbar
+    <com.nhaarman.acorn.notesapp.android.ui.createitem.CreateItemToolbar
         android:id="@+id/createItemToolbar"
         android:layout_width="0dp"
         android:background="@color/colorPrimary"

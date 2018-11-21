@@ -50,9 +50,9 @@ publishing {
             artifactId = project.getProperty("artifactId")
 
             pom {
-                name = "Bravo"
+                name = "Acorn"
                 description = "Creating modular, stable and testable Android apps"
-                url = "https://github.com/nhaarman/Bravo"
+                url = "https://github.com/nhaarman/Acorn"
                 licenses {
                     license {
                         name = "The Apache License, Version 2.0"
@@ -68,9 +68,9 @@ publishing {
                 }
 
                 scm {
-                    connection = 'scm:git@github.com:nhaarman/Bravo.git'
-                    developerConnection = 'scm:git@github.com:nhaarman/Bravo.git'
-                    url = 'https://github.com/nhaarman/Bravo'
+                    connection = 'scm:git@github.com:nhaarman/Acorn.git'
+                    developerConnection = 'scm:git@github.com:nhaarman/Acorn.git'
+                    url = 'https://github.com/nhaarman/Acorn'
                 }
             }
         }

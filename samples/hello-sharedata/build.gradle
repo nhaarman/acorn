@@ -11,8 +11,8 @@ android {
 }
 
 dependencies {
-    implementation project(":ext-bravo-android-appcompat")
-    implementation project(":ext-bravo-rx")
+    implementation project(":ext-acorn-android-appcompat")
+    implementation project(":ext-acorn-rx")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
@@ -33,7 +33,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 
-    debugImplementation project(":ext-bravo-android-testing")
+    debugImplementation project(":ext-acorn-android-testing")
     androidTestImplementation "junit:junit"
     androidTestImplementation "com.nhaarman:expect.kt"
     androidTestImplementation "androidx.test.espresso:espresso-core"

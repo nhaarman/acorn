@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.nhaarman.bravo.notesapp.android.ui.edititem.EditItemToolbar
+    <com.nhaarman.acorn.notesapp.android.ui.edititem.EditItemToolbar
         android:id="@+id/editItemToolbar"
         android:layout_width="0dp"
         android:background="@color/colorPrimary"
