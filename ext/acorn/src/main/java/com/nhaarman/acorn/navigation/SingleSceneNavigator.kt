@@ -23,7 +23,7 @@ import com.nhaarman.acorn.OnBackPressListener
 import com.nhaarman.acorn.internal.v
 import com.nhaarman.acorn.internal.w
 import com.nhaarman.acorn.presentation.Container
-import com.nhaarman.acorn.presentation.SaveableScene
+import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SceneState
@@ -34,7 +34,7 @@ import com.nhaarman.acorn.util.lazyVar
 /**
  * A simple [Navigator] that only hosts a single [Scene].
  *
- * This Navigator implements [SaveableNavigator] and thus can have its state saved
+ * This Navigator implements [SavableNavigator] and thus can have its state saved
  * and restored when necessary.
  *
  * @param savedState An optional instance that contains saved state as returned
@@ -42,7 +42,7 @@ import com.nhaarman.acorn.util.lazyVar
  */
 abstract class SingleSceneNavigator(
     private val savedState: NavigatorState?
-) : Navigator, SaveableNavigator, OnBackPressListener {
+) : Navigator, SavableNavigator, OnBackPressListener {
 
     /**
      * Creates the [Scene] instance to host.
@@ -124,7 +124,7 @@ abstract class SingleSceneNavigator(
     @CallSuper
     override fun saveInstanceState(): NavigatorState {
         return navigatorState {
-            it.sceneState = (scene as? SaveableScene)?.saveInstanceState()
+            it.sceneState = (scene as? SavableScene)?.saveInstanceState()
         }
     }
 

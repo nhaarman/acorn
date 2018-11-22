@@ -383,7 +383,7 @@ class SingleSceneNavigatorTest {
     private class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Scene<out Container>>()
-        val lastScene get() = scenes.lastOrNull() as SaveableTestScene?
+        val lastScene get() = scenes.lastOrNull() as SavableTestScene?
 
         var finished = false
 
@@ -398,10 +398,10 @@ class SingleSceneNavigatorTest {
 
     class TestSingleSceneNavigator(savedState: NavigatorState?) : SingleSceneNavigator(savedState) {
 
-        lateinit var scene: SaveableTestScene
+        lateinit var scene: SavableTestScene
 
         override fun createScene(state: SceneState?): Scene<out Container> {
-            return spy(SaveableTestScene.create(state)).also { scene = it }
+            return spy(SavableTestScene.create(state)).also { scene = it }
         }
     }
 }

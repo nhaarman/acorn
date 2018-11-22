@@ -25,8 +25,8 @@ import com.nhaarman.acorn.state.get
 import com.nhaarman.acorn.state.sceneState
 
 /**
- * A saveable [Scene] implementation that saves and restores view state between
- * different views, and implements [SaveableScene] to be able to save the
+ * A savable [Scene] implementation that saves and restores view state between
+ * different views, and implements [SavableScene] to be able to save the
  * Scene itself.
  *
  * Calling [saveInstanceState] on this class will also save the view state,
@@ -35,11 +35,11 @@ import com.nhaarman.acorn.state.sceneState
  * @param V The view type for this [Scene], must implement [RestorableContainer].
  * @param savedState A previous saved state instance for this [Scene].
  * May be `null`.
- * @constructor Creates a new [SaveableScene], restoring view state when available.
+ * @constructor Creates a new [SavableScene], restoring view state when available.
  */
-abstract class BaseSaveableScene<V : RestorableContainer>(
+abstract class BaseSavableScene<V : RestorableContainer>(
     savedState: SceneState?
-) : Scene<V>, SaveableScene {
+) : Scene<V>, SavableScene {
 
     private var view: V? = null
     private var containerState: ContainerState? = savedState?.containerState

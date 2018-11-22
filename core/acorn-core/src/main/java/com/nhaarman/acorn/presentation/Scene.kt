@@ -36,8 +36,8 @@ package com.nhaarman.acorn.presentation
  * the user. It is therefore possible that the Scene is active without having
  * a user interface attached.
  *
- * Scenes may implement [SaveableScene] to indicate that their instance state
- * can be saved. When this is the case, [SaveableScene.saveInstanceState] will
+ * Scenes may implement [SavableScene] to indicate that their instance state
+ * can be saved. When this is the case, [SavableScene.saveInstanceState] will
  * be called at the appropriate time.
  *
  * @param V The type of the view to display the Scene, representing the

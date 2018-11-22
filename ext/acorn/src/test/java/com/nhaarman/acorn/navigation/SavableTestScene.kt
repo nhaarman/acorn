@@ -18,18 +18,18 @@
 
 package com.nhaarman.acorn.navigation
 
-import com.nhaarman.acorn.navigation.SaveableTestScene.State.Created
-import com.nhaarman.acorn.navigation.SaveableTestScene.State.Destroyed
-import com.nhaarman.acorn.navigation.SaveableTestScene.State.Started
-import com.nhaarman.acorn.navigation.SaveableTestScene.State.Stopped
+import com.nhaarman.acorn.navigation.SavableTestScene.State.Created
+import com.nhaarman.acorn.navigation.SavableTestScene.State.Destroyed
+import com.nhaarman.acorn.navigation.SavableTestScene.State.Started
+import com.nhaarman.acorn.navigation.SavableTestScene.State.Stopped
 import com.nhaarman.acorn.presentation.Container
-import com.nhaarman.acorn.presentation.SaveableScene
+import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.get
 import com.nhaarman.acorn.state.sceneState
 
-open class SaveableTestScene(var foo: Int) : Scene<Container>, SaveableScene {
+open class SavableTestScene(var foo: Int) : Scene<Container>, SavableScene {
 
     var state = Created
 
@@ -46,7 +46,7 @@ open class SaveableTestScene(var foo: Int) : Scene<Container>, SaveableScene {
     }
 
     override fun toString(): String {
-        return "SaveableTestScene($foo)"
+        return "SavableTestScene($foo)"
     }
 
     enum class State {
@@ -64,7 +64,7 @@ open class SaveableTestScene(var foo: Int) : Scene<Container>, SaveableScene {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as SaveableTestScene
+        other as SavableTestScene
 
         if (foo != other.foo) return false
 
@@ -77,8 +77,8 @@ open class SaveableTestScene(var foo: Int) : Scene<Container>, SaveableScene {
 
     companion object {
 
-        fun create(state: SceneState?): SaveableTestScene {
-            return SaveableTestScene(
+        fun create(state: SceneState?): SavableTestScene {
+            return SavableTestScene(
                 foo = state?.get("foo") ?: 0
             )
         }

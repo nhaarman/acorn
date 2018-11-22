@@ -27,11 +27,11 @@ import com.nhaarman.acorn.state.SceneState
 /**
  * An abstract [Scene] implementation which implements [LifecycleOwner].
  *
- * @see SaveableScene
+ * @see SavableScene
  */
 abstract class LifecycleScene<V : RestorableContainer>(
     savedState: SceneState?
-) : BaseSaveableScene<V>(savedState), LifecycleOwner {
+) : BaseSavableScene<V>(savedState), LifecycleOwner {
 
     private val lifecycle by lazy {
         LifecycleRegistry(this)

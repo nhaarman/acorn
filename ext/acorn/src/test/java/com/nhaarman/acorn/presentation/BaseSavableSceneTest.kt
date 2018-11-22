@@ -25,7 +25,7 @@ import com.nhaarman.acorn.state.get
 import com.nhaarman.expect.expect
 import org.junit.jupiter.api.Test
 
-class BaseSaveableSceneTest {
+class BaseSavableSceneTest {
 
     private val view1 = TestView()
     private val view2 = TestView()
@@ -33,7 +33,7 @@ class BaseSaveableSceneTest {
     @Test
     fun `view state is restored when new view attaches`() {
         /* Given */
-        val scene = TestSaveableScene(null)
+        val scene = TestSavableScene(null)
         scene.attach(view1)
         view1.state = 3
 
@@ -48,7 +48,7 @@ class BaseSaveableSceneTest {
     @Test
     fun `view state is restored from scene state`() {
         /* Given */
-        val scene1 = TestSaveableScene(null)
+        val scene1 = TestSavableScene(null)
 
         scene1.attach(view1)
         view1.state = 3
@@ -56,7 +56,7 @@ class BaseSaveableSceneTest {
         /* When */
         scene1.detach(view1)
         val state = scene1.saveInstanceState()
-        val scene2 = TestSaveableScene(state)
+        val scene2 = TestSavableScene(state)
         scene2.attach(view2)
 
         /* Then */
@@ -66,21 +66,21 @@ class BaseSaveableSceneTest {
     @Test
     fun `view state is restored from scene state -- without detach`() {
         /* Given */
-        val scene1 = TestSaveableScene(null)
+        val scene1 = TestSavableScene(null)
 
         scene1.attach(view1)
         view1.state = 3
 
         /* When */
         val state = scene1.saveInstanceState()
-        val scene2 = TestSaveableScene(state)
+        val scene2 = TestSavableScene(state)
         scene2.attach(view2)
 
         /* Then */
         expect(view2.state).toBe(3)
     }
 
-    private class TestSaveableScene(viewState: SceneState?) : BaseSaveableScene<TestView>(viewState)
+    private class TestSavableScene(viewState: SceneState?) : BaseSavableScene<TestView>(viewState)
     private class TestView : Container, RestorableContainer {
 
         var state: Int? = null

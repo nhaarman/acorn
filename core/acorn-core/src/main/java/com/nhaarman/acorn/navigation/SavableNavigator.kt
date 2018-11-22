@@ -16,17 +16,15 @@
  * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.acorn.presentation
+package com.nhaarman.acorn.navigation
 
-import com.nhaarman.acorn.state.SceneState
+import com.nhaarman.acorn.state.NavigatorState
 
 /**
  * Indicates that implementers can have their instance state saved.
  */
-interface SaveableScene {
+interface SavableNavigator {
 
-    /**
-     * Save instance state.
-     */
-    fun saveInstanceState(): SceneState
+    /** Save instance state. */
+    fun saveInstanceState(): NavigatorState
 }

@@ -20,7 +20,7 @@ package com.nhaarman.acorn.android.navigation
 
 import com.nhaarman.acorn.android.internal.i
 import com.nhaarman.acorn.navigation.Navigator
-import com.nhaarman.acorn.navigation.SaveableNavigator
+import com.nhaarman.acorn.navigation.SavableNavigator
 import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.get
 import com.nhaarman.acorn.state.navigatorState
@@ -67,7 +67,7 @@ abstract class AbstractNavigatorProvider<N : Navigator> : NavigatorProvider {
     override fun saveNavigatorState(): NavigatorState? {
         return navigatorState {
             it.timeMillis = System.currentTimeMillis()
-            it.navigatorState = (navigator as? SaveableNavigator)?.saveInstanceState()
+            it.navigatorState = (navigator as? SavableNavigator)?.saveInstanceState()
         }
     }
 
