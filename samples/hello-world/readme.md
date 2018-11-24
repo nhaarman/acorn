@@ -1,7 +1,7 @@
 Hello, world!
 =============
 
-This module contains an "Hello, world!" example using Bravo, which shows a very simple `TextView` containing the text "Hello, world!".
+This module contains an "Hello, world!" example using Acorn, which shows a very simple `TextView` containing the text "Hello, world!".
 
 ![Hello, world!](art/hello_world.png)
 

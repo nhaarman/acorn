@@ -2,7 +2,7 @@ Hello, state restoration!
 =========================
 
 This module contains a sample application which shows how you can save and restore
-various states in Bravo.
+various states in Acorn.
 The application allows you to click through several Scenes, each next Scene adding
 to a counter.
 In addition, each Scene contains an EditText to demonstrate view state saving as

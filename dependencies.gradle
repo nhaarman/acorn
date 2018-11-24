@@ -7,21 +7,21 @@ dependencyManagement {
         // core dependencies
         dependency "androidx.annotation:annotation:1.0.0"
 
-        // ext-bravo
+        // ext-acorn
         dependency "io.arrow-kt:arrow-core:0.8.1"
 
-        // ext-bravo-android
+        // ext-acorn-android
         dependency "androidx.appcompat:appcompat:1.0.2"
         dependency "androidx.interpolator:interpolator:1.0.0"
 
-        // ext-bravo-rx
+        // ext-acorn-rx
         dependency "io.reactivex.rxjava2:rxjava:2.2.3"
         dependency "io.reactivex.rxjava2:rxkotlin:2.3.0"
 
-        // ext-bravo-android-timber
+        // ext-acorn-android-timber
         dependency "com.jakewharton.timber:timber:4.7.1"
 
-        // ext-bravo-android-lifecycle
+        // ext-acorn-android-lifecycle
         dependency "androidx.lifecycle:lifecycle-runtime:2.0.0"
 
 

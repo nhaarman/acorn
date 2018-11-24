@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.nhaarman.bravo.samples.hellonavigation">
+    package="com.nhaarman.acorn.samples.hellonavigation">
 
     <application
         android:name=".MyApplication"
