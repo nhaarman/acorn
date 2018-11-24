@@ -1,6 +1,6 @@
-# Bravo
+# Acorn
 
-Bravo is a carefully designed library aimed to make navigation in applications
+Acorn is a carefully designed library aimed to make navigation in applications
 easier.
 
 Navigation on Android is complex, since the default way of navigating through
@@ -13,7 +13,7 @@ separation between UI, presentation and navigation.
   <img src=".github/art/diagram_readme.png">
 </p>
 
-The core of Bravo consists of two interfaces: `Scene` and `Navigator`.
+The core of Acorn consists of two interfaces: `Scene` and `Navigator`.
 
 Scenes represent destinations in the application where the user can navigate to.
 Often these are the screens of the application, but they can represent any
@@ -28,16 +28,16 @@ Navigator, and provides the user interface.
 
 ## Extensibility
 
-Bravo is fully extensible.
-The core artifacts (`bravo` and `bravo-android`) provide interfaces that are
+Acorn is fully extensible.
+The core artifacts (`acorn` and `acorn-android`) provide interfaces that are
 simple but powerful enough to form a basis for writing the presentation layer
 of mobile applications.
 
 The library also provides two base extension artifacts that can be used as a
 basis for the presentation layer of your application.  
-`ext-bravo` provides default base implementations for working with Scenes and
+`ext-acorn` provides default base implementations for working with Scenes and
 Navigators.  
-`ext-bravo-android` provides a mechanism to couple the Android framework to
+`ext-acorn-android` provides a mechanism to couple the Android framework to
 your application.
 
 Lastly, there are some helper extension artifacts that provide useful utility
@@ -46,7 +46,7 @@ LiveData.
 
 ## Setup
 
-Bravo currently only exists as a SNAPSHOT.
+Acorn currently only exists as a SNAPSHOT.
 Gradle users can add the following line to their `repositories` section:
 
 ```groovy
@@ -58,29 +58,29 @@ snapshot version:
 
 ```groovy
 // To get started quickly, add the following artifacts
-implementation "com.nhaarman.bravo.ext:bravo:x.x.x-SNAPSHOT"
-implementation "com.nhaarman.bravo.ext:bravo-android:x.x.x-SNAPSHOT"
+implementation "com.nhaarman.acorn.ext:acorn:x.x.x-SNAPSHOT"
+implementation "com.nhaarman.acorn.ext:acorn-android:x.x.x-SNAPSHOT"
 ```
 
-As mentioned before, Bravo consists of a core and some extension artifacts.
-The core artifacts live in the `com.nhaarman.bravo` group:
+As mentioned before, Acorn consists of a core and some extension artifacts.
+The core artifacts live in the `com.nhaarman.acorn` group:
 
 |Group| Artifact | Description | Dependencies|
 |-----|----------|-------------|-------------|
-|`com.nhaarman.bravo`| `bravo` | The core library, containing only the interfaces for Bravo without any functionality. | - |
-|`com.nhaarman.bravo`| `bravo-android` | The core library for Android, containing only the interfaces for working with Bravo on Android. | `com.nhaarman.bravo:bravo` |
+|`com.nhaarman.acorn`| `acorn` | The core library, containing only the interfaces for Acorn without any functionality. | - |
+|`com.nhaarman.acorn`| `acorn-android` | The core library for Android, containing only the interfaces for working with Acorn on Android. | `com.nhaarman.acorn:acorn` |
 
 The extension libraries provide default implementations to the core, and live
-in the `com.nhaarman.bravo.ext` group:
+in the `com.nhaarman.acorn.ext` group:
 
 |Group| Artifact | Description | Dependencies|
 |-----|----------|-------------|-------------|
-|`com.nhaarman.bravo.ext`| `bravo` | The main extension on the Bravo core, providing default implementations. |`com.nhaarman.bravo:bravo`|
-|`com.nhaarman.bravo.ext`| `bravo-rx` | An RxJava extension for Bravo. |`com.nhaarman.bravo:bravo`|
-|`com.nhaarman.bravo.ext`| `bravo-testing` | Provides testing utilities for JVM tests. |`com.nhaarman.bravo:bravo`|
+|`com.nhaarman.acorn.ext`| `acorn` | The main extension on the Acorn core, providing default implementations. |`com.nhaarman.acorn:acorn`|
+|`com.nhaarman.acorn.ext`| `acorn-rx` | An RxJava extension for Acorn. |`com.nhaarman.acorn:acorn`|
+|`com.nhaarman.acorn.ext`| `acorn-testing` | Provides testing utilities for JVM tests. |`com.nhaarman.acorn:acorn`|
 ||||
-|`com.nhaarman.bravo.ext`| `bravo-android` | The main extension on the Bravo-Android core, providing default implementations. |`com.nhaarman.bravo:bravo`<br>`com.nhaarman.bravo:bravo-android`|
-|`com.nhaarman.bravo.ext`| `bravo-android-testing` | Provides testing facilities for instrumentation testing with Bravo-Android. |`com.nhaarman.bravo:bravo`<br>`com.nhaarman.bravo:bravo-android`<br>`com.nhaarman.bravo.ext:bravo-android`|
-|`com.nhaarman.bravo.ext`| `bravo-android-timber` | Provides a `TimberLogger` |`com.nhaarman.bravo:bravo`<br>`com.nhaarman.bravo.ext:bravo`|
-|`com.nhaarman.bravo.ext`| `bravo-android-lifecycle` | Provides `LifecycleScene` |`com.nhaarman.bravo:bravo`<br>`com.nhaarman.bravo.ext:bravo`|
+|`com.nhaarman.acorn.ext`| `acorn-android` | The main extension on the Acorn-Android core, providing default implementations. |`com.nhaarman.acorn:acorn`<br>`com.nhaarman.acorn:acorn-android`|
+|`com.nhaarman.acorn.ext`| `acorn-android-testing` | Provides testing facilities for instrumentation testing with Acorn-Android. |`com.nhaarman.acorn:acorn`<br>`com.nhaarman.acorn:acorn-android`<br>`com.nhaarman.acorn.ext:acorn-android`|
+|`com.nhaarman.acorn.ext`| `acorn-android-timber` | Provides a `TimberLogger` |`com.nhaarman.acorn:acorn`<br>`com.nhaarman.acorn.ext:acorn`|
+|`com.nhaarman.acorn.ext`| `acorn-android-lifecycle` | Provides `LifecycleScene` |`com.nhaarman.acorn:acorn`<br>`com.nhaarman.acorn.ext:acorn`|
 

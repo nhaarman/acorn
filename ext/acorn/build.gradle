@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    api project(':bravo')
+    api project(':acorn')
 
     api "io.arrow-kt:arrow-core"
 

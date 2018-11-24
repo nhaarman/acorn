@@ -1,46 +1,46 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.dispatching
+package com.nhaarman.acorn.android.dispatching
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.CheckResult
-import com.nhaarman.bravo.android.dispatching.internal.ActivityHandler
-import com.nhaarman.bravo.android.dispatching.internal.DefaultActivityHandler
-import com.nhaarman.bravo.android.internal.contentView
-import com.nhaarman.bravo.android.internal.d
-import com.nhaarman.bravo.android.presentation.ActivityControllerFactory
-import com.nhaarman.bravo.android.presentation.ViewControllerFactory
-import com.nhaarman.bravo.android.transition.TransitionFactory
-import com.nhaarman.bravo.android.uistate.UIHandler
-import com.nhaarman.bravo.android.uistate.UIStateUIHandler
-import com.nhaarman.bravo.navigation.DisposableHandle
-import com.nhaarman.bravo.navigation.Navigator
-import com.nhaarman.bravo.navigation.TransitionData
-import com.nhaarman.bravo.presentation.Container
-import com.nhaarman.bravo.presentation.Scene
-import com.nhaarman.bravo.state.SavedState
-import com.nhaarman.bravo.state.get
-import com.nhaarman.bravo.state.savedState
+import com.nhaarman.acorn.android.dispatching.internal.ActivityHandler
+import com.nhaarman.acorn.android.dispatching.internal.DefaultActivityHandler
+import com.nhaarman.acorn.android.internal.contentView
+import com.nhaarman.acorn.android.internal.d
+import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
+import com.nhaarman.acorn.android.presentation.ViewControllerFactory
+import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.uistate.UIHandler
+import com.nhaarman.acorn.android.uistate.UIStateUIHandler
+import com.nhaarman.acorn.navigation.DisposableHandle
+import com.nhaarman.acorn.navigation.Navigator
+import com.nhaarman.acorn.navigation.TransitionData
+import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.state.SavedState
+import com.nhaarman.acorn.state.get
+import com.nhaarman.acorn.state.savedState
 
-class BravoSceneDispatcher internal constructor(
+class AcornSceneDispatcher internal constructor(
     private val context: Context,
     private val viewControllerFactory: ViewControllerFactory,
     private val activityControllerFactory: ActivityControllerFactory,
@@ -123,8 +123,8 @@ class BravoSceneDispatcher internal constructor(
             transitionFactory: TransitionFactory,
             callback: Callback,
             savedState: SavedState?
-        ): BravoSceneDispatcher {
-            return BravoSceneDispatcher(
+        ): AcornSceneDispatcher {
+            return AcornSceneDispatcher(
                 activity,
                 viewControllerFactory,
                 activityControllerFactory,

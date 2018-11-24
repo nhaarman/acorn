@@ -1,35 +1,35 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.uistate
+package com.nhaarman.acorn.android.uistate
 
 import android.view.ViewGroup
 import androidx.annotation.CheckResult
-import com.nhaarman.bravo.android.internal.v
-import com.nhaarman.bravo.android.internal.w
-import com.nhaarman.bravo.android.presentation.ViewController
-import com.nhaarman.bravo.android.presentation.ViewControllerFactory
-import com.nhaarman.bravo.android.transition.Transition
-import com.nhaarman.bravo.android.transition.TransitionFactory
-import com.nhaarman.bravo.android.uistate.internal.Destination
-import com.nhaarman.bravo.navigation.TransitionData
-import com.nhaarman.bravo.presentation.Container
-import com.nhaarman.bravo.presentation.Scene
+import com.nhaarman.acorn.android.internal.v
+import com.nhaarman.acorn.android.internal.w
+import com.nhaarman.acorn.android.presentation.ViewController
+import com.nhaarman.acorn.android.presentation.ViewControllerFactory
+import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.uistate.internal.Destination
+import com.nhaarman.acorn.navigation.TransitionData
+import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.Scene
 
 /**
  * A sealed hierarchy that manages layout inflation and [Scene] transition

@@ -1,22 +1,22 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.notesapp.android.ui.itemlist
+package com.nhaarman.acorn.notesapp.android.ui.itemlist
 
 import android.content.Context
 import androidx.recyclerview.widget.DiffUtil
@@ -25,9 +25,9 @@ import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import com.nhaarman.bravo.android.util.inflate
-import com.nhaarman.bravo.notesapp.android.R
-import com.nhaarman.bravo.notesapp.note.NoteItem
+import com.nhaarman.acorn.android.util.inflate
+import com.nhaarman.acorn.notesapp.android.R
+import com.nhaarman.acorn.notesapp.note.NoteItem
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.itemlist_itemview.*
 

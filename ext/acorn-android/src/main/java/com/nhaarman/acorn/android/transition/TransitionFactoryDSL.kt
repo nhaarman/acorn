@@ -1,31 +1,31 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.transition
+package com.nhaarman.acorn.android.transition
 
-import com.nhaarman.bravo.android.presentation.ViewControllerFactory
-import com.nhaarman.bravo.android.transition.internal.BindingTransitionFactory
-import com.nhaarman.bravo.android.transition.internal.ClassBinding
-import com.nhaarman.bravo.android.transition.internal.KeyBinding
-import com.nhaarman.bravo.android.transition.internal.LazyClassBinding
-import com.nhaarman.bravo.android.transition.internal.TransitionBinding
-import com.nhaarman.bravo.presentation.Scene
-import com.nhaarman.bravo.presentation.SceneKey
+import com.nhaarman.acorn.android.presentation.ViewControllerFactory
+import com.nhaarman.acorn.android.transition.internal.BindingTransitionFactory
+import com.nhaarman.acorn.android.transition.internal.ClassBinding
+import com.nhaarman.acorn.android.transition.internal.KeyBinding
+import com.nhaarman.acorn.android.transition.internal.LazyClassBinding
+import com.nhaarman.acorn.android.transition.internal.TransitionBinding
+import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.presentation.SceneKey
 import kotlin.reflect.KClass
 
 /**

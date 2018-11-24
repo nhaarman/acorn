@@ -1,33 +1,33 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.dispatching
+package com.nhaarman.acorn.android.dispatching
 
 import android.content.Context
-import com.nhaarman.bravo.android.dispatching.internal.ActivityHandler
-import com.nhaarman.bravo.android.presentation.ActivityController
-import com.nhaarman.bravo.android.presentation.ActivityControllerFactory
-import com.nhaarman.bravo.android.uistate.UIHandler
-import com.nhaarman.bravo.android.util.TestScene
-import com.nhaarman.bravo.android.util.TestViewControllerFactory
-import com.nhaarman.bravo.navigation.TestNavigator
-import com.nhaarman.bravo.presentation.Scene
-import com.nhaarman.bravo.presentation.SceneKey
+import com.nhaarman.acorn.android.dispatching.internal.ActivityHandler
+import com.nhaarman.acorn.android.presentation.ActivityController
+import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
+import com.nhaarman.acorn.android.uistate.UIHandler
+import com.nhaarman.acorn.android.util.TestScene
+import com.nhaarman.acorn.android.util.TestViewControllerFactory
+import com.nhaarman.acorn.navigation.TestNavigator
+import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.presentation.SceneKey
 import com.nhaarman.expect.expectErrorWithMessage
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.eq
@@ -35,7 +35,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Test
 
-internal class BravoSceneDispatcherTest {
+internal class AcornSceneDispatcherTest {
 
     val navigator = TestNavigator()
     val scene = TestScene.withKey("scene")
@@ -46,7 +46,7 @@ internal class BravoSceneDispatcherTest {
     val uiHandler = mock<UIHandler>()
     val activityHandler = mock<ActivityHandler>()
 
-    val dispatcher = BravoSceneDispatcher(
+    val dispatcher = AcornSceneDispatcher(
         context = mock(),
         viewControllerFactory = viewControllerFactory,
         activityControllerFactory = activityControllerFactory,

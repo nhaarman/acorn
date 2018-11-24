@@ -1,28 +1,28 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.notesapp.android
+package com.nhaarman.acorn.notesapp.android
 
 import android.app.Application
 import android.content.Context
 import android.os.Looper
-import com.nhaarman.bravo.android.TimberLogger
-import com.nhaarman.bravo.notesapp.mainThread
+import com.nhaarman.acorn.android.TimberLogger
+import com.nhaarman.acorn.notesapp.mainThread
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
@@ -39,7 +39,7 @@ class NotesApplication : Application() {
             AndroidSchedulers.from(Looper.getMainLooper(), true)
         }
         mainThread = AndroidSchedulers.mainThread()
-        bravo.logger = TimberLogger()
+        acorn.logger = TimberLogger()
         Timber.plant(DebugTree())
     }
 

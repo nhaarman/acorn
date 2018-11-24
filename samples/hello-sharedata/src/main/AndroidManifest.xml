@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.nhaarman.bravo.samples.hellosharedata">
+    package="com.nhaarman.acorn.samples.hellosharedata">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -40,7 +40,7 @@
         <provider
             android:name=".pictures.PictureContentProvider"
             android:exported="true"
-            android:authorities="com.nhaarman.bravo.samples.hellosharedata"
+            android:authorities="com.nhaarman.acorn.samples.hellosharedata"
             tools:ignore="ExportedContentProvider" />
 
     </application>

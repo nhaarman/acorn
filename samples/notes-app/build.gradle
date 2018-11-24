@@ -4,8 +4,8 @@ plugins {
 }
 
 dependencies {
-    implementation project(":ext-bravo")
-    implementation project(":ext-bravo-rx")
+    implementation project(":ext-acorn")
+    implementation project(":ext-acorn-rx")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
@@ -14,7 +14,7 @@ dependencies {
     
     api "io.arrow-kt:arrow-core"
 
-    testImplementation project(":ext-bravo-testing")
+    testImplementation project(":ext-acorn-testing")
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
     testImplementation "com.nhaarman:expect.kt"

@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    api project(':ext-bravo')
+    api project(':ext-acorn')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 

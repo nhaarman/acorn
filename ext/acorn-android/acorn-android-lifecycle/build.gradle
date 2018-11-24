@@ -14,7 +14,7 @@ android {
 }
 
 dependencies {
-    api project(':ext-bravo')
+    api project(':ext-acorn')
 
     api "androidx.lifecycle:lifecycle-runtime"
 

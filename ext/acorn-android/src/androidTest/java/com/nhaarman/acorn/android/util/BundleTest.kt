@@ -1,31 +1,31 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android.util
+package com.nhaarman.acorn.android.util
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.SparseArray
-import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.state.containerState
-import com.nhaarman.bravo.state.navigatorState
-import com.nhaarman.bravo.state.savedState
-import com.nhaarman.bravo.state.sceneState
+import com.nhaarman.acorn.state.NavigatorState
+import com.nhaarman.acorn.state.containerState
+import com.nhaarman.acorn.state.navigatorState
+import com.nhaarman.acorn.state.savedState
+import com.nhaarman.acorn.state.sceneState
 import com.nhaarman.expect.expect
 import org.junit.Test
 
@@ -48,7 +48,7 @@ class BundleTest {
     fun toAndFromBundle_numberValue() {
         /* Given */
         val state = navigatorState {
-            it["transformToBravo"] = 3.14
+            it["transformToAcorn"] = 3.14
         }
 
         /* When */
@@ -77,7 +77,7 @@ class BundleTest {
     fun toAndFromBundle_withSceneState() {
         /* Given */
         val state = navigatorState {
-            it["transformToBravo"] = 3.14
+            it["transformToAcorn"] = 3.14
             it["scene"] = sceneState {
                 it["bar"] = 42
             }
@@ -94,7 +94,7 @@ class BundleTest {
     fun toAndFromBundle_withContainerState() {
         /* Given */
         val state = navigatorState {
-            it["transformToBravo"] = 3.14
+            it["transformToAcorn"] = 3.14
             it["scene"] = sceneState {
                 it["bar"] = 42
                 it["container"] = containerState {
@@ -131,7 +131,7 @@ class BundleTest {
     fun fullBundle_toParcelAndBack() {
         /* Given */
         val state = navigatorState {
-            it["transformToBravo"] = 3.14
+            it["transformToAcorn"] = 3.14
             it["scene"] = sceneState {
                 it["bar"] = 42
                 it["container"] = containerState {

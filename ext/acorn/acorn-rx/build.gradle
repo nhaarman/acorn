@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    api project(':ext-bravo')
+    api project(':ext-acorn')
 
     api "io.reactivex.rxjava2:rxjava"
 

@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nhaarman.bravo.android.tests">
+    package="com.nhaarman.acorn.android.tests">
 
     <application>
-        <activity android:name=".BravoTestActivity">
+        <activity android:name=".AcornTestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

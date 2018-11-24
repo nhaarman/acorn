@@ -15,6 +15,6 @@ dependencies {
 
 jar {
     manifest {
-        attributes("Lint-Registry-v2": "com.nhaarman.bravo.lint.BravoIssueRegistry")
+        attributes("Lint-Registry-v2": "com.nhaarman.acorn.lint.AcornIssueRegistry")
     }
 }

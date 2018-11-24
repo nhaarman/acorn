@@ -1,41 +1,41 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android
+package com.nhaarman.acorn.android
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.nhaarman.bravo.OnBackPressListener
-import com.nhaarman.bravo.android.dispatching.BravoSceneDispatcher
-import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ActivityControllerFactory
-import com.nhaarman.bravo.android.presentation.ViewControllerFactory
-import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
-import com.nhaarman.bravo.android.transition.TransitionFactory
-import com.nhaarman.bravo.android.util.toBundle
-import com.nhaarman.bravo.android.util.toNavigatorState
-import com.nhaarman.bravo.navigation.DisposableHandle
-import com.nhaarman.bravo.navigation.Navigator
-import com.nhaarman.bravo.state.NavigatorState
-import com.nhaarman.bravo.state.SavedState
+import com.nhaarman.acorn.OnBackPressListener
+import com.nhaarman.acorn.android.dispatching.AcornSceneDispatcher
+import com.nhaarman.acorn.android.navigation.NavigatorProvider
+import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
+import com.nhaarman.acorn.android.presentation.ViewControllerFactory
+import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
+import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.util.toBundle
+import com.nhaarman.acorn.android.util.toNavigatorState
+import com.nhaarman.acorn.navigation.DisposableHandle
+import com.nhaarman.acorn.navigation.Navigator
+import com.nhaarman.acorn.state.NavigatorState
+import com.nhaarman.acorn.state.SavedState
 
-class BravoActivityDelegate private constructor(
+class AcornActivityDelegate private constructor(
     private val activity: Activity,
     private val navigatorProvider: NavigatorProvider,
     private val viewControllerFactory: ViewControllerFactory,
@@ -53,7 +53,7 @@ class BravoActivityDelegate private constructor(
         return navigator
     }
 
-    private lateinit var dispatcher: BravoSceneDispatcher
+    private lateinit var dispatcher: AcornSceneDispatcher
 
     private var disposable: DisposableHandle? = null
         set(value) {
@@ -63,12 +63,12 @@ class BravoActivityDelegate private constructor(
 
     @Suppress("UNCHECKED_CAST")
     fun onCreate(savedInstanceState: Bundle?) {
-        dispatcher = BravoSceneDispatcher.create(
+        dispatcher = AcornSceneDispatcher.create(
             activity,
             viewControllerFactory,
             activityControllerFactory,
             transitionFactory,
-            object : BravoSceneDispatcher.Callback {
+            object : AcornSceneDispatcher.Callback {
 
                 override fun startForResult(intent: Intent) {
                     activity.startActivityForResult(intent, 42)
@@ -121,8 +121,8 @@ class BravoActivityDelegate private constructor(
             viewControllerFactory: ViewControllerFactory,
             activityControllerFactory: ActivityControllerFactory,
             transitionFactory: TransitionFactory = DefaultTransitionFactory(viewControllerFactory)
-        ): BravoActivityDelegate {
-            return BravoActivityDelegate(
+        ): AcornActivityDelegate {
+            return AcornActivityDelegate(
                 activity,
                 navigatorProvider,
                 viewControllerFactory,

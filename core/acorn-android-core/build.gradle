@@ -14,7 +14,7 @@ android {
 }
 
 dependencies {
-    api project(":bravo")
+    api project(":acorn")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 }

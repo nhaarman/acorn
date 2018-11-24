@@ -1,33 +1,33 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.notesapp.android
+package com.nhaarman.acorn.notesapp.android
 
-import com.nhaarman.bravo.android.transition.FadeOutToBottomTransition
-import com.nhaarman.bravo.android.transition.TransitionFactory
-import com.nhaarman.bravo.android.transition.hideKeyboardOnStart
-import com.nhaarman.bravo.android.transition.transitionFactory
-import com.nhaarman.bravo.notesapp.android.ui.transition.EditItemItemListTransition
-import com.nhaarman.bravo.notesapp.android.ui.transition.ItemListCreateItemTransition
-import com.nhaarman.bravo.notesapp.android.ui.transition.ItemListEditItemTransition
-import com.nhaarman.bravo.notesapp.presentation.createitem.CreateItemScene
-import com.nhaarman.bravo.notesapp.presentation.edititem.EditItemScene
-import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListScene
+import com.nhaarman.acorn.android.transition.FadeOutToBottomTransition
+import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.hideKeyboardOnStart
+import com.nhaarman.acorn.android.transition.transitionFactory
+import com.nhaarman.acorn.notesapp.android.ui.transition.EditItemItemListTransition
+import com.nhaarman.acorn.notesapp.android.ui.transition.ItemListCreateItemTransition
+import com.nhaarman.acorn.notesapp.android.ui.transition.ItemListEditItemTransition
+import com.nhaarman.acorn.notesapp.presentation.createitem.CreateItemScene
+import com.nhaarman.acorn.notesapp.presentation.edititem.EditItemScene
+import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListScene
 
 object TransitionFactoryProvider {
 

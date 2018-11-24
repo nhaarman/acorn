@@ -15,8 +15,8 @@ android {
 }
 
 dependencies {
-    api project(":ext-bravo")
-    api project(":bravo-android")
+    api project(":ext-acorn")
+    api project(":acorn-android")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
@@ -24,7 +24,7 @@ dependencies {
 
     compileOnly "androidx.annotation:annotation"
 
-    lintChecks project(":ext-bravo-android-lint")
+    lintChecks project(":ext-acorn-android-lint")
 
     testImplementation "com.nhaarman:expect.kt"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"

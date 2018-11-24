@@ -1,45 +1,45 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.android
+package com.nhaarman.acorn.android
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import com.nhaarman.bravo.android.navigation.NavigatorProvider
-import com.nhaarman.bravo.android.presentation.ActivityControllerFactory
-import com.nhaarman.bravo.android.presentation.NoopActivityControllerFactory
-import com.nhaarman.bravo.android.presentation.ViewControllerFactory
-import com.nhaarman.bravo.android.transition.DefaultTransitionFactory
-import com.nhaarman.bravo.android.transition.Transition
-import com.nhaarman.bravo.android.transition.TransitionFactory
-import com.nhaarman.bravo.navigation.Navigator
+import com.nhaarman.acorn.android.navigation.NavigatorProvider
+import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
+import com.nhaarman.acorn.android.presentation.NoopActivityControllerFactory
+import com.nhaarman.acorn.android.presentation.ViewControllerFactory
+import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
+import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.navigation.Navigator
 
 /**
- * A base [AppCompatActivity] implementation to simplify Bravo usage.
+ * A base [AppCompatActivity] implementation to simplify Acorn usage.
  *
  * If you can't or don't want to inherit from this class, you can use the
- * [BravoActivityDelegate] class and route the necessary Activity function
+ * [AcornActivityDelegate] class and route the necessary Activity function
  * calls to it.
  */
-abstract class BravoAppCompatActivity : AppCompatActivity() {
+abstract class AcornAppCompatActivity : AppCompatActivity() {
 
     /**
      * Returns the [NavigatorProvider] to use in this Activity.
@@ -90,11 +90,11 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
      * Must only be called _after_ [onCreate] has been called.
      */
     protected fun navigator(): Navigator {
-        return bravoDelegate.navigator()
+        return acornDelegate.navigator()
     }
 
-    private val bravoDelegate: BravoActivityDelegate by lazy {
-        BravoActivityDelegate.from(
+    private val acornDelegate: AcornActivityDelegate by lazy {
+        AcornActivityDelegate.from(
             activity = this,
             navigatorProvider = navigatorProvider,
             viewControllerFactory = viewControllerFactory,
@@ -106,36 +106,36 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bravoDelegate.onCreate(savedInstanceState)
+        acornDelegate.onCreate(savedInstanceState)
     }
 
     @CallSuper
     override fun onStart() {
         super.onStart()
-        bravoDelegate.onStart()
+        acornDelegate.onStart()
     }
 
     @CallSuper
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        bravoDelegate.onActivityResult(requestCode, resultCode, data)
+        acornDelegate.onActivityResult(requestCode, resultCode, data)
     }
 
     @CallSuper
     override fun onBackPressed() {
-        if (!bravoDelegate.onBackPressed()) {
+        if (!acornDelegate.onBackPressed()) {
             super.onBackPressed()
         }
     }
 
     @CallSuper
     override fun onStop() {
-        bravoDelegate.onStop()
+        acornDelegate.onStop()
         super.onStop()
     }
 
     @CallSuper
     override fun onDestroy() {
-        bravoDelegate.onDestroy()
+        acornDelegate.onDestroy()
         super.onDestroy()
     }
 
@@ -147,6 +147,6 @@ abstract class BravoAppCompatActivity : AppCompatActivity() {
     @SuppressLint("MissingSuperCall")
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {
-        bravoDelegate.onSaveInstanceState(outState)
+        acornDelegate.onSaveInstanceState(outState)
     }
 }

@@ -1,22 +1,22 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.notesapp.android.ui.itemlist
+package com.nhaarman.acorn.notesapp.android.ui.itemlist
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -28,12 +28,12 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
-import com.nhaarman.bravo.android.tests.BravoViewTestRule
-import com.nhaarman.bravo.notesapp.android.R
-import com.nhaarman.bravo.notesapp.android.ViewFactoryProvider
-import com.nhaarman.bravo.notesapp.note.NoteItem
-import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListContainer
-import com.nhaarman.bravo.notesapp.presentation.itemlist.ItemListScene
+import com.nhaarman.acorn.android.tests.AcornViewTestRule
+import com.nhaarman.acorn.notesapp.android.R
+import com.nhaarman.acorn.notesapp.android.ViewFactoryProvider
+import com.nhaarman.acorn.notesapp.note.NoteItem
+import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListContainer
+import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListScene
 import com.nhaarman.expect.expect
 import com.nhaarman.expect.lastValue
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -43,7 +43,7 @@ import java.lang.Thread.sleep
 
 class ItemListViewTest {
 
-    @Rule @JvmField val rule = BravoViewTestRule<ItemListContainer>(
+    @Rule @JvmField val rule = AcornViewTestRule<ItemListContainer>(
         ViewFactoryProvider.viewFactory,
         ItemListScene.key
     )

@@ -1,22 +1,22 @@
 /*
- * Bravo - Decoupling navigation from Android
+ * Acorn - Decoupling navigation from Android
  * Copyright (C) 2018 Niek Haarman
  *
- * Bravo is free software: you can redistribute it and/or modify
+ * Acorn is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Bravo is distributed in the hope that it will be useful,
+ * Acorn is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Bravo.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.bravo.lint
+package com.nhaarman.acorn.lint
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.Category
@@ -36,9 +36,9 @@ import org.jetbrains.uast.UastBinaryOperator
 
 /**
  * A Detector that detects usage of the `disposables` property of the
- * `com.nhaarman.bravo.presentation.RxScene` class.
+ * `com.nhaarman.acorn.presentation.RxScene` class.
  *
- * This detector is included in the `ext-bravo-android` module since normal
+ * This detector is included in the `ext-acorn-android` module since normal
  * Lint doesn't support normal JVM modules.
  */
 class RxSceneDisposablesUsageDetector : Detector(), Detector.UastScanner {
@@ -75,7 +75,7 @@ class RxSceneDisposablesUsageDetector : Detector(), Detector.UastScanner {
 
                 val containingClass = node.findContainingClass() ?: return
                 val allSupers = containingClass.psi.allSupers()
-                if (allSupers.none { it.qualifiedName == "com.nhaarman.bravo.presentation.RxScene" }) {
+                if (allSupers.none { it.qualifiedName == "com.nhaarman.acorn.presentation.RxScene" }) {
                     return
                 }
 
@@ -103,7 +103,7 @@ class RxSceneDisposablesUsageDetector : Detector(), Detector.UastScanner {
 
                 val containingClass = node.findContainingClass() ?: return
                 val allSupers = containingClass.psi.allSupers()
-                if (allSupers.none { it.qualifiedName == "com.nhaarman.bravo.presentation.RxScene" }) {
+                if (allSupers.none { it.qualifiedName == "com.nhaarman.acorn.presentation.RxScene" }) {
                     return
                 }
 
@@ -138,7 +138,7 @@ class RxSceneDisposablesUsageDetector : Detector(), Detector.UastScanner {
     companion object {
 
         val issue = Issue.create(
-            "Bravo_RxSceneDisposables",
+            "Acorn_RxSceneDisposables",
             "Incorrect usage of RxScene#disposables",
             "The `disposables` property should only be used from `onStart()`. When used in other lifecycle methods, leaks may occur.",
             Category.CORRECTNESS,

@@ -34,11 +34,11 @@ jobs:
       - store_artifacts:
           path: ~/junit
       - store_artifacts:
-          path: bravo/build/reports
-          destination: bravo/reports
+          path: acorn/build/reports
+          destination: acorn/reports
       - store_artifacts:
-          path: bravo-android/build/reports
-          destination: bravo-android/reports
+          path: acorn-android/build/reports
+          destination: acorn-android/reports
       - store_artifacts:
           path: ~/.m2
           destination: m2
