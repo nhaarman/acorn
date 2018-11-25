@@ -24,18 +24,18 @@ import androidx.annotation.LayoutRes
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.android.util.inflate
-import com.nhaarman.acorn.presentation.SceneKey
+import com.nhaarman.acorn.presentation.Scene
 
 internal class InflatingViewControllerFactory<V : View>(
     @LayoutRes private val layoutResId: Int,
     private val wrapper: (V) -> ViewController
 ) : ViewControllerFactory {
 
-    override fun supports(sceneKey: SceneKey): Boolean {
+    override fun supports(scene: Scene<*>): Boolean {
         return true
     }
 
-    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
+    override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
         return parent
             .inflate<V>(layoutResId)
             .let { view -> wrapper.invoke(view) }

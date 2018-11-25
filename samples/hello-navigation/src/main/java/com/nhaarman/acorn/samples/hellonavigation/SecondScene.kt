@@ -19,11 +19,14 @@
 package com.nhaarman.acorn.samples.hellonavigation
 
 import android.view.View
+import android.view.ViewGroup
 import com.nhaarman.acorn.android.presentation.RestorableViewController
+import com.nhaarman.acorn.android.presentation.ViewController
+import com.nhaarman.acorn.android.presentation.ViewProvidingScene
+import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.SaveableScene
-import com.nhaarman.acorn.presentation.Scene
 import kotlinx.android.synthetic.main.second_scene.*
 
 /**
@@ -40,7 +43,11 @@ import kotlinx.android.synthetic.main.second_scene.*
  */
 class SecondScene(
     private val listener: Events
-) : Scene<SecondSceneContainer> {
+) : ViewProvidingScene<SecondSceneContainer> {
+
+    override fun createViewController(parent: ViewGroup): ViewController {
+        return SecondSceneViewController(parent.inflate(R.layout.second_scene))
+    }
 
     override fun attach(v: SecondSceneContainer) {
         v.onFirstSceneClicked { listener.onFirstSceneRequested() }

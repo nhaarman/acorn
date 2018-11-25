@@ -21,6 +21,7 @@ package com.nhaarman.acorn.android.util
 import android.view.ViewGroup
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
+import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.presentation.SceneKey
 
 class TestViewControllerFactory : ViewControllerFactory {
@@ -31,11 +32,11 @@ class TestViewControllerFactory : ViewControllerFactory {
         controllers += sceneKey to viewController
     }
 
-    override fun supports(sceneKey: SceneKey): Boolean {
-        return controllers.containsKey(sceneKey)
+    override fun supports(scene: Scene<*>): Boolean {
+        return controllers.containsKey(scene.key)
     }
 
-    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
-        return controllers[sceneKey]!!
+    override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
+        return controllers[scene.key]!!
     }
 }

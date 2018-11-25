@@ -26,6 +26,8 @@ import com.nhaarman.acorn.android.test.R
 import com.nhaarman.expect.expect
 import org.junit.Test
 import com.nhaarman.acorn.android.presentation.internal.InflatingViewControllerFactory
+import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.presentation.SceneKey
 
 internal class InflatingViewControllerFactoryTest {
@@ -39,7 +41,7 @@ internal class InflatingViewControllerFactoryTest {
         }
 
         /* When */
-        val result = factory.viewControllerFor(SceneKey("test"), viewGroup)
+        val result = factory.viewControllerFor(TestScene(SceneKey("test")), viewGroup)
 
         /* Then */
         expect(result.view).toBeInstanceOf<LinearLayout>()
@@ -54,7 +56,7 @@ internal class InflatingViewControllerFactoryTest {
         }
 
         /* When */
-        val result = factory.viewControllerFor(SceneKey("test"), viewGroup)
+        val result = factory.viewControllerFor(TestScene(SceneKey("test")), viewGroup)
 
         /* Then */
         expect(result).toBeInstanceOf<MyContainer> {
@@ -63,4 +65,5 @@ internal class InflatingViewControllerFactoryTest {
     }
 
     private class MyContainer(override val view: View) : ViewController
+    private class TestScene(override val key: SceneKey) : Scene<Container>
 }

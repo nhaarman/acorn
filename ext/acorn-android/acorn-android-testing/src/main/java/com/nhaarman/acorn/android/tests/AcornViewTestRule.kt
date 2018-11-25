@@ -21,6 +21,7 @@ package com.nhaarman.acorn.android.tests
 import androidx.test.rule.ActivityTestRule
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.presentation.SceneKey
 
 class AcornViewTestRule<C : Container>(
@@ -29,7 +30,7 @@ class AcornViewTestRule<C : Container>(
 ) : ActivityTestRule<AcornTestActivity>(AcornTestActivity::class.java) {
 
     private val viewController by lazy {
-        viewControllerFactory.viewControllerFor(sceneKey, activity.findViewById(android.R.id.content))
+        viewControllerFactory.viewControllerFor(TestScene(sceneKey), activity.findViewById(android.R.id.content))
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -43,4 +44,6 @@ class AcornViewTestRule<C : Container>(
     fun onUiThread(f: AcornViewTestRule<C>.() -> Unit) {
         runOnUiThread { f(this) }
     }
+
+    private inner class TestScene(override val key: SceneKey) : Scene<C>
 }

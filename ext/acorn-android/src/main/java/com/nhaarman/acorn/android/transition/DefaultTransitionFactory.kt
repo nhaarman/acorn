@@ -32,10 +32,10 @@ class DefaultTransitionFactory(private val viewControllerFactory: ViewController
     override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition {
         return when (data?.isBackwards) {
             true -> FadeOutToBottomTransition { parent ->
-                viewControllerFactory.viewControllerFor(newScene.key, parent)
+                viewControllerFactory.viewControllerFor(newScene, parent)
             }
             else -> FadeInFromBottomTransition { parent ->
-                viewControllerFactory.viewControllerFor(newScene.key, parent)
+                viewControllerFactory.viewControllerFor(newScene, parent)
             }
         }.hideKeyboardOnStart()
     }

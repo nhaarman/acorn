@@ -16,32 +16,27 @@
  * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.acorn.samples.hellostartactivity
+package com.nhaarman.acorn.samples.helloviewfactory
 
-import android.content.Context
-import com.nhaarman.acorn.android.AcornAppCompatActivity
+import com.nhaarman.acorn.android.AcornActivity
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
-import com.nhaarman.acorn.android.presentation.ActivityController
-import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
-import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.android.presentation.ViewControllerFactory
+import com.nhaarman.acorn.android.presentation.bindViews
 import com.nhaarman.acorn.presentation.SceneKey
 
-class MainActivity : AcornAppCompatActivity() {
+class MainActivity : AcornActivity() {
 
     override fun provideNavigatorProvider(): NavigatorProvider {
-        return HelloStartActivityNavigatorProvider
+        return HelloViewFactoryNavigatorProvider
     }
 
-    override fun provideActivityControllerFactory(): ActivityControllerFactory {
-        return object : ActivityControllerFactory {
-
-            override fun supports(sceneKey: SceneKey): Boolean {
-                return sceneKey == SceneKey.from(MapsScene::class)
-            }
-
-            override fun activityControllerFor(scene: Scene<*>, context: Context): ActivityController {
-                return MapsActivityController()
-            }
+    override fun provideViewControllerFactory(): ViewControllerFactory {
+        return bindViews {
+            bind(
+                SceneKey.defaultKey<HelloViewFactoryScene>(),
+                R.layout.myscene,
+                ::HelloViewFactoryViewController
+            )
         }
     }
 }

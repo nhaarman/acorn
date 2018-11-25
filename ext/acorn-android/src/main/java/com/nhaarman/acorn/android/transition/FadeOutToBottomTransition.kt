@@ -81,7 +81,7 @@ class FadeOutToBottomTransition(
 
         fun from(viewControllerFactory: ViewControllerFactory): (Scene<*>) -> FadeOutToBottomTransition = { scene ->
             FadeOutToBottomTransition { parent ->
-                viewControllerFactory.viewControllerFor(scene.key, parent)
+                viewControllerFactory.viewControllerFor(scene, parent)
             }
         }
     }

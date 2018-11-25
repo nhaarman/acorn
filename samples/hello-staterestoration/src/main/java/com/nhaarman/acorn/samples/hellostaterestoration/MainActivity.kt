@@ -20,23 +20,10 @@ package com.nhaarman.acorn.samples.hellostaterestoration
 
 import com.nhaarman.acorn.android.AcornActivity
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
-import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.presentation.bindViews
-import com.nhaarman.acorn.presentation.SceneKey.Companion.defaultKey
 
 class MainActivity : AcornActivity() {
 
     override fun provideNavigatorProvider(): NavigatorProvider {
         return HelloStateRestorationNavigatorProvider
-    }
-
-    override fun provideViewControllerFactory(): ViewControllerFactory {
-        return bindViews {
-            bind(
-                defaultKey<HelloStateRestorationScene>(),
-                R.layout.myscene,
-                ::HelloStateRestorationViewController
-            )
-        }
     }
 }

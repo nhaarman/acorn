@@ -35,7 +35,7 @@ class MainActivity : AcornAppCompatActivity() {
         return viewFactory
     }
 
-    override fun provideTransitionFactory(): TransitionFactory {
+    override fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): TransitionFactory {
         return transitionFactory
     }
 }

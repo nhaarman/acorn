@@ -21,6 +21,7 @@ package com.nhaarman.acorn.android.presentation.internal
 import android.view.ViewGroup
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
+import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.presentation.SceneKey
 
 /**
@@ -31,14 +32,14 @@ internal class BindingViewControllerFactory(
     private val bindings: Map<SceneKey, ViewControllerFactory>
 ) : ViewControllerFactory {
 
-    override fun supports(sceneKey: SceneKey): Boolean {
-        return bindings.containsKey(sceneKey)
+    override fun supports(scene: Scene<*>): Boolean {
+        return bindings.containsKey(scene.key)
     }
 
-    override fun viewControllerFor(sceneKey: SceneKey, parent: ViewGroup): ViewController {
-        val viewControllerFactory = bindings[sceneKey]
-            ?: throw IllegalStateException("Could not create ViewController for Scene with key $sceneKey.")
+    override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
+        val viewControllerFactory = bindings[scene.key]
+            ?: throw IllegalStateException("Could not create ViewController for Scene $scene.")
 
-        return viewControllerFactory.viewControllerFor(sceneKey, parent)
+        return viewControllerFactory.viewControllerFor(scene, parent)
     }
 }

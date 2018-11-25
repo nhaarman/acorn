@@ -30,13 +30,9 @@ class MainActivity : AcornAppCompatActivity() {
         return HelloTransitionAnimationNavigatorProvider
     }
 
-    override fun provideViewControllerFactory(): ViewControllerFactory {
-        return viewFactory
-    }
-
-    override fun provideTransitionFactory(): TransitionFactory {
-        return transitionFactory(viewFactory) {
-            (FirstScene::class to SecondScene::class) use FirstSceneSecondSceneTransition
+    override fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): TransitionFactory {
+        return transitionFactory(viewControllerFactory) {
+            (FirstScene::class to SecondScene::class) use FirstToSecondTransition
         }
     }
 }

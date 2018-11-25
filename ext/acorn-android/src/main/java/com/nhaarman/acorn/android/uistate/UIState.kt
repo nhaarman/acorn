@@ -187,7 +187,7 @@ internal class NotVisibleWithDestination(
         )
         v("UIState.NotVisibleWithDestination", "Showing destination UI without animation.")
 
-        val viewController = destination.viewControllerFactory.viewControllerFor(destination.scene.key, root)
+        val viewController = destination.viewControllerFactory.viewControllerFor(destination.scene, root)
 
         root.removeAllViews()
         root.addView(viewController.view)
@@ -262,7 +262,7 @@ internal class Visible(
             "No current scene active, showing scene without animation."
         )
 
-        val viewController = destination.viewControllerFactory.viewControllerFor(destination.scene.key, root)
+        val viewController = destination.viewControllerFactory.viewControllerFor(destination.scene, root)
 
         root.removeAllViews()
         root.addView(viewController.view)

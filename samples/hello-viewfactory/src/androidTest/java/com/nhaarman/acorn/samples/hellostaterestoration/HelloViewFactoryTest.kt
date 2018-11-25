@@ -16,24 +16,23 @@
  * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.acorn.samples.helloworld
+package com.nhaarman.acorn.samples.hellostaterestoration
 
-import com.nhaarman.acorn.android.AcornActivity
-import com.nhaarman.acorn.android.navigation.NavigatorProvider
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.rule.ActivityTestRule
+import com.nhaarman.acorn.samples.helloviewfactory.MainActivity
+import org.junit.Rule
+import org.junit.Test
 
-/**
- * The Activity that hosts this sample.
- *
- * Interesting components:
- *
- *  - [HelloWorldNavigator] manages the navigation flow, in this case showing
- *    a simple Scene.
- *  - [HelloWorldScene] presents a text to the UI when available.
- *  - [HelloWorldViewController] implements the view to show the text.
- */
-class MainActivity : AcornActivity() {
+class HelloViewFactoryTest {
 
-    override fun provideNavigatorProvider(): NavigatorProvider {
-        return HelloWorldNavigatorProvider
+    @Rule @JvmField val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+
+    @Test
+    fun navigatingThroughScenes() {
+        onView(withText("Hello world!")).check(matches(isDisplayed()))
     }
 }
