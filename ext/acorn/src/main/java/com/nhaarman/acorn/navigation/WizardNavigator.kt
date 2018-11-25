@@ -23,7 +23,7 @@ import com.nhaarman.acorn.OnBackPressListener
 import com.nhaarman.acorn.internal.v
 import com.nhaarman.acorn.internal.w
 import com.nhaarman.acorn.presentation.Container
-import com.nhaarman.acorn.presentation.SaveableScene
+import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SceneState
@@ -42,7 +42,7 @@ import kotlin.reflect.KClass
  *
  * Implementers must implement [createScene] to provide the proper Scenes.
  *
- * This Navigator implements [SaveableNavigator] and thus can have its state saved
+ * This Navigator implements [SavableNavigator] and thus can have its state saved
  * and restored when necessary.
  *
  * @param savedState An optional instance that contains saved state as returned
@@ -50,7 +50,7 @@ import kotlin.reflect.KClass
  */
 abstract class WizardNavigator(
     private val savedState: NavigatorState?
-) : Navigator, SaveableNavigator, OnBackPressListener {
+) : Navigator, SavableNavigator, OnBackPressListener {
 
     /**
      * Creates the Scene for given [index], starting at `0`.
@@ -69,7 +69,7 @@ abstract class WizardNavigator(
      *
      * @param sceneClass The class of the [Scene] to instantiate.
      * @param state The saved state of the [Scene] if applicable. This will be
-     * the instance as returned from [SaveableScene.saveInstanceState] if its
+     * the instance as returned from [SavableScene.saveInstanceState] if its
      * state was saved.
      */
     protected abstract fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container>
@@ -214,7 +214,7 @@ abstract class WizardNavigator(
             .foldIndexed(NavigatorState()) { index, bundle, scene ->
                 bundle.also {
                     it["${index}_class"] = scene::class.java.name
-                    it["${index}_state"] = (scene as? SaveableScene)?.saveInstanceState()
+                    it["${index}_state"] = (scene as? SavableScene)?.saveInstanceState()
                 }
             }
             .also {

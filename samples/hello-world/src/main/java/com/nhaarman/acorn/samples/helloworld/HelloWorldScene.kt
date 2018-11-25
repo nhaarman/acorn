@@ -22,7 +22,7 @@ import android.view.ViewGroup
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewProvidingScene
 import com.nhaarman.acorn.android.util.inflate
-import com.nhaarman.acorn.presentation.SaveableScene
+import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.presentation.Scene
 
 /**
@@ -31,7 +31,7 @@ import com.nhaarman.acorn.presentation.Scene
  * This Scene does not handle any state restoration, since there is no state
  * worth saving.
  * In cases where state _is_ worth saving, your Scene should generally implement
- * [SaveableScene].
+ * [SavableScene].
  */
 class HelloWorldScene : ViewProvidingScene<HelloWorldContainer> {
 

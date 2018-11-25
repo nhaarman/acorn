@@ -36,7 +36,7 @@ import kotlin.reflect.KClass
  * to manipulate the stack. Implementers must implement [initialStack] to provide
  * the initial stack to work with.
  *
- * This Navigator implements [SaveableNavigator] and thus can have its state saved
+ * This Navigator implements [SavableNavigator] and thus can have its state saved
  * and restored when necessary.
  *
  * @param savedState An optional instance that contains saved state as returned
@@ -44,7 +44,7 @@ import kotlin.reflect.KClass
  */
 abstract class CompositeStackNavigator(
     private val savedState: NavigatorState?
-) : Navigator, Navigator.Events, SaveableNavigator, OnBackPressListener {
+) : Navigator, Navigator.Events, SavableNavigator, OnBackPressListener {
 
     /**
      * Creates the initial stack of [Navigator]s for this CompositeStackNavigator.
@@ -61,7 +61,7 @@ abstract class CompositeStackNavigator(
      *
      * @param navigatorClass The Class of the [Navigator] to instantiate.
      * @param state The saved state of the [Navigator] if applicable. This will
-     * be the instance as returned from [SaveableNavigator.saveInstanceState] if
+     * be the instance as returned from [SavableNavigator.saveInstanceState] if
      * its state was saved.
      */
     protected abstract fun instantiateNavigator(
@@ -234,7 +234,7 @@ abstract class CompositeStackNavigator(
             .foldIndexed(NavigatorState()) { index, bundle, navigator ->
                 bundle.also {
                     it["${index}_class"] = navigator::class.java.name
-                    it["${index}_state"] = (navigator as? SaveableNavigator)?.saveInstanceState()
+                    it["${index}_state"] = (navigator as? SavableNavigator)?.saveInstanceState()
                 }
             }
             .also { it["size"] = state.navigators.size }

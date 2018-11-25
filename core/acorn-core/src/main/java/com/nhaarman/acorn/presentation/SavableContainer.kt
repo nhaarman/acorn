@@ -23,7 +23,7 @@ import com.nhaarman.acorn.state.ContainerState
 /**
  * Indicates that implementers can have their instance state saved.
  */
-interface SaveableContainer : Container {
+interface SavableContainer : Container {
 
     /**
      * Save instance state.
@@ -34,7 +34,7 @@ interface SaveableContainer : Container {
 /**
  * Indicates that implementers can have their instance state saved and restored.
  */
-interface RestorableContainer : SaveableContainer {
+interface RestorableContainer : SavableContainer {
 
     /** Restore given instance state. */
     fun restoreInstanceState(bundle: ContainerState)

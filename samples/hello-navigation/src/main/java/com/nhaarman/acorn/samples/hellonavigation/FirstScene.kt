@@ -26,7 +26,7 @@ import com.nhaarman.acorn.android.presentation.ViewProvidingScene
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.presentation.Container
-import com.nhaarman.acorn.presentation.SaveableScene
+import com.nhaarman.acorn.presentation.SavableScene
 import kotlinx.android.synthetic.main.first_scene.*
 
 /**
@@ -39,7 +39,7 @@ import kotlinx.android.synthetic.main.first_scene.*
  * This Scene does not handle any state restoration, since there is no state
  * worth saving.
  * In cases where state _is_ worth saving, your Scene should generally implement
- * [SaveableScene].
+ * [SavableScene].
  */
 class FirstScene(
     /** The listener callback to be notified when an event happens. */

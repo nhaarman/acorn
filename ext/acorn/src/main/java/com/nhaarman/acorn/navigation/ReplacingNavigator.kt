@@ -23,7 +23,7 @@ import com.nhaarman.acorn.OnBackPressListener
 import com.nhaarman.acorn.internal.v
 import com.nhaarman.acorn.internal.w
 import com.nhaarman.acorn.presentation.Container
-import com.nhaarman.acorn.presentation.SaveableScene
+import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SceneState
@@ -38,7 +38,7 @@ import kotlin.reflect.KClass
  */
 abstract class ReplacingNavigator(
     private val savedState: NavigatorState?
-) : Navigator, SaveableNavigator, OnBackPressListener {
+) : Navigator, SavableNavigator, OnBackPressListener {
 
     /**
      * Returns the Scene this Navigator should start with.
@@ -168,7 +168,7 @@ abstract class ReplacingNavigator(
     override fun saveInstanceState(): NavigatorState {
         return navigatorState {
             it.sceneClass = state.scene::class
-            it.sceneState = (state.scene as? SaveableScene)?.saveInstanceState()
+            it.sceneState = (state.scene as? SavableScene)?.saveInstanceState()
         }
     }
 

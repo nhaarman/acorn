@@ -36,7 +36,7 @@ internal class ReplacingNavigatorTest {
 
     private val initialScene get() = navigator.initialScenes[0]
 
-    private val scene1 = spy(SaveableTestScene(1))
+    private val scene1 = spy(SavableTestScene(1))
 
     private val navigator = TestReplacingNavigator(null)
 
@@ -491,7 +491,7 @@ internal class ReplacingNavigatorTest {
     inner class SavingState {
 
         private val navigator = RestorableReplacingNavigator(null)
-        private val scene1 = SaveableTestScene(1)
+        private val scene1 = SavableTestScene(1)
 
         @Test
         fun `saving and restoring state for initial scene`() {
@@ -530,7 +530,7 @@ internal class ReplacingNavigatorTest {
     private class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Scene<out Container>>()
-        val lastScene get() = scenes.lastOrNull() as SaveableTestScene?
+        val lastScene get() = scenes.lastOrNull() as SavableTestScene?
 
         var finished = false
 
@@ -547,8 +547,8 @@ internal class ReplacingNavigatorTest {
         ReplacingNavigator(savedState) {
 
         val initialScenes = listOf(
-            spy(SaveableTestScene(0)),
-            spy(SaveableTestScene(0))
+            spy(SavableTestScene(0)),
+            spy(SavableTestScene(0))
         )
 
         private var creationCount = 0
@@ -564,7 +564,7 @@ internal class ReplacingNavigatorTest {
 
         override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
-                SaveableTestScene::class -> SaveableTestScene.create(state)
+                SavableTestScene::class -> SavableTestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
             }
         }
@@ -573,14 +573,14 @@ internal class ReplacingNavigatorTest {
     private class RestorableReplacingNavigator(savedState: com.nhaarman.acorn.state.NavigatorState?) :
         ReplacingNavigator(savedState) {
 
-        val initialScene = SaveableTestScene(0)
+        val initialScene = SavableTestScene(0)
         override fun initialScene(): Scene<*> {
             return initialScene
         }
 
         override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
             return when (sceneClass) {
-                SaveableTestScene::class -> SaveableTestScene.create(state)
+                SavableTestScene::class -> SavableTestScene.create(state)
                 else -> error("Unknown class: $sceneClass")
             }
         }

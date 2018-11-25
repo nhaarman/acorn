@@ -18,7 +18,7 @@
 
 package com.nhaarman.acorn.samples.hellosharedata.presentation.picturedetail
 
-import com.nhaarman.acorn.presentation.BaseSaveableScene
+import com.nhaarman.acorn.presentation.BaseSavableScene
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.get
@@ -29,7 +29,7 @@ class PictureDetailScene private constructor(
     private val picture: Picture,
     private val listener: Events,
     savedState: SceneState? = null
-) : BaseSaveableScene<PictureDetailContainer>(savedState) {
+) : BaseSavableScene<PictureDetailContainer>(savedState) {
 
     override fun attach(v: PictureDetailContainer) {
         super.attach(v)

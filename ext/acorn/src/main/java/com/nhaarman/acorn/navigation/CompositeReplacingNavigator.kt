@@ -39,7 +39,7 @@ import kotlin.reflect.KClass
  */
 abstract class CompositeReplacingNavigator(
     private val savedState: NavigatorState?
-) : Navigator, Navigator.Events, SaveableNavigator, OnBackPressListener {
+) : Navigator, Navigator.Events, SavableNavigator, OnBackPressListener {
 
     /**
      * Creates the initial [Navigator] for this CompositeReplacingNavigator.
@@ -57,7 +57,7 @@ abstract class CompositeReplacingNavigator(
      *
      * @param navigatorClass The Class of the [Navigator] to instantiate.
      * @param state The saved state of the [Navigator] if applicable. This will
-     * be the instance as returned from [SaveableNavigator.saveInstanceState] if
+     * be the instance as returned from [SavableNavigator.saveInstanceState] if
      * its state was saved.
      */
     protected abstract fun instantiateNavigator(
@@ -176,7 +176,7 @@ abstract class CompositeReplacingNavigator(
     override fun saveInstanceState(): NavigatorState {
         return navigatorState {
             it.navigatorClass = state.navigator?.let { navigator -> navigator::class }
-            it.navigatorState = (state.navigator as? SaveableNavigator)?.saveInstanceState()
+            it.navigatorState = (state.navigator as? SavableNavigator)?.saveInstanceState()
         }
     }
 

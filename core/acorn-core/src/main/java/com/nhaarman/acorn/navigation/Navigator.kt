@@ -49,8 +49,8 @@ import com.nhaarman.acorn.presentation.Scene
  * Navigators that are not `active` must never have Scenes in their `active`
  * state.
  *
- * Navigators may implement [SaveableNavigator] to indicate that their instance state
- * can be saved. When this is the case, [SaveableNavigator.saveInstanceState] will
+ * Navigators may implement [SavableNavigator] to indicate that their instance state
+ * can be saved. When this is the case, [SavableNavigator.saveInstanceState] will
  * be called at the appropriate time.
  */
 interface Navigator {
