@@ -117,7 +117,7 @@ abstract class CompositeReplacingNavigator(
      */
     fun replace(navigator: Navigator) {
         addListenerTo(navigator)
-        state = state.replace(navigator)
+        execute(state.replace(navigator))
     }
 
     /**
@@ -133,25 +133,25 @@ abstract class CompositeReplacingNavigator(
      * effect.
      */
     fun finish() {
-        state = state.finish()
+        execute(state.finish())
     }
 
     @CallSuper
     override fun onStart() {
         v(this.javaClass.simpleName, "onStart")
-        state = state.start()
+        execute(state.start())
     }
 
     @CallSuper
     override fun onStop() {
         v(this.javaClass.simpleName, "onStop")
-        state = state.stop()
+        execute(state.stop())
     }
 
     @CallSuper
     override fun onDestroy() {
         v(this.javaClass.simpleName, "onDestroy")
-        state = state.destroy()
+        execute(state.destroy())
     }
 
     @CallSuper
@@ -163,7 +163,12 @@ abstract class CompositeReplacingNavigator(
     @CallSuper
     override fun finished() {
         v(this.javaClass.simpleName, "Finished")
-        state = state.finish()
+        execute(state.finish())
+    }
+
+    private fun execute(transition: StateTransition) {
+        state = transition.newState
+        transition.action?.invoke()
     }
 
     @CallSuper
@@ -192,14 +197,14 @@ abstract class CompositeReplacingNavigator(
         abstract fun addListener(listener: Navigator.Events)
         abstract fun removeListener(listener: Navigator.Events)
 
-        abstract fun start(): LifecycleState
-        abstract fun stop(): LifecycleState
-        abstract fun destroy(): LifecycleState
-        abstract fun finish(): LifecycleState
+        abstract fun start(): StateTransition
+        abstract fun stop(): StateTransition
+        abstract fun destroy(): StateTransition
+        abstract fun finish(): StateTransition
 
         abstract fun scene(scene: Scene<out Container>, data: TransitionData?)
 
-        abstract fun replace(navigator: Navigator): LifecycleState
+        abstract fun replace(navigator: Navigator): StateTransition
 
         abstract fun onBackPressed(): Boolean
 
@@ -224,34 +229,38 @@ abstract class CompositeReplacingNavigator(
                 listeners -= listener
             }
 
-            override fun start(): LifecycleState {
-                navigator.onStart()
-                activeScene?.let {
-                    listeners.forEach { listener -> listener.scene(it) }
+            override fun start(): StateTransition {
+                return StateTransition(Active(navigator, listeners, activeScene)) {
+                    navigator.onStart()
+                    activeScene?.let {
+                        listeners.forEach { listener -> listener.scene(it) }
+                    }
                 }
-                return Active(navigator, listeners, activeScene)
             }
 
-            override fun stop(): LifecycleState {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): LifecycleState {
-                navigator.onDestroy()
-                return Destroyed()
+            override fun destroy(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    navigator.onDestroy()
+                }
             }
 
-            override fun finish(): LifecycleState {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    listeners.forEach { it.finished() }
+                    navigator.onDestroy()
+                }
             }
 
             override fun scene(scene: Scene<out Container>, data: TransitionData?) {
                 this.activeScene = scene
             }
 
-            override fun replace(navigator: Navigator): LifecycleState {
-                return Inactive(navigator, listeners, activeScene)
+            override fun replace(navigator: Navigator): StateTransition {
+                return StateTransition(Inactive(navigator, listeners, activeScene))
             }
 
             override fun onBackPressed(): Boolean {
@@ -274,22 +283,25 @@ abstract class CompositeReplacingNavigator(
                 listeners -= listener
             }
 
-            override fun start(): LifecycleState {
-                return this
+            override fun start(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun stop(): LifecycleState {
-                navigator.onStop()
-                return Inactive(navigator, listeners, activeScene)
+            override fun stop(): StateTransition {
+                return StateTransition(Inactive(navigator, listeners, activeScene)) {
+                    navigator.onStop()
+                }
             }
 
-            override fun destroy(): LifecycleState {
-                return stop().destroy()
+            override fun destroy(): StateTransition {
+                return stop().andThen { it.destroy() }
             }
 
-            override fun finish(): LifecycleState {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Inactive(navigator, listeners, activeScene)) {
+                    listeners.forEach { it.finished() }
+                    navigator.onStop()
+                }.andThen { it.destroy() }
             }
 
             override fun scene(scene: Scene<out Container>, data: TransitionData?) {
@@ -297,10 +309,11 @@ abstract class CompositeReplacingNavigator(
                 listeners.onEach { it.scene(scene, data) }
             }
 
-            override fun replace(navigator: Navigator): LifecycleState {
-                this.navigator.onStop()
-                navigator.onStart()
-                return Active(navigator, listeners, activeScene)
+            override fun replace(navigator: Navigator): StateTransition {
+                return StateTransition(Active(navigator, listeners, activeScene)) {
+                    this.navigator.onStop()
+                    navigator.onStart()
+                }
             }
 
             override fun onBackPressed(): Boolean {
@@ -320,39 +333,55 @@ abstract class CompositeReplacingNavigator(
             override fun removeListener(listener: Navigator.Events) {
             }
 
-            override fun start(): LifecycleState {
+            override fun start(): StateTransition {
                 w(
                     "CompositeReplacingNavigator.LifecycleState",
                     "Warning: Cannot start state after navigator is destroyed."
                 )
-                return this
+                return StateTransition(this)
             }
 
-            override fun stop(): LifecycleState {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): LifecycleState {
-                return this
+            override fun destroy(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun finish(): LifecycleState {
-                return this
+            override fun finish(): StateTransition {
+                return StateTransition(this)
             }
 
             override fun scene(scene: Scene<out Container>, data: TransitionData?) {
             }
 
-            override fun replace(navigator: Navigator): LifecycleState {
+            override fun replace(navigator: Navigator): StateTransition {
                 w(
                     "CompositeReplacingNavigator.LifecycleState",
                     "Warning: Cannot replace navigator after parent navigator is destroyed."
                 )
-                return this
+                return StateTransition(this)
             }
 
             override fun onBackPressed(): Boolean {
                 return false
+            }
+        }
+    }
+
+    private class StateTransition(
+        val newState: LifecycleState,
+        val action: (() -> Unit)? = null
+    ) {
+
+        fun andThen(f: (LifecycleState) -> StateTransition): StateTransition {
+            val newTransition = f(newState)
+            return StateTransition(
+                newTransition.newState
+            ) {
+                action?.invoke()
+                newTransition.action?.invoke()
             }
         }
     }

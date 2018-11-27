@@ -23,7 +23,10 @@ import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.inOrder
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.times
@@ -39,7 +42,7 @@ class SingleSceneNavigatorTest {
     private val listener = TestListener()
 
     @Nested
-    inner class TestNavigatorState {
+    inner class NavigatorStates {
 
         @Test
         fun `inactive navigator is not finished`() {
@@ -208,10 +211,45 @@ class SingleSceneNavigatorTest {
             /* Then */
             expect(listener.finished).toBe(false)
         }
+
+        @Test
+        fun `starting navigator twice only notifies listener once`() {
+            /* Given */
+            val listener = mock<Navigator.Events>()
+            navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            navigator.onStart()
+            navigator.onStart()
+
+            /* Then */
+            verify(listener, times(1)).scene(any(), anyOrNull())
+        }
+
+        @Test
+        fun `starting navigator second time in a callback only notifies listener once`() {
+            /* Given */
+            val listener = mock<Navigator.Events>()
+            navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            navigator.addNavigatorEventsListener(object : Navigator.Events {
+                override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+                    navigator.onStart()
+                }
+
+                override fun finished() {
+                }
+            })
+            navigator.onStart()
+
+            /* Then */
+            verify(listener, times(1)).scene(any(), anyOrNull())
+        }
     }
 
     @Nested
-    inner class State {
+    inner class SceneInteraction {
 
         @Test
         fun `starting navigator starts Scene`() {
@@ -227,7 +265,6 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `starting navigator multiple times starts Scene only once`() {
-
             /* When */
             navigator.onStart()
             navigator.onStart()

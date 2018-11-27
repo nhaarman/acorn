@@ -21,9 +21,13 @@ package com.nhaarman.acorn.navigation
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.NavigatorState
+import com.nhaarman.acorn.state.SavedState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.inOrder
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.times
@@ -45,7 +49,7 @@ internal class WizardNavigatorTest {
     private val listener = TestListener()
 
     @Nested
-    inner class TestNavigatorState {
+    inner class NavigatorStates {
 
         @Test
         fun `inactive navigator is not finished`() {
@@ -87,6 +91,41 @@ internal class WizardNavigatorTest {
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
+        }
+
+        @Test
+        fun `starting navigator twice notifies listeners of scene only once`() {
+            /* Given */
+            val listener = mock<Navigator.Events>()
+            navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            navigator.onStart()
+            navigator.onStart()
+
+            /* Then */
+            verify(listener, times(1)).scene(any(), anyOrNull())
+        }
+
+        @Test
+        fun `starting navigator second time in a callback only notifies listener once`() {
+            /* Given */
+            val listener = mock<Navigator.Events>()
+            navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            navigator.addNavigatorEventsListener(object : Navigator.Events {
+                override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+                    navigator.onStart()
+                }
+
+                override fun finished() {
+                }
+            })
+            navigator.onStart()
+
+            /* Then */
+            verify(listener, times(1)).scene(any(), anyOrNull())
         }
 
         @Test
@@ -314,7 +353,7 @@ internal class WizardNavigatorTest {
     }
 
     @Nested
-    inner class StateForSingleSceneWizard {
+    inner class SceneInteractionForSingleSceneWizard {
 
         private val navigator = TestWizardNavigator(listOf(scene1))
 
@@ -443,7 +482,7 @@ internal class WizardNavigatorTest {
     }
 
     @Nested
-    inner class StateForMultiSceneWizard {
+    inner class SceneInteractionForMultiSceneWizard {
 
         private val navigator = TestWizardNavigator(listOf(scene1, scene2, scene3))
 
@@ -634,7 +673,7 @@ internal class WizardNavigatorTest {
     }
 
     @Nested
-    inner class StatesWhenManipulatingWizard {
+    inner class SceneInteractionWhenManipulatingWizard {
 
         private val navigator = TestWizardNavigator(listOf(scene1, scene2))
 
@@ -873,6 +912,28 @@ internal class WizardNavigatorTest {
 
             /* Then */
             expect(listener.lastScene?.foo).toBe(42)
+        }
+
+        @Test
+        fun `saved state from callback is the same as saved state _after_ callback`() {
+            /* Given */
+            var state1: SavedState? = null
+            navigator.addNavigatorEventsListener(object : Navigator.Events {
+                override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+                    state1 = navigator.saveInstanceState()
+                }
+
+                override fun finished() {
+                }
+            })
+            navigator.onStart()
+
+            /* When */
+            navigator.next()
+            val state2 = navigator.saveInstanceState()
+
+            /* Then */
+            expect(state1).toBe(state2)
         }
     }
 

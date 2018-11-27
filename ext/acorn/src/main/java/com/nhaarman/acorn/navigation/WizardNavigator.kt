@@ -133,7 +133,7 @@ abstract class WizardNavigator(
     fun next() {
         v("WizardNavigator", "next")
 
-        state = state.next()
+        execute(state.next())
     }
 
     /**
@@ -154,7 +154,7 @@ abstract class WizardNavigator(
     fun previous() {
         v("WizardNavigator", "previous")
 
-        state = state.previous()
+        execute(state.previous())
     }
 
     /**
@@ -170,28 +170,28 @@ abstract class WizardNavigator(
      * effect.
      */
     fun finish() {
-        state = state.finish()
+        execute(state.finish())
     }
 
     @CallSuper
     override fun onStart() {
         v("WizardNavigator", "onStart")
 
-        state = state.start()
+        execute(state.start())
     }
 
     @CallSuper
     override fun onStop() {
         v("WizardNavigator", "onStop")
 
-        state = state.stop()
+        execute(state.stop())
     }
 
     @CallSuper
     override fun onDestroy() {
         v("WizardNavigator", "onDestroy")
 
-        state = state.destroy()
+        execute(state.destroy())
     }
 
     @CallSuper
@@ -200,12 +200,17 @@ abstract class WizardNavigator(
 
         v("WizardNavigator", "onBackPressed")
         if (state.activeIndex == 0) {
-            state = state.finish()
+            execute(state.finish())
         } else {
-            state = state.previous()
+            execute(state.previous())
         }
 
         return true
+    }
+
+    private fun execute(transition: StateTransition) {
+        state = transition.newState
+        transition.action?.invoke()
     }
 
     @CallSuper
@@ -237,14 +242,14 @@ abstract class WizardNavigator(
         abstract fun addListener(listener: Navigator.Events)
         abstract fun removeListener(listener: Navigator.Events)
 
-        abstract fun start(): State
-        abstract fun stop(): State
-        abstract fun destroy(): State
+        abstract fun start(): StateTransition
+        abstract fun stop(): StateTransition
+        abstract fun destroy(): StateTransition
 
-        abstract fun next(): State
-        abstract fun previous(): State
+        abstract fun next(): StateTransition
+        abstract fun previous(): StateTransition
 
-        abstract fun finish(): State
+        abstract fun finish(): StateTransition
 
         companion object {
 
@@ -277,40 +282,45 @@ abstract class WizardNavigator(
                 listeners -= listener
             }
 
-            override fun start(): State {
-                scenes[activeIndex].onStart()
-                listeners.forEach { it.scene(scenes[activeIndex], null) }
-                return Active(scenes, activeIndex, listeners, factory)
+            override fun start(): StateTransition {
+                return StateTransition(Active(scenes, activeIndex, listeners, factory)) {
+                    scenes[activeIndex].onStart()
+                    listeners.forEach { it.scene(scenes[activeIndex], null) }
+                }
             }
 
-            override fun stop(): State {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): State {
-                scenes.asReversed().forEach { it.onDestroy() }
-                return Destroyed()
+            override fun destroy(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    scenes.asReversed().forEach { it.onDestroy() }
+                }
             }
 
-            override fun next(): State {
+            override fun next(): StateTransition {
                 val newScenes = scenes.filledUpTo(activeIndex + 1, factory)
 
                 if (newScenes == null) {
-                    scenes.asReversed().forEach { it.onDestroy() }
-                    return Destroyed()
+                    return StateTransition(Destroyed()) {
+                        scenes.asReversed().forEach { it.onDestroy() }
+                    }
                 }
 
-                return Inactive(newScenes, activeIndex + 1, listeners, factory)
+                return StateTransition(Inactive(newScenes, activeIndex + 1, listeners, factory))
             }
 
-            override fun previous(): State {
+            override fun previous(): StateTransition {
                 val newIndex = Math.max(0, activeIndex - 1)
-                return Inactive(scenes, newIndex, listeners, factory)
+                return StateTransition(Inactive(scenes, newIndex, listeners, factory))
             }
 
-            override fun finish(): State {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    listeners.forEach { it.finished() }
+                    scenes.asReversed().forEach { it.onDestroy() }
+                }
             }
         }
 
@@ -333,47 +343,54 @@ abstract class WizardNavigator(
                 listeners -= listener
             }
 
-            override fun start(): State {
-                return this
+            override fun start(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun stop(): State {
-                scenes[activeIndex].onStop()
-                return Inactive(scenes, activeIndex, listeners, factory)
+            override fun stop(): StateTransition {
+                return StateTransition(Inactive(scenes, activeIndex, listeners, factory)) {
+                    scenes[activeIndex].onStop()
+                }
             }
 
-            override fun destroy(): State {
-                return stop().destroy()
+            override fun destroy(): StateTransition {
+                return stop().andThen { it.destroy() }
             }
 
-            override fun next(): State {
-                scenes[activeIndex].onStop()
+            override fun next(): StateTransition {
                 val newIndex = activeIndex + 1
                 val newScenes = scenes.filledUpTo(newIndex, factory)
 
                 if (newScenes == null) {
-                    scenes.asReversed().forEach { it.onDestroy() }
-                    listeners.forEach { it.finished() }
-                    return Destroyed()
+                    return StateTransition(Destroyed()) {
+                        scenes[activeIndex].onStop()
+                        scenes.asReversed().forEach { it.onDestroy() }
+                        listeners.forEach { it.finished() }
+                    }
                 }
 
-                newScenes[newIndex].onStart()
-                listeners.forEach { it.scene(newScenes[newIndex], TransitionData.forwards) }
-                return Active(newScenes, newIndex, listeners, factory)
+                return StateTransition(Active(newScenes, newIndex, listeners, factory)) {
+                    scenes[activeIndex].onStop()
+                    newScenes[newIndex].onStart()
+                    listeners.forEach { it.scene(newScenes[newIndex], TransitionData.forwards) }
+                }
             }
 
-            override fun previous(): State {
-                if (activeIndex == 0) return this
+            override fun previous(): StateTransition {
+                if (activeIndex == 0) return StateTransition(this)
 
-                scenes[activeIndex].onStop()
-                scenes[activeIndex - 1].onStart()
-                listeners.forEach { it.scene(scenes[activeIndex - 1], TransitionData.backwards) }
-                return Active(scenes, activeIndex - 1, listeners, factory)
+                return StateTransition(Active(scenes, activeIndex - 1, listeners, factory)) {
+                    scenes[activeIndex].onStop()
+                    scenes[activeIndex - 1].onStart()
+                    listeners.forEach { it.scene(scenes[activeIndex - 1], TransitionData.backwards) }
+                }
             }
 
-            override fun finish(): State {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Inactive(scenes, activeIndex, listeners, factory)) {
+                    listeners.forEach { it.finished() }
+                    scenes[activeIndex].onStop()
+                }.andThen { it.destroy() }
             }
         }
 
@@ -390,32 +407,32 @@ abstract class WizardNavigator(
             override fun removeListener(listener: Navigator.Events) {
             }
 
-            override fun start(): State {
+            override fun start(): StateTransition {
                 w("WizardNavigator.State", "Warning: Cannot start state after navigator is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun stop(): State {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): State {
-                return this
+            override fun destroy(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun next(): State {
+            override fun next(): StateTransition {
                 w("WizardNavigator.State", "Warning: Cannot go to next scene after navigator is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun previous(): State {
+            override fun previous(): StateTransition {
                 w("WizardNavigator.State", "Warning: Cannot go to previous scene after navigator is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun finish(): State {
+            override fun finish(): StateTransition {
                 w("WizardNavigator.State", "Warning: Cannot finish navigator after navigator is destroyed.")
-                return this
+                return StateTransition(this)
             }
         }
 
@@ -426,6 +443,22 @@ abstract class WizardNavigator(
                 .fold<Int, List<T>?>(this) { list, i ->
                     f(i)?.let { t -> list?.let { it + t } }
                 }
+        }
+    }
+
+    private class StateTransition(
+        val newState: State,
+        val action: (() -> Unit)? = null
+    ) {
+
+        fun andThen(f: (State) -> StateTransition): StateTransition {
+            val newTransition = f(newState)
+            return StateTransition(
+                newTransition.newState
+            ) {
+                action?.invoke()
+                newTransition.action?.invoke()
+            }
         }
     }
 }

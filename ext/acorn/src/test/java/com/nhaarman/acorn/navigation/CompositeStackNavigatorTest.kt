@@ -21,6 +21,7 @@ package com.nhaarman.acorn.navigation
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.NavigatorState
+import com.nhaarman.acorn.state.SavedState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.any
@@ -53,7 +54,7 @@ internal class CompositeStackNavigatorTest {
     private val listener = mock<Navigator.Events>()
 
     @Nested
-    inner class TestNavigatorState {
+    inner class NavigatorStates {
 
         @Nested
         inner class InactiveNavigator {
@@ -260,6 +261,39 @@ internal class CompositeStackNavigatorTest {
 
                 /* Then */
                 verify(listener).scene(navigator1Scene1, null)
+            }
+
+            @Test
+            fun `starting navigator multiple times notifies listeners of scene only once`() {
+                /* Given */
+                navigator.addNavigatorEventsListener(listener)
+
+                /* When */
+                navigator.onStart()
+                navigator.onStart()
+
+                /* Then */
+                verify(listener, times(1)).scene(any(), anyOrNull())
+            }
+
+            @Test
+            fun `starting navigator second time in a callback only notifies listener once`() {
+                /* Given */
+                navigator.addNavigatorEventsListener(listener)
+
+                /* When */
+                navigator.addNavigatorEventsListener(object : Navigator.Events {
+                    override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+                        navigator.onStart()
+                    }
+
+                    override fun finished() {
+                    }
+                })
+                navigator.onStart()
+
+                /* Then */
+                verify(listener, times(1)).scene(any(), anyOrNull())
             }
 
             @Test
@@ -583,7 +617,7 @@ internal class CompositeStackNavigatorTest {
     }
 
     @Nested
-    inner class StateForSingleChildNavigatorStack {
+    inner class NavigatorInteractionForSingleChildNavigatorStack {
 
         @Test
         fun `starting navigator starts child navigator`() {
@@ -705,7 +739,7 @@ internal class CompositeStackNavigatorTest {
     }
 
     @Nested
-    inner class StateForMultiChildNavigatorStack {
+    inner class NavigatorInteractionForMultiChildNavigatorStack {
 
         private val navigator = TestCompositeStackNavigator(listOf(navigator1, navigator2))
 
@@ -844,7 +878,7 @@ internal class CompositeStackNavigatorTest {
     }
 
     @Nested
-    inner class StatesWhenManipulatingStack {
+    inner class NavigatorInteractionWhenManipulatingStack {
 
         @Test
         fun `popping from a single item stack for inactive navigator destroys child navigator`() {
@@ -1216,6 +1250,28 @@ internal class CompositeStackNavigatorTest {
                     expect(it.foo).toBe(3)
                 }
             }
+        }
+
+        @Test
+        fun `saved state from callback is the same as saved state _after_ callback`() {
+            /* Given */
+            var state1: SavedState? = null
+            navigator.addNavigatorEventsListener(object : Navigator.Events {
+                override fun scene(scene: Scene<out Container>, data: TransitionData?) {
+                    state1 = navigator.saveInstanceState()
+                }
+
+                override fun finished() {
+                }
+            })
+            navigator.onStart()
+
+            /* When */
+            navigator.push(navigator2)
+            val state2 = navigator.saveInstanceState()
+
+            /* Then */
+            expect(state1).toBe(state2)
         }
     }
 
