@@ -15,7 +15,7 @@ dependencyManagement {
         dependency "androidx.interpolator:interpolator:1.0.0"
 
         // ext-acorn-rx
-        dependency "io.reactivex.rxjava2:rxjava:2.2.3"
+        dependency "io.reactivex.rxjava2:rxjava:2.2.4"
         dependency "io.reactivex.rxjava2:rxkotlin:2.3.0"
 
         // ext-acorn-android-timber
