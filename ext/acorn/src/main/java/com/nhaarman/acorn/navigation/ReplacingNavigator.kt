@@ -80,7 +80,7 @@ abstract class ReplacingNavigator(
      * @param data Any transition data for this transition.
      */
     fun replace(newScene: Scene<out Container>, data: TransitionData? = null) {
-        state = state.replaceWith(newScene)
+        execute(state.replaceWith(newScene))
 
         if (state is LifecycleState.Active) {
             state.listeners.forEach { it.scene(state.scene, data) }
@@ -100,7 +100,7 @@ abstract class ReplacingNavigator(
      * effect.
      */
     fun finish() {
-        state = state.finish()
+        execute(state.finish())
     }
 
     private var state by lazyVar {
@@ -138,20 +138,19 @@ abstract class ReplacingNavigator(
     override fun onStart() {
         v("ReplacingNavigator", "onStart")
 
-        state = state.start()
-        state.listeners.forEach { it.scene(state.scene) }
+        execute(state.start())
     }
 
     @CallSuper
     override fun onStop() {
         v("ReplacingNavigator", "onStop")
-        state = state.stop()
+        execute(state.stop())
     }
 
     @CallSuper
     override fun onDestroy() {
         v("ReplacingNavigator", "onDestroy")
-        state = state.destroy()
+        execute(state.destroy())
     }
 
     @CallSuper
@@ -159,9 +158,14 @@ abstract class ReplacingNavigator(
         if (state is LifecycleState.Destroyed) return false
 
         v("ReplacingNavigator", "onBackPressed")
-        state = state.finish()
+        execute(state.finish())
 
         return true
+    }
+
+    private fun execute(transition: StateTransition) {
+        state = transition.newState
+        transition.action?.invoke()
     }
 
     @CallSuper
@@ -184,12 +188,12 @@ abstract class ReplacingNavigator(
         abstract fun addListener(listener: Navigator.Events)
         abstract fun removeListener(listener: Navigator.Events)
 
-        abstract fun start(): LifecycleState
-        abstract fun stop(): LifecycleState
-        abstract fun destroy(): LifecycleState
+        abstract fun start(): StateTransition
+        abstract fun stop(): StateTransition
+        abstract fun destroy(): StateTransition
 
-        abstract fun replaceWith(scene: Scene<out Container>): LifecycleState
-        abstract fun finish(): LifecycleState
+        abstract fun replaceWith(scene: Scene<out Container>): StateTransition
+        abstract fun finish(): StateTransition
 
         companion object {
 
@@ -211,27 +215,32 @@ abstract class ReplacingNavigator(
                 listeners -= listener
             }
 
-            override fun start(): LifecycleState {
-                scene.onStart()
-                return Active(scene, listeners)
+            override fun start(): StateTransition {
+                return StateTransition(Active(scene, listeners)) {
+                    scene.onStart()
+                    listeners.forEach { it.scene(scene) }
+                }
             }
 
-            override fun stop(): LifecycleState {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): LifecycleState {
-                scene.onDestroy()
-                return Destroyed(scene)
+            override fun destroy(): StateTransition {
+                return StateTransition(Destroyed(scene)) {
+                    scene.onDestroy()
+                }
             }
 
-            override fun replaceWith(scene: Scene<out Container>): LifecycleState {
-                return Inactive(scene, listeners)
+            override fun replaceWith(scene: Scene<out Container>): StateTransition {
+                return StateTransition(Inactive(scene, listeners))
             }
 
-            override fun finish(): LifecycleState {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Destroyed(scene)) {
+                    listeners.forEach { it.finished() }
+                    scene.onDestroy()
+                }
             }
         }
 
@@ -248,31 +257,37 @@ abstract class ReplacingNavigator(
                 listeners -= listener
             }
 
-            override fun start(): LifecycleState {
-                return this
+            override fun start(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun stop(): LifecycleState {
-                scene.onStop()
-                return Inactive(scene, listeners)
+            override fun stop(): StateTransition {
+                return StateTransition(Inactive(scene, listeners)) {
+                    scene.onStop()
+                }
             }
 
-            override fun destroy(): LifecycleState {
-                scene.onStop()
-                scene.onDestroy()
-                return Destroyed(scene)
+            override fun destroy(): StateTransition {
+                return StateTransition(Destroyed(scene)) {
+                    scene.onStop()
+                    scene.onDestroy()
+                }
             }
 
-            override fun replaceWith(scene: Scene<out Container>): LifecycleState {
-                this.scene.onStop()
-                this.scene.onDestroy()
-                scene.onStart()
-                return Active(scene, listeners)
+            override fun replaceWith(scene: Scene<out Container>): StateTransition {
+                return StateTransition(Active(scene, listeners)) {
+                    this.scene.onStop()
+                    this.scene.onDestroy()
+                    scene.onStart()
+                }
             }
 
-            override fun finish(): LifecycleState {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Destroyed(scene)) {
+                    listeners.forEach { it.finished() }
+                    scene.onStop()
+                    scene.onDestroy()
+                }
             }
         }
 
@@ -286,30 +301,35 @@ abstract class ReplacingNavigator(
             override fun removeListener(listener: Navigator.Events) {
             }
 
-            override fun start(): LifecycleState {
+            override fun start(): StateTransition {
                 w("LifecycleState", "Warning: Cannot start state after it is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun stop(): LifecycleState {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): LifecycleState {
-                return this
+            override fun destroy(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun replaceWith(scene: Scene<out Container>): LifecycleState {
+            override fun replaceWith(scene: Scene<out Container>): StateTransition {
                 w("LifecycleState", "Warning: Cannot replace scene after state is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun finish(): LifecycleState {
+            override fun finish(): StateTransition {
                 w("LifecycleState", "Warning: Cannot finish Navigator after state is destroyed.")
-                return this
+                return StateTransition(this)
             }
         }
     }
+
+    private class StateTransition(
+        val newState: LifecycleState,
+        val action: (() -> Unit)? = null
+    )
 
     companion object {
 

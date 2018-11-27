@@ -1,5 +1,5 @@
 <component name="CopyrightManager">
-  <settings default="GNU GPLv3">
+  <settings>
     <module2copyright>
       <element module="Production .kt" copyright="GNU GPLv3" />
       <element module="Test .kt" copyright="GNU GPLv3" />

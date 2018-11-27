@@ -124,7 +124,7 @@ abstract class StackNavigator(
     fun push(scene: Scene<out Container>) {
         v("StackNavigator", "push $scene")
 
-        state = state.push(scene, TransitionData.forwards)
+        execute(state.push(scene, TransitionData.forwards))
     }
 
     /**
@@ -145,7 +145,7 @@ abstract class StackNavigator(
     fun pop() {
         v("StackNavigator", "pop")
 
-        state = state.pop()
+        execute(state.pop())
     }
 
     /**
@@ -161,7 +161,7 @@ abstract class StackNavigator(
     fun replace(scene: Scene<out Container>) {
         v("StackNavigator", "replace $scene")
 
-        state = state.replace(scene, TransitionData.forwards)
+        execute(state.replace(scene, TransitionData.forwards))
     }
 
     /**
@@ -179,26 +179,26 @@ abstract class StackNavigator(
     fun finish() {
         v("StackNavigator", "finish")
 
-        state = state.finish()
+        execute(state.finish())
     }
 
     @CallSuper
     override fun onStart() {
         v("StackNavigator", "onStart")
 
-        state = state.start()
+        execute(state.start())
     }
 
     @CallSuper
     override fun onStop() {
         v("StackNavigator", "onStop")
-        state = state.stop()
+        execute(state.stop())
     }
 
     @CallSuper
     override fun onDestroy() {
         v("StackNavigator", "onDestroy")
-        state = state.destroy()
+        execute(state.destroy())
     }
 
     @CallSuper
@@ -206,9 +206,14 @@ abstract class StackNavigator(
         if (state is State.Destroyed) return false
 
         v("StackNavigator", "onBackPressed")
-        state = state.pop()
+        execute(state.pop())
 
         return true
+    }
+
+    private fun execute(transition: StateTransition) {
+        state = transition.newState
+        transition.action?.invoke()
     }
 
     override fun isDestroyed(): Boolean {
@@ -235,15 +240,15 @@ abstract class StackNavigator(
         abstract fun addListener(listener: Navigator.Events)
         abstract fun removeListener(listener: Navigator.Events)
 
-        abstract fun start(): State
-        abstract fun stop(): State
-        abstract fun destroy(): State
+        abstract fun start(): StateTransition
+        abstract fun stop(): StateTransition
+        abstract fun destroy(): StateTransition
 
-        abstract fun push(scene: Scene<out Container>, data: TransitionData?): State
-        abstract fun pop(): State
-        abstract fun replace(scene: Scene<out Container>, data: TransitionData?): State
+        abstract fun push(scene: Scene<out Container>, data: TransitionData?): StateTransition
+        abstract fun pop(): StateTransition
+        abstract fun replace(scene: Scene<out Container>, data: TransitionData?): StateTransition
 
-        abstract fun finish(): State
+        abstract fun finish(): StateTransition
 
         companion object {
 
@@ -269,48 +274,54 @@ abstract class StackNavigator(
                 listeners -= listener
             }
 
-            override fun start(): State {
-                scenes.last().onStart()
-                listeners.forEach { it.scene(scenes.last(), null) }
-                return Active(scenes, listeners)
-            }
-
-            override fun stop(): State {
-                return this
-            }
-
-            override fun finish(): State {
-                listeners.forEach { it.finished() }
-                return destroy()
-            }
-
-            override fun destroy(): State {
-                scenes.asReversed().forEach { it.onDestroy() }
-                return Destroyed()
-            }
-
-            override fun push(scene: Scene<out Container>, data: TransitionData?): State {
-                return Inactive(scenes + scene, listeners)
-            }
-
-            override fun pop(): State {
-                scenes.last().onDestroy()
-                val newScenes = scenes.dropLast(1)
-
-                return when {
-                    newScenes.isEmpty() -> {
-                        listeners.forEach { it.finished() }
-                        Destroyed()
-                    }
-                    else -> Inactive(newScenes, listeners)
+            override fun start(): StateTransition {
+                return StateTransition(Active(scenes, listeners)) {
+                    scenes.last().onStart()
+                    listeners.forEach { it.scene(scenes.last(), null) }
                 }
             }
 
-            override fun replace(scene: Scene<out Container>, data: TransitionData?): State {
-                scenes.last().onDestroy()
+            override fun stop(): StateTransition {
+                return StateTransition(this)
+            }
+
+            override fun finish(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    listeners.forEach { it.finished() }
+                    scenes.asReversed().forEach { it.onDestroy() }
+                }
+            }
+
+            override fun destroy(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    scenes.asReversed().forEach { it.onDestroy() }
+                }
+            }
+
+            override fun push(scene: Scene<out Container>, data: TransitionData?): StateTransition {
+                return StateTransition(Inactive(scenes + scene, listeners))
+            }
+
+            override fun pop(): StateTransition {
+                val newScenes = scenes.dropLast(1)
+
+                return when {
+                    newScenes.isEmpty() -> StateTransition(Destroyed()) {
+                        scenes.last().onDestroy()
+                        listeners.forEach { it.finished() }
+                    }
+                    else -> StateTransition(Inactive(newScenes, listeners)) {
+                        scenes.last().onDestroy()
+                    }
+                }
+            }
+
+            override fun replace(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 val newScenes = scenes.dropLast(1) + scene
 
-                return Inactive(newScenes, listeners)
+                return StateTransition(Inactive(newScenes, listeners)) {
+                    scenes.last().onDestroy()
+                }
             }
         }
 
@@ -334,61 +345,68 @@ abstract class StackNavigator(
                 listeners -= listener
             }
 
-            override fun start(): State {
-                return this
+            override fun start(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun stop(): State {
-                scenes.last().onStop()
-                return Inactive(scenes, listeners)
+            override fun stop(): StateTransition {
+                return StateTransition(Inactive(scenes, listeners)) {
+                    scenes.last().onStop()
+                }
             }
 
-            override fun destroy(): State {
-                return stop().destroy()
+            override fun destroy(): StateTransition {
+                return stop().andThen { it.destroy() }
             }
 
-            override fun push(scene: Scene<out Container>, data: TransitionData?): State {
-                scenes.last().onStop()
-                scene.onStart()
-                listeners.forEach { it.scene(scene, data) }
-                return Active(scenes + scene, listeners)
+            override fun push(scene: Scene<out Container>, data: TransitionData?): StateTransition {
+                return StateTransition(Active(scenes + scene, listeners)) {
+                    scenes.last().onStop()
+                    scene.onStart()
+                    listeners.forEach { it.scene(scene, data) }
+                }
             }
 
-            override fun pop(): State {
+            override fun pop(): StateTransition {
                 val poppedScene = scenes.last()
-                poppedScene.onStop()
-                poppedScene.onDestroy()
-
                 val newScenes = scenes.dropLast(1)
 
                 return when {
-                    newScenes.isEmpty() -> {
+                    newScenes.isEmpty() -> StateTransition(Destroyed()) {
+                        poppedScene.onStop()
+                        poppedScene.onDestroy()
+
                         listeners.forEach { it.finished() }
-                        Destroyed()
                     }
-                    else -> {
+                    else -> StateTransition(Active(newScenes, listeners)) {
+                        poppedScene.onStop()
+                        poppedScene.onDestroy()
+
                         newScenes.last().onStart()
+
                         listeners.forEach { it.scene(newScenes.last(), TransitionData.backwards) }
-                        Active(newScenes, listeners)
                     }
                 }
             }
 
-            override fun replace(scene: Scene<out Container>, data: TransitionData?): State {
+            override fun replace(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 val poppedScene = scenes.last()
-                poppedScene.onStop()
-                poppedScene.onDestroy()
-
                 val newScenes = scenes.dropLast(1) + scene
 
-                scene.onStart()
-                listeners.forEach { it.scene(scene, data) }
-                return Active(newScenes, listeners)
+                return StateTransition(Active(newScenes, listeners)) {
+                    poppedScene.onStop()
+                    poppedScene.onDestroy()
+
+                    scene.onStart()
+                    listeners.forEach { it.scene(scene, data) }
+                }
             }
 
-            override fun finish(): State {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Inactive(scenes, listeners)) {
+                    listeners.forEach { it.finished() }
+                    scenes.last().onStop()
+                }.andThen { it.destroy() }
             }
         }
 
@@ -404,37 +422,53 @@ abstract class StackNavigator(
             override fun removeListener(listener: Navigator.Events) {
             }
 
-            override fun start(): State {
+            override fun start(): StateTransition {
                 w("StackNavigator.State", "Warning: Cannot start state after navigator is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun stop(): State {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): State {
-                return this
+            override fun destroy(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun push(scene: Scene<out Container>, data: TransitionData?): State {
+            override fun push(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 w("StackNavigator.State", "Warning: Cannot push scene after navigator is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun pop(): State {
+            override fun pop(): StateTransition {
                 w("StackNavigator.State", "Warning: Cannot pop scene after navigator is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun replace(scene: Scene<out Container>, data: TransitionData?): State {
+            override fun replace(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 w("StackNavigator.State", "Warning: Cannot replace scene after navigator is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun finish(): State {
+            override fun finish(): StateTransition {
                 w("StackNavigator.State", "Warning: Cannot finish navigator after navigator is destroyed.")
-                return this
+                return StateTransition(this)
+            }
+        }
+    }
+
+    private class StateTransition(
+        val newState: State,
+        val action: (() -> Unit)? = null
+    ) {
+
+        fun andThen(f: (State) -> StateTransition): StateTransition {
+            val newTransition = f(newState)
+            return StateTransition(
+                newTransition.newState
+            ) {
+                action?.invoke()
+                newTransition.action?.invoke()
             }
         }
     }

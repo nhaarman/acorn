@@ -65,7 +65,7 @@ abstract class SingleSceneNavigator(
      * effect.
      */
     fun finish() {
-        state = state.finish()
+        execute(state.finish())
     }
 
     private val scene by lazy { createScene(savedState?.sceneState) }
@@ -95,20 +95,19 @@ abstract class SingleSceneNavigator(
     @CallSuper
     override fun onStart() {
         v("SingleSceneNavigator", "onStart")
-
-        state = state.start()
+        execute(state.start())
     }
 
     @CallSuper
     override fun onStop() {
         v("SingleSceneNavigator", "onStop")
-        state = state.stop()
+        execute(state.stop())
     }
 
     @CallSuper
     override fun onDestroy() {
         v("SingleSceneNavigator", "onDestroy")
-        state = state.destroy()
+        execute(state.destroy())
     }
 
     @CallSuper
@@ -116,9 +115,14 @@ abstract class SingleSceneNavigator(
         if (state is LifecycleState.Destroyed) return false
 
         v("SingleSceneNavigator", "onBackPressed")
-        state = state.finish()
+        execute(state.finish())
 
         return true
+    }
+
+    private fun execute(transition: StateTransition) {
+        state = transition.newState
+        transition.action?.invoke()
     }
 
     @CallSuper
@@ -140,11 +144,11 @@ abstract class SingleSceneNavigator(
         abstract fun addListener(listener: Navigator.Events)
         abstract fun removeListener(listener: Navigator.Events)
 
-        abstract fun start(): LifecycleState
-        abstract fun stop(): LifecycleState
-        abstract fun destroy(): LifecycleState
+        abstract fun start(): StateTransition
+        abstract fun stop(): StateTransition
+        abstract fun destroy(): StateTransition
 
-        abstract fun finish(): LifecycleState
+        abstract fun finish(): StateTransition
 
         companion object {
 
@@ -166,24 +170,28 @@ abstract class SingleSceneNavigator(
                 listeners -= listener
             }
 
-            override fun start(): LifecycleState {
-                scene.onStart()
-                listeners.forEach { it.scene(scene, null) }
-                return Active(scene, listeners)
+            override fun start(): StateTransition {
+                return StateTransition(Active(scene, listeners)) {
+                    scene.onStart()
+                    listeners.forEach { it.scene(scene, null) }
+                }
             }
 
-            override fun stop(): LifecycleState {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): LifecycleState {
-                scene.onDestroy()
-                return Destroyed()
+            override fun destroy(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    scene.onDestroy()
+                }
             }
 
-            override fun finish(): LifecycleState {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    listeners.forEach { it.finished() }
+                    scene.onDestroy()
+                }
             }
         }
 
@@ -200,24 +208,29 @@ abstract class SingleSceneNavigator(
                 listeners -= listener
             }
 
-            override fun start(): LifecycleState {
-                return this
+            override fun start(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun stop(): LifecycleState {
-                scene.onStop()
-                return Inactive(scene, listeners)
+            override fun stop(): StateTransition {
+                return StateTransition(Inactive(scene, listeners)) {
+                    scene.onStop()
+                }
             }
 
-            override fun destroy(): LifecycleState {
-                scene.onStop()
-                scene.onDestroy()
-                return Destroyed()
+            override fun destroy(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    scene.onStop()
+                    scene.onDestroy()
+                }
             }
 
-            override fun finish(): LifecycleState {
-                listeners.forEach { it.finished() }
-                return destroy()
+            override fun finish(): StateTransition {
+                return StateTransition(Destroyed()) {
+                    listeners.forEach { it.finished() }
+                    scene.onStop()
+                    scene.onDestroy()
+                }
             }
         }
 
@@ -231,24 +244,29 @@ abstract class SingleSceneNavigator(
             override fun removeListener(listener: Navigator.Events) {
             }
 
-            override fun start(): LifecycleState {
+            override fun start(): StateTransition {
                 w("LifecycleState", "Warning: Cannot start state after it is destroyed.")
-                return this
+                return StateTransition(this)
             }
 
-            override fun stop(): LifecycleState {
-                return this
+            override fun stop(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun destroy(): LifecycleState {
-                return this
+            override fun destroy(): StateTransition {
+                return StateTransition(this)
             }
 
-            override fun finish(): LifecycleState {
-                return this
+            override fun finish(): StateTransition {
+                return StateTransition(this)
             }
         }
     }
+
+    private class StateTransition(
+        val newState: LifecycleState,
+        val action: (() -> Unit)? = null
+    )
 
     companion object {
 
