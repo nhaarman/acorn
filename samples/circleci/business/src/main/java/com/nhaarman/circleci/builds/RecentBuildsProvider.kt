@@ -58,7 +58,7 @@ internal class WebRecentBuildsProvider(
             .cache(
                 refreshRequests.flatMapSingle { recentBuildsService.retrieveRecentBuilds() }
             )
-            .replay(1).refCount()
+            .replay(1).refCount(1, TimeUnit.SECONDS)
     }
 
     override fun refresh() {

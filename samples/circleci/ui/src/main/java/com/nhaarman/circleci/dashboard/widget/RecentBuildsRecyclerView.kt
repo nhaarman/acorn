@@ -31,6 +31,8 @@ import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.circleci.Build
 import com.nhaarman.circleci.ui.R
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.dashboard_recentbuild.*
 
@@ -81,6 +83,9 @@ class RecentBuildsRecyclerView @JvmOverloads constructor(
         })
     }
 
+    private val buildClicksSubject = PublishSubject.create<Build>()
+    val buildClicks: Observable<Build> = buildClicksSubject.hide()
+
     private inner class RecentBuildsAdapter : Adapter<RecentBuildViewHolder>() {
 
         override fun getItemCount(): Int {
@@ -100,8 +105,15 @@ class RecentBuildsRecyclerView @JvmOverloads constructor(
         override val containerView: View
     ) : ViewHolder(containerView), LayoutContainer {
 
+        init {
+            containerView.setOnClickListener {
+                build?.let { buildClicksSubject.onNext(it) }
+            }
+        }
+
         var build: Build? = null
             set(value) {
+                field = value
                 if (value == null) return
 
                 nameTV.text = "${value.repoName} / ${value.branchName} / #${value.buildNumber}"

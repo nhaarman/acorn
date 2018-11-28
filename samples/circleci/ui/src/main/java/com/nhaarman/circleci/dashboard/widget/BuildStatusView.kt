@@ -22,15 +22,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import com.nhaarman.circleci.Build
-import com.nhaarman.circleci.Build.Status.Canceled
-import com.nhaarman.circleci.Build.Status.Failed
-import com.nhaarman.circleci.Build.Status.Fixed
-import com.nhaarman.circleci.Build.Status.NotRunning
-import com.nhaarman.circleci.Build.Status.Queued
-import com.nhaarman.circleci.Build.Status.Running
-import com.nhaarman.circleci.Build.Status.Scheduled
-import com.nhaarman.circleci.Build.Status.Success
-import com.nhaarman.circleci.ui.R
+import com.nhaarman.circleci.util.toColor
 
 class BuildStatusView @JvmOverloads constructor(
     context: Context,
@@ -40,14 +32,6 @@ class BuildStatusView @JvmOverloads constructor(
 
     var status: Build.Status? = null
         set(value) {
-            val colorResource = when (value) {
-                Scheduled, Queued -> R.color.purple
-                Running -> R.color.blue
-                Success, Fixed -> R.color.green
-                Failed -> R.color.red
-                NotRunning, Canceled, null -> R.color.grey_light
-            }
-
-            setBackgroundResource(colorResource)
+            setBackgroundResource(value.toColor())
         }
 }

@@ -44,4 +44,7 @@ class DashboardViewController(
 
     override val refreshRequests: Observable<Unit>
         get() = swipeRefreshLayout.refreshes()
+
+    override val buildClicks: Observable<Build>
+        get() = recentBuildsRV.buildClicks
 }

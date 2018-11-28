@@ -18,20 +18,35 @@
 
 package com.nhaarman.circleci
 
-import com.nhaarman.acorn.navigation.SingleSceneNavigator
+import com.nhaarman.acorn.navigation.StackNavigator
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SceneState
-import com.nhaarman.circleci.builds.RecentBuildsProvider
+import com.nhaarman.circleci.build.BuildScene
 import com.nhaarman.circleci.dashboard.DashboardScene
+import kotlin.reflect.KClass
 
 class CircleCINavigator(
-    private val recentBuildsProvider: RecentBuildsProvider,
+    private val component: CircleCIComponent,
     savedState: NavigatorState?
-) : SingleSceneNavigator(savedState) {
+) : StackNavigator(savedState) {
 
-    override fun createScene(state: SceneState?): Scene<out Container> {
-        return DashboardScene(recentBuildsProvider, state)
+    override fun initialStack(): List<Scene<out Container>> {
+        return listOf(DashboardScene(component.recentBuildsProvider, DashboardListener()))
+    }
+
+    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
+        return when (sceneClass) {
+            DashboardScene::class -> DashboardScene(component.recentBuildsProvider, DashboardListener(), state)
+            else -> error("Unknown scene class: $sceneClass")
+        }
+    }
+
+    private inner class DashboardListener : DashboardScene.Events {
+
+        override fun onBuildClicked(build: Build) {
+            push(BuildScene(component.buildProvider(build.buildNumber)))
+        }
     }
 }

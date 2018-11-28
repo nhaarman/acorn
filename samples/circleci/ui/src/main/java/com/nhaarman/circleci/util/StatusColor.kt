@@ -16,17 +16,15 @@
  * along with Acorn.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nhaarman.circleci
+package com.nhaarman.circleci.util
 
-import com.nhaarman.acorn.android.navigation.AbstractNavigatorProvider
-import com.nhaarman.acorn.navigation.Navigator
-import com.nhaarman.acorn.state.NavigatorState
+import com.nhaarman.circleci.Build
+import com.nhaarman.circleci.ui.R
 
-internal class CircleCINavigatorProvider(
-    private val component: CircleCIComponent
-) : AbstractNavigatorProvider<Navigator>() {
-
-    override fun createNavigator(savedState: NavigatorState?): Navigator {
-        return CircleCINavigator(component, savedState)
-    }
+fun Build.Status?.toColor() = when (this) {
+    Build.Status.Scheduled, Build.Status.Queued -> R.color.purple
+    Build.Status.Running -> R.color.blue
+    Build.Status.Success, Build.Status.Fixed -> R.color.green
+    Build.Status.Failed -> R.color.red
+    Build.Status.NotRunning, Build.Status.Canceled, null -> R.color.grey_light
 }

@@ -20,12 +20,14 @@ package com.nhaarman.circleci.dashboard
 
 import com.nhaarman.acorn.presentation.RxScene
 import com.nhaarman.acorn.state.SceneState
+import com.nhaarman.circleci.Build
 import com.nhaarman.circleci.builds.RecentBuildsProvider
 import com.nhaarman.circleci.mainThread
 import io.reactivex.rxkotlin.plusAssign
 
 class DashboardScene(
     private val recentBuildsProvider: RecentBuildsProvider,
+    private val listener: Events,
     savedState: SceneState? = null
 ) : RxScene<DashboardContainer>(savedState) {
 
@@ -46,5 +48,13 @@ class DashboardScene(
 
         disposables += view.whenAvailable { it.refreshRequests }
             .subscribe { recentBuildsProvider.refresh() }
+
+        disposables += view.whenAvailable { it.buildClicks }
+            .subscribe { listener.onBuildClicked(it) }
+    }
+
+    interface Events {
+
+        fun onBuildClicked(build: Build)
     }
 }

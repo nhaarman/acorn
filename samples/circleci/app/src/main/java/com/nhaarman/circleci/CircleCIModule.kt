@@ -18,15 +18,26 @@
 
 package com.nhaarman.circleci
 
+import com.nhaarman.circleci.builds.BuildProvider
+import com.nhaarman.circleci.builds.RecentBuildsProvider
 import com.nhaarman.circleci.web.WebServiceFactory
 
 class CircleCIModule {
 
-    val webServiceFactory by lazy {
+    private val webServiceFactory by lazy {
         WebServiceFactory
             .create(
                 baseUrl = "https://circleci.com/api/v1.1/",
                 apiToken = BuildConfig.CIRCLECI_API_TOKEN
             )
+    }
+
+    val component by lazy {
+        val recentBuildsProvider = RecentBuildsProvider.create(webServiceFactory.createRecentBuildsService())
+
+        CircleCIComponent(
+            recentBuildsProvider,
+            { buildNumber -> BuildProvider.create(buildNumber, recentBuildsProvider) }
+        )
     }
 }

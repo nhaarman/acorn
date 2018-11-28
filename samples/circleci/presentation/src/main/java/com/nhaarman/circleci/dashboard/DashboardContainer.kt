@@ -29,4 +29,5 @@ interface DashboardContainer : RestorableContainer {
     var recentBuilds: Either<CacherError<List<Build>>, List<Build>>?
 
     val refreshRequests: Observable<Unit>
+    val buildClicks: Observable<Build>
 }

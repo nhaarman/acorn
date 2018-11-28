@@ -18,15 +18,13 @@
 
 package com.nhaarman.circleci
 
-import com.nhaarman.acorn.android.navigation.AbstractNavigatorProvider
-import com.nhaarman.acorn.navigation.Navigator
-import com.nhaarman.acorn.state.NavigatorState
+import com.nhaarman.circleci.builds.BuildProvider
+import com.nhaarman.circleci.builds.RecentBuildsProvider
 
-internal class CircleCINavigatorProvider(
-    private val component: CircleCIComponent
-) : AbstractNavigatorProvider<Navigator>() {
+class CircleCIComponent(
+    val recentBuildsProvider: RecentBuildsProvider,
+    private val buildProvider: (Int) -> BuildProvider
+) {
 
-    override fun createNavigator(savedState: NavigatorState?): Navigator {
-        return CircleCINavigator(component, savedState)
-    }
+    fun buildProvider(buildNumber: Int) = buildProvider.invoke(buildNumber)
 }

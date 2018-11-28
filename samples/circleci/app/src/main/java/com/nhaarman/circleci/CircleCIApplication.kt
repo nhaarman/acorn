@@ -31,7 +31,7 @@ class CircleCIApplication : Application() {
     }
 
     internal val navigatorProvider by lazy {
-        CircleCINavigatorProvider(module)
+        CircleCINavigatorProvider(module.component)
     }
 
     override fun onCreate() {

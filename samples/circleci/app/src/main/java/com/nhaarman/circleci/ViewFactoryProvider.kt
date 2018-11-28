@@ -20,6 +20,8 @@ package com.nhaarman.circleci
 
 import com.nhaarman.acorn.android.presentation.bindViews
 import com.nhaarman.acorn.presentation.SceneKey
+import com.nhaarman.circleci.build.BuildScene
+import com.nhaarman.circleci.build.BuildViewController
 import com.nhaarman.circleci.dashboard.DashboardScene
 import com.nhaarman.circleci.dashboard.DashboardViewController
 
@@ -30,6 +32,12 @@ object ViewFactoryProvider {
             SceneKey.defaultKey<DashboardScene>(),
             R.layout.dashboard_scene,
             ::DashboardViewController
+        )
+
+        bind(
+            SceneKey.defaultKey<BuildScene>(),
+            R.layout.build_scene,
+            ::BuildViewController
         )
     }
 }
