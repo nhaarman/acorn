@@ -26,14 +26,14 @@ package com.nhaarman.acorn.presentation
  *
  * The lifecycle of a Scene is very simple:
  *
- *  - 'inactive' : The Scene is dormant, waiting to become active or to
+ *  - 'stopped'  : The Scene is dormant, waiting to be started or to
  *                 be destroyed.
- *  - 'active'   : The Scene is active.
- *  - 'destroyed': The Scene is destroyed and will not become active anymore.
+ *  - 'started'  : The Scene is started.
+ *  - 'destroyed': The Scene is destroyed and will not be started anymore.
  *
  * On top of that, the user interface can attach to and detach itself from this
  * Scene via the [attach] and [detach] methods, providing interaction with
- * the user. It is therefore possible that the Scene is active without having
+ * the user. It is therefore possible that the Scene is started without having
  * a user interface attached.
  *
  * Scenes may implement [SavableScene] to indicate that their instance state
@@ -54,7 +54,7 @@ interface Scene<V : Container> {
     val key: SceneKey get() = SceneKey.from(javaClass)
 
     /**
-     * Called when this Scene becomes active.
+     * Called when this Scene is started.
      */
     fun onStart() {}
 
@@ -73,7 +73,7 @@ interface Scene<V : Container> {
     fun detach(v: V) {}
 
     /**
-     * Called when this Scene becomes inactive.
+     * Called when this Scene is stopped.
      */
     fun onStop() {}
 
