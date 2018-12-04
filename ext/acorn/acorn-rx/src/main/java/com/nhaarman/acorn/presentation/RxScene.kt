@@ -33,15 +33,22 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.BehaviorSubject
 
 /**
- * An abstract [Scene] implementation which provides a basic Rx implementation.
+ * An abstract base [Scene] implementation that provides commonly used
+ * functionality, including some helper functions for Rx usage.
  *
  * Implementers of this class gain access to the [view] property to get notified
  * of view changes, and a [disposables] property is provided for easy clearing
  * of [Disposable]s.
  *
- * @see SavableScene
+ * @see BaseSavableScene
+ *
+ * @param V The view type for this [Scene]. Can implement [RestorableContainer]
+ * to save and restore view state between different views attached to the Scene.
+ * @param savedState A previous saved state instance for this [Scene].
+ * May be `null`.
+ * @constructor Creates a new [RxScene], restoring view state when available.
  */
-abstract class RxScene<V : RestorableContainer>(
+abstract class RxScene<V : Container>(
     savedState: SceneState?
 ) : BaseSavableScene<V>(savedState) {
 

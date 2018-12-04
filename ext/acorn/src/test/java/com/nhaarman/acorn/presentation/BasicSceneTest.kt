@@ -68,7 +68,7 @@ class BasicSceneTest {
 
     private class TestBasicScene : BasicScene<TestView>() {
 
-        val view get() = currentView
+        val view get() = attachedView
     }
 
     private class TestView(var state: Int? = null) : Container, RestorableContainer {

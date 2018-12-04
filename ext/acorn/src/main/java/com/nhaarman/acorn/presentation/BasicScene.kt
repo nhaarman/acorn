@@ -22,33 +22,40 @@ import androidx.annotation.CallSuper
 import com.nhaarman.acorn.state.ContainerState
 
 /**
- * An abstract [Scene] implementation that saves and restores view state between
- * different views, and provides a reference to the currently attached view.
+ * A basic abstract [Scene] implementation that provides some basic functionality.
  *
- * @param V The view type for this [Scene], must implement [RestorableContainer].
+ * This class provides an [attachedView] property which provides the currently
+ * attached [V] instance, if available.
+ *
+ * @param V The view type for this [Scene]. Can implement [RestorableContainer]
+ * to save and restore view state between different views attached to the Scene.
  * @property containerState The initial view state for this [Scene].
+ * May be `null`.
  * @constructor Creates a new [BasicScene], restoring view state when available.
  */
-abstract class BasicScene<V : RestorableContainer> : Scene<V> {
-
+abstract class BasicScene<V : Container>(
     private var containerState: ContainerState? = null
+) : Scene<V> {
 
     /**
      * The currently attached [V] instance, if available.
+     *
+     * This property will be updated when [attach] or [detach] is called.
+     *
      * Returns `null` if no instance is attached.
      */
-    protected var currentView: V? = null
+    protected var attachedView: V? = null
         private set
 
     @CallSuper
     override fun attach(v: V) {
-        containerState?.let { v.restoreInstanceState(it) }
-        currentView = v
+        containerState?.let { (v as? RestorableContainer)?.restoreInstanceState(it) }
+        attachedView = v
     }
 
     @CallSuper
     override fun detach(v: V) {
-        containerState = v.saveInstanceState()
-        currentView = null
+        containerState = (v as? RestorableContainer)?.saveInstanceState()
+        attachedView = null
     }
 }

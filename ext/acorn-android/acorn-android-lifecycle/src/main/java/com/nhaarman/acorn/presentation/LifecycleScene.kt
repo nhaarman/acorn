@@ -18,18 +18,26 @@
 
 package com.nhaarman.acorn.presentation
 
+import androidx.annotation.CallSuper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import androidx.annotation.CallSuper
 import com.nhaarman.acorn.state.SceneState
 
 /**
- * An abstract [Scene] implementation which implements [LifecycleOwner].
+ * An abstract base [Scene] implementation that provides commonly used
+ * functionality, and implements [LifecycleOwner].
  *
- * @see SavableScene
+ * @see BaseSavableScene
+ *
+ * @param V The view type for this [Scene]. Can implement [RestorableContainer]
+ * to save and restore view state between different views attached to the Scene.
+ * @param savedState A previous saved state instance for this [Scene].
+ * May be `null`.
+ * @constructor Creates a new [LifecycleScene], restoring view state when
+ * available.
  */
-abstract class LifecycleScene<V : RestorableContainer>(
+abstract class LifecycleScene<V : Container>(
     savedState: SceneState?
 ) : BaseSavableScene<V>(savedState), LifecycleOwner {
 
