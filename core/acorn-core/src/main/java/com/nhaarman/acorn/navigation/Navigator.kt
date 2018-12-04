@@ -34,19 +34,19 @@ import com.nhaarman.acorn.presentation.Scene
  * manage. To be able to do this, the Navigator has a very simple lifecycle as
  * well:
  *
- *  - `inactive` : The Navigator is currently idle and will not emit any changes
+ *  - `stopped`  : The Navigator is currently idle and will not emit any changes
  *                 in Scenery.
- *  - `active`   : The Navigator is currently active and will notify interested
+ *  - `started`  : The Navigator is currently started and will notify interested
  *                 parties of changes in Scenes.
- *  - `destroyed`: The Navigator has been destroyed and will not become active
+ *  - `destroyed`: The Navigator has been destroyed and will not be started
  *                 anymore.
  *
- * Navigator instance start in the `inactive` state and can switch between
- * `inactive` and `active` an infinite amount of times.
+ * Navigator instances start in the `stopped` state and can switch between
+ * `stopped` and `started` an infinite amount of times.
  * Once a Navigator has been destroyed, it must be considered as dead, and any
  * further interactions with it will be ignored.
  *
- * Navigators that are not `active` must never have Scenes in their `active`
+ * Navigators that are not `started` must never have Scenes in their `started`
  * state.
  *
  * Navigators may implement [SavableNavigator] to indicate that their instance state
