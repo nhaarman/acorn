@@ -5,7 +5,7 @@ dependencyManagement {
         dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
         // core dependencies
-        dependency "androidx.annotation:annotation:1.0.0"
+        dependency "androidx.annotation:annotation:1.0.1"
 
         // ext-acorn
         dependency "io.arrow-kt:arrow-core:0.8.1"
@@ -59,7 +59,7 @@ dependencyManagement {
         dependency "androidx.test:rules:1.1.0"
         dependency "androidx.test.uiautomator:uiautomator:2.2.0"
 
-        def androidToolsVersion = "26.4.0-alpha05"
+        def androidToolsVersion = "26.4.0-alpha06"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"
