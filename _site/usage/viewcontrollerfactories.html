@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>ViewControllerFactories | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="ViewControllerFactories" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/usage/viewcontrollerfactories.html" />
+<meta property="og:url" content="http://localhost:4000/usage/viewcontrollerfactories.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"ViewControllerFactories","@type":"WebPage","url":"http://localhost:4000/usage/viewcontrollerfactories.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="viewcontrollerfactories">ViewControllerFactories</h1>
+
+<p>The <code class="highlighter-rouge">ViewControllerFactory</code> interface provides a modular way of creating 
+<code class="highlighter-rouge">ViewController</code> instances. 
+The interface provides a <code class="highlighter-rouge">supports(Scene)</code> and a 
+<code class="highlighter-rouge">viewControllerFor(Scene, ViewGroup)</code> function that can be implemented as needed.</p>
+
+<p>ViewControllerFactories are used when the system needs to show the layout for a 
+Scene from scratch. 
+This can occur to show the initial screen to start the application with, but it 
+is also used to create views after configuration changes or process deaths.
+This means that for every Scene in your application, some ViewControllerFactory
+instance must be able to create a ViewController for that Scene.</p>
+
+<h2 id="implementing-viewcontrollerfactory">Implementing <code class="highlighter-rouge">ViewControllerFactory</code></h2>
+
+<p>The ViewControllerFactory interface provides the <code class="highlighter-rouge">supports(Scene)</code> and
+<code class="highlighter-rouge">viewControllerFor(Scene, ViewGroup)</code> functions.
+The <code class="highlighter-rouge">supports</code> function is used to test whether the implementation is capable of
+creating a ViewController instance, the <code class="highlighter-rouge">viewControllerFor</code> function is invoked
+to actually create the instance.
+In the <code class="highlighter-rouge">viewControllerFor</code> function the implementation needs to inflate the 
+proper layout and return an appropriate ViewController instance.</p>
+
+<p>The ViewControllerFactory can be implemented as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyViewControllerFactory</span> <span class="p">:</span> <span class="n">ViewControllerFactory</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">supports</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;*&gt;):</span> <span class="n">Boolean</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">scene</span><span class="p">.</span><span class="n">key</span> <span class="p">==</span> <span class="n">SceneKey</span><span class="p">.</span><span class="n">defaultKey</span><span class="p">&lt;</span><span class="n">MyScene</span><span class="p">&gt;()</span>
+    <span class="p">}</span>
+    
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">viewControllerFor</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;*&gt;,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">):</span> <span class="n">ViewController</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">layout</span> <span class="p">=</span> <span class="n">LayoutInflater</span><span class="p">.</span><span class="n">from</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">context</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">inflate</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">my_layout</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="n">MyViewController</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The system uses the <code class="highlighter-rouge">ViewController.view</code> property to attach to the root 
+ViewGroup, in this case <code class="highlighter-rouge">layout</code>.</p>
+
+<h2 id="composing-viewcontrollerfactories">Composing ViewControllerFactories</h2>
+
+<p>To allow for modularity, ViewControllerFactories can naturally be composed.
+Acorn provides a <code class="highlighter-rouge">ComposingViewControllerFactory</code> class to support this:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">FirstSceneViewControllerFactory</span> <span class="p">:</span> <span class="n">ViewControllerFactory</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+<span class="kd">class</span> <span class="nc">SecondSceneViewControllerFactory</span> <span class="p">:</span> <span class="n">ViewControllerFactory</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">myViewControllerFactory</span> <span class="p">=</span> <span class="n">ComposingViewControllerFactory</span><span class="p">.</span><span class="n">from</span><span class="p">(</span>
+    <span class="n">FirstSceneViewControllerFactory</span><span class="p">(),</span>
+    <span class="n">SecondSceneViewControllerFactory</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Of course, ViewControllerFactories can be composed indefinitely.</p>
+
+<h2 id="viewcontrollerfactory-dsl">ViewControllerFactory DSL</h2>
+
+<p>Usually when creating a ViewController it suffices to provide a mapping from a 
+Scene key to a layout resource id and a wrapper function.
+The ViewControllerFactory DSL provides a DSL to easily create these mappings:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">myViewControllerFactory</span> <span class="p">=</span> <span class="n">bindViews</span> <span class="p">{</span>
+
+    <span class="n">bind</span><span class="p">(</span>
+        <span class="n">sceneKey</span> <span class="p">=</span> <span class="n">defaultKey</span><span class="p">&lt;</span><span class="n">FirstScene</span><span class="p">&gt;(),</span>
+        <span class="n">layoutResId</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">first_scene</span><span class="p">,</span>
+        <span class="n">wrapper</span> <span class="p">=</span> <span class="p">{</span> <span class="n">view</span><span class="p">:</span> <span class="n">View</span> <span class="p">-&gt;</span>
+            <span class="n">FirstSceneViewController</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">bind</span><span class="p">(</span>
+        <span class="n">defaultKey</span><span class="p">&lt;</span><span class="n">SecondScene</span><span class="p">&gt;(),</span>
+        <span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">second_scene</span><span class="p">,</span>
+        <span class="o">::</span><span class="n">SecondSceneViewController</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The resulting ViewControllerFactory will inflate the <code class="highlighter-rouge">layoutResId</code> and invoke
+the <code class="highlighter-rouge">wrapper</code> function with the inflated view.</p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

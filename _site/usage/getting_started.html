@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Getting Started | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Getting Started" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/usage/getting_started.html" />
+<meta property="og:url" content="http://localhost:4000/usage/getting_started.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Getting Started","@type":"WebPage","url":"http://localhost:4000/usage/getting_started.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="getting-started">Getting Started</h1>
+
+<p>This page provides a quick overview on getting started with Acorn.
+Be sure to have the necessary dependencies included as shown in <a href="setup">Setup</a>.</p>
+
+<p>Acorn provides several helper classes that can get you started quicky.
+The easiest way is to have your MainActivity extend from <code class="highlighter-rouge">AcornActivity</code> or 
+<code class="highlighter-rouge">AcornAppCompatActivity</code> and implement the <code class="highlighter-rouge">provideNavigatorProvider</code> 
+function:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">object</span> <span class="nc">MyNavigatorProvider</span> <span class="p">:</span> <span class="n">NavigatorProvider</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="n">AcornActivity</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">provideNavigatorProvider</span><span class="p">()</span> <span class="p">:</span> <span class="n">NavigatorProvider</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">MyNavigatorProvider</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you can’t or don’t want to extend from <code class="highlighter-rouge">AcornActivity</code>, you can use the 
+<code class="highlighter-rouge">AcornActivityDelegate</code> class.</p>
+
+<h3 id="scenecontainerviewcontroller">Scene/Container/ViewController</h3>
+
+<p>You can create a very simple Scene to get started by implementing the 
+<code class="highlighter-rouge">BaseSavableScene</code> class and implementing the <code class="highlighter-rouge">ProvidesView</code> interface:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span> <span class="p">:</span> <span class="n">Container</span>
+
+<span class="kd">class</span> <span class="nc">MyViewController</span><span class="p">(</span><span class="k">override</span> <span class="kd">val</span> <span class="py">view</span><span class="p">:</span> <span class="n">View</span><span class="p">)</span> <span class="p">:</span> <span class="n">RestorableViewController</span><span class="p">,</span> <span class="n">MyContainer</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span> <span class="p">:</span> <span class="n">BaseSavableScene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;(</span><span class="k">null</span><span class="p">),</span> <span class="n">ProvidesView</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">createViewController</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">)</span> <span class="p">:</span> <span class="n">ViewController</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">layout</span> <span class="p">=</span> <span class="n">LayoutInflater</span><span class="p">.</span><span class="n">from</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">context</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">inflate</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">my_scene</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span> 
+            
+        <span class="k">return</span> <span class="n">MyViewController</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Passing <code class="highlighter-rouge">null</code> to the <code class="highlighter-rouge">BaseSavableScene</code> constructor basically implies the Scene 
+does not support state restoration.<br />
+See <a href="scenes">Scenes</a> for more information on how to create Scenes.</p>
+
+<h3 id="navigator">Navigator</h3>
+
+<p>The simplest of Navigators is one that extends the <code class="highlighter-rouge">SingleSceneNavigator</code> class:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyNavigator</span> <span class="p">:</span> <span class="n">SingleSceneNavigator</span><span class="p">(</span><span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">createScene</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">SceneState</span><span class="p">?)</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="k">out</span> <span class="n">Container</span><span class="p">&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">MyScene</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Passing <code class="highlighter-rouge">null</code> to the <code class="highlighter-rouge">SingleSceneNavigator</code> constructor basically implies the
+Navigator does not support state restoration.<br />
+See <a href="navigators">Navigators</a> for more information on how to create Navigators.</p>
+
+<h3 id="navigatorprovider">NavigatorProvider</h3>
+
+<p>You will need to implement the <code class="highlighter-rouge">NavigatorProvider</code> interface to let Acorn know
+which <code class="highlighter-rouge">Navigator</code> to use.<br />
+The <code class="highlighter-rouge">AbstractNavigatorProvider</code> class provides a base implementation you can 
+use:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">object</span> <span class="nc">MyNavigatorProvider</span> <span class="p">:</span> <span class="n">AbstractNavigatorProvider</span><span class="p">&lt;</span><span class="n">MyNavigator</span><span class="p">&gt;()</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">createNavigator</span><span class="p">(</span><span class="n">savedState</span><span class="p">:</span> <span class="n">NavigatorState</span><span class="p">?)</span> <span class="p">:</span> <span class="n">MyNavigator</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">MyNavigator</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The NavigatorProvider needs to be cached between Activity instances.<br />
+See <a href="navigators">Navigators</a> for more information.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>The setup in the previous section falls back to the default configuration Acorn
+provides.
+There are a couple of things you can customize.</p>
+
+<h3 id="viewcontrollerfactory">ViewControllerFactory</h3>
+
+<p>By default, Acorn relies on Scenes implementing the <code class="highlighter-rouge">ViewControllerFactory</code> 
+interface for creating <code class="highlighter-rouge">ViewController</code> instances.
+You can also supply your own ViewControllerFactory instance to Acorn by 
+overriding the <code class="highlighter-rouge">provideViewControllerFactory</code> function in <code class="highlighter-rouge">AcornActivity</code>, or 
+passing it to the <code class="highlighter-rouge">AcornActivityDelegate</code>.</p>
+
+<p>See <a href="viewcontrollerfactories">ViewControllerFactories</a> for more information on
+creating ViewControllerFactories.</p>
+
+<h3 id="transitionfactory">TransitionFactory</h3>
+
+<p>Acorn will use default transition animations to animate transition between 
+Scenes. 
+If you want to provide custom transition animations, you need to implement the
+<code class="highlighter-rouge">TransitionFactory</code> interface and supply it to Acorn by overriding the 
+<code class="highlighter-rouge">provideTransitionFactory</code> function in <code class="highlighter-rouge">AcornActivity</code>, or passing it to the
+<code class="highlighter-rouge">AcornActivityDelegate</code>.</p>
+
+<p>See <a href="transition_animations">Transition Animations</a> for more information on
+creating TransitionFactories.</p>
+
+<h3 id="activitycontrollerfactory">ActivityControllerFactory</h3>
+
+<p>If your application needs to start external Activities you need to implement the
+<code class="highlighter-rouge">ActivityControllerFactory</code> interface and supply it to Acorn. 
+You can do this by overriding the <code class="highlighter-rouge">provideActivityControllerFactory</code> function in
+<code class="highlighter-rouge">AcornActivity</code>, or by passing it to the <code class="highlighter-rouge">AcornActivityDelegate</code>.</p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

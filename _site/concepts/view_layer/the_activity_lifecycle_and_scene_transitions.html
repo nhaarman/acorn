@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>The Activity Lifecycle and Scene Transitions | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="The Activity Lifecycle and Scene Transitions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/concepts/view_layer/the_activity_lifecycle_and_scene_transitions.html" />
+<meta property="og:url" content="http://localhost:4000/concepts/view_layer/the_activity_lifecycle_and_scene_transitions.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"The Activity Lifecycle and Scene Transitions","@type":"WebPage","url":"http://localhost:4000/concepts/view_layer/the_activity_lifecycle_and_scene_transitions.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="the-activity-lifecycle-and-scene-transitions">The Activity Lifecycle and Scene Transitions</h1>
+
+<p>The Activity lifecycle determines whether there is something to show to the user.
+Especially, when the Activity is in the ‘started’ state (between onStart and
+onStop), one can assume the Activity is visible to the user.
+Whenever the Activity is ‘stopped’, the UI is not visible anymore and the UI
+should be detached from the Scene.</p>
+
+<p>The Navigator class can notify the Activity of a change in Scenes, upon
+which it should react appropriately.
+Most of the time, this involves replacing the current View by a new instance
+suitable for the new active Scene.</p>
+
+<h2 id="managing-scene-transitions">Managing Scene transitions</h2>
+
+<p>In a perfect world, view transitions are atomic operations. However, often these
+transitions come with animations that take time, during which the Activity can
+enter the ‘stopped’ state.
+A naive implementation would attach the view to the Scene when a transition
+animation has finished, without checking if the Activity is still available.</p>
+
+<p>The <code class="highlighter-rouge">ActivityState</code> class provides a default implementation that can be used to
+handle Scene transitions.</p>
+
+<h3 id="details-of-scene-transitions">Details of Scene transitions</h3>
+
+<p>A Scene transition typically consists of the following phases:</p>
+
+<ul>
+  <li>Detaching any view from the current Scene, if available;</li>
+  <li>Inflating the new Scene’s layout and perform any animations on view;</li>
+  <li>Attach the newly created view to the new Scene.</li>
+</ul>
+
+<p>Since animations do take time, a couple of scenarios come to mind:</p>
+
+<ol>
+  <li>
+    <p>A Scene transition starts and ends during the Activity’s ‘Started’ state;</p>
+
+    <p>This is the ‘happy’ path of the transition: the new view can be attached to
+the view when the transition animation ends.</p>
+  </li>
+  <li>
+    <p>A Scene transition start in the Activity’s ‘Started’ state, but ends in its
+   ‘Stopped’ state;</p>
+
+    <p>When this happens, the new view must <em>not</em> be attached to the Scene at the
+end of the transition. If possible, the transition animation should be
+cancelled.</p>
+  </li>
+  <li>
+    <p>A change of Scene occurs when the Activity is in the ‘Stopped’ state;</p>
+
+    <p>In this case, no view inflation or transition animation occurs until the
+Activity enters the ‘Started’ state again.</p>
+  </li>
+  <li>
+    <p>The Activity enters the ‘stopped’ state between a scene’s transition
+notification and the start of the transition animation. This could happen
+when multiple Scene transitions are happening in a short time, causing the
+transition animations to be scheduled for some time in the future.</p>
+  </li>
+</ol>
+
+<p>A couple of axioms should make this feasible:</p>
+
+<ul>
+  <li>
+    <p>When a Scene change occurs during the Activity’s ‘Started’ state, the previous
+Scene gets its view detached.</p>
+  </li>
+  <li>
+    <p>When a Scene change occurs during the Activity’s ‘Started’ state, an animation
+is started to show the new view.</p>
+  </li>
+  <li>
+    <p>When a transition animation ends in the Activity’s ‘Started’ state, the new
+Scene gets its new view attached.</p>
+  </li>
+  <li>
+    <p>When the Activity stops during an animation, the animation is cancelled if
+possible. When the animation ends, the Scene does not get a view attached.</p>
+  </li>
+  <li>
+    <p>When the Activity starts, the view corresponding to the current active Scene
+is inflated and shown immediately, without any transition animation.</p>
+  </li>
+</ul>
+
+<p>It is also possible that multiple Scene transitions happen in a short time,
+causing transition animations to be queued.
+Implementations can choose to drop Scene transitions in this case.</p>
+
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Application Flow | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Application Flow" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/background/application_flow.html" />
+<meta property="og:url" content="http://localhost:4000/background/application_flow.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Application Flow","@type":"WebPage","url":"http://localhost:4000/background/application_flow.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="application-flow">Application Flow</h1>
+
+<p>In a typical mobile application, a user can navigate from one screen to another
+and another, which can be regarded as a ‘flow’ through your application.
+The default way of managing a flow is to use a stack of screens where screens
+can be pushed on and popped off of, like the Activity back stack or the Fragment
+back stack.</p>
+
+<h3 id="multiple-flows">Multiple flows</h3>
+
+<p>Often, applications have more than one flow.
+Next to the application flow that is usually invoked when your application
+starts, there might be an onboarding experience or some login flow the user has
+to go through.
+Composing or editing content like writing an e-mail can also be regarded as a
+flow.
+These flows can be conditionally started at the start of the application, or at
+any time during the lifetime of the application.
+These combined flows make up the main application flow.</p>
+
+<p>A second type of flow is when your app can handle share requests from other
+applications, or can be used to fetch a result, like selecting a photo or
+contact.
+These flows typically act parallel to your main application flow.
+When the user finishes this type of flow, the application is finished and the
+user returns to the application that started the flow.</p>
+
+<h3 id="flow-results">Flow results</h3>
+
+<p>Much like screens, flows can have results, like that logged in user from the 
+login flow, or the picture the user had selected.
+Android’s Activity class provides a way of yielding a result with the <code class="highlighter-rouge">setResult</code>
+method.
+This method takes a result code - like ‘cancelled’ or ‘ok’ - and optionally
+some data.
+Calling <code class="highlighter-rouge">finish</code> after <code class="highlighter-rouge">setResult</code> will return the result to the caller of the
+Activity.</p>
+
+<h2 id="modelling-flows">Modelling flows</h2>
+
+<p>The default way of managing these flows is to use a stack-like structure.
+Navigating to a new screen pushes the screen onto the stack, and pressing the
+back button pops it back off the stack.
+Next to just pushing and popping screens on and off the stack, one can also do
+more complex operations, like replacing the entire stack with a new stack, or
+replace the last <code class="highlighter-rouge">x</code> screens by a new screen.</p>
+
+<p>Working with back stacks like this may work for simple applications, but for
+more complex scenarios manipulation of the back stack may become a real hassle.
+A flow might require popping two screens after a certain event, may need to pop
+back to the root screen, or may have to replace the entire stack as a whole.</p>
+
+<h3 id="state-machines">State machines</h3>
+
+<p>Another way of modelling flows is by using state machines.
+State machines provide a natural way of describing the way a user navigates
+through the application.
+The nodes of the state machine represent screens, and events such as button
+presses represent the edges between the nodes.
+Whenever such an event occurs, a state transition may occur based on the current
+state of the state machine.</p>
+
+<p>Having a state machine as the model of your flow can greatly decrease complexity
+when determining a next screen based on state, or when having to deal with
+non-trivial flows.
+For example, a screen <code class="highlighter-rouge">B</code> can result in different subsequent screens depending
+on how it is started: either screen <code class="highlighter-rouge">C</code> or screen <code class="highlighter-rouge">D</code>
+When using a state machine, this screen <code class="highlighter-rouge">B</code> could be represented by two different
+nodes in the state machine (say <code class="highlighter-rouge">B1</code> and <code class="highlighter-rouge">B2</code>).
+When in state <code class="highlighter-rouge">B2</code>, the state machine just transitions to <code class="highlighter-rouge">C</code>; when in state
+<code class="highlighter-rouge">B2</code>, the state machine just transitions to <code class="highlighter-rouge">D</code>:</p>
+
+<p><img src="art/application_flow/state_machine.png" alt="" /></p>
+
+<h2 id="navigation">Navigation</h2>
+
+<p>Navigation is about how you apply your application flows in your app.
+Android’s Activity class, which from its origin can be seen as a single screen,
+provides its own methods to navigate to a new screen, such as
+<code class="highlighter-rouge">startActivity(Intent)</code>.
+When a user selects a product from a products list for example, the Activity can
+request to start a new Activity that shows a detail page for the product.
+Android will take care of starting the new Activity, which in turn inflates the
+proper layout to show.</p>
+
+<p>Managing navigation like this again may work for simple applications, but just 
+as with manipulating back stacks, complex requirements can become difficult to 
+implement.
+Determining the next screen in an application flow may depend on some current
+application state for example, or the resulting outcome of an event.</p>
+
+<h3 id="navigators">Navigators</h3>
+
+<p>To make this easier, dedicated navigator classes can be used to take the
+responsibility of navigation away from the screens.
+Instead of a screen manipulating the back stack, or telling a navigation
+component to go to screen X, it just finishes with or publishes a result event.
+The navigator listens for this result and determines the next action to take in
+its navigation flow.
+When it makes a transition, it can then in turn publish the resulting new screen
+to the interested parties, such as the UI layer.</p>
+
+<p>This way, screens become <em>real</em> composable and reusable blocks that have no
+knowledge of the flow they are currently in. 
+They can be shared in multiple flows without introducing the complexity of
+navigation state in them.</p>
+
+<h3 id="navigators-as-flows">Navigators as flows</h3>
+
+<p>Ultimately, a single navigator can be seen as a single flow in the application,
+like a login flow taking the user through several screens.
+Since navigators do no have to be tied to the default Activity or Fragment back 
+stack, they can implement their own data structures to model their flow.
+This could still be a stack, but it can also be an actual state machine or 
+something entirely different.</p>
+
+<p>Since a navigator is ultimately simply a class that publishes events of screen 
+changes, multiple navigators can be composed to a single Navigator, combining
+multiple flows into a single application flow. 
+This again makes for composable and reusable navigation blocks that can be
+shared in other navigation flows.</p>
+
+<p>Flow results, such as a selected picture or a logged in user become an event, 
+much like the screens they host.
+An Activity can use this result to notify the system of it, or a composing
+navigator can use it to switch to another navigator.</p>
+
+<p><img src="art/application_flow/navigators.png" alt="" /></p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

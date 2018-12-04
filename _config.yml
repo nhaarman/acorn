@@ -1,0 +1,12 @@
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+markdown: kramdown
+
+title: Acorn
+description: Mastering Android navigation
+url: https://nhaarman.github.io/Acorn
+
+theme: jekyll-theme-slate

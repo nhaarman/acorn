@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Navigators | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Navigators" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/concepts/navigators/" />
+<meta property="og:url" content="http://localhost:4000/concepts/navigators/" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Navigators","@type":"WebPage","url":"http://localhost:4000/concepts/navigators/","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="navigators">Navigators</h1>
+
+<p>Usually in a mobile application, the user can navigate from one screen to
+another.
+The <code class="highlighter-rouge">Navigator</code> interface provides a way to handle flow through an application.
+Instead of <code class="highlighter-rouge">Scenes</code> determining the next destination in the application by
+themselves, the Navigator can listen to events a Scene publishes and determine 
+the appropriate action to take.</p>
+
+<p>The Navigator in turn has the responsibility to let interested parties know that
+the active Scene has changed.
+This way the UI layer can react to a Scene change and show the proper UI.</p>
+
+<h3 id="lifecycle">Lifecycle</h3>
+
+<p>Like Scenes, Navigators also have lifecycles.
+Most often these are used to control the Scene lifecycle, but a Navigator
+implementation can also choose to hook into this lifecycle itself.</p>
+
+<p>The Navigator’s lifecycle is  similar to that of Scenes: they can be ‘active’,
+‘inactive’ and ‘destroyed’:</p>
+
+<ul>
+  <li>‘inactive’ : The Navigator is dormant, waiting to become active or to be
+             destroyed. A change in its Scenes is not propagated to its 
+             listeners.</li>
+  <li>‘active’   : The Navigator is currently active, and changes in scenery are
+             propagated to the listeners.</li>
+  <li>‘destroyed’: The Navigator is destroyed and will not become active anymore.</li>
+</ul>
+
+<p>During the lifetime of a Navigator it can go from ‘inactive’  to ‘inactive’ and
+vice versa multiple times, until it reaches the ‘destroyed’ state.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Navigator</span> <span class="p">{</span>
+
+    <span class="k">fun</span> <span class="nf">onStart</span><span class="p">()</span>
+    <span class="k">fun</span> <span class="nf">onStop</span><span class="p">()</span>
+    <span class="k">fun</span> <span class="nf">onDestroy</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="state-modelling">State modelling</h3>
+
+<p>Navigator implementations are free to choose how they implement their internal
+state.
+For example, it could use a structure like a stack to provide functionality
+similar to a backstack, or it could use a state machine for the state
+representation.</p>
+
+<p>This freedom that the Navigator gets also means that it is free to choose how
+the lifecycles of its Scenes behave, as long as it is according to the Scene
+specification. The order of the Scene’s callback methods must honored, and the
+Navigator’s lifecycle state must always outlive that of a Scene.
+This means that a Navigator’s Scenes may only be active when the Navigator is
+active, and no Scenes may be active when the Navigator is inactive.
+Finally, the Scenes must always be properly destroyed when the Navigator is
+destroyed.</p>
+
+<p>Other than that, the Navigator implementation is free to decide how its Scene’s
+lifecycle is structured, and often depends on the strategy that is chosen for
+modelling the internal state.</p>
+
+<p>A Navigator that uses a stack for its state for example will stop but not
+destroy the currently active Scene when a new Scene is pushed on the Stack.
+Scenes are only destroyed when they’re popped off the stack or when the Navigator
+is destroyed.
+A Navigator that merely replaces Scenes without any ‘back’ behavior will
+immediately stop and destroy the currently active Scene when a new Scene becomes
+active.</p>
+
+<h3 id="scene-propagation">Scene propagation</h3>
+
+<p>The Navigator implementation is in control of determining which Scene is active,
+and must propagate it to any listeners.
+The Navigator interface declares a <code class="highlighter-rouge">Navigator.Events</code> interface that contains
+callback methods to trigger interested parties.
+The Navigator interface itself has a method to let these interested parties
+register themselves:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Navigator</span> <span class="p">{</span>
+
+    <span class="k">fun</span> <span class="nf">addNavigatorEventsListener</span><span class="p">(</span><span class="n">listener</span><span class="p">:</span> <span class="n">Navigator</span><span class="p">.</span><span class="n">Events</span><span class="p">)</span> <span class="p">:</span> <span class="n">DisposableHandle</span>
+
+    <span class="cm">/* ... */</span>
+
+    <span class="kd">interface</span> <span class="nc">Events</span> <span class="p">{</span>
+
+        <span class="k">fun</span> <span class="nf">scene</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="k">out</span> <span class="n">Container</span><span class="p">&gt;,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TransitionData</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span>
+
+        <span class="k">fun</span> <span class="nf">finished</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If appropriate, the Navigator can invoke the <code class="highlighter-rouge">Navigator.Events.scene</code> method
+when the active Scene changes.</p>
+
+<h3 id="reacting-to-scene-events">Reacting to Scene events</h3>
+
+<p>As mentioned in <a href="../scenes/scenes">Scenes</a>, Scenes may accept callback interfaces to push
+events to the Navigator.
+The Navigator implementation can use these callbacks to make an internal state
+change.
+For example, assuming there is a base StackNavigator class, we can do the
+following:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyNavigator</span> <span class="p">:</span> <span class="n">StackNavigator</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">initialStack</span><span class="p">()</span> <span class="p">=</span> <span class="n">listOf</span><span class="p">(</span><span class="n">MyScene</span><span class="p">(</span><span class="n">MySceneListener</span><span class="p">()))</span>
+
+    <span class="k">private</span> <span class="k">inner</span> <span class="kd">class</span> <span class="nc">MySceneListener</span><span class="p">:</span> <span class="n">MyScene</span><span class="p">.</span><span class="n">Events</span> <span class="p">{</span>
+
+        <span class="k">override</span> <span class="k">fun</span> <span class="nf">onEvent</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">push</span><span class="p">(</span><span class="n">MyScene</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="back-presses">Back presses</h3>
+
+<p>When the user presses the back button, this can ultimately be viewed as an
+event, much like regular button presses.
+<code class="highlighter-rouge">Navigators</code> can choose to implement the <code class="highlighter-rouge">OnBackPressListener</code> interface to
+indicate they’re interesting in handling these back presses.
+Since the <code class="highlighter-rouge">Activity</code> is the entry point for back presses, it should delegate
+this request first to the <code class="highlighter-rouge">Navigator</code> if possible.
+The <code class="highlighter-rouge">Navigator</code> can use this event to make a transition in its internal state.</p>
+
+<h3 id="navigator-results">Navigator results</h3>
+
+<p>Navigator implementation can also provide a callback interface to publish
+results.
+This is useful for example when creating a login flow: the user can be guided
+through several Scenes, after which the Navigator finishes with an auth token
+result.</p>
+
+<p>There are two ways to implement callbacks for Navigator results.
+The first is similar to the way this is implemented for Scenes, by passing a
+callback to the Navigator constructor:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyNavigator</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">listener</span><span class="p">:</span> <span class="n">Events</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">Navigator</span><span class="p">,</span> <span class="n">MyScene</span><span class="p">.</span><span class="n">Events</span> <span class="p">{</span>
+
+    <span class="cm">/* ... */</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onAuthToken</span><span class="p">(</span><span class="n">authToken</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">listener</span><span class="p">.</span><span class="n">onResult</span><span class="p">(</span><span class="n">authToken</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kd">interface</span> <span class="nc">Events</span> <span class="p">{</span>
+
+        <span class="n">onResult</span><span class="p">(</span><span class="n">authToken</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>There are cases however where the Activity is interested in the Navigator’s
+result, to be able to call <code class="highlighter-rouge">Activity.setResult</code> and finish.
+Since the Navigator should outlive the Activity, the Activity must be able to
+register itself as a listener to the Navigator.
+This can be done by keeping a list of interested listeners:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyNavigator</span> <span class="p">:</span> <span class="n">Navigator</span><span class="p">,</span> <span class="n">MyScene</span><span class="p">.</span><span class="n">Events</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">listeners</span> <span class="p">=</span> <span class="n">listOf</span><span class="p">&lt;</span><span class="n">Events</span><span class="p">&gt;()</span>
+
+    <span class="k">fun</span> <span class="nf">register</span><span class="p">(</span><span class="n">listener</span><span class="p">:</span> <span class="n">Events</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">listeners</span> <span class="p">+=</span> <span class="n">listener</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">remove</span><span class="p">(</span><span class="n">listener</span><span class="p">:</span> <span class="n">Events</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">listeners</span> <span class="p">-=</span> <span class="n">listener</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* ... */</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onAuthToken</span><span class="p">(</span><span class="n">authToken</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">listeners</span><span class="p">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">onResult</span><span class="p">(</span><span class="n">authToken</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">interface</span> <span class="nc">Events</span> <span class="p">{</span>
+
+        <span class="k">fun</span> <span class="nf">onResult</span><span class="p">(</span><span class="n">authToken</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="saving-and-restoring-state">Saving and restoring state</h3>
+
+<p>Just like Scenes, Navigator instances need to be able to have their state saved
+as well, and must be able to be restored from this saved state.
+Navigators that save their state must also save the states of the Scenes they
+are hosting.
+This means that the Navigator instance is responsible for the restoration of the
+Scenes as well.</p>
+
+<p>Depending on the chosen strategy for modelling the internal navigation state,
+the navigator must be able to restore one or more of its Scenes and restore its
+internal state as well.</p>
+
+<h3 id="navigator-composition">Navigator composition</h3>
+
+<p>The power behind the Navigator interface is that instances can be composed
+together.
+An application may for example have several flows that make up the entire
+application flow.
+These flows can all be implemented using their own Navigator implementations,
+and then tied together using a composing Navigator.</p>
+
+<p>These composing Navigators can decide their internal state just as the ‘normal’
+Navigators, which means that you can create a Navigator implementation that can
+push and pop other Navigators on and off a stack.</p>
+
+<h2 id="advanced-topics">Advanced topics</h2>
+
+<p>Usually you don’t need to implement the <code class="highlighter-rouge">Navigator</code> interface directly; you can
+use the existing base classes to compose the behavior you need.
+However if you do choose to implement your own Navigator, you might want to have
+a look at <a href="scene_management">Scene Management</a></p>
+
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

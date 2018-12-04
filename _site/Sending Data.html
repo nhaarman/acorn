@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Acorn | Mastering Android navigation</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Acorn" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/Sending%20Data.html" />
+<meta property="og:url" content="http://localhost:4000/Sending%20Data.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Acorn","@type":"WebPage","url":"http://localhost:4000/Sending%20Data.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <p>Android has a great mechanism that allows applications to share data
+with each other.
+Web pages can be opened in a browser application, applications can
+request a camera application to take a picture for them, and plain text
+and image media can be shared to social media applications.</p>
+
+<h2 id="sending-data">Sending Data</h2>
+
+<p>Your application can share data with other applications.
+You can allow the user to share a picture with a messaging app, or you
+can start the Google Maps app to start driving to the nearest pizza
+place.
+Android supports this through the use of <code class="highlighter-rouge">Intent</code>s: specialized
+messaging objects that can be used to request an action from another app
+component.
+You can send an Intent to the Android system and the system will start
+the component that can handle the Intent.</p>
+
+<h3 id="navigation">Navigation</h3>
+
+<p>In terms of your application’s navigation state, sharing data by starting
+a third party application is just another destination in your app.
+You can navigate to a <code class="highlighter-rouge">Scene</code> that represents sharing the data.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ShareTextScene</span><span class="p">(</span>
+  <span class="kd">val</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">listener</span><span class="p">:</span> <span class="n">Events</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">Nothing</span><span class="p">&gt;</span> <span class="p">{</span>
+
+  <span class="k">fun</span> <span class="nf">finished</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">listener</span><span class="p">.</span><span class="n">finished</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="kd">interface</span> <span class="nc">Events</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">finished</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Since your application has no UI to show for this Scene, you can just
+pass <code class="highlighter-rouge">Nothing</code> as its container type.
+At the UI-layer of your application, instead of inflating a layout, you
+create an Intent to send to the Android system.
+Next to a <code class="highlighter-rouge">ViewFactory</code> instance, the <code class="highlighter-rouge">AcornActivityDelegate</code> accepts an
+<code class="highlighter-rouge">IntentProvider</code> instance you can implement for these scenario’s.
+By returning a valid Intent from the IntentProvider, Acorn will route that intent
+to <code class="highlighter-rouge">Activity#startActivityForResult</code> instead of inflating a layout.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">object</span> <span class="nc">ShareTextIntentProvider</span><span class="p">:</span> <span class="n">IntentProvider</span> <span class="p">{</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">intentFor</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="k">out</span> <span class="n">Container</span><span class="p">&gt;,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TransitionData</span><span class="p">?):</span> <span class="n">Intent</span><span class="p">?</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">scene</span> <span class="p">!</span><span class="k">is</span> <span class="n">ShareTextScene</span><span class="p">)</span> <span class="k">return</span> <span class="k">null</span>
+
+    <span class="k">return</span> <span class="n">Intent</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span>
+        <span class="n">action</span> <span class="p">=</span> <span class="n">Intent</span><span class="p">.</span><span class="n">ACTION_SEND</span>
+        <span class="n">type</span> <span class="p">=</span> <span class="s">"text/plain"</span>
+        <span class="n">putExtra</span><span class="p">(</span><span class="n">Intent</span><span class="p">.</span><span class="n">EXTRA_TEXT</span><span class="p">,</span> <span class="n">scene</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">onActivityResult</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="k">out</span> <span class="n">Container</span><span class="p">&gt;,</span> <span class="n">resultCode</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Intent</span><span class="p">?):</span> <span class="n">Boolean</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">scene</span> <span class="p">!</span><span class="k">is</span> <span class="n">ShareTextScene</span><span class="p">)</span> <span class="k">return</span> <span class="k">false</span>
+
+    <span class="n">scene</span><span class="p">.</span><span class="n">finished</span><span class="p">()</span>
+    <span class="k">return</span> <span class="k">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Acorn uses <code class="highlighter-rouge">startActivityForResult</code> to be able to get notified when the external
+application finishes.
+In <code class="highlighter-rouge">IntentProvider#onActivityResult</code> you can let the Scene know it is finished,
+and cause a change in navigation state again.</p>
+
+<h3 id="requesting-data">Requesting Data</h3>
+
+<p>Your application can also request data from other applications.
+It can request a contact from the Contacts app, or ask the camera app
+to take a picture.
+For this, you can use the same mechanism as described above.</p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

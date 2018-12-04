@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Acorn | Mastering Android navigation</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Acorn" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/usage/setup.html" />
+<meta property="og:url" content="http://localhost:4000/usage/setup.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Acorn","@type":"WebPage","url":"http://localhost:4000/usage/setup.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <p>Acorn is tactically divided in several modules to be able to separate different
+concerns from eachother. Core artifacts define the general contracts of Acorn,
+while extension artifacts provide the implementations.</p>
+
+<h2 id="easy-setup-">Easy setup <a href="https://maven-badges.herokuapp.com/maven-central/com.nhaarman.acorn/acorn"><img src="https://maven-badges.herokuapp.com/maven-central/com.nhaarman.acorn/acorn/badge.png" alt="Maven Central" /></a></h2>
+
+<p>Acorn is hosted on Maven Central.</p>
+
+<p>To get started quickly, you can include the <code class="highlighter-rouge">ext-acorn-android</code> dependency, 
+which includes the necessary base to create an app.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s2">"com.nhaarman.acorn.ext:acorn-android:x.x.x"</span>
+</code></pre></div></div>
+
+<p>If you use <code class="highlighter-rouge">androidx.appcompat</code>, you can use <code class="highlighter-rouge">ext-acorn-android-appcompat</code> instead:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s2">"com.nhaarman.acorn.ext:acorn-android-appcompat:x.x.x"</span>
+</code></pre></div></div>
+
+<p>Using the dependencies above will transitively pull all other dependencies you
+need as well.</p>
+
+<h2 id="advanced-setup">Advanced setup</h2>
+
+<p>As mentioned before, Acorn is divided in several modules.</p>
+
+<h3 id="core">Core</h3>
+
+<p>The core modules provide the general contracts of Acorn as interfaces and simple
+data classes.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Group</th>
+      <th>Artifact</th>
+      <th>Description</th>
+      <th>Dependencies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn</code></td>
+      <td><code class="highlighter-rouge">acorn</code></td>
+      <td>The core library, containing only the interfaces for Acorn without any functionality.</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn</code></td>
+      <td><code class="highlighter-rouge">acorn-android</code></td>
+      <td>The core library for Android, containing only the interfaces for working with Acorn on Android.</td>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn:acorn</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="jvm-extensions">JVM extensions</h3>
+
+<p>The following artifacts build upon the <code class="highlighter-rouge">acorn</code> artifact and provide some default
+implementations for <code class="highlighter-rouge">Navigator</code> and <code class="highlighter-rouge">Scene</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Group</th>
+      <th>Artifact</th>
+      <th>Description</th>
+      <th>Dependencies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn.ext</code></td>
+      <td><code class="highlighter-rouge">acorn</code></td>
+      <td>The main extension on the Acorn core, providing default implementations.</td>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn:acorn</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn.ext</code></td>
+      <td><code class="highlighter-rouge">acorn-rx</code></td>
+      <td>An RxJava extension for Acorn.</td>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn:acorn</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn.ext</code></td>
+      <td><code class="highlighter-rouge">acorn-testing</code></td>
+      <td>Provides testing utilities for JVM tests.</td>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn:acorn</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="android-extensions">Android extensions</h3>
+
+<p>Finally, the following artifacts provide the necessary implementations to make
+Acorn work on Android:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Group</th>
+      <th>Artifact</th>
+      <th>Description</th>
+      <th>Dependencies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn.ext</code></td>
+      <td><code class="highlighter-rouge">acorn-android</code></td>
+      <td>The main extension on the Acorn-Android core, providing default implementations.</td>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn:acorn</code><br /><code class="highlighter-rouge">com.nhaarman.acorn:acorn-android</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn.ext</code></td>
+      <td><code class="highlighter-rouge">acorn-android-testing</code></td>
+      <td>Provides testing facilities for instrumentation testing with Acorn-Android.</td>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn:acorn</code><br /><code class="highlighter-rouge">com.nhaarman.acorn:acorn-android</code><br /><code class="highlighter-rouge">com.nhaarman.acorn.ext:acorn-android</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn.ext</code></td>
+      <td><code class="highlighter-rouge">acorn-android-timber</code></td>
+      <td>Provides a <code class="highlighter-rouge">TimberLogger</code></td>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn:acorn</code><br /><code class="highlighter-rouge">com.nhaarman.acorn.ext:acorn</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn.ext</code></td>
+      <td><code class="highlighter-rouge">acorn-android-lifecycle</code></td>
+      <td>Provides <code class="highlighter-rouge">LifecycleScene</code></td>
+      <td><code class="highlighter-rouge">com.nhaarman.acorn:acorn</code><br /><code class="highlighter-rouge">com.nhaarman.acorn.ext:acorn</code></td>
+    </tr>
+  </tbody>
+</table>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

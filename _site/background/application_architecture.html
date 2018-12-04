@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Application Architecture | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Application Architecture" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/background/application_architecture.html" />
+<meta property="og:url" content="http://localhost:4000/background/application_architecture.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Application Architecture","@type":"WebPage","url":"http://localhost:4000/background/application_architecture.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="application-architecture">Application Architecture</h1>
+
+<p>The latest trend in Android application development is ‘Clean Architecture’,
+where developers use all sorts of ‘Model-View-Presenter’,
+‘Model-ViewModel-Presenter’ or ‘Model-View-Intent’ “architectures” to develop
+their Android apps.
+Databases are abstracted away behind repositories, but still a lot of business
+logic resides in the presentation layer of the application.</p>
+
+<!--Android's presentation layer however is riddled with classes that do way too -->
+<!--much, and make it quite hard to properly apply separation of concerns.-->
+
+<p>Clean Architecture is more than that.
+It is about having your business rules at the center of your application:
+they are the most important things to your software.
+Business rules that have nothing to do with lifecycles, Views or state
+restoration.
+Business rules that can be tested on a JVM without ever having to spin
+up an Android system.</p>
+
+<p>Architecture is about carefully defining boundaries between components
+in your application to protect them from the details.
+The database is such a detail, but also any location providers, REST
+api’s, and yes, the presentation and UI layer.
+The presentation layer here is concerned with navigation, the Activity
+lifecycle and with binding the business rules to the UI layer.
+The UI layer again is a detail to the presentation layer.</p>
+
+<p>In the Android framework everything in the presentation layer is tightly
+coupled: the lifecycle, navigation and UI management are all handled by
+the Activity or the Fragment.</p>
+
+<p>Acorn provides a way to actually decouple these concerns by introducing
+clear boundaries between the UI, presentation and navigation on top of
+your business rules, while still providing full control over state
+restoration, transition animations and lifecycles.</p>
+
+<p><img src="art/application_architecture/diagram_large.png" alt="" /></p>
+
+<p><em>Separation of concerns. Notice how all arrows point toward the business
+rules.</em></p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

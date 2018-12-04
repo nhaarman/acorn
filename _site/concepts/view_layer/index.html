@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>The View Layer | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="The View Layer" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/concepts/view_layer/" />
+<meta property="og:url" content="http://localhost:4000/concepts/view_layer/" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"The View Layer","@type":"WebPage","url":"http://localhost:4000/concepts/view_layer/","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="the-view-layer">The View Layer</h1>
+
+<p>The Navigator class is in control of the Scenes that are active.
+Activities can subscribe to Scene events from the Navigator class, and act 
+accordingly by showing the user interface corresponding to the Scene.
+This user interface can then be attached and detached from the Scene at
+appropriate times.</p>
+
+<p>The Activity instance provides a FrameLayout with id <code class="highlighter-rouge">android.R.id.content</code> 
+where an application can put its views in.
+Reacting to Scene changes can be as easy as replacing all views in this 
+FrameLayout by the new view that represents the new Scene.
+When a Scene change occurs, the Activity looks up the layout for the new Scene
+to display and performs a layout transition to show the new interface.</p>
+
+<h2 id="viewcontrollers">ViewControllers</h2>
+
+<p>The <code class="highlighter-rouge">Scene</code> class provides a <code class="highlighter-rouge">Container</code> parameter type that describes the 
+contract its view representation should adhere to.
+Scenes can define their own extensions of the Container interface to accept 
+certain behavior, for example to show data or accept user input events.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span> <span class="p">:</span> <span class="n">Container</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span>
+    
+    <span class="k">fun</span> <span class="nf">registerClickListener</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="n">Unit</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The view layer must attach and detach instances of these Containers to the 
+Scenes.
+The <code class="highlighter-rouge">ViewController</code> interface is a special Container extension that acts as a 
+wrapper around a <code class="highlighter-rouge">View</code> object, and can be used to create a bridge between the
+Scene and the user interface.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyViewController</span><span class="p">(</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">view</span><span class="p">:</span> <span class="n">View</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">ViewController</span><span class="p">,</span> <span class="n">MyContainer</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="s">""</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">view</span><span class="p">.</span><span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">value</span>
+        <span class="p">}</span>
+        
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">registerClickListener</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="n">Unit</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">view</span><span class="p">.</span><span class="n">button</span><span class="p">.</span><span class="n">setOnClickListener</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="transition-animations">Transition animations</h2>
+
+<p>One of the great strengths of controlling the view layer this way is that you
+gain full control over transition animations.
+When a Scene change occurs, you can hook into the layout changing process and 
+execute custom animations yourself.</p>
+
+<p>You can do this by implementing the <code class="highlighter-rouge">Transition</code> interface and tell Acorn for 
+which Scene changes it should be used.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Transition</span> <span class="p">{</span>
+
+    <span class="k">fun</span> <span class="nf">execute</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callback</span><span class="p">)</span>
+
+    <span class="kd">interface</span> <span class="nc">Callback</span> <span class="p">{</span>
+    
+        <span class="k">fun</span> <span class="nf">attach</span><span class="p">(</span><span class="n">viewController</span><span class="p">:</span> <span class="n">ViewController</span><span class="p">)</span>
+        <span class="k">fun</span> <span class="nf">onComplete</span><span class="p">(</span><span class="n">viewController</span><span class="p">:</span> <span class="n">ViewController</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">execute</code> function provides the parent <code class="highlighter-rouge">ViewGroup</code> that hosts the 
+application UI, and a callback instance to notify the system that the transition 
+has finished.
+Whatever you do in the <code class="highlighter-rouge">execute</code> function is up to you, as long as you provide
+the callback with a <code class="highlighter-rouge">ViewController</code> instance to the callback that can be 
+attached to the destination Scene.</p>
+
+<p>The <code class="highlighter-rouge">Callback</code> interface also provides an additional <code class="highlighter-rouge">attach</code> method which can
+be used to attach a ViewController to the new Scene before the transition has
+ended.</p>
+
+<h2 id="advanced-topics">Advanced topics</h2>
+
+<p>To ensure the system’s behavior is guaranteed, there are some advanced topics
+below.
+If you use the default extension artifacts, these are handled for you.</p>
+
+<ul>
+  <li><a href="the_activity_lifecycle_and_scene_transitions">The Activity lifecycle and Scene transitions</a></li>
+</ul>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

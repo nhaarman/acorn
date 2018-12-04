@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Transition animations | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Transition animations" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/usage/transition_animations.html" />
+<meta property="og:url" content="http://localhost:4000/usage/transition_animations.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Transition animations","@type":"WebPage","url":"http://localhost:4000/usage/transition_animations.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="transition-animations">Transition animations</h1>
+
+<p>Providing the right transition animations between your Scenes can greatly
+enhance the user experience.
+Acorn gives you access to the root <code class="highlighter-rouge">ViewGroup</code> to allow you to have full control
+over your transition animations.</p>
+
+<h2 id="the-transition-interface">The <code class="highlighter-rouge">Transition</code> interface</h2>
+
+<p>To create your own transition animation, you need to implement the <code class="highlighter-rouge">Transition</code>
+interface.
+This interface includes an <code class="highlighter-rouge">execute(ViewGroup, Callback)</code> method which provides
+you with the root ViewGroup of your Activity, and a <code class="highlighter-rouge">Callback</code> to let the system
+know the transition is finished.</p>
+
+<p>The <code class="highlighter-rouge">MyTransition</code> class below shows you how you can create a simple 
+fade-in/fade-out transition between to layouts:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyTransition</span> <span class="p">:</span> <span class="n">Transition</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">execute</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callback</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">oldLayout</span> <span class="p">=</span> <span class="n">parent</span><span class="p">.</span><span class="n">getChildAt</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+    
+        <span class="kd">val</span> <span class="py">newLayout</span> <span class="p">=</span> <span class="n">LayoutInflater</span><span class="p">.</span><span class="n">from</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">context</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">inflate</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">new_view</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span>
+        
+        <span class="n">newLayout</span><span class="p">.</span><span class="n">alpha</span> <span class="p">=</span> <span class="m">0f</span>
+        <span class="n">parent</span><span class="p">.</span><span class="n">addView</span><span class="p">(</span><span class="n">newLayout</span><span class="p">)</span>
+        
+        <span class="n">oldLayout</span><span class="p">.</span><span class="n">animate</span><span class="p">()</span>
+            <span class="p">.</span><span class="n">alpha</span><span class="p">(</span><span class="m">0f</span><span class="p">)</span>
+            
+        <span class="n">newLayout</span><span class="p">.</span><span class="n">animate</span><span class="p">()</span>
+            <span class="p">.</span><span class="n">alpha</span><span class="p">(</span><span class="m">1f</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">withEndAction</span> <span class="p">{</span>
+                <span class="n">parent</span><span class="p">.</span><span class="n">removeView</span><span class="p">(</span><span class="n">oldLayout</span><span class="p">)</span>
+                <span class="n">callback</span><span class="p">.</span><span class="n">onComplete</span><span class="p">(</span><span class="n">NewViewController</span><span class="p">(</span><span class="n">parent</span><span class="p">))</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="the-callback-interface">The Callback interface</h2>
+
+<p>The <code class="highlighter-rouge">Transition.Callback</code> interface provides two methods: <code class="highlighter-rouge">attach</code> and 
+<code class="highlighter-rouge">onComplete</code>.<br />
+If you implement your own Transition, you’re required to invoke 
+<code class="highlighter-rouge">Callback#onComplete</code> when the transition has finished. 
+If you fail to do this, the system may fail to execute future Scene transitions.</p>
+
+<p>The <code class="highlighter-rouge">Callback#attach</code> function can be invoked <em>during</em> the transition, and 
+attaches the ViewController to the Scene before the transition has ended.
+This can be useful if your Scene needs to populate the View with certain data 
+and doing this only after the transition has finished leads to unwanted 
+‘popping’ results.</p>
+
+<h2 id="meaningful-transitions">Meaningful transitions</h2>
+
+<p>Creating meaningful transitions can greatly enhance the user experience of your
+application.
+Chris Horner gave an <a href="https://www.youtube.com/watch?v=9Y5cbC5YrOY">excellent talk</a>
+at Droidcon SF 2017 about Android’s 
+<a href="https://developer.android.com/training/transitions/">Transition framework</a> 
+that shows you how to create these transition animations.</p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

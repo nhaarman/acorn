@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Deep Linking | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Deep Linking" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/background/deep_linking.html" />
+<meta property="og:url" content="http://localhost:4000/background/deep_linking.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Deep Linking","@type":"WebPage","url":"http://localhost:4000/background/deep_linking.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="deep-linking">Deep Linking</h1>
+
+<p>The Android system allows apps to directly link to content in other apps, by
+firing (implicit) <code class="highlighter-rouge">Intents</code>.
+This can be used to for example open the dialer application with a phone number
+already filled in, or to directly link to a product’s detail screen.
+Intents primarily consist of the general action to be performed,
+such as <code class="highlighter-rouge">android.intent.ACTION_VIEW</code> and the data to operate on, which is
+expressed in the form of a <code class="highlighter-rouge">Uri</code>.</p>
+
+<h2 id="handling">Handling</h2>
+
+<p>Applications can register <code class="highlighter-rouge">IntentFilters</code> with the system to indicate that they
+can handle certain intents.
+Intent filters must specify at least one action they support, such as
+<code class="highlighter-rouge">android.intent.action.MAIN</code> or <code class="highlighter-rouge">android.intent.action.VIEW</code>.</p>
+
+<h3 id="main-application-flow">Main application flow</h3>
+
+<p>One of the most used intent filters is one with action <code class="highlighter-rouge">android.intent.action.MAIN</code>
+and category <code class="highlighter-rouge">android.intent.category.LAUNCHER</code>, which is used to let launcher
+applications know that this is the default <code class="highlighter-rouge">Activity</code> to start.
+When the Activity starts, some initial screen of your application is shown, 
+kicking off the main application flow.</p>
+
+<h3 id="linking-into-your-application">Linking into your application</h3>
+
+<p>As mentioned before, you can also allow other apps to link into your application
+using implicit intents.
+This could be a link clicked in a browser, a general request to handle some data,
+or a targeted intent that specifically requests your app to be started.</p>
+
+<p>Usually these are secondary flows parallel to your main application flow.
+For example, a user may have put the application in the background while
+composing a message.
+Another application may fire an intent that deep links into your application,
+starting a completely different flow.
+When this second flow is finished, it is expected that the main flow with the
+message being composed is still intact.</p>
+
+<p>Another possibility is to start your main application flow from a secondary entry
+point.
+One example is a user clicking a link in an email that automatically logs them in
+in your application.
+Instead of starting the flow from its usual entry point, for example the login
+screen, the application starts in a screen that handles this link.
+When the user is logged in successfully, the normal application flow takes over.</p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Scenes | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Scenes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/usage/scenes.html" />
+<meta property="og:url" content="http://localhost:4000/usage/scenes.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Scenes","@type":"WebPage","url":"http://localhost:4000/usage/scenes.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="scenes">Scenes</h1>
+
+<p><em>This page assumes you have knowledge of the responsibilities of a Scene, as
+described in <a href="../concepts/scenes/scenes">Concepts: Scenes</a>.</em></p>
+
+<h2 id="the-scene-interface">The <code class="highlighter-rouge">Scene</code> interface</h2>
+
+<p>The simplest, but most cumbersome, way to create your own Scene is to directly
+implement the <code class="highlighter-rouge">Scene</code> interface, and override the methods that you need:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span> <span class="p">:</span> <span class="n">Container</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">attach</span><span class="p">(</span><span class="n">v</span> <span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">v</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="s">"Hello World!"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>A Scene provides the following methods you can override:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">onStart()</code>: Called when the Scene is started;</li>
+  <li><code class="highlighter-rouge">attach(V)</code>: Attaches the Container to the Scene;</li>
+  <li><code class="highlighter-rouge">detach(V)</code>: Detaches the Container from the Scene;</li>
+  <li><code class="highlighter-rouge">onStop()</code>: Called when the Scene is stopped;</li>
+  <li><code class="highlighter-rouge">onDestroy()</code>: Called when the Scene gets destroyed.</li>
+</ul>
+
+<h3 id="onstart--onstop"><code class="highlighter-rouge">onStart</code> / <code class="highlighter-rouge">onStop</code></h3>
+
+<p>These two methods mark the active stage of the Scene.
+You could choose to register to location updates when the Scene becomes active,
+and cancel the registration when the Scene becomes inactive:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span> <span class="p">:</span> <span class="n">Container</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">locationProvider</span><span class="p">:</span> <span class="n">LocationProvider</span>
+<span class="p">):</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">listener</span> <span class="p">=</span> <span class="p">{</span> <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">?</span> <span class="p">-&gt;</span>
+        <span class="c1">// Process location update
+</span>    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStart</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">locationProvider</span><span class="p">.</span><span class="n">registerLocationUpdates</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">locationProvider</span><span class="p">.</span><span class="n">unregisterLocationUpdates</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="attach---detach"><code class="highlighter-rouge">attach</code>  / <code class="highlighter-rouge">detach</code></h3>
+
+<p>These two methods give you access to the user interface.
+You can grab a reference to the Container instance in <code class="highlighter-rouge">attach</code> to be able
+to pass data to it.
+However, you must make sure to remove the reference in <code class="highlighter-rouge">detach</code> to prevent
+memory leaks.
+For example, if we expand on the previous example:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span> <span class="p">:</span> <span class="n">Container</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="py">location</span> <span class="p">:</span> <span class="n">Location</span><span class="p">?</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">locationProvider</span><span class="p">:</span> <span class="n">LocationProvider</span>
+<span class="p">):</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">view</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">listener</span> <span class="p">=</span> <span class="p">{</span> <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">?</span> <span class="p">-&gt;</span>
+        <span class="n">view</span><span class="o">?.</span><span class="n">location</span> <span class="p">=</span> <span class="n">location</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStart</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">locationProvider</span><span class="p">.</span><span class="n">registerLocationUpdates</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">view</span> <span class="p">=</span> <span class="n">v</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">detach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">view</span> <span class="p">=</span> <span class="k">null</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">locationProvider</span><span class="p">.</span><span class="n">unregisterLocationUpdates</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The implementation above will start to listen to location updates as soon as the
+Scene becomes active.
+When a view is attached, the location updates will be passed on to it.
+When the view is detached, the reference to the view is removed, but the Scene
+will still listen to location updates.
+Finally, When the Scene becomes inactive, it will stop listening to location
+updates as well.</p>
+
+<h3 id="ondestroy"><code class="highlighter-rouge">onDestroy()</code></h3>
+
+<p><code class="highlighter-rouge">onDestroy()</code> will be called once and only once at the end of the lifetime of
+the Scene.
+When this method is called, the Scene must be regarded as destroyed and no more
+calls to its lifecycle methods will be made.
+You can use this callback to release resources if you already haven’t done so.</p>
+
+<h2 id="state-saving">State saving</h2>
+
+<p>By default, a <code class="highlighter-rouge">Scene</code> does not support state saving, nor does it save or restore
+view hierarchy state such as user input or scroll positions.</p>
+
+<h3 id="view-hierarchy-state-saving">View hierarchy state saving</h3>
+
+<p>During the lifetime of a Scene it can happen that it receives multiple calls to
+<code class="highlighter-rouge">attach</code> and <code class="highlighter-rouge">detach</code>.
+Often, subsequent calls to <code class="highlighter-rouge">attach</code> will have fresh instances of the Container
+passed to it, losing any view hierarchy state.</p>
+
+<p>The Scene can save and restore the container state between these subsequent
+calls to <code class="highlighter-rouge">attach</code> if the Container type implements the <code class="highlighter-rouge">RestorableContainer</code>
+interface.
+This interface provides a <code class="highlighter-rouge">saveInstanceState</code> method and a
+<code class="highlighter-rouge">restoreInstanceState</code> method.
+The Scene can use these methods to restore the view state:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span><span class="p">:</span> <span class="n">RestorableContainer</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">containerState</span><span class="p">:</span> <span class="n">ContainerState</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">containerState</span><span class="o">?.</span><span class="n">let</span> <span class="p">{</span> <span class="n">v</span><span class="p">.</span><span class="n">restoreInstanceState</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">detach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">containerState</span> <span class="p">=</span> <span class="n">v</span><span class="p">.</span><span class="n">saveInstanceState</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="scene-state-saving">Scene state saving</h3>
+
+<p>To have your Scene’s state saved to prepare for process deaths, implement the
+<code class="highlighter-rouge">SavableScene</code> interface.
+This interface provides a <code class="highlighter-rouge">saveInstanceState()</code> method that will be called at
+the appropriate time.
+When saving a Scene, you generally want to save as little as possible, but just
+enough to be able to reconstruct it after process death.
+Next to this, you can also choose to save the view hierarchy state with it, if
+the Container supports it:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span><span class="p">:</span> <span class="n">RestorableContainer</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">userId</span><span class="p">:</span> <span class="n">String</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;,</span> <span class="n">SavableScene</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">containerState</span><span class="p">:</span> <span class="n">ContainerState</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">containerState</span><span class="o">?.</span><span class="n">let</span> <span class="p">{</span> <span class="n">v</span><span class="p">.</span><span class="n">restoreInstanceState</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">detach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">containerState</span> <span class="p">=</span> <span class="n">v</span><span class="p">.</span><span class="n">saveInstanceState</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">saveInstanceState</span><span class="p">():</span> <span class="n">SceneState</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">sceneState</span> <span class="p">{</span>
+            <span class="n">it</span><span class="p">[</span><span class="s">"user_id"</span><span class="p">]</span> <span class="p">=</span> <span class="n">userId</span>
+            <span class="n">it</span><span class="p">[</span><span class="s">"container_state"</span><span class="p">]</span> <span class="p">=</span> <span class="n">containerState</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="scene-state-restoration">Scene state restoration</h3>
+
+<p>After a process death, a Navigator class can ask you to restore your Scene from
+a saved state.
+If your Scene implements <code class="highlighter-rouge">SavableScene</code>, you will be passed the <code class="highlighter-rouge">SceneState</code>
+instance that you returned from <code class="highlighter-rouge">saveInstanceState()</code>.
+You can then pull out everything you need to be able to restore the Scene.
+If we again expand on the previous example, we can add restoration support by
+implementing a <code class="highlighter-rouge">create</code> method in the Scene’s <code class="highlighter-rouge">companion object</code> as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span><span class="p">:</span> <span class="n">RestorableContainer</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">userId</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+    <span class="n">savedState</span><span class="p">:</span> <span class="n">SceneState</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;,</span> <span class="n">SavableScene</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">containerState</span><span class="p">:</span> <span class="n">ContainerState</span><span class="p">?</span> <span class="p">=</span> <span class="n">savedState</span><span class="o">?.</span><span class="k">get</span><span class="p">(</span><span class="s">"container_state"</span><span class="p">)</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">containerState</span><span class="o">?.</span><span class="n">let</span> <span class="p">{</span> <span class="n">v</span><span class="p">.</span><span class="n">restoreInstanceState</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">detach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">MyContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">containerState</span> <span class="p">=</span> <span class="n">v</span><span class="p">.</span><span class="n">saveInstanceState</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">saveInstanceState</span><span class="p">():</span> <span class="n">SceneState</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">sceneState</span> <span class="p">{</span>
+            <span class="n">it</span><span class="p">[</span><span class="s">"user_id"</span><span class="p">]</span> <span class="p">=</span> <span class="n">userId</span>
+            <span class="n">it</span><span class="p">[</span><span class="s">"container_state"</span><span class="p">]</span> <span class="p">=</span> <span class="n">containerState</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+
+        <span class="k">fun</span> <span class="nf">create</span><span class="p">(</span><span class="n">savedState</span><span class="p">:</span> <span class="n">SceneState</span><span class="p">)</span> <span class="p">:</span> <span class="n">MyScene</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">MyScene</span><span class="p">(</span>
+                <span class="n">savedState</span><span class="p">[</span><span class="s">"user_id"</span><span class="p">],</span>
+                <span class="n">savedState</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, we have restored our <code class="highlighter-rouge">userId</code> from the saved state, as well as any view
+state that was saved with it.</p>
+
+<h2 id="base-implementations">Base implementations</h2>
+
+<p>The samples above show how you can create Scenes with just the basic interfaces,
+but there is a lot of boilerplate setup taking place.
+Fortunately, there are some base implementations that take some of this
+boilerplate out of your hands.</p>
+
+<h3 id="basicscene1">BasicScene<sup>1</sup></h3>
+
+<p>The <code class="highlighter-rouge">BasicScene</code> is a very simple abstract Scene class the provides a handle to
+the currently attached view, as well has automatically saving and restoring the
+view hierarchy state between subsequent <code class="highlighter-rouge">attach</code> calls.
+We can take our [[<code class="highlighter-rouge">attach</code>  / <code class="highlighter-rouge">detach</code>]] example above and re-implement it using TODO
+the BasicScene class:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span><span class="p">:</span> <span class="n">Container</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">locationProvider</span><span class="p">:</span> <span class="n">LocationProvider</span>
+<span class="p">):</span> <span class="n">BasicScene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">listener</span> <span class="p">=</span> <span class="p">{</span> <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">?</span> <span class="p">-&gt;</span>
+        <span class="n">currentView</span><span class="o">?.</span><span class="n">location</span> <span class="p">=</span> <span class="n">location</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStart</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">locationProvider</span><span class="p">.</span><span class="n">registerLocationUpdates</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">locationProvider</span><span class="p">.</span><span class="n">unregisterLocationUpdates</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We don’t have to manually keep a reference to the view anymore, and we don’t
+have to worry about releasing the reference since it’s done for us.</p>
+
+<h3 id="basesavablescene1"><code class="highlighter-rouge">BaseSavableScene</code><sup>1</sup></h3>
+
+<p>The <code class="highlighter-rouge">BaseSavableScene</code> class is an abstract class that handles the view hierarchy
+state saving for you, and implements <code class="highlighter-rouge">SavableScene</code>.
+If we take the sample from [[Scene state restoration]] above and re-implement it TODO
+using the BaseSavableScene class, we get the following:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span><span class="p">:</span> <span class="n">RestorableContainer</span>
+
+<span class="kd">class</span> <span class="nc">MyScene</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">userId</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+    <span class="n">savedState</span><span class="p">:</span> <span class="n">SceneState</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">BaseSavableScene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;(</span><span class="n">savedState</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">saveInstanceState</span><span class="p">():</span> <span class="n">SceneState</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">super</span><span class="p">.</span><span class="n">saveInstanceState</span><span class="p">().</span><span class="n">also</span> <span class="p">{</span>
+            <span class="n">it</span><span class="p">[</span><span class="s">"user_id"</span><span class="p">]</span> <span class="p">=</span> <span class="n">userId</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+
+        <span class="k">fun</span> <span class="nf">create</span><span class="p">(</span><span class="n">savedState</span><span class="p">:</span> <span class="n">SceneState</span><span class="p">)</span> <span class="p">:</span> <span class="n">MyScene</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">MyScene</span><span class="p">(</span>
+                <span class="n">savedState</span><span class="p">[</span><span class="s">"user_id"</span><span class="p">],</span>
+                <span class="n">savedState</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We now only have to deal with saving and restoring our <code class="highlighter-rouge">userId</code>, and let the
+BaseSavableScene handle the rest.</p>
+
+<h3 id="rxscene2"><code class="highlighter-rouge">RxScene</code><sup>2</sup></h3>
+
+<p>The <code class="highlighter-rouge">RxScene</code> abstract class extends the <code class="highlighter-rouge">BaseSavableScene</code> class and provides
+helper functions for working with Rx streams.</p>
+
+<h3 id="lifecyclescene3"><code class="highlighter-rouge">LifecycleScene</code><sup>3</sup></h3>
+
+<p>The <code class="highlighter-rouge">LifecycleScene</code> abstract class extends the <code class="highlighter-rouge">BaseSavableScene</code> class, and
+implements the <code class="highlighter-rouge">androidx.lifecycle.LifecycleOwner</code> interface.</p>
+
+<hr />
+
+<p>1: This class is available in the <code class="highlighter-rouge">ext-acorn</code> artifact.
+2: This class is available in the <code class="highlighter-rouge">ext-acorn-rx</code> artifact.
+3: This class is available in the <code class="highlighter-rouge">ext-acorn-android-lifecycle</code> artifact.</p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

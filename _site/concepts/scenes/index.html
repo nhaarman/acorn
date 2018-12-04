@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Scenes | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Scenes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/concepts/scenes/" />
+<meta property="og:url" content="http://localhost:4000/concepts/scenes/" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Scenes","@type":"WebPage","url":"http://localhost:4000/concepts/scenes/","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="scenes">Scenes</h1>
+
+<p>In a typical mobile application, the user can navigate from one destination to
+another.
+Each of these destinations can be regarded as a ‘screen’: a set of components
+that fulfill a very specific use case.
+For example, the main screen of a Twitter client may show a list of tweets to
+the user.</p>
+
+<p>In Acorn these screens are represented by <code class="highlighter-rouge">Scene</code> objects<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.
+A <code class="highlighter-rouge">Scene</code> represents a destination in an application the user can navigate to.
+A Scene is usually a screen in your application, but may also be a dialog or
+even something entirely else.
+A single traditional ‘screen’ could perhaps even consist of two separate Scenes,
+for example when you enter an ‘edit mode’ for the screen.</p>
+
+<h2 id="lifecycle">Lifecycle</h2>
+
+<p>People seem to have difficulties grasping the concept of lifecycles, or how to
+deal with it.
+However, these lifecycles are very useful, and quite necessary to actually be
+able to do something.
+When a screen becomes active in the application, it may want to start calling
+use cases in the business layer to retrieve some data.
+When it becomes visible to the user, it may want to register listeners to the UI
+to react to events.
+When it is replaced by another screen, it may need to stop listening for
+updates, and when it is destroyed (by popping it from a back stack for example),
+it may need to do some cleanup.
+Lifecycle callbacks are an excellent way to go and handle these scenarios.</p>
+
+<p>The Activity indeed has a somewhat complicated lifecycle in the sense that it
+gets destroyed on configuration changes, such as device rotation.
+For Scenes this is not the case: the UI gets attached to the container when
+available, and detached when it becomes unavailable again.
+When the device gets rotated from portrait to landscape, this can be seen as the
+disappearance of the portrait UI, and the appearance of the landscape UI.</p>
+
+<h3 id="scene-lifecycle">Scene lifecycle</h3>
+
+<p>In the basis, a Scene can be ‘started’ or ‘stopped’, and generally there is only
+one active Scene at a time.
+To be able to interact with the user, a Scene can define a <code class="highlighter-rouge">Container</code> type that
+can be attached to it.
+This Container represents the View through which a Scene can display data to the
+user and receive input events.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Scene</span><span class="p">&lt;</span><span class="n">V</span> <span class="p">:</span> <span class="n">Container</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="k">fun</span> <span class="nf">onStart</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="k">fun</span> <span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">V</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="k">fun</span> <span class="nf">detach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">V</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="k">fun</span> <span class="nf">onStop</span><span class="p">()</span> <span class="p">{}</span>
+    <span class="k">fun</span> <span class="nf">onDestroy</span><span class="p">()</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The lifecycle of a Scene is very simple:</p>
+
+<ul>
+  <li>‘started’  : The Scene is dormant, waiting to be started or to be destroyed.</li>
+  <li>‘stopped’  : The Scene is started.</li>
+  <li>‘destroyed’: The Scene is destroyed and will not be started anymore</li>
+</ul>
+
+<p>During the lifetime of a Scene it can go from ‘stopped’ to ‘started’ and vice
+versa multiple times, until it reaches the ‘destroyed’ state.</p>
+
+<p>Next to this, the Scene provides the <code class="highlighter-rouge">attach</code> and <code class="highlighter-rouge">detach</code> methods through which
+Container instances can be attached and detached.
+During the lifetime of a Scene, it is possible that multiple Containers are
+attached to it, though only one at a time.</p>
+
+<p>For example, a simple “Hello World!” screen could be implemented as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">HelloWorldContainer</span> <span class="p">:</span> <span class="n">Container</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">HelloWorldScene</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">HelloWorldContainer</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">attach</span><span class="p">(</span><span class="n">v</span> <span class="p">:</span> <span class="n">HelloWorldContainer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">v</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="s">"Hello World!"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="art/scene_lifecycle.png" alt="" /></p>
+
+<h2 id="events">Events</h2>
+
+<p>Often, certain events happen in a screen that should cause a transition to
+another screen.
+This could be a user having logged in successfully, or pressing on an item to
+view its detail screen.
+A Scene however should have no knowledge of navigation flow, meaning it cannot
+tell the system to go to another Scene.
+Instead, it can notify the component that <em>does</em> have control over navigation
+flow that an event has happened, like “this item was clicked!”.</p>
+
+<p>A typical pattern for this is to define an interface for these events, and let
+the Scene accept an instance of this interface in its constructor.
+The listener can then act on these events accordingly, such as navigating to 
+another Scene.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LoginScene</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">loginInteractor</span><span class="p">:</span> <span class="n">LoginInteractor</span><span class="p">,</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">listener</span><span class="p">:</span> <span class="n">Events</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">LoginContainer</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="cm">/* ... */</span>
+
+    <span class="k">private</span> <span class="k">fun</span> <span class="nf">doLogin</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">loginInteractor</span><span class="p">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span> <span class="p">{</span> <span class="n">user</span> <span class="p">:</span> <span class="n">User</span> <span class="p">-&gt;</span>
+            <span class="n">listener</span><span class="p">.</span><span class="n">onLoggedIn</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">interface</span> <span class="nc">Events</span> <span class="p">{</span>
+
+        <span class="cm">/** Called when this Scene is done logging in given user. */</span>
+        <span class="k">fun</span> <span class="nf">onLoggedIn</span><span class="p">(</span><span class="n">user</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For more information about navigation, see <a href="../navigators/navigators.md">Navigators</a>.</p>
+
+<h2 id="saving-and-restoring-state">Saving and restoring state</h2>
+
+<p>It is possible that an application is killed while the user has navigated to a 
+particular Scene.
+When the user returns to the application it is expected that the application
+restores to the state it was left in.
+This means that it is necessary to be able to restore Scenes from a serialized
+state.</p>
+
+<p>For ‘static’ Scenes that take no arguments (like our <code class="highlighter-rouge">HelloWorldScene</code> above)
+this usually is no problem.
+Scenes that do take arguments or have other state they wish to preserve need to
+implement the <code class="highlighter-rouge">SavableScene</code> interface.
+This introduces a <code class="highlighter-rouge">saveInstanceState</code> function, allowing the Scene to persist its
+state to a serializable format.
+When the Scene needs to be restored, this serialized state will then be provided.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ShowItemScene</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">itemId</span><span class="p">:</span> <span class="n">Long</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">ShowItemContainer</span><span class="p">&gt;,</span> <span class="n">StateSaveable</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">saveInstanceState</span><span class="p">():</span> <span class="n">SceneState</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">sceneState</span> <span class="p">{</span>
+            <span class="n">it</span><span class="p">[</span><span class="s">"item_id"</span><span class="p">]</span> <span class="p">=</span> <span class="n">itemId</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+    
+        <span class="k">fun</span> <span class="nf">create</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">SceneState</span><span class="p">):</span> <span class="n">ShowItemScene</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">ShowItemScene</span><span class="p">(</span><span class="n">itemId</span> <span class="p">=</span> <span class="n">state</span><span class="p">[</span><span class="s">"item_id"</span><span class="p">])</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="container-state">Container state</h3>
+
+<p>Container state (or view state) saving and restoring is a very important topic
+for mobile applications.
+Whenever a user has entered text or scrolled a list to a particular position and
+navigates away from the screen to later return again, it is expected that the 
+entered text or the scroll position is still there.</p>
+
+<p>Next to saving their own state, Scenes are also responsible for saving and
+restoring the Container states.
+Since multiple Containers can be attached to and detached from the Scene, their
+state needs to be saved and restored between the Container instances as well.
+This can easily be done by saving the Container state in the <code class="highlighter-rouge">detach</code> method,
+and restoring it in the <code class="highlighter-rouge">attach</code> method.</p>
+
+<p>Finally, when saving the Scene state, the most recent container state needs to
+be persisted as well.
+The <code class="highlighter-rouge">SavableScene</code> class provides a base implementation that handles all this.</p>
+
+<h2 id="scenes-vs-activities-or-fragments">Scenes vs. Activities or Fragments</h2>
+
+<p>In a sense, Scenes are similar to Activities or Fragments: when used as a
+primary navigational unit, they both represent a screen in an application.</p>
+
+<p>A couple of key differences are:</p>
+
+<ul>
+  <li>Scenes are not created by the system, but can accept dependencies in their
+constructors;</li>
+  <li>Scenes only have one responsibility: connecting the UI to the business logic.
+They do not:
+    <ul>
+      <li>Create any views</li>
+      <li>Control application flow directly</li>
+      <li>Have system callbacks (like permissions)</li>
+    </ul>
+  </li>
+  <li>Scenes always survive configuration changes.</li>
+</ul>
+
+<hr />
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Note that Acorn’s <code class="highlighter-rouge">Scene</code> objects are a completely different concept than Android’s <a href="https://developer.android.com/reference/android/transition/Scene">Scenes used for transitions</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

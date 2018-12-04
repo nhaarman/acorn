@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Saving and Restoring State | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Saving and Restoring State" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/background/saving_and_restoring_state.html" />
+<meta property="og:url" content="http://localhost:4000/background/saving_and_restoring_state.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Saving and Restoring State","@type":"WebPage","url":"http://localhost:4000/background/saving_and_restoring_state.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="saving-and-restoring-state">Saving and Restoring State</h1>
+
+<p>Saving and restoring state is an important issue for Android applications.
+Due to the nature of the Android system, activities can be destroyed and
+recreated at any time during an application’s lifecycle.
+When this happens, it is vital that the application’s is restored to the state
+it was in before it was killed, and that any input the user has entered into the
+system is not lost.</p>
+
+<p>This can be something like text entered into an <code class="highlighter-rouge">EditText</code>, or the scroll
+position of a scrollable widget, but also any navigational state like the state
+of the back stack.</p>
+
+<h2 id="moments-of-state-storing">Moments of state storing</h2>
+
+<p>Historically, state is stored when an Activity is stopped but not finished,
+which means as much as “we might return to it later”.
+This occurs in two ways:</p>
+
+<ul>
+  <li>The user leaves the Activity by not pressing the back button, such as navigating
+to another app or pressing the home button;</li>
+  <li>The Activity is being recreated due to a configuration change, such as a screen
+orientation change.</li>
+</ul>
+
+<p>Whenever this happens, the system calls <code class="highlighter-rouge">Activity.onSaveInstanceState</code>, which
+by default automatically includes the view hierarchy in the resulting state.
+The system also keeps track of the Activities in the stack, and ensure that the
+state is properly restored.</p>
+
+<h2 id="single-activity-solutions">Single Activity solutions</h2>
+
+<p>When using a single screen per Activity, the system handles the navigational and
+view hierarchy state saving for you.
+However, when using a single Activity to navigate through multiple screens,
+you’re stepping away from the Activity back stack and with that opt out of the
+automatic state saving the system provides, leaving you to deal with this
+yourself.</p>
+
+<p>Properly managing application state now consists of two things:</p>
+
+<ul>
+  <li>Not only do you have to save the entire navigational state including the
+view hierarchies for each individual screen,</li>
+  <li>You must also handle view state restoration when navigation <em>back</em> to a
+screen.</li>
+</ul>
+
+<p>When using Fragments, the FragmentManager takes on the responsibility of doing
+all this.</p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

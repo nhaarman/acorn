@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Background | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Background" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/background/" />
+<meta property="og:url" content="http://localhost:4000/background/" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Background","@type":"WebPage","url":"http://localhost:4000/background/","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="background">Background</h1>
+
+<p>Building modular, stable and testable applications is difficult when using the 
+components provided by the Android framework.<br />
+Activities and Fragments carry a lot of responsibilities: they are designed to
+handle the lifecycle, the UI, permission callbacks, navigation to other screens
+and much more.<br />
+Screen navigation is typically handled by the screens themselves using
+<code class="highlighter-rouge">Activity.startActivity</code> or dealing with the <code class="highlighter-rouge">FragmentManager</code>, leading to 
+extensive coupling.</p>
+
+<p>Testing code that uses these framework-provided components isn’t trivial either:
+often you need to run platform code which isn’t available on the JVM. 
+This requires you to execute the tests on an actual device or an emulator, which 
+can be painfully slow.</p>
+
+<p>Activities and Fragments also don’t provide the flexibility you need to create
+your own screen transition animations.</p>
+
+<p>This section covers some background: what are the characteristics of mobile 
+applications and how can all this be modeled in a modular and testable way?</p>
+
+<ul>
+  <li><a href="mobile_applications">Mobile Applications</a></li>
+  <li><a href="application_flow">Application Flow</a></li>
+  <li><a href="saving_and_restoring_state">Saving and restoring state</a></li>
+  <li><a href="deep_linking">Deep Linking</a></li>
+</ul>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Scene Management | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Scene Management" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/concepts/navigators/scene_management.html" />
+<meta property="og:url" content="http://localhost:4000/concepts/navigators/scene_management.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Scene Management","@type":"WebPage","url":"http://localhost:4000/concepts/navigators/scene_management.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="scene-management">Scene Management</h1>
+
+<p>As Scenes have absolutely no knowledge of any navigation flow, they will need to
+notify a component that does of events that should trigger a change in scenery.
+Naturally, a Navigator is perfect for that.
+The Navigator can listen to a Scene’s events and react accordingly, for example
+by switching to another Scene.</p>
+
+<p>Depending on the way the flow is modelled in the Navigator, the lifecycle of its
+Scenes can behave differently.
+In case of a stack for example, the Scene that is being replaced can either be
+made inactive or be destroyed depending on whether a new Scene is pushed onto
+the stack, or whether the Scene is popped off of the stack.
+A Navigator that does not use a back stack may have completely different behavior
+with respect to its Scene’s lifecycles.
+This means that the Navigator is completely responsible for the lifecycle of the
+Scenes, and <em>must</em> make the proper calls at the proper times.</p>
+
+<p>When implementing your own Navigator instance, a few general guidelines can be
+followed:</p>
+
+<ul>
+  <li>Scenes need to be started and stopped.
+When a Scene becomes the active Scene, a call to its <code class="highlighter-rouge">onStart</code> method should
+be made.
+If there already was an active Scene, its <code class="highlighter-rouge">onStop</code> method may be called.</li>
+  <li>Scenes must be destroyed.
+If a Scene has served its purpose in the Navigator, a call to its <code class="highlighter-rouge">onDestroy</code>
+method must be made.
+If the Scene was active at this point, a call to its <code class="highlighter-rouge">onStop</code> method <em>must be
+made before</em> the call to the <code class="highlighter-rouge">onDestroy</code> method.</li>
+  <li>Scenes follow the Navigator lifecycle.
+If a Navigator enters its ‘stopped’ state, all of its Scene should enter their
+‘stopped’ state as well.
+If a Navigator is destroyed, Scenes must be destroyed as well following their
+lifecycle.</li>
+</ul>
+
+<p>These guidelines are just that: guidelines.
+If it makes sense for your Navigator to deviate from them, please do.
+Just make sure you understand the consequences if you do.</p>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

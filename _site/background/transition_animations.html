@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Transition animations | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Transition animations" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/background/transition_animations.html" />
+<meta property="og:url" content="http://localhost:4000/background/transition_animations.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"Transition animations","@type":"WebPage","url":"http://localhost:4000/background/transition_animations.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="transition-animations">Transition animations</h1>
+
+<p>Transition animations provide context and visual connections between different
+states through motion and transformations between common elements<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.
+When navigating from one Activity to another, Android performs a default
+window animation to indicate a change of scenery.
+Overriding the default animations can be a powerful tool to provide this visual
+connection between scenes, and should be a carefully designed system.</p>
+
+<p>There are two main types of transitions:</p>
+
+<ul>
+  <li>Screen transitions</li>
+  <li>Shared element transitions</li>
+</ul>
+
+<p>For each of these transition types, it is possible to go forward to a new screen,
+or backward to a previous screen.</p>
+
+<h3 id="screen-transitions">Screen transitions</h3>
+
+<p>Screen transitions are transitions where the entire layout is replaced by
+another.
+Often, default animations can be used for the transition, such as fading in the
+new layout from the bottom, or sliding in from the right.
+Acorn provides the <code class="highlighter-rouge">FadeInFromBottomTransition</code> and <code class="highlighter-rouge">FadeOutToBottomTransition</code>
+classes that handle these simple default cases.</p>
+
+<h3 id="shared-element-transitions">Shared element transitions</h3>
+
+<p>You can also choose to leave the main layout intact, and only add new views to
+it, while removing others.
+This leaves you with full control on whether to keep a toolbar or navigation
+drawer in place, while replacing only a content view.</p>
+
+<p>It is also possible to actually start a very specific animation from a specific
+point, such as a button.
+When executing the transition you need to know details on what was clicked to
+determine how to start the animation.
+Likewise when navigating back to the previous screen, you need to know how to
+reverse the animation.</p>
+
+<hr />
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>https://developer.android.com/training/transitions/start-activity <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

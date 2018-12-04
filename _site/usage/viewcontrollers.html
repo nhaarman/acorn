@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/assets/css/style.css?v=a40f7d1f40b0b80a960c57ea890a68c9b4568167">
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>ViewControllers | Acorn</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="ViewControllers" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mastering Android navigation" />
+<meta property="og:description" content="Mastering Android navigation" />
+<link rel="canonical" href="http://localhost:4000/usage/viewcontrollers.html" />
+<meta property="og:url" content="http://localhost:4000/usage/viewcontrollers.html" />
+<meta property="og:site_name" content="Acorn" />
+<script type="application/ld+json">
+{"headline":"ViewControllers","@type":"WebPage","url":"http://localhost:4000/usage/viewcontrollers.html","description":"Mastering Android navigation","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        
+        <a id="forkme_banner" href="http://github.com/nhaarman/acorn">View on GitHub</a>
+        
+
+        <h1 id="project_title">Acorn</h1>
+        <h2 id="project_tagline">Mastering Android navigation</h2>
+
+        
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        
+        <a href="http://localhost:4000">< Home</a>
+        
+        <h1 id="viewcontrollers">ViewControllers</h1>
+
+<p>The <code class="highlighter-rouge">ViewController</code> interface extends the <code class="highlighter-rouge">Container</code> interface to provide a
+bridge between the view layer and the <code class="highlighter-rouge">Scene</code>, ‘controlling’ the view.
+For every Scene and its Container a ViewController implementation needs to be 
+available to attach to the Scene.</p>
+
+<h2 id="implementing-the-viewcontroller">Implementing the ViewController</h2>
+
+<p>The ViewController interface contains a <code class="highlighter-rouge">view</code> property that provides access to
+the root of the Scene layout.
+When creating a ViewController for a specific Scene/Container combination, it 
+should implement its Container interface:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">Styyring</span>
+    
+    <span class="k">fun</span> <span class="nf">registerClickListener</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="n">Unit</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">MyViewController</span><span class="p">(</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">view</span><span class="p">:</span> <span class="n">ViewGroup</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">ViewController</span><span class="p">,</span> <span class="n">MyContainer</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="s">""</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">view</span><span class="p">.</span><span class="n">findViewById</span><span class="p">&lt;</span><span class="n">TextView</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">).</span><span class="n">text</span> <span class="p">=</span> <span class="n">value</span>
+        <span class="p">}</span>
+        
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">registerClickListener</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="n">Unit</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">view</span><span class="p">.</span><span class="n">findViewById</span><span class="p">&lt;</span><span class="n">Button</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">button</span><span class="p">).</span><span class="n">setOnClickListener</span> <span class="p">{</span> <span class="n">f</span><span class="p">()</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="restoring-view-state">Restoring view state</h2>
+
+<p>To support view state restoration your <code class="highlighter-rouge">Container</code> interface needs to implement 
+the <code class="highlighter-rouge">RestorableContainer</code> interface, which provides the necessary 
+<code class="highlighter-rouge">saveInstanceState</code> and <code class="highlighter-rouge">restoreInstanceState</code> methods.
+ViewController implementations are responsible for implementing these methods
+properly, by saving and restoring the view’s hierarchy state:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyContainer</span> <span class="p">:</span> <span class="n">RestorableContainer</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">MyViewController</span><span class="p">(</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">view</span><span class="p">:</span> <span class="n">View</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">ViewController</span><span class="p">,</span> <span class="n">MyContainer</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="s">""</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">view</span><span class="p">.</span><span class="n">findViewById</span><span class="p">&lt;</span><span class="n">TextView</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">).</span><span class="n">text</span> <span class="p">=</span> <span class="n">value</span>
+        <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">saveInstanceState</span><span class="p">()</span> <span class="p">=</span> <span class="n">containerState</span> <span class="p">{</span>
+        <span class="n">it</span><span class="p">.</span><span class="n">hierarchyState</span> <span class="p">=</span> <span class="n">view</span><span class="p">.</span><span class="n">saveHierarchyState</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">restoreInstanceState</span><span class="p">(</span><span class="n">bundle</span><span class="p">:</span> <span class="n">ContainerState</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">bundle</span><span class="p">.</span><span class="n">hierarchyState</span><span class="o">?.</span><span class="n">let</span> <span class="p">{</span> <span class="n">view</span><span class="p">.</span><span class="n">restoreHierarchyState</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+    
+       <span class="k">private</span> <span class="kd">var</span> <span class="py">ContainerState</span><span class="p">.</span><span class="n">hierarchyState</span><span class="p">:</span> <span class="n">SparseArray</span><span class="p">&lt;</span><span class="n">Parcelable</span><span class="p">&gt;?</span>
+           <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="k">get</span><span class="p">(</span><span class="s">"hierarchy_state"</span><span class="p">)</span>
+           <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+               <span class="n">setUnchecked</span><span class="p">(</span><span class="s">"hierarchy_state"</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+           <span class="p">}</span>
+    <span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Doing this for every view can be tedious, and thus Acorn provides a special 
+<code class="highlighter-rouge">RestorableViewController</code> interface that implements this for you.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyViewController</span><span class="p">(</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">view</span><span class="p">:</span> <span class="n">View</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">RestorableViewController</span><span class="p">,</span> <span class="n">MyContainer</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="s">""</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">view</span><span class="p">.</span><span class="n">findViewById</span><span class="p">&lt;</span><span class="n">TextView</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">).</span><span class="n">text</span> <span class="p">=</span> <span class="n">value</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you need to save additional custom state, you can invoke the super method.</p>
+
+<h4 id="kotlin-android-extensions">Kotlin Android Extensions</h4>
+
+<p>The <a href="https://kotlinlang.org/docs/tutorials/android-plugin.html">Kotlin Android Extensions</a>
+plugin provides a view binding functionality to save you from tedious 
+<code class="highlighter-rouge">findViewById</code> calls.
+The <code class="highlighter-rouge">RestorableViewController</code> interface also extends the <code class="highlighter-rouge">LayoutContainer</code>
+interface this plugin provides, saving you some hassle.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyViewController</span><span class="p">(</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">view</span><span class="p">:</span> <span class="n">View</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">RestorableViewController</span><span class="p">,</span> <span class="n">MyContainer</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="kd">var</span> <span class="py">text</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="s">""</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">view</span><span class="p">.</span><span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">value</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="creating-viewcontrollers">Creating ViewControllers</h2>
+
+<p>When a new Scene becomes active, the view layer needs to obtain a reference to 
+the proper ViewController implementation.<br />
+There are two main ways of providing the system with a ViewController instance:
+using the <code class="highlighter-rouge">ViewControllerFactory</code> interface, or by providing a custom 
+<code class="highlighter-rouge">Transition</code> implementation.</p>
+
+<h3 id="viewcontrollerfactory">ViewControllerFactory</h3>
+
+<p>The <code class="highlighter-rouge">ViewControllerFactory</code> interface is used when the system needs to show the 
+layout for a Scene from scratch. 
+This can occur to show the initial screen to start the application with, but it 
+is also used to create views after configuration changes or process deaths.
+This means that for every Scene in your application, some ViewControllerFactory
+instance must be able to create a ViewController for that Scene.</p>
+
+<p>The ViewControllerFactory interface provides the <code class="highlighter-rouge">supports(Scene)</code> and
+<code class="highlighter-rouge">viewControllerFor(Scene, ViewGroup)</code> functions.
+The <code class="highlighter-rouge">supports</code> function is used to test whether the implementation is capable of
+creating a ViewController instance, the <code class="highlighter-rouge">viewControllerFor</code> function is invoked
+to actually create the instance.
+In the <code class="highlighter-rouge">viewControllerFor</code> function the implementation needs to inflate the 
+proper layout and return an appropriate ViewController instance.</p>
+
+<p>The ViewControllerFactory can be implemented as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyViewControllerFactory</span> <span class="p">:</span> <span class="n">ViewControllerFactory</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">supports</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;*&gt;):</span> <span class="n">Boolean</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">scene</span><span class="p">.</span><span class="n">key</span> <span class="p">==</span> <span class="n">SceneKey</span><span class="p">.</span><span class="n">defaultKey</span><span class="p">&lt;</span><span class="n">MyScene</span><span class="p">&gt;()</span>
+    <span class="p">}</span>
+    
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">viewControllerFor</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;*&gt;,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">):</span> <span class="n">ViewController</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">layout</span> <span class="p">=</span> <span class="n">LayoutInflater</span><span class="p">.</span><span class="n">from</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">context</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">inflate</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">my_layout</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="n">MyViewController</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>ViewControllerFactories can be composed, and thus modularity remains guaranteed.
+See <a href="viewcontrollerfactories">ViewControllerFactories</a> for details on creating ViewControllerFactories.</p>
+
+<h4 id="providesview">ProvidesView</h4>
+
+<p>Having to maintain a decoupled mapping from Scenes to ViewControllers can be 
+error-prone, despite the fact that it provides true decoupling from the Android
+framework.
+For convenience, Scenes can also implement the <code class="highlighter-rouge">ViewControllerFactory</code> interface
+themselves, keeping related code together.</p>
+
+<p>The <code class="highlighter-rouge">ProvidesView</code> interface extends the <code class="highlighter-rouge">ViewControllerFactory</code> to make this
+even easier and take away some of the boilerplate code.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyScene</span> <span class="p">:</span> <span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;,</span> <span class="n">ProvidesView</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">createViewController</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">)</span> <span class="p">:</span> <span class="n">ViewController</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">layout</span> <span class="p">=</span> <span class="n">LayoutInflater</span><span class="p">.</span><span class="n">from</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">context</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">inflate</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">my_layout</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="n">MyViewController</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="transition-animations">Transition Animations</h3>
+
+<p>The ViewControllerFactory is only used if the Activity needs to display the 
+Scene from scratch, or if there is no custom transition animation defined to 
+animate the transition between the previous and the new Scene.
+When a transition animation <em>is</em> defined for the Scene transition, the 
+<code class="highlighter-rouge">Transition</code> implementation is responsible for creating the ViewController.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyTransition</span> <span class="p">:</span> <span class="n">Transition</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">execute</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callback</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* ... */</span>
+    
+        <span class="kd">val</span> <span class="py">newLayout</span><span class="p">:</span> <span class="n">View</span> <span class="p">=</span> <span class="cm">/* ... */</span>
+        
+        <span class="cm">/* ... */</span>
+    <span class="p">}</span>
+    
+    <span class="k">private</span> <span class="k">fun</span> <span class="nf">onAnimationEnd</span><span class="p">(</span><span class="n">newLayout</span><span class="p">:</span> <span class="n">View</span><span class="p">,</span> <span class="n">callback</span> <span class="p">:</span> <span class="n">Callback</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">callback</span><span class="p">.</span><span class="n">onComplete</span><span class="p">(</span><span class="n">MyViewController</span><span class="p">(</span><span class="n">newLayout</span><span class="p">))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+    </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        
+        <p class="copyright">Acorn maintained by <a
+                href="http://github.com/nhaarman">nhaarman</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>
