@@ -30,6 +30,8 @@
 /.idea/navEditor.xml
 
 .wiki
+.docs
+
 /.idea/markdown-exported-files.xml
 /.idea/kotlinScripting.xml
 /.idea/kotlinc.xml
