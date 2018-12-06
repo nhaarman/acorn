@@ -46,7 +46,7 @@ internal class WizardNavigatorTest {
     private val scene3 = spy(SavableTestScene(3))
 
     private val navigator = TestWizardNavigator(listOf(scene1, scene2))
-    private val listener = TestListener()
+    private val listener = spy(TestListener())
 
     @Nested
     inner class NavigatorStates {
@@ -79,6 +79,40 @@ internal class WizardNavigatorTest {
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
+        }
+
+        @Test
+        fun `removed listener does not get notified of scene`() {
+            /* Given */
+            val disposable = navigator.addNavigatorEventsListener(listener)
+            disposable.dispose()
+
+            /* When */
+            navigator.onStart()
+
+            /* Then */
+            verify(listener, never()).scene(any(), anyOrNull())
+        }
+
+        @Test
+        fun `non disposed listener is not disposed`() {
+            /* Given */
+            val disposable = navigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(disposable.isDisposed()).toBe(false)
+        }
+
+        @Test
+        fun `disposed listener is disposed`() {
+            /* Given */
+            val disposable = navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            disposable.dispose()
+
+            /* Then */
+            expect(disposable.isDisposed()).toBe(true)
         }
 
         @Test
@@ -954,7 +988,7 @@ internal class WizardNavigatorTest {
         }
     }
 
-    private class TestListener : Navigator.Events {
+    private open class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Pair<Scene<out Container>, TransitionData?>>()
         val lastScene get() = scenes.lastOrNull()?.first as SavableTestScene?

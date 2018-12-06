@@ -41,6 +41,19 @@ internal class BaseSavedStateTest {
     }
 
     @Test
+    fun `clearing value`() {
+        /* Given */
+        state["key"] = "test"
+        state.clear("key")
+
+        /* When */
+        val result: String? = state["key"]
+
+        /* Then */
+        expect(result).toBeNull()
+    }
+
+    @Test
     fun `valid String value`() {
         /* Given */
         state["key"] = "Hello!"
@@ -182,5 +195,23 @@ internal class BaseSavedStateTest {
 
         /* Then */
         expect(result).toBe(savedState { it["foo"] = 3 })
+    }
+
+    @Test
+    fun `entries contains proper values`() {
+        /* Given */
+        state["key1"] = "test"
+        state["key2"] = 3
+
+        /* When */
+        val result = state.entries
+
+        /* Then */
+        expect(result).toBe(
+            mapOf(
+                "key1" to "test",
+                "key2" to 3
+            ).entries
+        )
     }
 }

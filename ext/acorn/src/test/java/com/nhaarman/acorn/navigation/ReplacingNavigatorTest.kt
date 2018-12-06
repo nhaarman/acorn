@@ -44,7 +44,7 @@ internal class ReplacingNavigatorTest {
 
     private val navigator = TestReplacingNavigator(null)
 
-    private val listener = TestListener()
+    private val listener = spy(TestListener())
 
     @Nested
     inner class NavigatorStates {
@@ -125,6 +125,40 @@ internal class ReplacingNavigatorTest {
 
             /* Then */
             expect(listener.lastScene).toBe(initialScene)
+        }
+
+        @Test
+        fun `removed listener does not get notified of scene`() {
+            /* Given */
+            val disposable = navigator.addNavigatorEventsListener(listener)
+            disposable.dispose()
+
+            /* When */
+            navigator.onStart()
+
+            /* Then */
+            verify(listener, never()).scene(any(), anyOrNull())
+        }
+
+        @Test
+        fun `non disposed listener is not disposed`() {
+            /* Given */
+            val disposable = navigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(disposable.isDisposed()).toBe(false)
+        }
+
+        @Test
+        fun `disposed listener is disposed`() {
+            /* Given */
+            val disposable = navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            disposable.dispose()
+
+            /* Then */
+            expect(disposable.isDisposed()).toBe(true)
         }
 
         @Test
@@ -588,7 +622,7 @@ internal class ReplacingNavigatorTest {
         }
     }
 
-    private class TestListener : Navigator.Events {
+    private open class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Scene<out Container>>()
         val lastScene get() = scenes.lastOrNull() as SavableTestScene?
