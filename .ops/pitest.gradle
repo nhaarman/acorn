@@ -1,0 +1,51 @@
+def hasAndroid = plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")
+
+if (!hasAndroid && project.name != "ext-acorn-android-lint") {
+    project.apply plugin: "info.solidsoft.pitest"
+
+    pitest {
+        targetClasses = ["com.*", "acorn.*"]
+        pitestVersion = "1.4.3"
+        testPlugin = "junit5"
+        threads = 4
+        outputFormats = ["XML", "HTML"]
+        timestampedReports = false
+        avoidCallsTo = [
+                "kotlin.jvm.internal",
+                "com.nhaarman.acorn.Logger",
+                "com.nhaarman.acorn.internal.LoggingKt"
+        ]
+        excludedMethods = [
+                "toString",
+                "equals",
+                "hashCode"
+        ]
+        mutators = [
+                "INVERT_NEGS",
+                "RETURN_VALS",
+//                "INLINE_CONSTS", // False positives with default parameters
+                "MATH",
+                "VOID_METHOD_CALLS",
+                "NEGATE_CONDITIONALS",
+                "CONDITIONALS_BOUNDARY",
+                "INCREMENTS",
+                "REMOVE_INCREMENTS",
+                "NON_VOID_METHOD_CALLS",
+                "CONSTRUCTOR_CALLS",
+                "REMOVE_CONDITIONALS_EQ_IF",
+                "REMOVE_CONDITIONALS_EQ_ELSE",
+                "REMOVE_CONDITIONALS_ORD_IF",
+                "REMOVE_CONDITIONALS_ORD_ELSE",
+                "TRUE_RETURNS",
+                "FALSE_RETURNS",
+                "PRIMITIVE_RETURNS",
+                "EMPTY_RETURNS",
+                "NULL_RETURNS",
+                "EXPERIMENTAL_MEMBER_VARIABLE",
+                "EXPERIMENTAL_SWITCH",
+                "EXPERIMENTAL_ARGUMENT_PROPAGATION",
+                "EXPERIMENTAL_NAKED_RECEIVER",
+//                "EXPERIMENTAL_BIG_INTEGER"
+        ]
+    }
+}
