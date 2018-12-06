@@ -171,6 +171,40 @@ internal class CompositeReplacingNavigatorTest {
             }
 
             @Test
+            fun `removed listener does not get notified of scene`() {
+                /* Given */
+                val disposable = navigator.addNavigatorEventsListener(listener)
+                disposable.dispose()
+
+                /* When */
+                navigator.onStart()
+
+                /* Then */
+                verify(listener, never()).scene(any(), anyOrNull())
+            }
+
+            @Test
+            fun `non disposed listener is not disposed`() {
+                /* Given */
+                val disposable = navigator.addNavigatorEventsListener(listener)
+
+                /* Then */
+                expect(disposable.isDisposed()).toBe(false)
+            }
+
+            @Test
+            fun `disposed listener is disposed`() {
+                /* Given */
+                val disposable = navigator.addNavigatorEventsListener(listener)
+
+                /* When */
+                disposable.dispose()
+
+                /* Then */
+                expect(disposable.isDisposed()).toBe(true)
+            }
+
+            @Test
             fun `starting navigator notifies listeners of scene`() {
                 /* Given */
                 navigator.addNavigatorEventsListener(listener)

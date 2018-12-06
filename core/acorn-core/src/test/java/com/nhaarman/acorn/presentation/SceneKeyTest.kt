@@ -18,13 +18,69 @@
 
 package com.nhaarman.acorn.presentation
 
+import com.nhaarman.acorn.presentation.SceneKey.Companion.defaultKey
+import com.nhaarman.expect.expect
 import org.junit.jupiter.api.Test
 
 internal class SceneKeyTest {
 
+    val testSceneName = "com.nhaarman.acorn.presentation.SceneKeyTest\$TestScene"
+
     @Test
-    fun sceneKeyEquality() {
+    fun `sceneKey value`() {
+        /* When */
+        val key = SceneKey("test")
+
+        /* Then */
+        expect(key.value).toBe("test")
+    }
+
+    @Test
+    fun `sceneKey equality`() {
         assert(SceneKey("a") == SceneKey("a"))
         assert(SceneKey("a") != SceneKey("b"))
     }
+
+    @Test
+    fun `creating key with 'from KClass'`() {
+        val actual = SceneKey.from(TestScene::class)
+        val expected = SceneKey(testSceneName)
+
+        expect(actual).toBe(expected)
+    }
+
+    @Test
+    fun `creating key with 'from Class'`() {
+        val actual = SceneKey.from(TestScene::class.java)
+        val expected = SceneKey(testSceneName)
+
+        expect(actual).toBe(expected)
+    }
+
+    @Test
+    fun `creating key from default key`() {
+        val actual = SceneKey.defaultKey<TestScene>()
+        val expected = SceneKey(testSceneName)
+
+        expect(actual).toBe(expected)
+    }
+
+    @Test
+    fun `creating key from default key extension`() {
+        val actual = TestScene().defaultKey()
+        val expected = SceneKey(testSceneName)
+
+        expect(actual).toBe(expected)
+    }
+
+    @Test
+    fun `test toString`() {
+        /* Given */
+        val key = SceneKey("test")
+
+        /* Then */
+        expect(key.toString()).toBe("SceneKey(value=test)")
+    }
+
+    class TestScene : Scene<Container>
 }

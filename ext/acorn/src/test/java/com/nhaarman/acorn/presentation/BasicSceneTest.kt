@@ -66,7 +66,29 @@ class BasicSceneTest {
         expect(view2.state).toBe(3)
     }
 
-    private class TestBasicScene : BasicScene<TestView>() {
+    @Test
+    fun `view state is restored between scenes`() {
+        /* Given */
+        val view1 = TestView(1)
+        val view2 = TestView(2)
+
+        /* When */
+        scene.attach(view1)
+        view1.state = 3
+        val state = view1.saveInstanceState()
+
+        val newScene = TestBasicScene(state)
+        newScene.attach(view2)
+
+        /* Then */
+        expect(view2.state).toBe(3)
+    }
+
+    private class TestBasicScene(
+        containerState: ContainerState? = null
+    ) : BasicScene<TestView>(
+        containerState
+    ) {
 
         val view get() = attachedView
     }

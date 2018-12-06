@@ -105,7 +105,7 @@ abstract class WizardNavigator(
         return object : DisposableHandle {
 
             override fun isDisposed(): Boolean {
-                return listener in state.listeners
+                return listener !in state.listeners
             }
 
             override fun dispose() {
