@@ -1,86 +1,63 @@
 # Acorn
 
-Acorn is a carefully designed library aimed to make navigation in applications
-easier.
+Acorn is a carefully designed library that brings true modularity to your 
+presentation layer and allows you to have full control over your transition
+animations.
 
-Navigation on Android is complex, since the default way of navigating through
-and using Activities or Fragments severely violate separation of concerns.
-This project aims to be able to reclaim this separation by clearly providing a
-separation between UI, presentation and navigation.
+Activities and Fragments restrict application development in such a way that
+creating modular, testable components becomes a difficult thing to do.
+Furthermore, implementing transition animations to visualize going from one 
+screen to another with either of these components is non trivial.
 
-<p align="center">
-  <br>
-  <img src=".github/art/diagram_readme.png">
-</p>
+Acorn provides modularity by grouping specific sets of screens together as 
+building blocks, building up your application into several composable flows.  
+The view layer is decoupled from navigation and reacts to screen changes, giving
+you full control over transition animations.
 
-The core of Acorn consists of two interfaces: `Scene` and `Navigator`.
+You can read more about Acorn on the 
+[documentation website](https://nhaarman.github.io/Acorn).
 
-Scenes represent destinations in the application where the user can navigate to.
-Often these are the screens of the application, but they can represent any
-navigational node in the application.
+## Easy setup
 
-Navigators control the navigational state of the application.
-They respond to events emitted by Scenes and update the navigational state
-accordingly, for example by changing the active Scene.
-
-Coupling to Android, the Activity subscribes to changes in Scenes by the
-Navigator, and provides the user interface.
-
-## Extensibility
-
-Acorn is fully extensible.
-The core artifacts (`acorn` and `acorn-android`) provide interfaces that are
-simple but powerful enough to form a basis for writing the presentation layer
-of mobile applications.
-
-The library also provides two base extension artifacts that can be used as a
-basis for the presentation layer of your application.  
-`ext-acorn` provides default base implementations for working with Scenes and
-Navigators.  
-`ext-acorn-android` provides a mechanism to couple the Android framework to
-your application.
-
-Lastly, there are some helper extension artifacts that provide useful utility
-implementations which use external dependencies, such as RxJava or Android
-LiveData.
-
-## Setup
-
-Acorn currently only exists as a SNAPSHOT.
-Gradle users can add the following line to their `repositories` section:
+To get started quickly, you can include the `ext-acorn-android` dependency, 
+which includes the necessary base to create an app using Acorn.
 
 ```groovy
-maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+implementation "com.nhaarman.acorn.ext:acorn-android:x.x.x"
 ```
 
-You can declare the dependencies as follows, replacing `x.x.x` by the latest
-snapshot version:
+If you use `androidx.appcompat`, you can use `ext-acorn-android-appcompat` instead:
 
 ```groovy
-// To get started quickly, add the following artifacts
-implementation "com.nhaarman.acorn.ext:acorn:x.x.x-SNAPSHOT"
-implementation "com.nhaarman.acorn.ext:acorn-android:x.x.x-SNAPSHOT"
+implementation "com.nhaarman.acorn.ext:acorn-android-appcompat:x.x.x"
 ```
 
-As mentioned before, Acorn consists of a core and some extension artifacts.
-The core artifacts live in the `com.nhaarman.acorn` group:
+Using the dependencies above will transitively pull all other dependencies you
+need as well.  
 
-|Group| Artifact | Description | Dependencies|
-|-----|----------|-------------|-------------|
-|`com.nhaarman.acorn`| `acorn` | The core library, containing only the interfaces for Acorn without any functionality. | - |
-|`com.nhaarman.acorn`| `acorn-android` | The core library for Android, containing only the interfaces for working with Acorn on Android. | `com.nhaarman.acorn:acorn` |
+For more advanced configuration, see 
+[Setup](https://nhaarman.github.io/Acorn/usage/setup.html).
 
-The extension libraries provide default implementations to the core, and live
-in the `com.nhaarman.acorn.ext` group:
+## Getting started
 
-|Group| Artifact | Description | Dependencies|
-|-----|----------|-------------|-------------|
-|`com.nhaarman.acorn.ext`| `acorn` | The main extension on the Acorn core, providing default implementations. |`com.nhaarman.acorn:acorn`|
-|`com.nhaarman.acorn.ext`| `acorn-rx` | An RxJava extension for Acorn. |`com.nhaarman.acorn:acorn`|
-|`com.nhaarman.acorn.ext`| `acorn-testing` | Provides testing utilities for JVM tests. |`com.nhaarman.acorn:acorn`|
-||||
-|`com.nhaarman.acorn.ext`| `acorn-android` | The main extension on the Acorn-Android core, providing default implementations. |`com.nhaarman.acorn:acorn`<br>`com.nhaarman.acorn:acorn-android`|
-|`com.nhaarman.acorn.ext`| `acorn-android-testing` | Provides testing facilities for instrumentation testing with Acorn-Android. |`com.nhaarman.acorn:acorn`<br>`com.nhaarman.acorn:acorn-android`<br>`com.nhaarman.acorn.ext:acorn-android`|
-|`com.nhaarman.acorn.ext`| `acorn-android-timber` | Provides a `TimberLogger` |`com.nhaarman.acorn:acorn`<br>`com.nhaarman.acorn.ext:acorn`|
-|`com.nhaarman.acorn.ext`| `acorn-android-lifecycle` | Provides `LifecycleScene` |`com.nhaarman.acorn:acorn`<br>`com.nhaarman.acorn.ext:acorn`|
+Acorn has several [sample projects](samples) introducing the different concepts.
+You can also visit the [Getting started](https://nhaarman.github.io/Acorn/usage/getting_started)
+documentation page for more information.
 
+## Building Acorn
+
+Acorn is built with Gradle.
+
+ - Running `./gradlew test` will run all JVM tests;
+ - Running `./gradlew pitest` will generate [PIT testing reports](http://pitest.org/) for JVM modules;
+ - Running `./test` will run the entire test suite, you will need to have a connected Android device with API 23+.
+ - Running `./gradlew publishToMavenLocal` will install a copy of all the libraries in your local maven repository.
+ 
+### Versioning
+
+Acorn follows [semantic versioning](https://semver.org/), and will determine the
+version number based on [git tags](.ops/git.gradle).
+
+### Linter
+
+Acorn uses [ktlint](https://github.com/shyiko/ktlint) which is enforced in CI.
