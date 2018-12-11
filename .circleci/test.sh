@@ -4,7 +4,6 @@
     test \
     ktlint \
     \
-    :ext-acorn-android:lint \
     :ext-acorn-android-testing:lint \
     :ext-acorn-android-timber:lint \
     :ext-acorn-android-lifecycle:lint \
