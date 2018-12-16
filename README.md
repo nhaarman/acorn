@@ -17,7 +17,9 @@ you full control over transition animations.
 You can read more about Acorn on the 
 [documentation website](https://nhaarman.github.io/Acorn).
 
-## Easy setup
+## Easy setup [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.nhaarman.acorn/acorn/badge.png)](https://maven-badges.herokuapp.com/maven-central/com.nhaarman.acorn/acorn)
+
+Acorn is hosted on Maven Central.
 
 To get started quickly, you can include the `ext-acorn-android` dependency, 
 which includes the necessary base to create an app using Acorn.
@@ -57,6 +59,9 @@ Acorn is built with Gradle.
 
 Acorn follows [semantic versioning](https://semver.org/), and will determine the
 version number based on [git tags](.ops/git.gradle).
+
+**Warning!** Acorn's API *may* not have stabilized yet, and breaking API changes
+may occur until 1.0 is reached.
 
 ### Linter
 
