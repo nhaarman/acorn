@@ -4,7 +4,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 
     configurations.maybeCreate("pitest")
@@ -34,7 +33,12 @@ subprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
+        jcenter {
+            content {
+                includeGroup "com.andreapivetta.kolor"
+                includeGroup "org.jetbrains.trove4j"
+            }
+        }
     }
 
     project.apply from: "$rootDir/dependencies.gradle"
