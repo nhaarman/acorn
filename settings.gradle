@@ -22,6 +22,8 @@ include(":samples:hello-startactivity")
 include(":samples:hello-sharedata")
 include(":samples:hello-transitionanimation")
 
+include(":samples:transitionanimation")
+
 include(":samples:notes-app")
 include(":samples:notes-app:android")
 

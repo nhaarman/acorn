@@ -1,0 +1,41 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+}
+
+android {
+    defaultConfig {
+        minSdkVersion(23)
+    }
+}
+
+dependencies {
+    implementation project(":ext-acorn-android-appcompat")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    implementation "androidx.core:core-ktx"
+    implementation "com.squareup.picasso:picasso:2.71828"
+
+    implementation "com.google.android.material:material"
+    implementation "androidx.constraintlayout:constraintlayout"
+    implementation "androidx.appcompat:appcompat"
+
+    testImplementation "com.nhaarman:expect.kt"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+
+    debugImplementation project(":ext-acorn-android-testing")
+    androidTestImplementation "junit:junit"
+    androidTestImplementation "com.nhaarman:expect.kt"
+    androidTestImplementation "androidx.test.espresso:espresso-core"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib"
+    androidTestImplementation "androidx.test:runner"
+    androidTestImplementation "androidx.test:rules"
+}
+
+androidExtensions {
+    experimental = true
+}
