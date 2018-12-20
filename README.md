@@ -14,7 +14,9 @@ building blocks, building up your application into several composable flows.
 The view layer is decoupled from navigation and reacts to screen changes, giving
 you full control over transition animations.
 
-You can read more about Acorn on the 
+![](https://i.imgur.com/IMJGWBJ.gif)
+
+You can read more about Acorn on the
 [documentation website](https://nhaarman.github.io/Acorn).
 
 ## Easy setup [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.nhaarman.acorn/acorn/badge.png)](https://maven-badges.herokuapp.com/maven-central/com.nhaarman.acorn/acorn)
