@@ -1,8 +1,8 @@
 <component name="CopyrightManager">
   <settings>
     <module2copyright>
-      <element module="Production .kt" copyright="GNU GPLv3" />
-      <element module="Test .kt" copyright="GNU GPLv3" />
+      <element module="Production .kt" copyright="Apache 2.0" />
+      <element module="Test .kt" copyright="Apache 2.0" />
     </module2copyright>
   </settings>
 </component>

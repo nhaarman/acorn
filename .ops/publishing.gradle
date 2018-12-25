@@ -51,12 +51,12 @@ publishing {
 
             pom {
                 name = "Acorn"
-                description = "Creating modular, stable and testable Android apps"
+                description = "Mastering Android Navigation"
                 url = "https://github.com/nhaarman/Acorn"
                 licenses {
                     license {
-                        name = "GNU General Public License v3.0"
-                        url = "http://www.gnu.org/licenses/gpl-3.0.html"
+                        name = "Apache License 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0"
                     }
                 }
 
