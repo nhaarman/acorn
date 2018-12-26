@@ -36,8 +36,8 @@ dependencyManagement {
         dependency "com.squareup.picasso:picasso:2.71828"
 
         // Notes app
-        dependency "com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha1"
-        dependency "com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha1"
+        dependency "com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2"
+        dependency "com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2"
         dependency "com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0"
         dependency "android.arch.persistence:db-framework:1.1.1"
 
