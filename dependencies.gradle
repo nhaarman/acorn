@@ -31,13 +31,13 @@ dependencyManagement {
         // "Hello"-sample apps
         dependency "androidx.core:core-ktx:1.0.1"
         dependency "com.google.android.material:material:1.0.0"
-        dependency "androidx.constraintlayout:constraintlayout:2.0.0-alpha2"
+        dependency "androidx.constraintlayout:constraintlayout:2.0.0-alpha3"
         dependency "io.reactivex.rxjava2:rxandroid:2.1.0"
         dependency "com.squareup.picasso:picasso:2.71828"
 
         // Notes app
-        dependency "com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha1"
-        dependency "com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha1"
+        dependency "com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2"
+        dependency "com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2"
         dependency "com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0"
         dependency "android.arch.persistence:db-framework:1.1.1"
 
@@ -59,7 +59,7 @@ dependencyManagement {
         dependency "androidx.test:rules:1.1.1"
         dependency "androidx.test.uiautomator:uiautomator:2.2.0"
 
-        def androidToolsVersion = "26.4.0-alpha08"
+        def androidToolsVersion = "26.4.0-alpha09"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"
