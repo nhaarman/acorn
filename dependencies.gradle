@@ -8,7 +8,7 @@ dependencyManagement {
         dependency "androidx.annotation:annotation:1.0.1"
 
         // ext-acorn
-        dependency "io.arrow-kt:arrow-core:0.8.1"
+        dependency "io.arrow-kt:arrow-core:0.8.2"
 
         // ext-acorn-android
         dependency "androidx.appcompat:appcompat:1.0.2"
