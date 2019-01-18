@@ -19,6 +19,7 @@ package com.nhaarman.acorn.android.dispatching
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.view.ViewGroup
 import androidx.annotation.CheckResult
 import com.nhaarman.acorn.android.dispatching.internal.ActivityHandler
 import com.nhaarman.acorn.android.dispatching.internal.DefaultActivityHandler
@@ -122,11 +123,31 @@ class AcornSceneDispatcher internal constructor(
             callback: Callback,
             savedState: SavedState?
         ): AcornSceneDispatcher {
+            return create(
+                activity,
+                activity.contentView,
+                viewControllerFactory,
+                activityControllerFactory,
+                transitionFactory,
+                callback,
+                savedState
+            )
+        }
+
+        fun create(
+            activity: Activity,
+            root: ViewGroup,
+            viewControllerFactory: ViewControllerFactory,
+            activityControllerFactory: ActivityControllerFactory,
+            transitionFactory: TransitionFactory,
+            callback: Callback,
+            savedState: SavedState?
+        ): AcornSceneDispatcher {
             return AcornSceneDispatcher(
                 activity,
                 viewControllerFactory,
                 activityControllerFactory,
-                UIStateUIHandler.create(activity.contentView, transitionFactory),
+                UIStateUIHandler.create(root, transitionFactory),
                 DefaultActivityHandler(
                     ActivityHandlerCallbackAdapter(callback),
                     savedState.activityHandlerState

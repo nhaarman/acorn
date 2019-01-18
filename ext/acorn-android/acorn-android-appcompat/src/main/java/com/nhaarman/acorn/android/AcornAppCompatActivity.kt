@@ -19,11 +19,12 @@ package com.nhaarman.acorn.android
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
-import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
 import com.nhaarman.acorn.android.presentation.ActivityController
+import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
 import com.nhaarman.acorn.android.presentation.ComposingViewControllerFactory
 import com.nhaarman.acorn.android.presentation.NoopActivityControllerFactory
 import com.nhaarman.acorn.android.presentation.NoopViewControllerFactory
@@ -88,6 +89,13 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
         return NoopActivityControllerFactory
     }
 
+    /**
+     * Returns the root [ViewGroup] that is used to inflate Scene views in.
+     */
+    protected open fun provideRootView(): ViewGroup {
+        return findViewById(android.R.id.content)
+    }
+
     private val navigatorProvider: NavigatorProvider by lazy {
         provideNavigatorProvider()
     }
@@ -118,6 +126,7 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
     private val acornDelegate: AcornActivityDelegate by lazy {
         AcornActivityDelegate.from(
             activity = this,
+            root = provideRootView(),
             navigatorProvider = navigatorProvider,
             viewControllerFactory = viewControllerFactory,
             activityControllerFactory = activityControllerFactory,
