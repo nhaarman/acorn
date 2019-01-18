@@ -19,7 +19,9 @@ package com.nhaarman.acorn.android
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import com.nhaarman.acorn.android.internal.contentView
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
 import com.nhaarman.acorn.android.presentation.ActivityController
 import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
@@ -87,6 +89,13 @@ abstract class AcornActivity : Activity() {
         return NoopActivityControllerFactory
     }
 
+    /**
+     * Returns the root [ViewGroup] that is used to inflate Scene views in.
+     */
+    protected open fun provideRootView(): ViewGroup {
+        return contentView
+    }
+
     private val navigatorProvider: NavigatorProvider by lazy {
         provideNavigatorProvider()
     }
@@ -117,6 +126,7 @@ abstract class AcornActivity : Activity() {
     private val acornDelegate: AcornActivityDelegate by lazy {
         AcornActivityDelegate.from(
             activity = this,
+            root = provideRootView(),
             navigatorProvider = navigatorProvider,
             viewControllerFactory = viewControllerFactory,
             activityControllerFactory = activityControllerFactory,

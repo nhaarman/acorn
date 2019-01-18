@@ -19,8 +19,10 @@ package com.nhaarman.acorn.android
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import com.nhaarman.acorn.OnBackPressListener
 import com.nhaarman.acorn.android.dispatching.AcornSceneDispatcher
+import com.nhaarman.acorn.android.internal.contentView
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
 import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
@@ -35,6 +37,7 @@ import com.nhaarman.acorn.state.SavedState
 
 class AcornActivityDelegate private constructor(
     private val activity: Activity,
+    private val root: ViewGroup,
     private val navigatorProvider: NavigatorProvider,
     private val viewControllerFactory: ViewControllerFactory,
     private val activityControllerFactory: ActivityControllerFactory,
@@ -63,6 +66,7 @@ class AcornActivityDelegate private constructor(
     fun onCreate(savedInstanceState: Bundle?) {
         dispatcher = AcornSceneDispatcher.create(
             activity,
+            root,
             viewControllerFactory,
             activityControllerFactory,
             transitionFactory,
@@ -120,8 +124,27 @@ class AcornActivityDelegate private constructor(
             activityControllerFactory: ActivityControllerFactory,
             transitionFactory: TransitionFactory = DefaultTransitionFactory(viewControllerFactory)
         ): AcornActivityDelegate {
+            return from(
+                activity,
+                activity.contentView,
+                navigatorProvider,
+                viewControllerFactory,
+                activityControllerFactory,
+                transitionFactory
+            )
+        }
+
+        fun from(
+            activity: Activity,
+            root: ViewGroup,
+            navigatorProvider: NavigatorProvider,
+            viewControllerFactory: ViewControllerFactory,
+            activityControllerFactory: ActivityControllerFactory,
+            transitionFactory: TransitionFactory = DefaultTransitionFactory(viewControllerFactory)
+        ): AcornActivityDelegate {
             return AcornActivityDelegate(
                 activity,
+                root,
                 navigatorProvider,
                 viewControllerFactory,
                 activityControllerFactory,
