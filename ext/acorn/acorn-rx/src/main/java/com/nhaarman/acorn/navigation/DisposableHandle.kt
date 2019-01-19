@@ -16,16 +16,7 @@
 
 package com.nhaarman.acorn.navigation
 
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-
-/**
- * Adds given [disposableHandle] as a [Disposable] to the receiving
- * [CompositeDisposable].
- */
-operator fun CompositeDisposable.plusAssign(disposableHandle: DisposableHandle) {
-    add(disposableHandle.asDisposable())
-}
 
 /**
  * Wraps the receiving [DisposableHandle] as a [Disposable].
