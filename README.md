@@ -14,7 +14,7 @@ building blocks, building up your application into several composable flows.
 The view layer is decoupled from navigation and reacts to screen changes, giving
 you full control over transition animations.
 
-![](https://i.imgur.com/IMJGWBJ.gif)
+![](https://cdn-images-1.medium.com/max/800/1*_PXlm-IPwZNH2mKeTIAizg.gif)
 
 You can read more about Acorn on the
 [documentation website](https://nhaarman.github.io/Acorn).
