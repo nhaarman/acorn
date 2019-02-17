@@ -51,7 +51,7 @@ dependencyManagement {
         dependency "org.junit.jupiter:junit-jupiter-api:5.3.2"
         dependency "org.junit.jupiter:junit-jupiter-engine:5.3.2"
 
-        dependency "com.github.shyiko:ktlint:0.29.0"
+        dependency "com.github.shyiko:ktlint:0.30.0"
 
         dependency "androidx.test.espresso:espresso-core:3.1.1"
         dependency "androidx.test.espresso:espresso-contrib:3.1.1"
@@ -74,6 +74,19 @@ allprojects { project ->
                 if (dependency.requested.name in ["kotlin-stdlib", "kotlin-stdlib-jdk7", "kotlin-stdlib-jdk8", "kotlin-reflect"]) {
                     dependency.useVersion(kotlinVersion)
                 }
+            }
+        }
+    }
+}
+
+rootProject.dependencyUpdates.resolutionStrategy {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
             }
         }
     }
