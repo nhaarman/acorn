@@ -32,7 +32,7 @@ dependencyManagement {
         dependency "androidx.core:core-ktx:1.0.1"
         dependency "com.google.android.material:material:1.0.0"
         dependency "androidx.constraintlayout:constraintlayout:2.0.0-alpha3"
-        dependency "io.reactivex.rxjava2:rxandroid:2.1.0"
+        dependency "io.reactivex.rxjava2:rxandroid:2.1.1"
         dependency "com.squareup.picasso:picasso:2.71828"
 
         // Notes app
