@@ -6,6 +6,7 @@ include(":ext")
 include(":ext-acorn")
 include(":ext-acorn-testing")
 include(":ext-acorn-rx")
+include(":ext-acorn-experimental")
 
 include(":ext-acorn-android")
 include(":ext-acorn-android-testing")
@@ -24,6 +25,7 @@ include(":samples:hello-viewfactory")
 include(":samples:hello-startactivity")
 include(":samples:hello-sharedata")
 include(":samples:hello-transitionanimation")
+include(':samples:hello-concurrentpairnavigator')
 
 include(":samples:notes-app")
 include(":samples:notes-app:android")
@@ -34,6 +36,7 @@ project(":acorn-android").projectDir = file("core/acorn-android-core")
 project(":ext-acorn").projectDir = file("ext/acorn")
 project(":ext-acorn-testing").projectDir = file("ext/acorn/acorn-testing")
 project(":ext-acorn-rx").projectDir = file("ext/acorn/acorn-rx")
+project(":ext-acorn-experimental").projectDir = file("ext/acorn/acorn-experimental")
 
 project(":ext-acorn-android").projectDir = file("ext/acorn-android")
 project(":ext-acorn-android-testing").projectDir = file("ext/acorn-android/acorn-android-testing")
@@ -42,7 +45,5 @@ project(":ext-acorn-android-timber").projectDir = file("ext/acorn-android/acorn-
 project(":ext-acorn-android-appcompat").projectDir = file("ext/acorn-android/acorn-android-appcompat")
 project(":ext-acorn-android-lifecycle").projectDir = file("ext/acorn-android/acorn-android-lifecycle")
 project(":ext-acorn-android-statechecks").projectDir = file("ext/acorn-android/acorn-android-statechecks")
-
-project(":ext-acorn-experimental").projectDir = file("ext/acorn/acorn-experimental")
 
 enableFeaturePreview("STABLE_PUBLISHING")

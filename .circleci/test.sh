@@ -8,13 +8,14 @@
     :ext-acorn-android-timber:lint \
     :ext-acorn-android-lifecycle:lint \
     \
-    :samples:hello-world:lintRelease \
+    :samples:hello-concurrentpairnavigator:lintRelease \
     :samples:hello-navigation:lintRelease \
-    :samples:hello-staterestoration:lintRelease \
-    :samples:hello-startactivity:lintRelease \
     :samples:hello-sharedata:lintRelease \
-    :samples:hello-viewfactory:lintRelease \
+    :samples:hello-startactivity:lintRelease \
+    :samples:hello-staterestoration:lintRelease \
     :samples:hello-transitionanimation:lintRelease \
+    :samples:hello-viewfactory:lintRelease \
+    :samples:hello-world:lintRelease \
     \
     :samples:notes-app:android:lintRelease \
     \

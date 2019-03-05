@@ -39,8 +39,8 @@ import kotlin.reflect.KClass
  * This Navigator implements [SavableNavigator] and thus can have its state saved
  * and restored when necessary.
  *
- * @param savedState An optional instance that contains saved state as returned
- *                   by this class's saveInstanceState() method.
+ * @param savedState An optional instance that contains the saved state as
+ * returned by this class's [saveInstanceState] method.
  */
 abstract class StackNavigator(
     private val savedState: NavigatorState?
@@ -108,7 +108,7 @@ abstract class StackNavigator(
      * Pushes given [scene] onto the stack.
      *
      * If this Navigator is currently active, the current [Scene] will be stopped,
-     * and given [scene] will receive a call to [Navigator.onStart].
+     * and given [scene] will receive a call to [Scene.onStart].
      *
      * If this Navigator is currently inactive, no Scene lifecycle events will
      * be called at all. Starting this Navigator will trigger a call to the
