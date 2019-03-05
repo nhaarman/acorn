@@ -12,6 +12,7 @@
 **.log
 
 *.orig
+*.attach_*
 
 .idea/assetWizardSettings.xml
 .idea/caches/*
