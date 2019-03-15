@@ -49,7 +49,7 @@ interface Scene<V : Container> {
      * This key can be used to determine what layout to show, and can be used
      * to save and restore instance state, if needed.
      */
-    val key: SceneKey get() = SceneKey.from(javaClass)
+    val key: SceneKey
 
     /**
      * Called when this Scene is started.

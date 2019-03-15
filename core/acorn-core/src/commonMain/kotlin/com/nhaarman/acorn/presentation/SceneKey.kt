@@ -29,7 +29,7 @@ class SceneKey(val value: String) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null || this::class != other::class) return false
 
         other as SceneKey
 
@@ -44,32 +44,24 @@ class SceneKey(val value: String) {
 
     companion object {
 
-        /**
-         * Create a [SceneKey] for given [Scene] class, consisting of its fully
-         * qualified name.
-         */
-        fun <T : Scene<*>> from(sceneClass: KClass<T>): SceneKey {
-            return SceneKey.from(sceneClass.java)
-        }
+//        /**
+//         * Create a [SceneKey] for given [Scene] class, consisting of its fully
+//         * qualified name.
+//         */
+//        fun <T : Scene<*>> from(sceneClass: KClass<T>): SceneKey {
+//            return SceneKey(sceneClass.qualifiedName!!)
+//        }
 
-        /**
-         * Create a [SceneKey] for given [Scene] class, consisting of its fully
-         * qualified name.
-         */
-        fun <T : Scene<*>> from(sceneClass: Class<T>): SceneKey {
-            return SceneKey(sceneClass.name)
-        }
-
-        /**
-         * Returns the default [SceneKey] for [T], consisting of its fully
-         * qualified class name.
-         */
-        inline fun <reified T : Scene<*>> T.defaultKey(): SceneKey {
-            return SceneKey.from(T::class)
-        }
-
-        inline fun <reified T : Scene<*>> defaultKey(): SceneKey {
-            return from(T::class)
-        }
+//        /**
+//         * Returns the default [SceneKey] for [T], consisting of its fully
+//         * qualified class name.
+//         */
+//        inline fun <reified T : Scene<*>> T.defaultKey(): SceneKey {
+//            return SceneKey.from(T::class)
+//        }
+//
+//        inline fun <reified T : Scene<*>> defaultKey(): SceneKey {
+//            return from(T::class)
+//        }
     }
 }

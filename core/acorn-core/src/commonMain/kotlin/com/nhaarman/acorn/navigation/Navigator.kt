@@ -16,7 +16,6 @@
 
 package com.nhaarman.acorn.navigation
 
-import androidx.annotation.CheckResult
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
 
@@ -59,7 +58,6 @@ interface Navigator {
      * @return a [DisposableHandle] instance that can be disposed when the
      * [listener] is not interested in events anymore.
      */
-    @CheckResult
     fun addNavigatorEventsListener(listener: Navigator.Events): DisposableHandle
 
     /**

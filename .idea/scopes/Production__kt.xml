@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="Production .kt" pattern="file:src/main/java//*.kt" />
-</component>

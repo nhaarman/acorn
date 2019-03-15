@@ -1,19 +1,73 @@
-plugins {
-    id("org.jetbrains.kotlin.jvm")
-    id("org.gradle.java-library")
+//plugins {
+//    id("org.jetbrains.kotlin.jvm")
+//    id("org.gradle.java-library")
+//
+//    id("org.jetbrains.dokka")
+//    id("org.gradle.maven-publish")
+//    id("signing")
+//}
+//
+//dependencies {
+//    compileOnly "androidx.annotation:annotation"
+//
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+//
+//    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+//    testImplementation "com.nhaarman:expect.kt"
+//    testImplementation "org.junit.jupiter:junit-jupiter-api"
+//    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+//}
 
-    id("org.jetbrains.dokka")
-    id("org.gradle.maven-publish")
-    id("signing")
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform'
 }
 
 dependencies {
-    compileOnly "androidx.annotation:annotation"
+    // Specify Kotlin/JVM stdlib dependency.
+//    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7'
+}
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
-    testImplementation "com.nhaarman:expect.kt"
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+kotlin {
+    jvm()
+    js("nodeJs")
+    linuxX64()
+    iosX64()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                api kotlin('stdlib-common')
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation kotlin('test-common')
+                implementation kotlin('test-annotations-common')
+            }
+        }
+        
+        jvmTest {
+            dependencies {
+                implementation kotlin('test-junit')
+            }
+        }
+        jvmMain {
+            dependencies {
+                api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.27.0-eap13'
+                implementation kotlin('stdlib')
+            }
+        }
+
+        nodeJsMain {
+            dependencies {
+                implementation kotlin('stdlib-js')
+            }
+        }
+        nodeJsTest {
+            dependencies {
+                implementation kotlin('test-js')
+            }
+        }
+    }
 }

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="acorn-jvm">
+    <output-path>$PROJECT_DIR$/core/acorn-core/build/libs</output-path>
+    <root id="archive" name="acorn-jvm.jar">
+      <element id="module-output" name="Acorn.acorn.jvmMain" />
+    </root>
+  </artifact>
+</component>

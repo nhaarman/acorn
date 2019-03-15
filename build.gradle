@@ -1,108 +1,134 @@
 buildscript {
-    ext.kotlinVersion = "1.3.21"
+    ext.kotlin_version = '1.3.30-eap-11'
 
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-dev' }
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        jcenter()
     }
-
-    configurations.maybeCreate("pitest")
     dependencies {
-        classpath("com.android.tools.build:gradle:3.3.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.3.2.0")
-        classpath("com.adarshr:gradle-test-logger-plugin:1.6.0")
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
-        classpath("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
-        classpath("digital.wup:android-maven-publish:3.6.2")
-        classpath("info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.0")
-        pitest("org.pitest:pitest-junit5-plugin:0.8")
+        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
-}
-
-plugins {
-    id("com.github.ben-manes.versions") version "0.20.0"
-    id("io.spring.dependency-management") version "1.0.6.RELEASE"
 }
 
 allprojects {
-    apply from: "$rootDir/.ops/git.gradle"
-}
-
-subprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter {
-            content {
-                includeGroup "com.andreapivetta.kolor"
-                includeGroup "org.jetbrains.trove4j"
-            }
-        }
-    }
-
-    project.apply from: "$rootDir/dependencies.gradle"
-
-    afterEvaluate { project ->
-        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-            kotlinOptions {
-                freeCompilerArgs += ["-progressive"]
-            }
-        }
-
-        if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
-            android {
-                compileSdkVersion(28)
-                defaultConfig {
-                    targetSdkVersion(28)
-
-                    versionName = git.versionName()
-                    versionCode = git.commitCount()
-
-                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-                }
-
-                testOptions {
-                    unitTests.returnDefaultValues = true
-                }
-
-                lintOptions {
-                    warningsAsErrors = true
-                    textReport = true
-
-                    ignoreTestSources true
-
-                    ignore "ObsoleteLintCustomCheck", "GradleDependency"
-                }
-
-                compileOptions {
-                    sourceCompatibility 1.8
-                    targetCompatibility 1.8
-                }
-            }
-        }
-
-        if (project.hasProperty("check")) {
-            project.apply from: "$rootDir/.ops/ktlint.gradle"
-        }
-
-        if (project.hasProperty("test") || project.hasProperty("android")) {
-            project.apply from: "$rootDir/.ops/testing.gradle"
-            project.apply from: "$rootDir/.ops/pitest.gradle"
-        }
-
-        if (project.hasProperty("dokka")) {
-            project.apply from: "$rootDir/.ops/dokka.gradle"
-        }
-
-        if (project.hasProperty("publishing")) {
-            project.apply from: "$rootDir/.ops/publishing.gradle"
-        }
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-dev' }
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        jcenter()
     }
 }
 
-task clean(type: Delete) {
-    delete(rootProject.buildDir)
-}
-
-println("Version ${git.versionName()}")
+//buildscript {
+//    ext.kotlinVersion = "1.3.21"
+//
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//
+//    configurations.maybeCreate("pitest")
+//    dependencies {
+//        classpath("com.android.tools.build:gradle:3.3.1")
+//        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+//        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.3.2.0")
+//        classpath("com.adarshr:gradle-test-logger-plugin:1.6.0")
+//        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
+//        classpath("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
+//        classpath("digital.wup:android-maven-publish:3.6.2")
+//        classpath("info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.0")
+//        pitest("org.pitest:pitest-junit5-plugin:0.8")
+//    }
+//}
+//
+//plugins {
+//    id("com.github.ben-manes.versions") version "0.20.0"
+//    id("io.spring.dependency-management") version "1.0.6.RELEASE"
+//}
+//
+//allprojects {
+//    apply from: "$rootDir/.ops/git.gradle"
+//}
+//
+//subprojects {
+//    repositories {
+//        google()
+//        mavenCentral()
+//        jcenter {
+//            content {
+//                includeGroup "com.andreapivetta.kolor"
+//                includeGroup "org.jetbrains.trove4j"
+//            }
+//        }
+//    }
+//
+//    project.apply from: "$rootDir/dependencies.gradle"
+//
+//    afterEvaluate { project ->
+//        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+//            kotlinOptions {
+//                freeCompilerArgs += ["-progressive"]
+//            }
+//        }
+//
+//        if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
+//            android {
+//                compileSdkVersion(28)
+//                defaultConfig {
+//                    targetSdkVersion(28)
+//
+//                    versionName = git.versionName()
+//                    versionCode = git.commitCount()
+//
+//                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//                }
+//
+//                testOptions {
+//                    unitTests.returnDefaultValues = true
+//                }
+//
+//                lintOptions {
+//                    warningsAsErrors = true
+//                    textReport = true
+//
+//                    ignoreTestSources true
+//
+//                    ignore "ObsoleteLintCustomCheck", "GradleDependency"
+//                }
+//
+//                compileOptions {
+//                    sourceCompatibility 1.8
+//                    targetCompatibility 1.8
+//                }
+//            }
+//        }
+//
+//        if (project.hasProperty("check")) {
+//            project.apply from: "$rootDir/.ops/ktlint.gradle"
+//        }
+//
+//        if (project.hasProperty("test") || project.hasProperty("android")) {
+//            project.apply from: "$rootDir/.ops/testing.gradle"
+//            project.apply from: "$rootDir/.ops/pitest.gradle"
+//        }
+//
+//        if (project.hasProperty("dokka")) {
+//            project.apply from: "$rootDir/.ops/dokka.gradle"
+//        }
+//
+//        if (project.hasProperty("publishing")) {
+//            project.apply from: "$rootDir/.ops/publishing.gradle"
+//        }
+//    }
+//}
+//
+//task clean(type: Delete) {
+//    delete(rootProject.buildDir)
+//}
+//
+//println("Version ${git.versionName()}")

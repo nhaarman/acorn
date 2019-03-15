@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7b54c394-8cf6-4a1b-9a1a-3e593ececb1a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/acorn_js.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/acorn_jvm.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/acorn_nodejs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/FooScene.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.docs/usage/setup.md" beforeDir="false" afterPath="$PROJECT_DIR$/.docs/usage/setup.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copyright/Apache_2_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/nhaarman.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/ktlint.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/acorn_tests.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/ext_acorn_tests.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/scopes/Production__kt.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/scopes/Test__kt.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/navigation/DisposableHandle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/DisposableHandle.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/navigation/Navigator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/Navigator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/navigation/SavableNavigator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/SavableNavigator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/navigation/TransitionData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/TransitionData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/presentation/Container.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/Container.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/presentation/SavableContainer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/SavableContainer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/presentation/SavableScene.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/SavableScene.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/presentation/Scene.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/Scene.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/presentation/SceneKey.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/SceneKey.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/state/ContainerState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/state/ContainerState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/state/NavigatorState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/state/NavigatorState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/state/SavedState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/state/SavedState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/main/java/com/nhaarman/acorn/state/SceneState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/state/SceneState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/test/java/com/nhaarman/acorn/presentation/SceneKeyTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/acorn-core/src/commonTest/kotlin/com/nhaarman/acorn/presentation/SceneKeyTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/acorn-core/src/test/java/com/nhaarman/acorn/presentation/SceneTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/classes/" />
+    <ignored path="$PROJECT_DIR$/.gradle/" />
+    <ignored path="$PROJECT_DIR$/build/" />
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/core/acorn-core/.gradle/" />
+    <ignored path="$PROJECT_DIR$/core/acorn-core/build/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Acorn" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Acorn" type="f1a62948:ProjectNode" />
+                <item name=":acorn" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Acorn" type="f1a62948:ProjectNode" />
+                <item name=":acorn" type="2d1252cf:ModuleNode" />
+                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/acorn-core/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="681">
+              <caret line="46" column="13" lean-forward="true" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>`</find>
+      <find>foo</find>
+      <find>main(</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/Navigator.kt" />
+        <option value="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/TransitionData.kt" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/core/acorn-core/build.gradle" />
+        <option value="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/SceneKey.kt" />
+        <option value="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/Scene.kt" />
+        <option value="$PROJECT_DIR$/core/acorn-core/src/commonTest/kotlin/com/nhaarman/acorn/presentation/SceneKeyTest.kt" />
+        <option value="$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/FooScene.kt" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="67" />
+    <option name="y" value="27" />
+    <option name="width" value="1853" />
+    <option name="height" value="1053" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <flattenPackages ProjectPane="false" />
+      <hideEmptyPackages ProjectPane="true" />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nhaarman" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nhaarman" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nhaarman" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="navigation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nhaarman" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="presentation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nhaarman" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="state" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn_test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn_test" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn_test" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nhaarman" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn_test" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nhaarman" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJs" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn_test" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nhaarman" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+              <item name="presentation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="compileKotlinJvm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="reports" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="test-results" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="test-results" type="462c0819:PsiDirectoryNode" />
+              <item name="jvmTest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="test-results" type="462c0819:PsiDirectoryNode" />
+              <item name="jvmTest" type="462c0819:PsiDirectoryNode" />
+              <item name="binary" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="test-results" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJsTest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="test-results" type="462c0819:PsiDirectoryNode" />
+              <item name="nodeJsTest" type="462c0819:PsiDirectoryNode" />
+              <item name="binary" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="commonMain" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="commonMain" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Acorn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Acorn" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn-core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="commonMain" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="acorn" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552305049100" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Kotlin.com.nhaarman.acorn.FooSceneKt [Acorn.acorn.jvmMain]">
+    <configuration name="SceneKeyTest [Acorn.acorn.jvmTest]" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="Acorn.acorn.jvmTest" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nhaarman.acorn.presentation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nhaarman.acorn.presentation" />
+      <option name="MAIN_CLASS_NAME" value="com.nhaarman.acorn.presentation.SceneKeyTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SceneKeyTest.sceneKey equality [Acorn.acorn.jvmTest]" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="Acorn.acorn.jvmTest" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nhaarman.acorn.presentation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nhaarman.acorn.presentation" />
+      <option name="MAIN_CLASS_NAME" value="com.nhaarman.acorn.presentation.SceneKeyTest" />
+      <option name="METHOD_NAME" value="sceneKey equality" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SceneKeyTest.sceneKeyEquality [Acorn.acorn.jvmTest]" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="Acorn.acorn.jvmTest" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nhaarman.acorn.presentation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nhaarman.acorn.presentation" />
+      <option name="MAIN_CLASS_NAME" value="com.nhaarman.acorn.presentation.SceneKeyTest" />
+      <option name="METHOD_NAME" value="sceneKeyEquality" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.nhaarman.acorn.FooSceneKt [Acorn.acorn.jvmMain]" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true">
+      <module name="Acorn.acorn.jvmMain" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.nhaarman.acorn.FooSceneKt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.com.nhaarman.acorn.FooSceneKt [Acorn.acorn.jvmMain]" />
+        <item itemvalue="JUnit.SceneKeyTest [Acorn.acorn.jvmTest]" />
+        <item itemvalue="JUnit.SceneKeyTest.sceneKeyEquality [Acorn.acorn.jvmTest]" />
+        <item itemvalue="JUnit.SceneKeyTest.sceneKey equality [Acorn.acorn.jvmTest]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7b54c394-8cf6-4a1b-9a1a-3e593ececb1a" name="Default Changelist" comment="" />
+      <created>1552240654640</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1552240654640</updated>
+      <workItem from="1552240659308" duration="2478000" />
+      <workItem from="1552304398209" duration="652000" />
+      <workItem from="1552305171912" duration="634000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="SceneKeyTest_sceneKey_equality_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 28m 08s.xml">
+      <configuration name="SceneKeyTest.sceneKey equality [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SceneKeyTest_sceneKey_equality_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 28m 29s.xml">
+      <configuration name="SceneKeyTest.sceneKey equality [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SceneKeyTest_sceneKey_equality_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 28m 32s.xml">
+      <configuration name="SceneKeyTest.sceneKey equality [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SceneKeyTest_sceneKey_equality_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 28m 34s.xml">
+      <configuration name="SceneKeyTest.sceneKey equality [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SceneKeyTest_sceneKey_equality_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 28m 56s.xml">
+      <configuration name="SceneKeyTest.sceneKey equality [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SceneKeyTest_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 29m 02s.xml">
+      <configuration name="SceneKeyTest [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SceneKeyTest_sceneKeyEquality_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 29m 50s.xml">
+      <configuration name="SceneKeyTest.sceneKeyEquality [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SceneKeyTest_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 35m 35s.xml">
+      <configuration name="SceneKeyTest [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SceneKeyTest_[Acorn_acorn_jvmTest] - 2019.03.10 at 19h 35m 54s.xml">
+      <configuration name="SceneKeyTest [Acorn.acorn.jvmTest]" configurationId="JUnit" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="3764000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.4465374" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Capture Tool" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.17554858" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3995633" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.32969433" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.37695923" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32969433" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32969433" />
+      <window_info anchor="bottom" id="Database Changes" order="12" />
+      <window_info anchor="bottom" id="Version Control" order="13" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Gradle" order="6" weight="0.3229917" />
+      <window_info anchor="right" id="Database" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Theme Preview" order="9" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10">
+          <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/DisposableHandle.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/Navigator.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="52" column="19" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/navigation/TransitionData.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/nodeJs/main/acorn/com/nhaarman/acorn/presentation/presentation.kjsm">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/nodeJs/main/lib/kotlin.js" />
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/src/commonTest/kotlin/com/nhaarman/acorn/presentation/SceneTest.kt" />
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/reports/tests/nodeJsTest/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/jvm/main/com/nhaarman/acorn/navigation/DisposableHandle.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/reports/tests/jvmTest/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-common/1.3.30-eap-11/d6a324244b9674761708fd2df4096e337b734832/kotlin-test-common-1.3.30-eap-11-sources.jar!/kotlin/test/Assertions.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="59" column="15" selection-start-line="59" selection-start-column="15" selection-end-line="59" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-js/1.3.30-eap-11/987aa021420335c677e452293a90d96448db31f4/kotlin-stdlib-js-1.3.30-eap-11-sources.jar!/kotlin/reflect/KClass.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="26" column="15" selection-start-line="26" selection-start-column="15" selection-end-line="26" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/SceneKey.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="64" column="11" lean-forward="true" selection-start-line="54" selection-start-column="13" selection-end-line="64" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/presentation/Scene.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="51" column="20" selection-start-line="51" selection-start-column="20" selection-end-line="51" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/src/commonTest/kotlin/com/nhaarman/acorn/presentation/SceneKeyTest.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="49" column="11" lean-forward="true" selection-start-line="49" selection-start-column="11" selection-end-line="49" selection-end-column="11" />
+          <folding>
+            <element signature="e#668#758#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/jvm/main/com/nhaarman/acorn/navigation/Navigator.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/nodeJs/main/acorn/com/nhaarman/acorn/navigation/navigation.kjsm">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/jvm/main/com/nhaarman/acorn/presentation/Scene.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/jvm/main/com/nhaarman/acorn/FooScene.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/src/commonMain/kotlin/com/nhaarman/acorn/FooScene.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+          <folding>
+            <element signature="e#28#169#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/nodeJs/main/acorn.meta.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/nodeJs/main/acorn.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3690">
+          <caret line="205" column="25" lean-forward="true" selection-start-line="205" selection-start-column="25" selection-end-line="205" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/nodeJs/test/acorn_test.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/nodeJs/test/acorn_test/com/nhaarman/acorn/presentation/presentation.kjsm">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/classes/kotlin/nodeJs/test/acorn_test.meta.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build/test-results/jvmTest/TEST-com.nhaarman.acorn.presentation.SceneKeyTest.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="40" lean-forward="true" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/acorn-core/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="46" column="13" lean-forward="true" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
