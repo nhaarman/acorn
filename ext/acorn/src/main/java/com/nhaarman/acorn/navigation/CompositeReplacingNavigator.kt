@@ -310,6 +310,7 @@ abstract class CompositeReplacingNavigator(
             override fun replace(navigator: Navigator): StateTransition {
                 return StateTransition(Active(navigator, listeners, activeScene)) {
                     this.navigator.onStop()
+                    this.navigator.onDestroy()
                     navigator.onStart()
                 }
             }
