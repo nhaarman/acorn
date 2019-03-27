@@ -704,7 +704,7 @@ internal class CompositeReplacingNavigatorTest {
         }
 
         @Test
-        fun `replacing for started navigator stops previous child navigator and starts pushed child navigator`() {
+        fun `replacing for started navigator stops and destroys previous child navigator and starts pushed child navigator`() {
             /* Given */
             navigator.onStart()
 
@@ -715,6 +715,7 @@ internal class CompositeReplacingNavigatorTest {
             inOrder(navigator1, navigator2) {
                 verify(navigator1).onStart()
                 verify(navigator1).onStop()
+                verify(navigator1).onDestroy()
                 verify(navigator2).onStart()
                 verifyNoMoreInteractions()
             }
