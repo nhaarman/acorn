@@ -45,7 +45,7 @@ For more advanced configuration, see
 ## Getting started
 
 Acorn has several [sample projects](samples) introducing the different concepts.
-You can also visit the [Getting started](https://nhaarman.github.io/Acorn/usage/getting_started)
+You can also visit the [Getting started](https://nhaarman.github.io/Acorn/wiki/getting_started/)
 documentation page for more information.
 
 ## Building Acorn
