@@ -99,7 +99,7 @@ class AcornSceneDispatcher internal constructor(
                 return
             }
 
-            throw IllegalStateException("Could not dispatch $scene.")
+            throw SceneDispatchFailureException(scene)
         }
 
         override fun finished() {
@@ -171,6 +171,27 @@ class AcornSceneDispatcher internal constructor(
             override fun startForResult(intent: Intent) {
                 dispatcherCallback.startForResult(intent)
             }
+        }
+    }
+
+    private class SceneDispatchFailureException(
+        private val scene: Scene<*>
+    ) : IllegalStateException() {
+
+        override val message: String by lazy {
+            "Could not dispatch Scene with key [${scene.key}]\n" +
+                "\n" +
+                "\tNo Container could be created for $scene.\n" +
+                "\tPossible causes include:\n" +
+                "\n" +
+                "\t\t- No ViewControllerFactory supports the Scene.\n" +
+                "\t\t  Ensure either your Scene implements ViewProvidingScene (i.e. using ProvidesView),\n" +
+                "\t\t  or register a ViewControllerFactory instance that can create a ViewController for the Scene.\n" +
+                "\n" +
+                "\t\t- No ActivityControllerFactory supports the Scene.\n" +
+                "\t\t  If your Scene should trigger starting a new Activity,\n" +
+                "\t\t  ensure that you have registered an ActivityControllerFactory that can create an ActivityController\n" +
+                "\t\t  for the Scene.\n"
         }
     }
 }
