@@ -1,6 +1,10 @@
 ext.git = [
 
         versionName            : {
+            if (project.hasProperty("versionName")) {
+                return project.getProperty("versionName")
+            }
+
             def baseTag = git.latestTag() ?: "0.0.0"
             def commitCount = git.numberOfCommitsSinceTag(baseTag)
 
