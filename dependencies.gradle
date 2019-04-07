@@ -48,8 +48,8 @@ dependencyManagement {
         // Testing & checks
         dependency "com.nhaarman:expect.kt:1.0.1"
         dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
-        dependency "org.junit.jupiter:junit-jupiter-api:5.4.0"
-        dependency "org.junit.jupiter:junit-jupiter-engine:5.4.0"
+        dependency "org.junit.jupiter:junit-jupiter-api:5.4.1"
+        dependency "org.junit.jupiter:junit-jupiter-engine:5.4.1"
 
         dependency "com.github.shyiko:ktlint:0.30.0"
 
