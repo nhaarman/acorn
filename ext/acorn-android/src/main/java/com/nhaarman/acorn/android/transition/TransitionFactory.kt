@@ -20,17 +20,17 @@ import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Scene
 
 /**
- * An interface that can create [Transition] instances to animate transitions
+ * An interface that can create [SceneTransition] instances to animate transitions
  * between [Scene]s.
  */
 interface TransitionFactory {
 
     /**
-     * Creates a new [Transition] for given [Scene]s.
+     * Creates a new [SceneTransition] for given [Scene]s.
      *
      * @param previousScene The Scene to start the animation from.
      * @param newScene The Scene to animate to.
      * @param data Optional data for the transition.
      */
-    fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition
+    fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): SceneTransition
 }

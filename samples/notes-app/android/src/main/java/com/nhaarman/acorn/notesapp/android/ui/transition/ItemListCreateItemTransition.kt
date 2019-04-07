@@ -19,19 +19,19 @@ package com.nhaarman.acorn.notesapp.android.ui.transition
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import androidx.core.animation.addListener
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.util.inflateView
 import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.android.ui.createitem.CreateItemViewController
 import kotlinx.android.synthetic.main.itemlist_scene.view.*
 
 /**
- * A [Transition] that shows a circular reveal animation to transition from
+ * A [SceneTransition] that shows a circular reveal animation to transition from
  * the ItemList layout to the CreateItem layout.
  */
-object ItemListCreateItemTransition : Transition {
+object ItemListCreateItemTransition : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val itemListLayout = parent.getChildAt(0)
         val view = parent.inflateView(R.layout.itemlistcreateitem_reveal)
         parent.addView(view)

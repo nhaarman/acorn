@@ -24,7 +24,7 @@ import com.nhaarman.acorn.presentation.Scene
 /**
  * An interface to manually implement [Scene] transition animations.
  */
-interface Transition {
+interface SceneTransition {
 
     /**
      * Executes the transition.
@@ -46,9 +46,9 @@ interface Transition {
     fun execute(parent: ViewGroup, callback: Callback)
 
     /**
-     * A callback interface to be able to get notified when a [Transition] ends.
-     * Implementers of [Transition.execute], must always invoke [onComplete]
-     * when the [Transition] is finished.
+     * A callback interface to be able to get notified when a [SceneTransition] ends.
+     * Implementers of [SceneTransition.execute], must always invoke [onComplete]
+     * when the [SceneTransition] is finished.
      * Optionally, [attach] can be invoked during the transition animation to
      * have the view attached to the [Scene] before the animation ends.
      */
@@ -69,7 +69,7 @@ interface Transition {
         fun attach(viewController: ViewController)
 
         /**
-         * Implementers of [Transition.execute] must invoke this method when the
+         * Implementers of [SceneTransition.execute] must invoke this method when the
          * transition is finished. If no call to [attach] was made before
          * invoking this method, given [viewController] will be attached to the
          * [Scene].

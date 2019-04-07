@@ -22,7 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import com.nhaarman.acorn.android.transition.FadeOutToBottomTransition
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.android.ui.itemlist.ItemListViewController
@@ -34,9 +34,9 @@ import kotlinx.android.synthetic.main.edititem_scene.view.*
  *
  * This uses the [View.tag] property to temporarily store coordinate information.
  */
-object EditItemItemListTransition : Transition {
+object EditItemItemListTransition : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val editItemLayout = parent.getChildAt(0)
         val clickedItemViewData = editItemLayout.tag as? ClickedItemViewData
 

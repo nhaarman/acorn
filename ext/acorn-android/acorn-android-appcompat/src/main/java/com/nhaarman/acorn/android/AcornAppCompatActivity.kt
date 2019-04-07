@@ -32,7 +32,7 @@ import com.nhaarman.acorn.android.presentation.SceneViewControllerFactory
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.transition.TransitionFactory
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.presentation.Scene
@@ -69,7 +69,7 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
     }
 
     /**
-     * Returns the [TransitionFactory] to create [Transition] instances
+     * Returns the [TransitionFactory] to create [SceneTransition] instances
      * for this Activity.
      *
      * By default, this returns a [DefaultTransitionFactory].

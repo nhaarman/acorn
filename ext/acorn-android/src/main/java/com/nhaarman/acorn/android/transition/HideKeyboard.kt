@@ -22,14 +22,14 @@ import android.view.inputmethod.InputMethodManager
 import com.nhaarman.acorn.presentation.Scene
 
 /**
- * Returns a new [Transition] instance that hides the keyboard before the
- * receiving Transition is invoked.
+ * Returns a new [SceneTransition] instance that hides the keyboard before the
+ * receiving SceneTransition is invoked.
  */
-fun Transition.hideKeyboardOnStart(): Transition {
+fun SceneTransition.hideKeyboardOnStart(): SceneTransition {
     return doOnStart(hideKeyboard)
 }
 
-fun ((Scene<*>) -> Transition).hideKeyboardOnStart(): (Scene<*>) -> Transition {
+fun ((Scene<*>) -> SceneTransition).hideKeyboardOnStart(): (Scene<*>) -> SceneTransition {
     return { scene: Scene<*> -> invoke(scene).doOnStart(hideKeyboard) }
 }
 

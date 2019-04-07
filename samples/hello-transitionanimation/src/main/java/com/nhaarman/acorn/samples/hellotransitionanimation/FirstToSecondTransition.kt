@@ -19,11 +19,11 @@ package com.nhaarman.acorn.samples.hellotransitionanimation
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 
-object FirstToSecondTransition : Transition {
+object FirstToSecondTransition : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val currentLayout = parent.getChildAt(0)
 
         val newLayout = LayoutInflater.from(parent.context).inflate(R.layout.second_scene, parent, false)

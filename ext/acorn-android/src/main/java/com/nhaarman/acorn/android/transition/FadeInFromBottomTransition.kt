@@ -32,9 +32,9 @@ import com.nhaarman.acorn.android.transition.internal.doOnPreDraw
  */
 class FadeInFromBottomTransition(
     private val viewController: (ViewGroup) -> ViewController
-) : Transition {
+) : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val originalChildren = (0..parent.childCount).map { parent.getChildAt(it) }
 
         val newViewResult = viewController(parent)
