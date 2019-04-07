@@ -5,7 +5,7 @@ if (!hasAndroid && project.name != "ext-acorn-android-lint") {
 
     pitest {
         targetClasses = ["com.*", "acorn.*"]
-        pitestVersion = "1.4.5"
+        pitestVersion = "1.4.7"
         testPlugin = "junit5"
         threads = 4
         outputFormats = ["XML", "HTML"]
