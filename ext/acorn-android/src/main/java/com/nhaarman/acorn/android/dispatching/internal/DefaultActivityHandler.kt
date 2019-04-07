@@ -63,8 +63,11 @@ internal class DefaultActivityHandler(
     }
 
     override fun withoutScene() {
-        d("ActivityHandler", "Scene lost.")
-        lastScene = null
+        if (lastSceneKey != null) {
+            d("ActivityHandler", "Scene lost.")
+            lastScene = null
+            lastSceneKey = null
+        }
     }
 
     override fun onActivityResult(resultCode: Int, data: Intent?) {

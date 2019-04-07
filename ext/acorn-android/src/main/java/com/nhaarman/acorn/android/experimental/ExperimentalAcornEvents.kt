@@ -14,15 +14,16 @@
  *    limitations under the License.
  */
 
-package com.nhaarman.acorn.navigation
-
-import com.nhaarman.acorn.state.NavigatorState
+package com.nhaarman.acorn.android.experimental
 
 /**
- * Indicates that implementers can have their instance state saved.
+ * Marks all [AcornEvents] declarations as an experimental API to
+ * indicate that it is still experimental.
+ *
+ * The AcornEvents class has no backward compatibility guarantees
+ * whatsoever.
  */
-interface SavableNavigator : Navigator {
-
-    /** Save instance state. */
-    fun saveInstanceState(): NavigatorState
-}
+@Experimental
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.BINARY)
+annotation class ExperimentalAcornEvents

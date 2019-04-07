@@ -22,11 +22,20 @@ import android.os.Bundle
 import android.view.ViewGroup
 import com.nhaarman.acorn.OnBackPressListener
 import com.nhaarman.acorn.android.dispatching.AcornSceneDispatcher
+import com.nhaarman.acorn.android.dispatching.SceneDispatcher
+import com.nhaarman.acorn.android.dispatching.SceneDispatcherFactory
+import com.nhaarman.acorn.android.experimental.AcornEvents
+import com.nhaarman.acorn.android.experimental.ExperimentalAcornEvents
+import com.nhaarman.acorn.android.experimental.HookingSceneDispatcher
 import com.nhaarman.acorn.android.internal.contentView
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
+import com.nhaarman.acorn.android.presentation.ActivityController
 import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
+import com.nhaarman.acorn.android.presentation.NoopActivityControllerFactory
+import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.transition.TransitionFactory
 import com.nhaarman.acorn.android.util.toBundle
 import com.nhaarman.acorn.android.util.toNavigatorState
@@ -35,13 +44,13 @@ import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SavedState
 
+/**
+ * A convenience class which deals with the Activity lifecycle and connecting
+ * a [SceneDispatcher] to the [Navigator].
+ */
 class AcornActivityDelegate private constructor(
-    private val activity: Activity,
-    private val root: ViewGroup,
     private val navigatorProvider: NavigatorProvider,
-    private val viewControllerFactory: ViewControllerFactory,
-    private val activityControllerFactory: ActivityControllerFactory,
-    private val transitionFactory: TransitionFactory
+    private val sceneDispatcherFactory: SceneDispatcherFactory
 ) {
 
     private lateinit var navigator: Navigator
@@ -54,7 +63,7 @@ class AcornActivityDelegate private constructor(
         return navigator
     }
 
-    private lateinit var dispatcher: AcornSceneDispatcher
+    private lateinit var dispatcher: SceneDispatcher
 
     private var disposable: DisposableHandle? = null
         set(value) {
@@ -62,27 +71,8 @@ class AcornActivityDelegate private constructor(
             field = value
         }
 
-    @Suppress("UNCHECKED_CAST")
     fun onCreate(savedInstanceState: Bundle?) {
-        dispatcher = AcornSceneDispatcher.create(
-            activity,
-            root,
-            viewControllerFactory,
-            activityControllerFactory,
-            transitionFactory,
-            object : AcornSceneDispatcher.Callback {
-
-                override fun startForResult(intent: Intent) {
-                    activity.startActivityForResult(intent, 42)
-                }
-
-                override fun finished() {
-                    activity.finish()
-                }
-            },
-            savedInstanceState.sceneDispatcherState
-        )
-
+        dispatcher = sceneDispatcherFactory.invoke(savedInstanceState.sceneDispatcherState)
         navigator = navigatorProvider.navigatorFor(savedInstanceState.navigatorState)
         disposable = dispatcher.dispatchScenesFor(navigator)
     }
@@ -117,14 +107,53 @@ class AcornActivityDelegate private constructor(
 
     companion object {
 
+        /**
+         * Creates a new [AcornActivityDelegate].
+         *
+         * @param sceneDispatcherFactory The [SceneDispatcherFactory] instance
+         * that will provide a [SceneDispatcher] instance. When providing a
+         * custom [SceneDispatcherFactory] one must be careful to invoke
+         * [AcornEvents.onStartDispatching] and [AcornEvents.onStopDispatching]
+         * at the right times, or make use of the [HookingSceneDispatcher].
+         * @param navigatorProvider The [NavigatorProvider] instance that will
+         * provide a [Navigator] instance.
+         */
+        fun from(
+            sceneDispatcherFactory: SceneDispatcherFactory,
+            navigatorProvider: NavigatorProvider
+        ): AcornActivityDelegate {
+            return AcornActivityDelegate(
+                navigatorProvider,
+                sceneDispatcherFactory
+            )
+        }
+
+        /**
+         * Creates a new [AcornActivityDelegate] which uses a default
+         * [SceneDispatcher] and the default root [ViewGroup].
+         *
+         * @param activity The [Activity] which delegates to the resulting
+         * instance.
+         * @param navigatorProvider The [NavigatorProvider] instance that will
+         * provide a [Navigator] instance.
+         * @param viewControllerFactory The [ViewControllerFactory] instance
+         * that is used to create [ViewController] instances when dispatching
+         * Scenes.
+         * @param activityControllerFactory The [ActivityControllerFactory]
+         * instance that is used to create [ActivityController] instances when
+         * dispatching Scenes. Defaults to [NoopActivityControllerFactory].
+         * @param transitionFactory the [TransitionFactory] instance that is
+         * used to create [SceneTransition] instances when animating Scene
+         * transitions. Defaults to [DefaultTransitionFactory].
+         */
         fun from(
             activity: Activity,
             navigatorProvider: NavigatorProvider,
             viewControllerFactory: ViewControllerFactory,
-            activityControllerFactory: ActivityControllerFactory,
+            activityControllerFactory: ActivityControllerFactory = NoopActivityControllerFactory,
             transitionFactory: TransitionFactory = DefaultTransitionFactory(viewControllerFactory)
         ): AcornActivityDelegate {
-            return from(
+            return AcornActivityDelegate.from(
                 activity,
                 activity.contentView,
                 navigatorProvider,
@@ -134,21 +163,45 @@ class AcornActivityDelegate private constructor(
             )
         }
 
+        /**
+         * Creates a new [AcornActivityDelegate] which uses a default
+         * [SceneDispatcher] and the default root [ViewGroup].
+         *
+         * @param activity The [Activity] which delegates to the resulting
+         * instance.
+         * @param root The root [ViewGroup] to use as the parent for all Scene
+         * layouts.
+         * @param navigatorProvider The [NavigatorProvider] instance that will
+         * provide a [Navigator] instance.
+         * @param viewControllerFactory The [ViewControllerFactory] instance
+         * that is used to create [ViewController] instances when dispatching
+         * Scenes.
+         * @param activityControllerFactory The [ActivityControllerFactory]
+         * instance that is used to create [ActivityController] instances when
+         * dispatching Scenes. Defaults to [NoopActivityControllerFactory].
+         * @param transitionFactory the [TransitionFactory] instance that is
+         * used to create [SceneTransition] instances when animating Scene
+         * transitions. Defaults to [DefaultTransitionFactory].
+         */
+        @UseExperimental(ExperimentalAcornEvents::class)
         fun from(
             activity: Activity,
             root: ViewGroup,
             navigatorProvider: NavigatorProvider,
             viewControllerFactory: ViewControllerFactory,
-            activityControllerFactory: ActivityControllerFactory,
+            activityControllerFactory: ActivityControllerFactory = NoopActivityControllerFactory,
             transitionFactory: TransitionFactory = DefaultTransitionFactory(viewControllerFactory)
         ): AcornActivityDelegate {
-            return AcornActivityDelegate(
-                activity,
-                root,
-                navigatorProvider,
-                viewControllerFactory,
-                activityControllerFactory,
-                transitionFactory
+            return AcornActivityDelegate.from(
+                HookingSceneDispatcherFactory(
+                    activity,
+                    root,
+                    navigatorProvider,
+                    viewControllerFactory,
+                    activityControllerFactory,
+                    transitionFactory
+                ),
+                navigatorProvider
             )
         }
 
@@ -163,5 +216,42 @@ class AcornActivityDelegate private constructor(
             set(value) {
                 this?.putBundle("scene_dispatcher", value?.toBundle())
             }
+    }
+
+    @ExperimentalAcornEvents
+    private class HookingSceneDispatcherFactory(
+        private val activity: Activity,
+        private val root: ViewGroup,
+        private val navigatorProvider: NavigatorProvider,
+        private val viewControllerFactory: ViewControllerFactory,
+        private val activityControllerFactory: ActivityControllerFactory,
+        private val transitionFactory: TransitionFactory
+    ) : SceneDispatcherFactory {
+
+        override fun invoke(savedState: SavedState?): SceneDispatcher {
+            return HookingSceneDispatcher.create(
+                AcornSceneDispatcher.create(
+                    activity,
+                    root,
+                    viewControllerFactory,
+                    activityControllerFactory,
+                    transitionFactory,
+                    DefaultAcornSceneDispatcherCallback(activity),
+                    savedState
+                ),
+                navigatorProvider
+            )
+        }
+    }
+
+    private class DefaultAcornSceneDispatcherCallback(private val activity: Activity) : AcornSceneDispatcher.Callback {
+
+        override fun startForResult(intent: Intent) {
+            activity.startActivityForResult(intent, 42)
+        }
+
+        override fun finished() {
+            activity.finish()
+        }
     }
 }
