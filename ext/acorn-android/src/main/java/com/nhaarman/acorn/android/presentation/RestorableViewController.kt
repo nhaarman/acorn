@@ -42,8 +42,8 @@ import kotlinx.android.extensions.LayoutContainer
  * class MyViewController : MyContainer, RestorableViewController
  * ```
  */
-interface RestorableViewController
-    : ViewController, RestorableContainer, LayoutContainer {
+interface RestorableViewController :
+    ViewController, RestorableContainer, LayoutContainer {
 
     /**
      * This property is included from the [LayoutContainer] interface.
