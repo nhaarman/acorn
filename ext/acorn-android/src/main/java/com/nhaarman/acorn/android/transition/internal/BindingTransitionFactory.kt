@@ -18,7 +18,7 @@ package com.nhaarman.acorn.android.transition.internal
 
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.transition.TransitionFactory
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Scene
@@ -30,7 +30,7 @@ internal class BindingTransitionFactory(
 
     private val delegate by lazy { DefaultTransitionFactory(viewControllerFactory) }
 
-    override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition {
+    override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): SceneTransition {
         return bindings
             .mapNotNull { it.transitionFor(previousScene, newScene, data) }
             .firstOrNull()

@@ -18,17 +18,17 @@ package com.nhaarman.acorn.android.util
 
 import android.view.ViewGroup
 import com.nhaarman.acorn.android.presentation.ViewController
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 
-class TestTransition : Transition {
+class TestTransition : SceneTransition {
 
-    private var callback: Transition.Callback? = null
+    private var callback: SceneTransition.Callback? = null
         set(value) {
-            if (field != null) error("Transition already executed")
+            if (field != null) error("SceneTransition already executed")
             field = value
         }
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         this.callback = callback
     }
 

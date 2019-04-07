@@ -40,7 +40,7 @@ fun transitionFactory(
 
 /**
  * A DSL that can create [TransitionFactory] instances by binding pairs of Scenes
- * to [Transition] instances.
+ * to [SceneTransition] instances.
  *
  * @param viewControllerFactory The [ViewControllerFactory] instance to use for
  * layout inflation for fallback transition animations.
@@ -52,27 +52,27 @@ class TransitionFactoryBuilder internal constructor(
     private val bindings = mutableListOf<TransitionBinding>()
 
     /**
-     * Binds two [SceneKey]s to a [Transition] instance.
+     * Binds two [SceneKey]s to a [SceneTransition] instance.
      */
-    infix fun Pair<SceneKey, SceneKey>.use(transition: Transition) {
+    infix fun Pair<SceneKey, SceneKey>.use(transition: SceneTransition) {
         bindings += KeyBinding(first, second, transition)
     }
 
     /**
-     * Binds two [Scene] classes to a [Transition] instance.
+     * Binds two [Scene] classes to a [SceneTransition] instance.
      */
     @JvmName("useWithClasses")
-    infix fun Pair<KClass<out Scene<*>>, KClass<out Scene<*>>>.use(transition: Transition) {
+    infix fun Pair<KClass<out Scene<*>>, KClass<out Scene<*>>>.use(transition: SceneTransition) {
         bindings += ClassBinding(first, second, transition)
     }
 
     /**
-     * Binds two [Scene] classes to a lazily evaluated [Transition] instance.
+     * Binds two [Scene] classes to a lazily evaluated [SceneTransition] instance.
      *
-     * @param transition A function that provides a [Transition] instance. Its
-     * parameter is the destination [Scene] of the Transition.
+     * @param transition A function that provides a [SceneTransition] instance. Its
+     * parameter is the destination [Scene] of the SceneTransition.
      */
-    infix fun Pair<KClass<out Scene<*>>, KClass<out Scene<*>>>.use(transition: (Scene<*>) -> Transition) {
+    infix fun Pair<KClass<out Scene<*>>, KClass<out Scene<*>>>.use(transition: (Scene<*>) -> SceneTransition) {
         bindings += LazyClassBinding(first, second, transition)
     }
 

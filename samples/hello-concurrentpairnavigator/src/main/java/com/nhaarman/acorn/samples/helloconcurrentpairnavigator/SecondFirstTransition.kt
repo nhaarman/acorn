@@ -17,14 +17,14 @@
 package com.nhaarman.acorn.samples.helloconcurrentpairnavigator
 
 import android.view.ViewGroup
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import kotlinx.android.synthetic.main.first_and_second_scene.view.*
 import kotlinx.android.synthetic.main.first_scene.view.*
 import kotlinx.android.synthetic.main.second_scene.view.*
 
-object SecondFirstTransition : Transition {
+object SecondFirstTransition : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val firstAndSecondRoot = parent.findViewById<ViewGroup>(R.id.firstAndSecondRoot)
 
         if (firstAndSecondRoot != null) {

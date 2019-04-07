@@ -22,7 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import com.nhaarman.acorn.android.transition.FadeInFromBottomTransition
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.android.ui.edititem.EditItemViewController
@@ -32,9 +32,9 @@ import kotlinx.android.synthetic.main.itemlist_scene.view.*
 /**
  * Shows a 'shared element transition' that originates from the clicked view.
  */
-object ItemListEditItemTransition : Transition {
+object ItemListEditItemTransition : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val itemListLayout = parent.getChildAt(0)
         val itemsRecyclerView = itemListLayout.itemsRecyclerView
         val clickedView = itemsRecyclerView.clickedView

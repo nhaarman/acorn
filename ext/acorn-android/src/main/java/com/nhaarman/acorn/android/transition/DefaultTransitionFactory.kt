@@ -27,7 +27,7 @@ import com.nhaarman.acorn.presentation.Scene
 class DefaultTransitionFactory(private val viewControllerFactory: ViewControllerFactory) :
     TransitionFactory {
 
-    override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Transition {
+    override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): SceneTransition {
         return when (data?.isBackwards) {
             true -> FadeOutToBottomTransition { parent ->
                 viewControllerFactory.viewControllerFor(newScene, parent)

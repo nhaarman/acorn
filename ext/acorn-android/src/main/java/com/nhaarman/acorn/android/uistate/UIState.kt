@@ -22,7 +22,7 @@ import com.nhaarman.acorn.android.internal.v
 import com.nhaarman.acorn.android.internal.w
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.transition.TransitionFactory
 import com.nhaarman.acorn.android.uistate.internal.Destination
 import com.nhaarman.acorn.navigation.TransitionData
@@ -100,7 +100,7 @@ sealed class UIState {
          * @param root The [ViewGroup] to show Scene views in, usually
          * [android.R.id.content].
          * @param transitionFactory a [TransitionFactory] that provides
-         * [Transition] instances for transition animations.
+         * [SceneTransition] instances for transition animations.
          */
         fun create(
             root: ViewGroup,
@@ -440,7 +440,7 @@ internal class VisibleWithDestination(
         }
     }
 
-    private interface CancellableTransitionCallback : Transition.Callback {
+    private interface CancellableTransitionCallback : SceneTransition.Callback {
 
         fun cancel()
     }

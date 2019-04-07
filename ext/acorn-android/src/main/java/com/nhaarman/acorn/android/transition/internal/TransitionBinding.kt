@@ -16,7 +16,7 @@
 
 package com.nhaarman.acorn.android.transition.internal
 
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.presentation.SceneKey
@@ -24,16 +24,16 @@ import kotlin.reflect.KClass
 
 internal interface TransitionBinding {
 
-    fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): Transition?
+    fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): SceneTransition?
 }
 
 internal class KeyBinding(
     private val fromKey: SceneKey,
     private val toKey: SceneKey,
-    private val transition: Transition
+    private val transition: SceneTransition
 ) : TransitionBinding {
 
-    override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): Transition? {
+    override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): SceneTransition? {
         if (fromScene.key != fromKey) return null
         if (toScene.key != toKey) return null
 
@@ -48,10 +48,10 @@ internal class KeyBinding(
 internal class ClassBinding(
     private val fromClass: KClass<out Scene<*>>,
     private val toClass: KClass<out Scene<*>>,
-    private val transition: Transition
+    private val transition: SceneTransition
 ) : TransitionBinding {
 
-    override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): Transition? {
+    override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): SceneTransition? {
         if (fromScene::class != fromClass) return null
         if (toScene::class != toClass) return null
 
@@ -66,10 +66,10 @@ internal class ClassBinding(
 internal class LazyClassBinding(
     private val fromClass: KClass<out Scene<*>>,
     private val toClass: KClass<out Scene<*>>,
-    private val transition: (Scene<*>) -> Transition
+    private val transition: (Scene<*>) -> SceneTransition
 ) : TransitionBinding {
 
-    override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): Transition? {
+    override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): SceneTransition? {
         if (fromScene::class != fromClass) return null
         if (toScene::class != toClass) return null
 

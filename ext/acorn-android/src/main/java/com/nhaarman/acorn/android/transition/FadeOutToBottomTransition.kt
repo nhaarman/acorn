@@ -27,7 +27,7 @@ import com.nhaarman.acorn.android.transition.internal.doOnPreDraw
 import com.nhaarman.acorn.presentation.Scene
 
 /**
- * A [Transition] that fades the current [View] out to bottom, revealing the new
+ * A [SceneTransition] that fades the current [View] out to bottom, revealing the new
  * View underneath.
  *
  * This class assumes there is currently a single View present in the parent
@@ -39,9 +39,9 @@ import com.nhaarman.acorn.presentation.Scene
  */
 class FadeOutToBottomTransition(
     private val viewController: (ViewGroup) -> ViewController
-) : Transition {
+) : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         // We're assuming a single View is present.
         val originalChildren = (0..parent.childCount).map { parent.getChildAt(it) }
         val originalView = originalChildren.firstOrNull()

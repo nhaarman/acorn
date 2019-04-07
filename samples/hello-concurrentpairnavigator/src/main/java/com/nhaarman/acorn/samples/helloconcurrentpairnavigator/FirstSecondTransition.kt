@@ -18,15 +18,15 @@ package com.nhaarman.acorn.samples.helloconcurrentpairnavigator
 
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
-import com.nhaarman.acorn.android.transition.Transition
+import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.util.inflateView
 import com.nhaarman.acorn.navigation.experimental.ExperimentalConcurrentPairNavigator
 import kotlinx.android.synthetic.main.second_scene.view.*
 
 @UseExperimental(ExperimentalConcurrentPairNavigator::class)
-object FirstSecondTransition : Transition {
+object FirstSecondTransition : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val secondScene = parent.inflateView(R.layout.second_scene)
         parent.addView(secondScene)
 

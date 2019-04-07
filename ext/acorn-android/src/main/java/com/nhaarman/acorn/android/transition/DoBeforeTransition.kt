@@ -19,8 +19,8 @@ package com.nhaarman.acorn.android.transition
 import android.view.ViewGroup
 
 /**
- * A [Transition] implementation that can execute an action before a delegate
- * Transition is executed.
+ * A [SceneTransition] implementation that can execute an action before a delegate
+ * SceneTransition is executed.
  *
  * This can be used to hide the keyboard before the transition starts, for
  * example.
@@ -28,29 +28,29 @@ import android.view.ViewGroup
  * @see [doOnStart]
  */
 class DoBeforeTransition private constructor(
-    private val delegate: Transition,
+    private val delegate: SceneTransition,
     private val action: (ViewGroup) -> Unit
-) : Transition {
+) : SceneTransition {
 
-    override fun execute(parent: ViewGroup, callback: Transition.Callback) {
+    override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         action(parent)
         delegate.execute(parent, callback)
     }
 
     companion object {
 
-        fun create(delegate: Transition, action: (parent: ViewGroup) -> Unit): DoBeforeTransition {
+        fun create(delegate: SceneTransition, action: (parent: ViewGroup) -> Unit): DoBeforeTransition {
             return DoBeforeTransition(delegate, action)
         }
     }
 }
 
 /**
- * Returns a [Transition] that runs [action] before the receiving Transition
+ * Returns a [SceneTransition] that runs [action] before the receiving SceneTransition
  * instance is started.
  *
  * @param action The action to run.
  */
-fun Transition.doOnStart(action: (parent: ViewGroup) -> Unit): Transition {
+fun SceneTransition.doOnStart(action: (parent: ViewGroup) -> Unit): SceneTransition {
     return DoBeforeTransition.create(this, action)
 }
