@@ -39,6 +39,15 @@ interface NavigatorProvider {
     fun navigatorFor(savedState: NavigatorState?): Navigator
 
     /**
+     * Unlike [navigatorFor], this function should always return a _new_
+     * [Navigator] instance.
+     *
+     * @param savedState If not null, the saved state for the Navigator as returned
+     * by [saveNavigatorState].
+     */
+    fun newInstance(savedState: NavigatorState?): Navigator
+
+    /**
      * Returns the saved state for the [Navigator] as returned by [navigatorFor].
      * Implementations can add extra data to the resulting state to suit their
      * needs.

@@ -12,6 +12,7 @@ android {
 
 dependencies {
     implementation project(":ext-acorn-android-appcompat")
+    debugImplementation project(":ext-acorn-android-statechecks")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 

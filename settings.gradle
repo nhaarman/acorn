@@ -16,8 +16,6 @@ include(":ext-acorn-android-appcompat")
 include(":ext-acorn-android-lifecycle")
 include(":ext-acorn-android-statechecks")
 
-include(":ext-acorn-experimental")
-
 include(":samples:hello-world")
 include(":samples:hello-navigation")
 include(":samples:hello-staterestoration")

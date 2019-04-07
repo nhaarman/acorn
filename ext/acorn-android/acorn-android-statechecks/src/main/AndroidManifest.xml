@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nhaarman.acorn.android.experimental.statechecks">
+
+    <application>
+        <provider
+            android:name="com.nhaarman.acorn.android.experimental.statechecks.StateChecksInitProvider"
+            android:exported="false"
+            android:initOrder="3"
+            android:authorities="${applicationId}.StateChecksInitProvider" />
+    </application>
+
+</manifest>
