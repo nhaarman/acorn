@@ -49,3 +49,9 @@ task install(type: Copy) {
 androidExtensions {
     experimental = true
 }
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xuse-experimental=kotlin.Experimental"]
+    }
+}

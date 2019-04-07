@@ -60,7 +60,7 @@ abstract class AbstractNavigatorProvider<N : Navigator> : NavigatorProvider {
         return createNavigator(null)
     }
 
-    abstract fun createNavigator(savedState: NavigatorState?): N
+    protected abstract fun createNavigator(savedState: NavigatorState?): N
 
     override fun saveNavigatorState(): NavigatorState? {
         return navigatorState {

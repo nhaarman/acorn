@@ -14,15 +14,8 @@
  *    limitations under the License.
  */
 
-package com.nhaarman.acorn.navigation
+package com.nhaarman.acorn.android.dispatching
 
-import com.nhaarman.acorn.state.NavigatorState
+import com.nhaarman.acorn.state.SavedState
 
-/**
- * Indicates that implementers can have their instance state saved.
- */
-interface SavableNavigator : Navigator {
-
-    /** Save instance state. */
-    fun saveInstanceState(): NavigatorState
-}
+typealias SceneDispatcherFactory = (savedState: SavedState?) -> SceneDispatcher

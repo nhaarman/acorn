@@ -39,6 +39,10 @@ import com.nhaarman.acorn.state.SavedState
 import com.nhaarman.acorn.state.get
 import com.nhaarman.acorn.state.savedState
 
+/**
+ * A default [SceneDispatcher] implementation that utilizes a [UIHandler] and
+ * an [ActivityHandler] to dispatch [Scene]s.
+ */
 class AcornSceneDispatcher internal constructor(
     private val context: Context,
     private val viewControllerFactory: ViewControllerFactory,
@@ -46,7 +50,7 @@ class AcornSceneDispatcher internal constructor(
     private val uiHandler: UIHandler,
     private val activityHandler: ActivityHandler,
     private val callback: Callback
-) {
+) : SceneDispatcher {
 
     private var listener: MyListener? = null
         set(value) {
@@ -55,24 +59,24 @@ class AcornSceneDispatcher internal constructor(
         }
 
     @CheckResult
-    fun dispatchScenesFor(navigator: Navigator): DisposableHandle {
+    override fun dispatchScenesFor(navigator: Navigator): DisposableHandle {
         val listener = MyListener().also { this.listener = it }
         return navigator.addNavigatorEventsListener(listener)
     }
 
-    fun onUIVisible() {
+    override fun onUIVisible() {
         uiHandler.onUIVisible()
     }
 
-    fun onUINotVisible() {
+    override fun onUINotVisible() {
         uiHandler.onUINotVisible()
     }
 
-    fun onActivityResult(resultCode: Int, data: Intent?) {
+    override fun onActivityResult(resultCode: Int, data: Intent?) {
         activityHandler.onActivityResult(resultCode, data)
     }
 
-    fun saveInstanceState(): SavedState {
+    override fun saveInstanceState(): SavedState {
         return savedState {
             it.activityHandlerState = activityHandler.saveInstanceState()
         }
