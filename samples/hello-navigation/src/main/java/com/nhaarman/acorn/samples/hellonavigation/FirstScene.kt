@@ -25,6 +25,7 @@ import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.SavableScene
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.first_scene.*
 
 /**
@@ -68,9 +69,11 @@ interface FirstSceneContainer : Container {
 
 class FirstSceneViewController(
     override val view: View
-) : RestorableViewController, FirstSceneContainer {
+) : RestorableViewController, FirstSceneContainer, LayoutContainer {
 
     override fun onSecondSceneClicked(f: () -> Unit) {
         secondSceneButton.setOnClickListener { f() }
     }
+
+    override val containerView = view
 }

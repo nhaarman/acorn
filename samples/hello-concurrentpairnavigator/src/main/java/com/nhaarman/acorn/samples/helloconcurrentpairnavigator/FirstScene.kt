@@ -28,6 +28,7 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.first_scene.*
 import java.util.concurrent.TimeUnit
 
@@ -75,7 +76,7 @@ interface FirstSceneContainer : Container {
 
 class FirstSceneViewController(
     override val view: View
-) : RestorableViewController, FirstSceneContainer {
+) : RestorableViewController, FirstSceneContainer, LayoutContainer {
 
     override var count: Long = 0
         set(value) {
@@ -85,4 +86,6 @@ class FirstSceneViewController(
     override fun onActionClicked(f: () -> Unit) {
         secondSceneButton.setOnClickListener { f() }
     }
+
+    override val containerView = view
 }

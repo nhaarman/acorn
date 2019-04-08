@@ -19,6 +19,7 @@ package com.nhaarman.acorn.samples.helloworld
 import android.view.View
 import com.nhaarman.acorn.android.presentation.RestorableViewController
 import com.nhaarman.acorn.presentation.Container
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.hello_world.*
 
 /** An interface describing the "Hello, world!" view. */
@@ -32,10 +33,12 @@ interface HelloWorldContainer : Container {
  */
 class HelloWorldViewController(
     override val view: View
-) : RestorableViewController, HelloWorldContainer {
+) : RestorableViewController, HelloWorldContainer, LayoutContainer {
 
     override var text: String = ""
         set(value) {
             textView.text = value
         }
+
+    override val containerView = view
 }

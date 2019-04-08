@@ -22,11 +22,12 @@ import com.nhaarman.acorn.android.presentation.RestorableViewController
 import com.nhaarman.acorn.notesapp.note.NoteItem
 import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListContainer
 import io.reactivex.Observable
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.itemlist_scene.*
 
 class ItemListViewController(
     override val view: View
-) : ItemListContainer, RestorableViewController {
+) : ItemListContainer, RestorableViewController, LayoutContainer {
 
     override var items: List<NoteItem> = emptyList()
         set(value) {
@@ -72,4 +73,6 @@ class ItemListViewController(
             }
             .share()
     }
+
+    override val containerView = view
 }

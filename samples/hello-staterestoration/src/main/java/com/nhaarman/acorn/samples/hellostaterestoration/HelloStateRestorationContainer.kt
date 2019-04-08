@@ -20,6 +20,7 @@ import android.view.View
 import com.nhaarman.acorn.android.presentation.RestorableViewController
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.presentation.RestorableContainer
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.myscene.*
 
 /**
@@ -50,7 +51,8 @@ interface HelloStateRestorationContainer : RestorableContainer {
 class HelloStateRestorationViewController(
     override val view: View
 ) : HelloStateRestorationContainer,
-    RestorableViewController {
+    RestorableViewController,
+    LayoutContainer {
 
     override var counterValue: Int = 0
         set(value) {
@@ -60,4 +62,6 @@ class HelloStateRestorationViewController(
     override fun onNextClicked(f: () -> Unit) {
         nextButton.setOnClickListener { f.invoke() }
     }
+
+    override val containerView = view
 }

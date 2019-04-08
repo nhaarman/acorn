@@ -24,11 +24,12 @@ import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.presentation.createitem.CreateItemContainer
 import com.nhaarman.acorn.state.ContainerState
 import io.reactivex.Observable
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.createitem_scene.*
 
 class CreateItemViewController(
     override val view: View
-) : CreateItemContainer, RestorableViewController {
+) : CreateItemContainer, RestorableViewController, LayoutContainer {
 
     private var stateRestored = false
 
@@ -59,4 +60,6 @@ class CreateItemViewController(
         super.restoreInstanceState(bundle)
         stateRestored = true
     }
+
+    override val containerView = view
 }

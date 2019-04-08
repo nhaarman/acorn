@@ -24,11 +24,12 @@ import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.presentation.edititem.EditItemContainer
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.withLatestFrom
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.edititem_scene.*
 
 class EditItemViewController(
     override val view: View
-) : EditItemContainer, RestorableViewController {
+) : EditItemContainer, RestorableViewController, LayoutContainer {
 
     override var initialText: String? = null
         set(value) {
@@ -56,4 +57,6 @@ class EditItemViewController(
             .map { Unit }
             .share()
     }
+
+    override val containerView = view
 }

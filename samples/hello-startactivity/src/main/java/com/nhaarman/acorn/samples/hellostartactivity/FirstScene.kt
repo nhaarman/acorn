@@ -23,6 +23,7 @@ import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewProvidingScene
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.presentation.Container
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.first_scene.*
 
 class FirstScene(
@@ -50,9 +51,11 @@ interface FirstSceneContainer : Container {
 
 class FirstSceneViewController(
     override val view: View
-) : RestorableViewController, FirstSceneContainer {
+) : RestorableViewController, FirstSceneContainer, LayoutContainer {
 
     override fun onButtonClicked(f: () -> Unit) {
         mapsButton.setOnClickListener { f() }
     }
+
+    override val containerView = view
 }
