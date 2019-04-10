@@ -33,10 +33,18 @@ import kotlin.reflect.KClass
 /**
  * A navigator class that can switch between [Scene]s, but has no 'back'
  * behavior.
+ *
+ * This Navigator is able to save and restore its instance state in
+ * [saveInstanceState], but does not implement [SavableNavigator] itself.
+ * You can opt in to this state saving by explicitly implementing the
+ * [SavableNavigator] interface.
+ *
+ * @param savedState An optional instance that contains saved state as returned
+ * by [saveInstanceState].
  */
 abstract class ReplacingNavigator(
     private val savedState: NavigatorState?
-) : Navigator, SavableNavigator, OnBackPressListener {
+) : Navigator, OnBackPressListener {
 
     /**
      * Returns the Scene this Navigator should start with.
@@ -167,10 +175,13 @@ abstract class ReplacingNavigator(
     }
 
     @CallSuper
-    override fun saveInstanceState(): NavigatorState {
+    open fun saveInstanceState(): NavigatorState {
+        val scene = state.scene
+        if (scene !is SavableScene) return NavigatorState()
+
         return navigatorState {
-            it.sceneClass = state.scene::class
-            it.sceneState = (state.scene as? SavableScene)?.saveInstanceState()
+            it.sceneClass = scene::class
+            it.sceneState = scene.saveInstanceState()
         }
     }
 
