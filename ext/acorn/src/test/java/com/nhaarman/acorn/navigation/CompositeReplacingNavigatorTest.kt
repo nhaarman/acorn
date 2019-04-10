@@ -726,7 +726,7 @@ internal class CompositeReplacingNavigatorTest {
     inner class SavingState {
 
         private val navigator1Scene1 = SavableTestScene(11)
-        private val navigator1 = RestorableTestSingleSceneNavigator(navigator1Scene1)
+        private val navigator1 = SavableTestSingleSceneNavigator(navigator1Scene1)
         private val navigator = RestorableTestCompositeReplacingNavigator(navigator1, null)
 
         @Test
@@ -831,7 +831,7 @@ internal class CompositeReplacingNavigatorTest {
             state: NavigatorState?
         ): Navigator {
             return when (navigatorClass) {
-                RestorableTestSingleSceneNavigator::class -> RestorableTestSingleSceneNavigator(
+                SavableTestSingleSceneNavigator::class -> SavableTestSingleSceneNavigator(
                     SavableTestScene(0),
                     state
                 )
@@ -841,10 +841,10 @@ internal class CompositeReplacingNavigatorTest {
         }
     }
 
-    open class RestorableTestSingleSceneNavigator(
+    open class SavableTestSingleSceneNavigator(
         private val scene: Scene<out Container>,
         savedState: NavigatorState? = null
-    ) : SingleSceneNavigator(savedState) {
+    ) : SingleSceneNavigator(savedState), SavableNavigator {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
             return state?.let { SavableTestScene.create(it) } ?: scene

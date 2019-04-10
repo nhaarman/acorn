@@ -1221,10 +1221,10 @@ internal class CompositeStackNavigatorTest {
         private val navigator1Scene1 = SavableTestScene(11)
         private val navigator2Scene1 = SavableTestScene(21)
 
-        private val navigator1 = RestorableTestSingleSceneNavigator(navigator1Scene1)
+        private val navigator1 = SavableTestSingleSceneNavigator(navigator1Scene1)
         private val navigator2 = TestStackNavigator(listOf(navigator2Scene1))
 
-        private val navigator = RestorableTestCompositeStackNavigator(listOf(navigator1), null)
+        private val navigator = SavableTestCompositeStackNavigator(listOf(navigator1), null)
 
         @Test
         fun `saving and restoring state for single navigator stack`() {
@@ -1234,7 +1234,7 @@ internal class CompositeStackNavigatorTest {
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator = RestorableTestCompositeStackNavigator(listOf(navigator1), bundle)
+            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(navigator1), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
@@ -1258,7 +1258,7 @@ internal class CompositeStackNavigatorTest {
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator = RestorableTestCompositeStackNavigator(listOf(navigator1), bundle)
+            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(navigator1), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
@@ -1350,10 +1350,10 @@ internal class CompositeStackNavigatorTest {
         }
     }
 
-    class RestorableTestCompositeStackNavigator(
+    class SavableTestCompositeStackNavigator(
         private val initialStack: List<Navigator>,
         savedState: NavigatorState?
-    ) : CompositeStackNavigator(savedState) {
+    ) : CompositeStackNavigator(savedState), SavableNavigator {
 
         override fun initialStack(): List<Navigator> {
             return initialStack
@@ -1364,7 +1364,7 @@ internal class CompositeStackNavigatorTest {
             state: NavigatorState?
         ): Navigator {
             return when (navigatorClass) {
-                RestorableTestSingleSceneNavigator::class -> RestorableTestSingleSceneNavigator(
+                SavableTestSingleSceneNavigator::class -> SavableTestSingleSceneNavigator(
                     SavableTestScene(0),
                     state
                 )
@@ -1374,10 +1374,10 @@ internal class CompositeStackNavigatorTest {
         }
     }
 
-    open class RestorableTestSingleSceneNavigator(
+    open class SavableTestSingleSceneNavigator(
         private val scene: Scene<out Container>,
         savedState: NavigatorState? = null
-    ) : SingleSceneNavigator(savedState) {
+    ) : SingleSceneNavigator(savedState), SavableNavigator {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
             return state?.let { SavableTestScene.create(it) } ?: scene
