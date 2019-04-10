@@ -45,8 +45,8 @@ internal class CompositeStackNavigatorTest {
     private val navigator3Scene1 = spy(SavableTestScene(31))
 
     private val navigator1 = spy(TestSingleSceneNavigator(navigator1Scene1))
-    private val navigator2 = spy(TestStackNavigator(listOf(navigator2Scene1)))
-    private val navigator3 = spy(TestStackNavigator(listOf(navigator3Scene1)))
+    private val navigator2 = spy(SavableTestStackNavigator(listOf(navigator2Scene1)))
+    private val navigator3 = spy(SavableTestStackNavigator(listOf(navigator3Scene1)))
 
     private val navigator = TestCompositeStackNavigator(listOf(navigator1))
     private val listener = mock<Navigator.Events>()
@@ -1222,7 +1222,7 @@ internal class CompositeStackNavigatorTest {
         private val navigator2Scene1 = SavableTestScene(21)
 
         private val navigator1 = SavableTestSingleSceneNavigator(navigator1Scene1)
-        private val navigator2 = TestStackNavigator(listOf(navigator2Scene1))
+        private val navigator2 = SavableTestStackNavigator(listOf(navigator2Scene1))
 
         private val navigator = SavableTestCompositeStackNavigator(listOf(navigator1), null)
 
@@ -1333,10 +1333,10 @@ internal class CompositeStackNavigatorTest {
         }
     }
 
-    open class TestStackNavigator(
+    open class SavableTestStackNavigator(
         private val initialStack: List<SavableTestScene>,
         savedState: NavigatorState? = null
-    ) : StackNavigator(savedState) {
+    ) : StackNavigator(savedState), SavableNavigator {
 
         override fun initialStack(): List<Scene<out Container>> {
             return initialStack
@@ -1368,7 +1368,7 @@ internal class CompositeStackNavigatorTest {
                     SavableTestScene(0),
                     state
                 )
-                TestStackNavigator::class -> TestStackNavigator(emptyList(), state)
+                SavableTestStackNavigator::class -> SavableTestStackNavigator(emptyList(), state)
                 else -> error("Unknown navigator class: $navigatorClass.")
             }
         }

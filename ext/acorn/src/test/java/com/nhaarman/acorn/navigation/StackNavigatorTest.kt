@@ -100,7 +100,7 @@ internal class StackNavigatorTest {
             navigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene).toBeNull()
+            expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
@@ -112,7 +112,7 @@ internal class StackNavigatorTest {
             navigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
@@ -158,7 +158,7 @@ internal class StackNavigatorTest {
             navigator.onStart()
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
@@ -252,7 +252,7 @@ internal class StackNavigatorTest {
             navigator.push(scene2)
 
             /* Then */
-            expect(listener.lastScene).toBeNull()
+            expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
@@ -265,7 +265,7 @@ internal class StackNavigatorTest {
             navigator.push(scene2)
 
             /* Then */
-            expect(listener.lastScene).toBeNull()
+            expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
@@ -278,7 +278,7 @@ internal class StackNavigatorTest {
             navigator.push(scene2)
 
             /* Then */
-            expect(listener.lastScene).toBe(scene2)
+            expect(listener.lastSavableScene).toBe(scene2)
         }
 
         @Test
@@ -304,7 +304,7 @@ internal class StackNavigatorTest {
             navigator.onStart()
 
             /* Then */
-            expect(listener.lastScene).toBe(scene2)
+            expect(listener.lastSavableScene).toBe(scene2)
         }
 
         @Test
@@ -342,7 +342,7 @@ internal class StackNavigatorTest {
             navigator.pop()
 
             /* Then */
-            expect(listener.lastScene).toBeNull()
+            expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
@@ -383,7 +383,7 @@ internal class StackNavigatorTest {
             navigator.pop()
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
@@ -411,7 +411,7 @@ internal class StackNavigatorTest {
             navigator.pop()
 
             /* Then */
-            expect(listener.lastScene).toBeNull()
+            expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
@@ -1006,14 +1006,45 @@ internal class StackNavigatorTest {
     @Nested
     inner class SavingState {
 
-        private val scene1 = SavableTestScene(1)
-        private val scene2 = SavableTestScene(2)
+        private val scene1 = TestScene(1)
+        private val scene2 = TestScene(2)
+        private val savableScene1 = SavableTestScene(1)
+        private val savableScene2 = SavableTestScene(2)
 
-        private val navigator = TestStackNavigator(listOf(scene1))
+        private val navigator = TestStackNavigator(listOf(savableScene1))
 
         @Test
-        fun `saving and restoring state for single scene stack`() {
+        fun `StackNavigator does not implement SavableNavigator by default`() {
             /* Given */
+            val navigator: Navigator = TestStackNavigator(listOf(savableScene1))
+
+            /* Then */
+            expect(navigator is SavableNavigator).toBe(false)
+        }
+
+        @Test
+        fun `saving and restoring state for single savable scene stack`() {
+            /* Given */
+            val navigator = SavableTestStackNavigator(listOf(savableScene1))
+            navigator.onStart()
+            savableScene1.foo = 3
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            savableScene1.foo = 6
+
+            val restoredNavigator = SavableTestStackNavigator(listOf(savableScene2), bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastSavableScene?.foo).toBe(3)
+        }
+
+        @Test
+        fun `saving and restoring state for single non savable scene stack`() {
+            /* Given */
+            val navigator = SavableTestStackNavigator(listOf(scene1))
             navigator.onStart()
             scene1.foo = 3
 
@@ -1021,41 +1052,90 @@ internal class StackNavigatorTest {
             val bundle = navigator.saveInstanceState()
             scene1.foo = 6
 
-            val restoredNavigator = TestStackNavigator(listOf(scene1), bundle)
+            val restoredNavigator = SavableTestStackNavigator(listOf(scene2), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene?.foo).toBe(3)
+            expect(listener.lastScene).toBe(scene2)
         }
 
         @Test
-        fun `saving and restoring state for multi scene stack`() {
+        fun `saving and restoring state for multi savable scene stack`() {
             /* Given */
+            val navigator = SavableTestStackNavigator(listOf(savableScene1))
             navigator.onStart()
-            scene1.foo = 3
+            savableScene1.foo = 3
+            savableScene2.foo = 42
+            navigator.push(savableScene2)
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            val restoredNavigator = SavableTestStackNavigator(listOf(savableScene1), bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastSavableScene?.foo).toBe(42)
+        }
+
+        @Test
+        fun `saving and restoring state for mixed savable scene and non savable scene stack`() {
+            /* Given */
+            val navigator = SavableTestStackNavigator(listOf(savableScene1))
+            navigator.onStart()
+            savableScene1.foo = 3
             scene2.foo = 42
             navigator.push(scene2)
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator = TestStackNavigator(listOf(scene1), bundle)
+            savableScene1.foo = 1337
+            val restoredNavigator = SavableTestStackNavigator(listOf(savableScene2), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene?.foo).toBe(42)
+            expect(listener.lastScene).toBeInstanceOf<SavableTestScene> {
+                expect(it.foo).toBe(3)
+            }
+        }
+
+        @Test
+        fun `saving and restoring state mixed 2`() {
+            /* Given */
+            val navigator = SavableTestStackNavigator(listOf(savableScene1))
+            navigator.onStart()
+            savableScene1.foo = 3
+            savableScene2.foo = 5
+            scene2.foo = 42
+            navigator.push(savableScene2)
+            navigator.push(scene2)
+            navigator.push(SavableTestScene(8))
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            savableScene1.foo = 1337
+            savableScene2.foo = 127
+            val restoredNavigator = SavableTestStackNavigator(listOf(savableScene2), bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastScene).toBeInstanceOf<SavableTestScene> {
+                expect(it.foo).toBe(5)
+            }
         }
 
         @Test
         fun `restoring from empty state ignores state`() {
             /* When */
-            val result = TestStackNavigator(listOf(scene1), NavigatorState())
+            val result = SavableTestStackNavigator(listOf(savableScene1), NavigatorState())
             result.onStart()
             result.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastSavableScene).toBe(savableScene1)
         }
 
         @Test
@@ -1066,12 +1146,12 @@ internal class StackNavigatorTest {
             }
 
             /* When */
-            val result = TestStackNavigator(listOf(scene1), state)
+            val result = SavableTestStackNavigator(listOf(savableScene1), state)
             result.onStart()
             result.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastSavableScene).toBe(savableScene1)
         }
 
         @Test
@@ -1089,7 +1169,7 @@ internal class StackNavigatorTest {
             navigator.onStart()
 
             /* When */
-            navigator.push(scene2)
+            navigator.push(savableScene2)
             val state2 = navigator.saveInstanceState()
 
             /* Then */
@@ -1098,7 +1178,20 @@ internal class StackNavigatorTest {
     }
 
     class TestStackNavigator(
-        private val initialStack: List<SavableTestScene>,
+        private val initialStack: List<SavableTestScene>
+    ) : StackNavigator(null) {
+
+        override fun initialStack(): List<Scene<out Container>> {
+            return initialStack
+        }
+
+        override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
+            error("Not supported")
+        }
+    }
+
+    class SavableTestStackNavigator(
+        private val initialStack: List<Scene<*>>,
         savedState: NavigatorState? = null
     ) : StackNavigator(savedState) {
 
@@ -1117,7 +1210,8 @@ internal class StackNavigatorTest {
     private open class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Pair<Scene<out Container>, TransitionData?>>()
-        val lastScene get() = scenes.lastOrNull()?.first as SavableTestScene?
+        val lastScene get() = scenes.lastOrNull()?.first
+        val lastSavableScene get() = scenes.lastOrNull()?.first as SavableTestScene?
         val lastTransitionData get() = scenes.lastOrNull()?.second
 
         var finished = false

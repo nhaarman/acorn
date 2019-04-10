@@ -36,15 +36,17 @@ import kotlin.reflect.KClass
  * stack. Implementers must implement [initialStack] to provide the initial stack
  * to work with.
  *
- * This Navigator implements [SavableNavigator] and thus can have its state saved
- * and restored when necessary.
+ * This Navigator is able to save and restore its instance state in
+ * [saveInstanceState], but does not implement [SavableNavigator] itself.
+ * You can opt in to this state saving by explicitly implementing the
+ * [SavableNavigator] interface.
  *
- * @param savedState An optional instance that contains the saved state as
- * returned by this class's [saveInstanceState] method.
+ * @param savedState An optional instance that contains saved state as returned
+ * by [saveInstanceState].
  */
 abstract class StackNavigator(
     private val savedState: NavigatorState?
-) : Navigator, SavableNavigator, OnBackPressListener {
+) : Navigator, OnBackPressListener {
 
     /**
      * Creates the initial stack of [Scene]s for this StackNavigator.
@@ -219,15 +221,16 @@ abstract class StackNavigator(
     }
 
     @CallSuper
-    override fun saveInstanceState(): NavigatorState {
-        return state.scenes
+    open fun saveInstanceState(): NavigatorState {
+        val savableStack = state.scenes.takeWhile { it is SavableScene }
+        return savableStack
             .foldIndexed(NavigatorState()) { index, bundle, scene ->
                 bundle.also {
                     it["${index}_class"] = scene::class.java.name
                     it["${index}_state"] = (scene as? SavableScene)?.saveInstanceState()
                 }
             }
-            .also { it["size"] = state.scenes.size }
+            .also { it["size"] = savableStack.size }
     }
 
     private sealed class State {
