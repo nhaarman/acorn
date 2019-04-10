@@ -20,8 +20,9 @@ import android.view.ViewGroup
 import com.nhaarman.acorn.android.presentation.ProvidesView
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.util.inflate
-import com.nhaarman.acorn.presentation.BaseSavableScene
+import com.nhaarman.acorn.presentation.BasicScene
 import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.get
@@ -29,14 +30,17 @@ import com.nhaarman.acorn.state.get
 /**
  * A [Scene] implementation that can have its state saved.
  *
- * This implementation extends the [BaseSavableScene] class which provides
- * default behavior for saving the Scene and its [Container] state.
+ * This implementation extends the [BasicScene] class and opts in to its
+ * default behavior for saving the Scene and its [Container] state by
+ * implementing [SavableScene].
  */
 class HelloStateRestorationScene private constructor(
     private val counter: Int,
     private val listener: Events,
     savedState: SceneState?
-) : BaseSavableScene<HelloStateRestorationContainer>(savedState), ProvidesView {
+) : BasicScene<HelloStateRestorationContainer>(savedState),
+    SavableScene,
+    ProvidesView {
 
     override fun createViewController(parent: ViewGroup): ViewController {
         return HelloStateRestorationViewController(parent.inflate(R.layout.myscene))

@@ -17,6 +17,7 @@
 package com.nhaarman.acorn.samples.hellosharedata.presentation.picturegallery
 
 import com.nhaarman.acorn.presentation.RxScene
+import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
 import com.nhaarman.acorn.samples.hellosharedata.pictures.PicturesProvider
 import com.nhaarman.acorn.state.SceneState
@@ -26,7 +27,8 @@ class PictureGalleryScene(
     private val picturesProvider: PicturesProvider,
     private val listener: Events,
     savedState: SceneState? = null
-) : RxScene<PictureGalleryContainer>(savedState) {
+) : RxScene<PictureGalleryContainer>(savedState),
+    SavableScene {
 
     override fun onStart() {
         super.onStart()

@@ -19,6 +19,7 @@ package com.nhaarman.acorn.notesapp.presentation.edititem
 import com.nhaarman.acorn.notesapp.mainThread
 import com.nhaarman.acorn.notesapp.note.NoteItemsRepository
 import com.nhaarman.acorn.presentation.RxScene
+import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.presentation.SceneKey.Companion.defaultKey
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.get
@@ -29,7 +30,8 @@ class EditItemScene(
     private val noteItemsRepository: NoteItemsRepository,
     private val listener: Events,
     savedState: SceneState? = null
-) : RxScene<EditItemContainer>(savedState) {
+) : RxScene<EditItemContainer>(savedState),
+    SavableScene {
 
     private val originalItem by lazy {
         noteItemsRepository.find(itemId)

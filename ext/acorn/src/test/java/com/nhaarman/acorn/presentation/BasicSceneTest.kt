@@ -17,6 +17,7 @@
 package com.nhaarman.acorn.presentation
 
 import com.nhaarman.acorn.state.ContainerState
+import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.containerState
 import com.nhaarman.acorn.state.get
 import com.nhaarman.expect.expect
@@ -24,39 +25,17 @@ import org.junit.jupiter.api.Test
 
 class BasicSceneTest {
 
-    private val scene = TestBasicScene()
-    private val testView = TestView()
+    private val view1 = TestView()
+    private val view2 = TestView()
 
     @Test
-    fun `attaching a container stores the view`() {
-        /* When */
-        scene.attach(testView)
-
-        /* Then */
-        expect(scene.view).toBe(testView)
-    }
-
-    @Test
-    fun `detaching the container releases the view`() {
+    fun `view state is restored when new view attaches`() {
         /* Given */
-        scene.attach(testView)
-
-        /* When */
-        scene.detach(testView)
-
-        /* Then */
-        expect(scene.view).toBeNull()
-    }
-
-    @Test
-    fun `view state is restored between views`() {
-        /* Given */
-        val view1 = TestView(1)
-        val view2 = TestView(2)
-
-        /* When */
+        val scene = TestBasicScene(null)
         scene.attach(view1)
         view1.state = 3
+
+        /* When */
         scene.detach(view1)
         scene.attach(view2)
 
@@ -65,33 +44,45 @@ class BasicSceneTest {
     }
 
     @Test
-    fun `view state is restored between scenes`() {
+    fun `view state is restored from scene state`() {
         /* Given */
-        val view1 = TestView(1)
-        val view2 = TestView(2)
+        val scene1 = TestBasicScene(null)
+
+        scene1.attach(view1)
+        view1.state = 3
 
         /* When */
-        scene.attach(view1)
-        view1.state = 3
-        val state = view1.saveInstanceState()
-
-        val newScene = TestBasicScene(state)
-        newScene.attach(view2)
+        scene1.detach(view1)
+        val state = scene1.saveInstanceState()
+        val scene2 = TestBasicScene(state)
+        scene2.attach(view2)
 
         /* Then */
         expect(view2.state).toBe(3)
     }
 
-    private class TestBasicScene(
-        containerState: ContainerState? = null
-    ) : BasicScene<TestView>(
-        containerState
-    ) {
+    @Test
+    fun `view state is restored from scene state -- without detach`() {
+        /* Given */
+        val scene1 = TestBasicScene(null)
 
-        val view get() = attachedView
+        scene1.attach(view1)
+        view1.state = 3
+
+        /* When */
+        val state = scene1.saveInstanceState()
+        val scene2 = TestBasicScene(state)
+        scene2.attach(view2)
+
+        /* Then */
+        expect(view2.state).toBe(3)
     }
 
-    private class TestView(var state: Int? = null) : Container, RestorableContainer {
+    private class TestBasicScene(viewState: SceneState?) : BasicScene<TestView>(viewState)
+
+    private class TestView : Container, RestorableContainer {
+
+        var state: Int? = null
 
         override fun saveInstanceState(): ContainerState {
             return containerState {
