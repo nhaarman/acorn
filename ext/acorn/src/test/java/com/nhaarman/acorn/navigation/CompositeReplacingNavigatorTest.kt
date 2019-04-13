@@ -725,26 +725,42 @@ internal class CompositeReplacingNavigatorTest {
     @Nested
     inner class SavingState {
 
-        private val navigator1Scene1 = SavableTestScene(11)
-        private val navigator1 = SavableTestSingleSceneNavigator(navigator1Scene1)
-        private val navigator = RestorableTestCompositeReplacingNavigator(navigator1, null)
+        private val savableScene = SavableTestScene(1)
+        private val savableScene2 = SavableTestScene(2)
+        private val savableScene3 = SavableTestScene(3)
+
+        private val childNavigator = TestSingleSceneNavigator(savableScene)
+        private val childNavigator2 = TestSingleSceneNavigator(savableScene2)
+        private val childNavigator3 = TestSingleSceneNavigator(savableScene3)
+
+        private val savableChildNavigator = SavableTestSingleSceneNavigator(savableScene)
+        private val navigator = SavableCompositeReplacingNavigator(savableChildNavigator, null)
+
+        @Test
+        fun `CompositeReplacingNavigator does not implement SavableNavigator by default`() {
+            /* Given */
+            val navigator: Navigator = TestCompositeReplacingNavigator(savableChildNavigator)
+
+            /* Then */
+            expect(navigator is SavableNavigator).toBe(false)
+        }
 
         @Test
         fun `saving and restoring state for single navigator stack`() {
             /* Given */
             navigator.onStart()
-            navigator1Scene1.foo = 3
+            savableScene.foo = 3
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator = RestorableTestCompositeReplacingNavigator(navigator1, bundle)
+            val restoredNavigator = SavableCompositeReplacingNavigator(savableChildNavigator, bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
-                expect(lastValue).toNotBeTheSameAs(navigator1Scene1)
+                expect(lastValue).toNotBeTheSameAs(savableScene)
                 expect(lastValue).toBeInstanceOf<SavableTestScene> {
                     expect(it.foo).toBe(3)
                 }
@@ -771,6 +787,47 @@ internal class CompositeReplacingNavigatorTest {
 
             /* Then */
             expect(state1).toBe(state2)
+        }
+
+        @Test
+        fun `saving and restoring state for non savable initial child navigator`() {
+            /* Given */
+            val navigator = SavableCompositeReplacingNavigator(childNavigator, null)
+            navigator.onStart()
+
+            /* When */
+            val state = navigator.saveInstanceState()
+            savableScene.foo = 3
+            val restoredNavigator = SavableCompositeReplacingNavigator(childNavigator2, state)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            argumentCaptor<Scene<out Container>> {
+                verify(listener).scene(capture(), anyOrNull())
+                expect(lastValue).toBe(savableScene2)
+            }
+        }
+
+        @Test
+        fun `saving and restoring state for replaced non savable scene`() {
+            /* Given */
+            val navigator = SavableCompositeReplacingNavigator(childNavigator, null)
+            navigator.onStart()
+            navigator.replace(childNavigator2)
+            savableScene2.foo = 42
+
+            /* When */
+            val state = navigator.saveInstanceState()
+            val restoredNavigator = SavableCompositeReplacingNavigator(childNavigator3, state)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            argumentCaptor<Scene<out Container>> {
+                verify(listener).scene(capture(), anyOrNull())
+                expect(lastValue).toBe(savableScene3)
+            }
         }
     }
 
@@ -817,7 +874,7 @@ internal class CompositeReplacingNavigatorTest {
         }
     }
 
-    class RestorableTestCompositeReplacingNavigator(
+    class SavableCompositeReplacingNavigator(
         private val initialNavigator: Navigator,
         savedState: NavigatorState?
     ) : CompositeReplacingNavigator(savedState) {
@@ -831,11 +888,8 @@ internal class CompositeReplacingNavigatorTest {
             state: NavigatorState?
         ): Navigator {
             return when (navigatorClass) {
-                SavableTestSingleSceneNavigator::class -> SavableTestSingleSceneNavigator(
-                    SavableTestScene(0),
-                    state
-                )
                 TestStackNavigator::class -> TestStackNavigator(emptyList(), state)
+                SavableTestSingleSceneNavigator::class -> SavableTestSingleSceneNavigator(SavableTestScene(0), state)
                 else -> error("Unknown navigator class: $navigatorClass.")
             }
         }
