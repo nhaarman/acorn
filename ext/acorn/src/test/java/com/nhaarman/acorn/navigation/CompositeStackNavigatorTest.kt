@@ -1220,21 +1220,36 @@ internal class CompositeStackNavigatorTest {
 
         private val navigator1Scene1 = SavableTestScene(11)
         private val navigator2Scene1 = SavableTestScene(21)
+        private val navigator3Scene1 = SavableTestScene(31)
 
-        private val navigator1 = SavableTestSingleSceneNavigator(navigator1Scene1)
-        private val navigator2 = SavableTestStackNavigator(listOf(navigator2Scene1))
+        private val navigator1 = TestSingleSceneNavigator(navigator1Scene1)
+        private val navigator2 = TestSingleSceneNavigator(navigator2Scene1)
+        private val savableNavigator1 = SavableTestSingleSceneNavigator(navigator1Scene1)
+        private val savableNavigator2 = SavableTestStackNavigator(listOf(navigator2Scene1))
+        private val savableNavigator3 = SavableTestStackNavigator(listOf(navigator3Scene1))
 
-        private val navigator = SavableTestCompositeStackNavigator(listOf(navigator1), null)
+        private val navigator = SavableTestCompositeStackNavigator(listOf(savableNavigator1), null)
 
         @Test
-        fun `saving and restoring state for single navigator stack`() {
+        fun `CompositeStackNavigator does not implement SavableNavigator by default`() {
             /* Given */
+            val navigator: Navigator = TestCompositeStackNavigator(listOf(savableNavigator1))
+
+            /* Then */
+            expect(navigator is SavableNavigator).toBe(false)
+        }
+
+        @Test
+        fun `saving and restoring state for single savable navigator stack`() {
+            /* Given */
+            val navigator = SavableTestCompositeStackNavigator(listOf(savableNavigator1), null)
             navigator.onStart()
             navigator1Scene1.foo = 3
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(navigator1), bundle)
+            navigator1Scene1.foo = 42
+            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(savableNavigator1), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
@@ -1249,16 +1264,40 @@ internal class CompositeStackNavigatorTest {
         }
 
         @Test
-        fun `saving and restoring state for multiple child navigators on navigator stack`() {
+        fun `saving and restoring state for single non savable navigator stack`() {
             /* Given */
+            val navigator = SavableTestCompositeStackNavigator(listOf(navigator1), null)
             navigator.onStart()
             navigator1Scene1.foo = 3
-            navigator.push(navigator2)
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            navigator1Scene1.foo = 42
+            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(savableNavigator2), bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            argumentCaptor<Scene<out Container>> {
+                verify(listener).scene(capture(), anyOrNull())
+                expect(lastValue).toBeInstanceOf<SavableTestScene> {
+                    expect(it.foo).toBe(21)
+                }
+            }
+        }
+
+        @Test
+        fun `saving and restoring state for multiple savable child navigators on navigator stack`() {
+            /* Given */
+            val navigator = SavableTestCompositeStackNavigator(listOf(savableNavigator1), null)
+            navigator.onStart()
+            navigator1Scene1.foo = 3
+            navigator.push(savableNavigator2)
             navigator2Scene1.foo = 4
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(navigator1), bundle)
+            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(savableNavigator1), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
@@ -1285,6 +1324,74 @@ internal class CompositeStackNavigatorTest {
         }
 
         @Test
+        fun `saving and restoring state for mixed savable and non savable navigator stack`() {
+            /* Given */
+            val navigator = SavableTestCompositeStackNavigator(listOf(savableNavigator1), null)
+            navigator.onStart()
+            navigator1Scene1.foo = 3
+            navigator.push(navigator2)
+            navigator2Scene1.foo = 4
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(savableNavigator2), bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            argumentCaptor<Scene<out Container>> {
+                verify(listener).scene(capture(), anyOrNull())
+                expect(lastValue).toNotBeTheSameAs(navigator2Scene1)
+                expect(lastValue).toBeInstanceOf<SavableTestScene> {
+                    expect(it.foo).toBe(3)
+                }
+            }
+
+            /* When */
+            restoredNavigator.pop()
+
+            /* Then */
+            argumentCaptor<Scene<out Container>> {
+                verify(listener).finished()
+            }
+        }
+
+        @Test
+        fun `saving and restoring state for mixed savable and non savable navigator stack 2`() {
+            /* Given */
+            val navigator = SavableTestCompositeStackNavigator(listOf(savableNavigator1), null)
+            navigator.onStart()
+            navigator1Scene1.foo = 3
+            navigator.push(navigator2)
+            navigator2Scene1.foo = 4
+            navigator.push(savableNavigator3)
+            navigator3Scene1.foo = 5
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            val restoredNavigator = SavableTestCompositeStackNavigator(listOf(savableNavigator2), bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            argumentCaptor<Scene<out Container>> {
+                verify(listener).scene(capture(), anyOrNull())
+                expect(lastValue).toNotBeTheSameAs(navigator2Scene1)
+                expect(lastValue).toBeInstanceOf<SavableTestScene> {
+                    expect(it.foo).toBe(3)
+                }
+            }
+
+            /* When */
+            restoredNavigator.pop()
+
+            /* Then */
+            argumentCaptor<Scene<out Container>> {
+                verify(listener).finished()
+            }
+        }
+
+        @Test
         fun `saved state from callback is the same as saved state _after_ callback`() {
             /* Given */
             var state1: SavedState? = null
@@ -1299,7 +1406,7 @@ internal class CompositeStackNavigatorTest {
             navigator.onStart()
 
             /* When */
-            navigator.push(navigator2)
+            navigator.push(savableNavigator2)
             val state2 = navigator.saveInstanceState()
 
             /* Then */
@@ -1324,9 +1431,8 @@ internal class CompositeStackNavigatorTest {
     }
 
     open class TestSingleSceneNavigator(
-        private val scene: Scene<out Container>,
-        savedState: NavigatorState? = null
-    ) : SingleSceneNavigator(savedState) {
+        private val scene: Scene<out Container>
+    ) : SingleSceneNavigator(null) {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
             return scene
