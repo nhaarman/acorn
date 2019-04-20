@@ -26,8 +26,6 @@ class AcornIssueRegistry : IssueRegistry() {
 
     override val issues: List<Issue>
         get() = listOf(
-            RxSceneDisposablesUsageDetector.issue,
-            RestoreSceneDetector.issue,
-            RestoreNavigatorDetector.issue
+            RxSceneDisposablesUsageDetector.issue
         )
 }
