@@ -902,14 +902,47 @@ internal class WizardNavigatorTest {
     @Nested
     inner class SavingState {
 
-        private val scene1 = SavableTestScene(1)
-        private val scene2 = SavableTestScene(2)
+        private val scene1 = TestScene(1)
+        private val scene2 = TestScene(2)
+        private val scene3 = TestScene(3)
+        private val scene4 = TestScene(4)
 
-        private val navigator = TestWizardNavigator(listOf(scene1, scene2))
+        private val savableScene1 = SavableTestScene(5)
+        private val savableScene2 = SavableTestScene(6)
+
+        private val navigator = TestWizardNavigator(listOf(savableScene1, savableScene2))
 
         @Test
-        fun `saving and restoring state for single scene stack`() {
+        fun `WizardNavigator does not implement SavableNavigator by default`() {
             /* Given */
+            val navigator: Navigator = TestWizardNavigator(listOf(savableScene1))
+
+            /* Then */
+            expect(navigator is SavableNavigator).toBe(false)
+        }
+
+        @Test
+        fun `saving and restoring state for single savable scene stack`() {
+            /* Given */
+            navigator.onStart()
+            savableScene1.foo = 3
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+
+            savableScene1.foo = 6
+            val restoredNavigator = SavableTestWizardNavigator(listOf(savableScene1), bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastSavableScene?.foo).toBe(3)
+        }
+
+        @Test
+        fun `saving and restoring state for single non savable scene stack`() {
+            /* Given */
+            val navigator = SavableTestWizardNavigator(listOf(scene1))
             navigator.onStart()
             scene1.foo = 3
 
@@ -917,33 +950,55 @@ internal class WizardNavigatorTest {
             val bundle = navigator.saveInstanceState()
 
             scene1.foo = 6
-            val restoredNavigator = TestWizardNavigator(listOf(scene1), bundle)
+            val restoredNavigator = SavableTestWizardNavigator(listOf(scene2), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene?.foo).toBe(3)
+            expect(listener.lastScene).toBe(scene2)
         }
 
         @Test
         fun `saving and restoring state for when on second screen`() {
             /* Given */
             navigator.onStart()
-            scene1.foo = 3
+            savableScene1.foo = 3
+            savableScene2.foo = 42
+            navigator.next()
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            savableScene1.foo = 6
+            savableScene2.foo = 8
+
+            val restoredNavigator = SavableTestWizardNavigator(listOf(savableScene1, savableScene2), bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastSavableScene?.foo).toBe(42)
+        }
+
+        @Test
+        fun `saving and restoring state for when on second screen - mixed scenes`() {
+            /* Given */
+            val navigator = SavableTestWizardNavigator(listOf(savableScene1, scene2))
+            navigator.onStart()
+            savableScene1.foo = 3
             scene2.foo = 42
             navigator.next()
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            scene1.foo = 6
+            savableScene1.foo = 6
             scene2.foo = 8
 
-            val restoredNavigator = TestWizardNavigator(listOf(scene1, scene2), bundle)
+            val restoredNavigator = SavableTestWizardNavigator(listOf(scene3, scene4), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene?.foo).toBe(42)
+            expect(listener.lastScene).toBe(scene4)
         }
 
         @Test
@@ -970,7 +1025,20 @@ internal class WizardNavigatorTest {
     }
 
     class TestWizardNavigator(
-        private val initialStack: List<SavableTestScene>,
+        private val initialStack: List<SavableTestScene>
+    ) : WizardNavigator(null) {
+
+        override fun createScene(index: Int): Scene<out Container>? {
+            return initialStack.getOrNull(index)
+        }
+
+        override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<*> {
+            error("Not supported")
+        }
+    }
+
+    class SavableTestWizardNavigator(
+        private val initialStack: List<Scene<*>>,
         savedState: NavigatorState? = null
     ) : WizardNavigator(savedState) {
 
@@ -989,7 +1057,8 @@ internal class WizardNavigatorTest {
     private open class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Pair<Scene<out Container>, TransitionData?>>()
-        val lastScene get() = scenes.lastOrNull()?.first as SavableTestScene?
+        val lastScene get() = scenes.lastOrNull()?.first
+        val lastSavableScene get() = scenes.lastOrNull()?.first as SavableTestScene?
 
         var finished = false
 
