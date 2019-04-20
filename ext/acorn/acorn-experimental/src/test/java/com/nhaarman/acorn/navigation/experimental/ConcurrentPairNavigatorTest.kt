@@ -17,6 +17,7 @@
 package com.nhaarman.acorn.navigation.experimental
 
 import com.nhaarman.acorn.navigation.Navigator
+import com.nhaarman.acorn.navigation.SavableNavigator
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
@@ -46,8 +47,7 @@ internal class ConcurrentPairNavigatorTest {
     private val scene2 = spy(SavableTestScene(2))
     private val scene3 = spy(SavableTestScene(3))
 
-    private val navigator =
-        TestConcurrentPairNavigator(scene1)
+    private val navigator = TestConcurrentPairNavigator(scene1)
     private val listener = spy(TestListener())
 
     @Nested
@@ -1221,27 +1221,36 @@ internal class ConcurrentPairNavigatorTest {
     @Nested
     inner class SavingState {
 
-        private val scene1 = SavableTestScene(1)
-        private val scene2 = SavableTestScene(2)
+        private val scene1 = TestScene(1)
+        private val scene2 = TestScene(2)
+        private val savableScene1 = SavableTestScene(3)
+        private val savableScene2 = SavableTestScene(4)
+        private val savableScene3 = SavableTestScene(5)
+        private val savableScene4 = SavableTestScene(6)
 
-        private val navigator =
-            TestConcurrentPairNavigator(scene1)
+        private val navigator = TestConcurrentPairNavigator(savableScene1)
 
         @Test
-        fun `saving and restoring state for only base scene`() {
+        fun `ConcurrentPairNavigator does not implement SavableNavigator by default`() {
             /* Given */
+            val navigator: Navigator = TestConcurrentPairNavigator(savableScene1)
+
+            /* Then */
+            expect(navigator is SavableNavigator).toBe(false)
+        }
+
+        @Test
+        fun `saving and restoring state for only savable base scene`() {
+            /* Given */
+            val navigator = TestConcurrentPairNavigator(savableScene1)
             navigator.onStart()
-            scene1.foo = 3
+            savableScene1.foo = 3
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            scene1.foo = 6
+            savableScene1.foo = 6
 
-            val restoredNavigator =
-                TestConcurrentPairNavigator(
-                    scene1,
-                    bundle
-                )
+            val restoredNavigator = SavableTestConcurrentPairNavigator(savableScene1, bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
@@ -1252,25 +1261,38 @@ internal class ConcurrentPairNavigatorTest {
         }
 
         @Test
-        fun `saving and restoring state for base and second scenes`() {
+        fun `saving and restoring state for only non savable base scene`() {
             /* Given */
+            val navigator = TestConcurrentPairNavigator(scene1)
             navigator.onStart()
-            scene1.foo = 3
-            scene2.foo = 42
-            navigator.push(scene2)
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator =
-                TestConcurrentPairNavigator(
-                    scene1,
-                    bundle
-                )
+
+            val restoredNavigator = SavableTestConcurrentPairNavigator(scene2, bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            scene1.foo = 1
-            scene2.foo = 2
+            /* Then */
+            expect(listener.lastScene).toBe(scene2)
+        }
+
+        @Test
+        fun `saving and restoring state for base and second scenes`() {
+            /* Given */
+            navigator.onStart()
+            savableScene1.foo = 3
+            savableScene2.foo = 42
+            navigator.push(savableScene2)
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            val restoredNavigator = SavableTestConcurrentPairNavigator(savableScene3, bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            savableScene1.foo = 1
+            savableScene2.foo = 2
 
             /* Then */
             expect(listener.lastScene).toBeInstanceOf<CombinedScene> {
@@ -1280,17 +1302,36 @@ internal class ConcurrentPairNavigatorTest {
         }
 
         @Test
+        fun `saving and restoring state for base and non savable second scenes`() {
+            /* Given */
+            val navigator = SavableTestConcurrentPairNavigator(savableScene1)
+            navigator.onStart()
+            savableScene1.foo = 3
+            scene2.foo = 42
+            navigator.push(scene2)
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            val restoredNavigator = SavableTestConcurrentPairNavigator(savableScene2, bundle)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastScene).toBe(savableScene1)
+        }
+
+        @Test
         fun `restoring from empty state ignores state`() {
             /* When */
-            val result = TestConcurrentPairNavigator(
-                scene1,
+            val result = SavableTestConcurrentPairNavigator(
+                savableScene1,
                 NavigatorState()
             )
             result.onStart()
             result.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastScene).toBe(savableScene1)
         }
 
         @Test
@@ -1308,7 +1349,7 @@ internal class ConcurrentPairNavigatorTest {
             navigator.onStart()
 
             /* When */
-            navigator.push(scene2)
+            navigator.push(savableScene2)
             val state2 = navigator.saveInstanceState()
 
             /* Then */
@@ -1317,9 +1358,22 @@ internal class ConcurrentPairNavigatorTest {
     }
 
     class TestConcurrentPairNavigator(
-        private val initialScene: SavableTestScene,
+        private val initialScene: Scene<*>
+    ) : ConcurrentPairNavigator(null) {
+
+        override fun createInitialScene(): Scene<out Container> {
+            return initialScene
+        }
+
+        override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
+            error("Not supported")
+        }
+    }
+
+    class SavableTestConcurrentPairNavigator(
+        private val initialScene: Scene<*>,
         savedState: NavigatorState? = null
-    ) : ConcurrentPairNavigator(savedState) {
+    ) : ConcurrentPairNavigator(savedState), SavableNavigator {
 
         override fun createInitialScene(): Scene<out Container> {
             return initialScene
@@ -1349,4 +1403,6 @@ internal class ConcurrentPairNavigatorTest {
             finished = true
         }
     }
+
+    private open class TestScene(var foo: Int) : Scene<Container>
 }

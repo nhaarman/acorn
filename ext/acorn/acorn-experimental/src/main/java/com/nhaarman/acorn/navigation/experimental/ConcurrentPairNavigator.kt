@@ -47,16 +47,18 @@ import kotlin.reflect.KClass
  * Scene and the second Scene in a [CombinedScene] and notifies interested
  * [Navigator.Events] of this CombinedScene.
  *
- * This Navigator implements [SavableNavigator] and thus can have its state
- * saved and restored when necessary.
+ * This Navigator is able to save and restore its instance state in
+ * [saveInstanceState], but does not implement [SavableNavigator] itself.
+ * You can opt in to this state saving by explicitly implementing the
+ * [SavableNavigator] interface.
  *
- * @param savedState An optional instance that contains the saved state as
- * returned by this class's [saveInstanceState] method.
+ * @param savedState An optional instance that contains saved state as returned
+ * by [saveInstanceState].
  */
 @ExperimentalConcurrentPairNavigator
 abstract class ConcurrentPairNavigator(
     private val savedState: NavigatorState?
-) : Navigator, SavableNavigator, OnBackPressListener {
+) : Navigator, OnBackPressListener {
 
     /**
      * Creates the initial [Scene] for this ConcurrentPairNavigator.
@@ -219,7 +221,7 @@ abstract class ConcurrentPairNavigator(
     }
 
     @CallSuper
-    override fun saveInstanceState(): NavigatorState {
+    open fun saveInstanceState(): NavigatorState {
         return navigatorState {
             it["base_class"] = state.scenes.baseScene::class.java.name
             it["base_state"] = (state.scenes.baseScene as? SavableScene)?.saveInstanceState()
