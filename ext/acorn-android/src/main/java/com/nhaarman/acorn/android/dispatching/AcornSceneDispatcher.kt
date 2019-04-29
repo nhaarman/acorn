@@ -27,7 +27,7 @@ import com.nhaarman.acorn.android.internal.contentView
 import com.nhaarman.acorn.android.internal.d
 import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.android.uistate.UIHandler
 import com.nhaarman.acorn.android.uistate.UIStateUIHandler
 import com.nhaarman.acorn.navigation.DisposableHandle
@@ -123,7 +123,7 @@ class AcornSceneDispatcher internal constructor(
             activity: Activity,
             viewControllerFactory: ViewControllerFactory,
             activityControllerFactory: ActivityControllerFactory,
-            transitionFactory: TransitionFactory,
+            transitionFactory: SceneTransitionFactory,
             callback: Callback,
             savedState: SavedState?
         ): AcornSceneDispatcher {
@@ -143,7 +143,7 @@ class AcornSceneDispatcher internal constructor(
             root: ViewGroup,
             viewControllerFactory: ViewControllerFactory,
             activityControllerFactory: ActivityControllerFactory,
-            transitionFactory: TransitionFactory,
+            transitionFactory: SceneTransitionFactory,
             callback: Callback,
             savedState: SavedState?
         ): AcornSceneDispatcher {

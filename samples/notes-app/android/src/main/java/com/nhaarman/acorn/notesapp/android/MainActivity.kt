@@ -19,7 +19,7 @@ package com.nhaarman.acorn.notesapp.android
 import com.nhaarman.acorn.android.AcornAppCompatActivity
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.notesapp.android.TransitionFactoryProvider.transitionFactory
 import com.nhaarman.acorn.notesapp.android.ViewFactoryProvider.viewFactory
 
@@ -33,7 +33,7 @@ class MainActivity : AcornAppCompatActivity() {
         return viewFactory
     }
 
-    override fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): TransitionFactory {
+    override fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): SceneTransitionFactory {
         return transitionFactory
     }
 }

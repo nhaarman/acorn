@@ -23,7 +23,7 @@ import com.nhaarman.acorn.android.internal.w
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.android.transition.SceneTransition
-import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.android.uistate.internal.Destination
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Container
@@ -99,12 +99,12 @@ sealed class UIState {
          *
          * @param root The [ViewGroup] to show Scene views in, usually
          * [android.R.id.content].
-         * @param transitionFactory a [TransitionFactory] that provides
+         * @param transitionFactory a [SceneTransitionFactory] that provides
          * [SceneTransition] instances for transition animations.
          */
         fun create(
             root: ViewGroup,
-            transitionFactory: TransitionFactory
+            transitionFactory: SceneTransitionFactory
         ): UIState = NotVisible(root, transitionFactory)
     }
 }
@@ -115,7 +115,7 @@ sealed class UIState {
  */
 internal class NotVisible(
     private val root: ViewGroup,
-    private val transitionFactory: TransitionFactory
+    private val transitionFactory: SceneTransitionFactory
 ) : UIState() {
 
     /**
@@ -154,7 +154,7 @@ internal class NotVisible(
  */
 internal class NotVisibleWithDestination(
     private val root: ViewGroup,
-    private val transitionFactory: TransitionFactory,
+    private val transitionFactory: SceneTransitionFactory,
     private val destination: Destination,
     private val existingViewController: ViewController?
 ) : UIState() {
@@ -233,7 +233,7 @@ internal class NotVisibleWithDestination(
  */
 internal class Visible(
     private val root: ViewGroup,
-    private val transitionFactory: TransitionFactory
+    private val transitionFactory: SceneTransitionFactory
 ) : UIState() {
 
     /**
@@ -288,7 +288,7 @@ internal class Visible(
  */
 internal class VisibleWithDestination(
     private val root: ViewGroup,
-    private val transitionFactory: TransitionFactory,
+    private val transitionFactory: SceneTransitionFactory,
     private var currentDestination: Destination,
     private var currentViewController: ViewController
 ) : UIState() {

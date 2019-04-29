@@ -16,25 +16,29 @@
 
 package com.nhaarman.acorn.android.transition
 
-import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Scene
 
 /**
- * A [TransitionFactory] that uses the [TransitionData.isBackwards] flag to
- * determine the transition.
+ * A [SceneTransitionFactory] implementation that can delegate to other implementations.
  */
-class DefaultTransitionFactory(private val viewControllerFactory: ViewControllerFactory) :
-    TransitionFactory {
+class ComposingSceneTransitionFactory private constructor(
+    private val sources: Sequence<SceneTransitionFactory>
+) : SceneTransitionFactory {
+
+    override fun supports(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Boolean {
+        return sources.any { it.supports(previousScene, newScene, data) }
+    }
 
     override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): SceneTransition {
-        return when (data?.isBackwards) {
-            true -> FadeOutToBottomTransition { parent ->
-                viewControllerFactory.viewControllerFor(newScene, parent)
-            }
-            else -> FadeInFromBottomTransition { parent ->
-                viewControllerFactory.viewControllerFor(newScene, parent)
-            }
-        }.hideKeyboardOnStart()
+        return sources
+            .first { it.supports(previousScene, newScene, data) }
+            .transitionFor(previousScene, newScene, data)
+    }
+
+    companion object {
+
+        fun from(sources: List<SceneTransitionFactory>) = ComposingSceneTransitionFactory(sources.asSequence())
+        fun from(vararg sources: SceneTransitionFactory) = ComposingSceneTransitionFactory(sources.asSequence())
     }
 }

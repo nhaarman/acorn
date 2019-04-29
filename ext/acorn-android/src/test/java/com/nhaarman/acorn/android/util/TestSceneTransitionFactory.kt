@@ -17,13 +17,17 @@
 package com.nhaarman.acorn.android.util
 
 import com.nhaarman.acorn.android.transition.SceneTransition
-import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Scene
 
-class TestTransitionFactory : TransitionFactory {
+class TestSceneTransitionFactory : SceneTransitionFactory {
 
     val transitions = mutableMapOf<Pair<Scene<*>, Scene<*>>, SceneTransition>()
+
+    override fun supports(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Boolean {
+        return (previousScene to newScene) in transitions
+    }
 
     override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): SceneTransition {
         return transitions[previousScene to newScene]!!

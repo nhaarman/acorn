@@ -14,26 +14,32 @@
  *    limitations under the License.
  */
 
-package com.nhaarman.acorn.android.transition.internal
+package com.nhaarman.acorn.android.transition
 
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
-import com.nhaarman.acorn.android.transition.SceneTransition
-import com.nhaarman.acorn.android.transition.TransitionFactory
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Scene
 
-internal class BindingTransitionFactory(
-    private val viewControllerFactory: ViewControllerFactory,
-    private val bindings: Sequence<TransitionBinding>
-) : TransitionFactory {
+/**
+ * A [SceneTransitionFactory] that uses the [TransitionData.isBackwards] flag to
+ * determine the transition.
+ */
+class DefaultSceneTransitionFactory(
+    private val viewControllerFactory: ViewControllerFactory
+) : SceneTransitionFactory {
 
-    private val delegate by lazy { DefaultTransitionFactory(viewControllerFactory) }
+    override fun supports(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Boolean {
+        return true
+    }
 
     override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): SceneTransition {
-        return bindings
-            .mapNotNull { it.transitionFor(previousScene, newScene, data) }
-            .firstOrNull()
-            ?: delegate.transitionFor(previousScene, newScene, data)
+        return when (data?.isBackwards) {
+            true -> FadeOutToBottomTransition { parent ->
+                viewControllerFactory.viewControllerFor(newScene, parent)
+            }
+            else -> FadeInFromBottomTransition { parent ->
+                viewControllerFactory.viewControllerFor(newScene, parent)
+            }
+        }.hideKeyboardOnStart()
     }
 }

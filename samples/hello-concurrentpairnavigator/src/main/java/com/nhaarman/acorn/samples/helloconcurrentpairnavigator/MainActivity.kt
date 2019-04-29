@@ -19,8 +19,8 @@ package com.nhaarman.acorn.samples.helloconcurrentpairnavigator
 import com.nhaarman.acorn.android.AcornAppCompatActivity
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.TransitionFactory
-import com.nhaarman.acorn.android.transition.transitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
+import com.nhaarman.acorn.android.transition.sceneTransitionFactory
 import com.nhaarman.acorn.presentation.SceneKey
 
 class MainActivity : AcornAppCompatActivity() {
@@ -33,8 +33,8 @@ class MainActivity : AcornAppCompatActivity() {
         return HelloConcurrentPairNavigatorViewControllerFactory()
     }
 
-    override fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): TransitionFactory {
-        return transitionFactory(viewControllerFactory) {
+    override fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): SceneTransitionFactory {
+        return sceneTransitionFactory(viewControllerFactory) {
             (SceneKey.defaultKey<FirstScene>() to SceneKey.defaultKey<SecondScene>()) use FirstSecondTransition
             (SceneKey.defaultKey<SecondScene>() to SceneKey.defaultKey<FirstScene>()) use SecondFirstTransition
         }

@@ -17,7 +17,7 @@
 package com.nhaarman.acorn.android.uistate
 
 import com.nhaarman.acorn.android.util.RootViewGroup
-import com.nhaarman.acorn.android.util.TestTransitionFactory
+import com.nhaarman.acorn.android.util.TestSceneTransitionFactory
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.spy
@@ -30,7 +30,7 @@ internal class NotVisibleTest {
 
     val state = NotVisible(
         root,
-        TestTransitionFactory()
+        TestSceneTransitionFactory()
     )
 
     @Test
