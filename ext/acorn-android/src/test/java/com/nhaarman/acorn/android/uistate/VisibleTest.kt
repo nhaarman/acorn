@@ -18,7 +18,7 @@ package com.nhaarman.acorn.android.uistate
 
 import com.nhaarman.acorn.android.util.RootViewGroup
 import com.nhaarman.acorn.android.util.TestScene
-import com.nhaarman.acorn.android.util.TestTransitionFactory
+import com.nhaarman.acorn.android.util.TestSceneTransitionFactory
 import com.nhaarman.acorn.android.util.TestView
 import com.nhaarman.acorn.android.util.TestViewController
 import com.nhaarman.acorn.android.util.TestViewControllerFactory
@@ -39,7 +39,7 @@ internal class VisibleTest {
 
     val state = Visible(
         root,
-        TestTransitionFactory()
+        TestSceneTransitionFactory()
     )
 
     @BeforeEach

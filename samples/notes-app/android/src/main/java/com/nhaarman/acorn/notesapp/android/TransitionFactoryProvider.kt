@@ -17,9 +17,9 @@
 package com.nhaarman.acorn.notesapp.android
 
 import com.nhaarman.acorn.android.transition.FadeOutToBottomTransition
-import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.android.transition.hideKeyboardOnStart
-import com.nhaarman.acorn.android.transition.transitionFactory
+import com.nhaarman.acorn.android.transition.sceneTransitionFactory
 import com.nhaarman.acorn.notesapp.android.ui.transition.EditItemItemListTransition
 import com.nhaarman.acorn.notesapp.android.ui.transition.ItemListCreateItemTransition
 import com.nhaarman.acorn.notesapp.android.ui.transition.ItemListEditItemTransition
@@ -29,8 +29,8 @@ import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListScene
 
 object TransitionFactoryProvider {
 
-    val transitionFactory: TransitionFactory by lazy {
-        transitionFactory(ViewFactoryProvider.viewFactory) {
+    val transitionFactory: SceneTransitionFactory by lazy {
+        sceneTransitionFactory(ViewFactoryProvider.viewFactory) {
             (ItemListScene::class to CreateItemScene::class) use ItemListCreateItemTransition
 
             (ItemListScene::class to EditItemScene::class) use ItemListEditItemTransition

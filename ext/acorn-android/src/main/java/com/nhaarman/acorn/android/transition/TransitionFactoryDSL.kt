@@ -17,7 +17,7 @@
 package com.nhaarman.acorn.android.transition
 
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.internal.BindingTransitionFactory
+import com.nhaarman.acorn.android.transition.internal.BindingSceneTransitionFactory
 import com.nhaarman.acorn.android.transition.internal.ClassBinding
 import com.nhaarman.acorn.android.transition.internal.KeyBinding
 import com.nhaarman.acorn.android.transition.internal.LazyClassBinding
@@ -27,25 +27,25 @@ import com.nhaarman.acorn.presentation.SceneKey
 import kotlin.reflect.KClass
 
 /**
- * Entry point for the [TransitionFactory] DSL.
+ * Entry point for the [SceneTransitionFactory] DSL.
  *
- * @see [TransitionFactoryBuilder]
+ * @see [SceneTransitionFactoryBuilder]
  */
-fun transitionFactory(
+fun sceneTransitionFactory(
     viewControllerFactory: ViewControllerFactory,
-    init: TransitionFactoryBuilder.() -> Unit
-): TransitionFactory {
-    return TransitionFactoryBuilder(viewControllerFactory).apply(init).build()
+    init: SceneTransitionFactoryBuilder.() -> Unit
+): SceneTransitionFactory {
+    return SceneTransitionFactoryBuilder(viewControllerFactory).apply(init).build()
 }
 
 /**
- * A DSL that can create [TransitionFactory] instances by binding pairs of Scenes
+ * A DSL that can create [SceneTransitionFactory] instances by binding pairs of Scenes
  * to [SceneTransition] instances.
  *
  * @param viewControllerFactory The [ViewControllerFactory] instance to use for
  * layout inflation for fallback transition animations.
  */
-class TransitionFactoryBuilder internal constructor(
+class SceneTransitionFactoryBuilder internal constructor(
     private val viewControllerFactory: ViewControllerFactory
 ) {
 
@@ -76,8 +76,8 @@ class TransitionFactoryBuilder internal constructor(
         bindings += LazyClassBinding(first, second, transition)
     }
 
-    fun build(): TransitionFactory {
-        return BindingTransitionFactory(
+    fun build(): SceneTransitionFactory {
+        return BindingSceneTransitionFactory(
             viewControllerFactory,
             bindings.asSequence()
         )

@@ -34,9 +34,9 @@ import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
 import com.nhaarman.acorn.android.presentation.NoopActivityControllerFactory
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
+import com.nhaarman.acorn.android.transition.DefaultSceneTransitionFactory
 import com.nhaarman.acorn.android.transition.SceneTransition
-import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.android.util.toBundle
 import com.nhaarman.acorn.android.util.toNavigatorState
 import com.nhaarman.acorn.navigation.DisposableHandle
@@ -142,16 +142,16 @@ class AcornActivityDelegate private constructor(
          * @param activityControllerFactory The [ActivityControllerFactory]
          * instance that is used to create [ActivityController] instances when
          * dispatching Scenes. Defaults to [NoopActivityControllerFactory].
-         * @param transitionFactory the [TransitionFactory] instance that is
+         * @param transitionFactory the [SceneTransitionFactory] instance that is
          * used to create [SceneTransition] instances when animating Scene
-         * transitions. Defaults to [DefaultTransitionFactory].
+         * transitions. Defaults to [DefaultSceneTransitionFactory].
          */
         fun from(
             activity: Activity,
             navigatorProvider: NavigatorProvider,
             viewControllerFactory: ViewControllerFactory,
             activityControllerFactory: ActivityControllerFactory = NoopActivityControllerFactory,
-            transitionFactory: TransitionFactory = DefaultTransitionFactory(viewControllerFactory)
+            transitionFactory: SceneTransitionFactory = DefaultSceneTransitionFactory(viewControllerFactory)
         ): AcornActivityDelegate {
             return AcornActivityDelegate.from(
                 activity,
@@ -179,9 +179,9 @@ class AcornActivityDelegate private constructor(
          * @param activityControllerFactory The [ActivityControllerFactory]
          * instance that is used to create [ActivityController] instances when
          * dispatching Scenes. Defaults to [NoopActivityControllerFactory].
-         * @param transitionFactory the [TransitionFactory] instance that is
+         * @param transitionFactory the [SceneTransitionFactory] instance that is
          * used to create [SceneTransition] instances when animating Scene
-         * transitions. Defaults to [DefaultTransitionFactory].
+         * transitions. Defaults to [DefaultSceneTransitionFactory].
          */
         @UseExperimental(ExperimentalAcornEvents::class)
         fun from(
@@ -190,7 +190,7 @@ class AcornActivityDelegate private constructor(
             navigatorProvider: NavigatorProvider,
             viewControllerFactory: ViewControllerFactory,
             activityControllerFactory: ActivityControllerFactory = NoopActivityControllerFactory,
-            transitionFactory: TransitionFactory = DefaultTransitionFactory(viewControllerFactory)
+            transitionFactory: SceneTransitionFactory = DefaultSceneTransitionFactory(viewControllerFactory)
         ): AcornActivityDelegate {
             return AcornActivityDelegate.from(
                 HookingSceneDispatcherFactory(
@@ -225,7 +225,7 @@ class AcornActivityDelegate private constructor(
         private val navigatorProvider: NavigatorProvider,
         private val viewControllerFactory: ViewControllerFactory,
         private val activityControllerFactory: ActivityControllerFactory,
-        private val transitionFactory: TransitionFactory
+        private val transitionFactory: SceneTransitionFactory
     ) : SceneDispatcherFactory {
 
         override fun invoke(savedState: SavedState?): SceneDispatcher {

@@ -31,9 +31,11 @@ import com.nhaarman.acorn.android.presentation.NoopViewControllerFactory
 import com.nhaarman.acorn.android.presentation.SceneViewControllerFactory
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.DefaultTransitionFactory
+import com.nhaarman.acorn.android.transition.ComposingSceneTransitionFactory
+import com.nhaarman.acorn.android.transition.DefaultSceneTransitionFactory
+import com.nhaarman.acorn.android.transition.NoopSceneTransitionFactory
 import com.nhaarman.acorn.android.transition.SceneTransition
-import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.presentation.Scene
 
@@ -69,16 +71,17 @@ abstract class AcornActivity : Activity() {
     }
 
     /**
-     * Returns the [TransitionFactory] to create [SceneTransition] instances
-     * for this Activity.
+     * Returns the [SceneTransitionFactory] to create [SceneTransition] instances
+     * for this Activity. The resulting factory instance will be combined with
+     * a [DefaultSceneTransitionFactory] as fallback.
      *
-     * By default, this returns a [DefaultTransitionFactory].
+     * By default, this returns a [NoopSceneTransitionFactory].
      *
      * @param viewControllerFactory The [ViewControllerFactory] as returned by
      * [provideViewControllerFactory].
      */
-    protected open fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): TransitionFactory {
-        return DefaultTransitionFactory(viewControllerFactory)
+    protected open fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): SceneTransitionFactory {
+        return NoopSceneTransitionFactory
     }
 
     /**
@@ -107,8 +110,11 @@ abstract class AcornActivity : Activity() {
         )
     }
 
-    private val transitionFactory: TransitionFactory by lazy {
-        provideTransitionFactory(viewControllerFactory)
+    private val transitionFactory: SceneTransitionFactory by lazy {
+        ComposingSceneTransitionFactory.from(
+            provideTransitionFactory(viewControllerFactory),
+            DefaultSceneTransitionFactory(viewControllerFactory)
+        )
     }
 
     private val activityControllerFactory: ActivityControllerFactory by lazy {

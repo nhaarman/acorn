@@ -48,8 +48,7 @@ interface ViewControllerFactory {
      * itself, but it can use the parent to generate the LayoutParams of the
      * view.
      *
-     * @return The resulting [ViewController]. `null` if no result could be created
-     * for given [scene].
+     * @return The resulting [ViewController].
      */
     fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController
 }

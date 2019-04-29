@@ -20,7 +20,7 @@ import android.app.Activity
 import android.view.ViewGroup
 import com.nhaarman.acorn.android.internal.contentView
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
-import com.nhaarman.acorn.android.transition.TransitionFactory
+import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
@@ -31,7 +31,7 @@ import com.nhaarman.acorn.util.lazyVar
  */
 class UIStateUIHandler private constructor(
     private val root: ViewGroup,
-    private val transitionFactory: TransitionFactory
+    private val transitionFactory: SceneTransitionFactory
 ) : UIHandler {
 
     private var state by lazyVar {
@@ -62,7 +62,7 @@ class UIStateUIHandler private constructor(
 
         fun create(
             root: ViewGroup,
-            transitionFactory: TransitionFactory
+            transitionFactory: SceneTransitionFactory
         ): UIStateUIHandler {
             return UIStateUIHandler(
                 root,
@@ -72,7 +72,7 @@ class UIStateUIHandler private constructor(
 
         fun create(
             activity: Activity,
-            transitionFactory: TransitionFactory
+            transitionFactory: SceneTransitionFactory
         ): UIStateUIHandler {
             return UIStateUIHandler(
                 activity.contentView,
