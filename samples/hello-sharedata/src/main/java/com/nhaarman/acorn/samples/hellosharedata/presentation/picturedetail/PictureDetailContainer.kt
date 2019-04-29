@@ -22,6 +22,7 @@ import com.nhaarman.acorn.presentation.RestorableContainer
 import com.nhaarman.acorn.samples.hellosharedata.R
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
 import com.squareup.picasso.Picasso
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.picturedetail_scene.*
 
 interface PictureDetailContainer : RestorableContainer {
@@ -35,7 +36,7 @@ interface PictureDetailContainer : RestorableContainer {
 
 class PictureDetailViewController(
     override val view: View
-) : RestorableViewController, PictureDetailContainer {
+) : RestorableViewController, PictureDetailContainer, LayoutContainer {
 
     override var picture: Picture? = null
         set(value) {
@@ -75,4 +76,6 @@ class PictureDetailViewController(
             }
         }
     }
+
+    override val containerView = view
 }

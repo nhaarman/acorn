@@ -26,7 +26,6 @@ import com.nhaarman.acorn.presentation.RestorableContainer
 import com.nhaarman.acorn.state.ContainerState
 import com.nhaarman.acorn.state.containerState
 import com.nhaarman.acorn.state.get
-import kotlinx.android.extensions.LayoutContainer
 
 /**
  * A helper interface that offers default implementations for [View] state saving
@@ -42,16 +41,7 @@ import kotlinx.android.extensions.LayoutContainer
  * class MyViewController : MyContainer, RestorableViewController
  * ```
  */
-interface RestorableViewController :
-    ViewController, RestorableContainer, LayoutContainer {
-
-    /**
-     * This property is included from the [LayoutContainer] interface.
-     * To ensure a uniform API, we hide this property.
-     */
-    @Deprecated("Use view instead", level = DeprecationLevel.HIDDEN)
-    override val containerView: View?
-        get() = view
+interface RestorableViewController : ViewController, RestorableContainer {
 
     /**
      * A handle to the [Context] the [view] is running in.

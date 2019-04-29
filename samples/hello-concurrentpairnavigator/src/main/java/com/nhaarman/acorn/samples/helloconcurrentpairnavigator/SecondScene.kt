@@ -20,6 +20,7 @@ import android.view.View
 import com.nhaarman.acorn.android.presentation.RestorableViewController
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.second_scene.*
 
 class SecondScene(
@@ -43,9 +44,11 @@ interface SecondSceneContainer : Container {
 
 class SecondSceneViewController(
     override val view: View
-) : RestorableViewController, SecondSceneContainer {
+) : RestorableViewController, SecondSceneContainer, LayoutContainer {
 
     override fun onBackClicked(f: () -> Unit) {
         firstSceneButton.setOnClickListener { f() }
     }
+
+    override val containerView = view
 }

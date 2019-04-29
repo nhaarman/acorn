@@ -20,6 +20,7 @@ import android.view.View
 import com.nhaarman.acorn.android.presentation.RestorableViewController
 import com.nhaarman.acorn.presentation.RestorableContainer
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.picturegallery_scene.*
 
 interface PictureGalleryContainer : RestorableContainer {
@@ -31,7 +32,7 @@ interface PictureGalleryContainer : RestorableContainer {
 
 class PictureGalleryViewController(
     override val view: View
-) : RestorableViewController, PictureGalleryContainer {
+) : RestorableViewController, PictureGalleryContainer, LayoutContainer {
 
     override var pictures: List<Picture> = emptyList()
         set(value) {
@@ -41,4 +42,6 @@ class PictureGalleryViewController(
     override fun addOnPictureSelectedListener(f: (Picture) -> Unit) {
         picturesRecyclerView.addOnPictureSelectedListener(f)
     }
+
+    override val containerView = view
 }
