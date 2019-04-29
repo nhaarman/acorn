@@ -26,7 +26,7 @@ import com.nhaarman.acorn.state.SceneState
  * An abstract base [Scene] implementation that provides commonly used
  * functionality, and implements [LifecycleOwner].
  *
- * @see BaseSavableScene
+ * @see BasicScene
  *
  * @param V The view type for this [Scene]. Can implement [RestorableContainer]
  * to save and restore view state between different views attached to the Scene.
@@ -37,7 +37,7 @@ import com.nhaarman.acorn.state.SceneState
  */
 abstract class LifecycleScene<V : Container>(
     savedState: SceneState?
-) : BaseSavableScene<V>(savedState), LifecycleOwner {
+) : BasicScene<V>(savedState), LifecycleOwner {
 
     private val lifecycle by lazy {
         LifecycleRegistry(this)

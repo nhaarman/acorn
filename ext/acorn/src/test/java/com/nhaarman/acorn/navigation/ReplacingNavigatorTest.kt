@@ -18,6 +18,7 @@ package com.nhaarman.acorn.navigation
 
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SavedState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
@@ -40,7 +41,7 @@ internal class ReplacingNavigatorTest {
 
     private val scene1 = spy(SavableTestScene(1))
 
-    private val navigator = TestReplacingNavigator(null)
+    private val navigator = TestReplacingNavigator()
 
     private val listener = spy(TestListener())
 
@@ -98,7 +99,7 @@ internal class ReplacingNavigatorTest {
             navigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene).toBeNull()
+            expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
@@ -110,7 +111,7 @@ internal class ReplacingNavigatorTest {
             navigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene).toBe(initialScene)
+            expect(listener.lastSavableScene).toBe(initialScene)
         }
 
         @Test
@@ -122,7 +123,7 @@ internal class ReplacingNavigatorTest {
             navigator.onStart()
 
             /* Then */
-            expect(listener.lastScene).toBe(initialScene)
+            expect(listener.lastSavableScene).toBe(initialScene)
         }
 
         @Test
@@ -265,7 +266,7 @@ internal class ReplacingNavigatorTest {
             navigator.replace(scene1)
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
@@ -278,7 +279,7 @@ internal class ReplacingNavigatorTest {
             navigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
@@ -292,7 +293,7 @@ internal class ReplacingNavigatorTest {
             navigator.replace(scene1)
 
             /* Then */
-            expect(listener.lastScene).toBe(initialScene)
+            expect(listener.lastSavableScene).toBe(initialScene)
         }
 
         @Test
@@ -306,7 +307,7 @@ internal class ReplacingNavigatorTest {
             navigator.replace(scene1)
 
             /* Then */
-            expect(listener.lastScene).toBe(initialScene)
+            expect(listener.lastSavableScene).toBe(initialScene)
         }
 
         @Test
@@ -321,7 +322,7 @@ internal class ReplacingNavigatorTest {
             navigator.onStart()
 
             /* Then */
-            expect(listener.lastScene).toBe(scene1)
+            expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
@@ -561,40 +562,53 @@ internal class ReplacingNavigatorTest {
     @Nested
     inner class SavingState {
 
-        private val navigator = RestorableReplacingNavigator(null)
-        private val scene1 = SavableTestScene(1)
+        private val scene1 = TestScene(1)
+        private val scene2 = TestScene(2)
+        private val savableScene1 = SavableTestScene(1)
+        private val savableScene2 = SavableTestScene(2)
 
         @Test
-        fun `saving and restoring state for initial scene`() {
+        fun `ReplacingNavigator does not implement SavableNavigator by default`() {
             /* Given */
-            navigator.onStart()
-            navigator.initialScene.foo = 3
-
-            /* When */
-            val bundle = navigator.saveInstanceState()
-            val restoredNavigator = RestorableReplacingNavigator(bundle)
-            restoredNavigator.onStart()
-            restoredNavigator.addNavigatorEventsListener(listener)
+            val navigator: Navigator = TestReplacingNavigator()
 
             /* Then */
-            expect(listener.lastScene?.foo).toBe(3)
+            expect(navigator is SavableNavigator).toBe(false)
         }
 
         @Test
-        fun `saving and restoring state for replaced scene`() {
+        fun `saving and restoring state for savable initial scene`() {
             /* Given */
+            val navigator = SavableReplacingNavigator(null, savableScene1)
             navigator.onStart()
-            navigator.replace(scene1)
-            scene1.foo = 42
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator = RestorableReplacingNavigator(bundle)
+            savableScene1.foo = 3
+            val restoredNavigator = SavableReplacingNavigator(bundle, savableScene2)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
             /* Then */
-            expect(listener.lastScene?.foo).toBe(42)
+            expect(listener.lastSavableScene?.foo).toBe(1)
+        }
+
+        @Test
+        fun `saving and restoring state for replaced savable scene`() {
+            /* Given */
+            val navigator = SavableReplacingNavigator(null, savableScene1)
+            navigator.onStart()
+            navigator.replace(savableScene2)
+            savableScene2.foo = 42
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            val restoredNavigator = SavableReplacingNavigator(bundle, savableScene1)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastSavableScene?.foo).toBe(42)
         }
 
         @Test
@@ -618,12 +632,48 @@ internal class ReplacingNavigatorTest {
             /* Then */
             expect(state1).toBe(state2)
         }
+
+        @Test
+        fun `saving and restoring state for non savable initial scene`() {
+            /* Given */
+            val navigator = SavableReplacingNavigator(null, scene1)
+            navigator.onStart()
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            scene1.foo = 3
+            val restoredNavigator = SavableReplacingNavigator(bundle, scene2)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastScene).toBe(scene2)
+        }
+
+        @Test
+        fun `saving and restoring state for replaced non savable scene`() {
+            /* Given */
+            val navigator = SavableReplacingNavigator(null, scene1)
+            navigator.onStart()
+            navigator.replace(scene2)
+            scene2.foo = 42
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            val restoredNavigator = SavableReplacingNavigator(bundle, scene1)
+            restoredNavigator.onStart()
+            restoredNavigator.addNavigatorEventsListener(listener)
+
+            /* Then */
+            expect(listener.lastScene).toBe(scene1)
+        }
     }
 
     private open class TestListener : Navigator.Events {
 
         val scenes = mutableListOf<Scene<out Container>>()
-        val lastScene get() = scenes.lastOrNull() as SavableTestScene?
+        val lastScene get() = scenes.lastOrNull() as TestScene?
+        val lastSavableScene get() = scenes.lastOrNull() as SavableTestScene?
 
         var finished = false
 
@@ -636,8 +686,7 @@ internal class ReplacingNavigatorTest {
         }
     }
 
-    private class TestReplacingNavigator(savedState: com.nhaarman.acorn.state.NavigatorState?) :
-        ReplacingNavigator(savedState) {
+    private class TestReplacingNavigator : ReplacingNavigator(null) {
 
         val initialScenes = listOf(
             spy(SavableTestScene(0)),
@@ -663,10 +712,11 @@ internal class ReplacingNavigatorTest {
         }
     }
 
-    private class RestorableReplacingNavigator(savedState: com.nhaarman.acorn.state.NavigatorState?) :
-        ReplacingNavigator(savedState) {
+    private class SavableReplacingNavigator(
+        savedState: NavigatorState?,
+        val initialScene: Scene<*>
+    ) : ReplacingNavigator(savedState), SavableNavigator {
 
-        val initialScene = SavableTestScene(0)
         override fun initialScene(): Scene<*> {
             return initialScene
         }

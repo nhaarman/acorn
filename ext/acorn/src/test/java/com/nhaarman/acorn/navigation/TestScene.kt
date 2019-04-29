@@ -14,18 +14,9 @@
  *    limitations under the License.
  */
 
-package com.nhaarman.acorn.lint
+package com.nhaarman.acorn.navigation
 
-import com.android.tools.lint.client.api.IssueRegistry
-import com.android.tools.lint.detector.api.CURRENT_API
-import com.android.tools.lint.detector.api.Issue
+import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.Scene
 
-class AcornIssueRegistry : IssueRegistry() {
-
-    override val api = CURRENT_API
-
-    override val issues: List<Issue>
-        get() = listOf(
-            RxSceneDisposablesUsageDetector.issue
-        )
-}
+open class TestScene(var foo: Int) : Scene<Container>

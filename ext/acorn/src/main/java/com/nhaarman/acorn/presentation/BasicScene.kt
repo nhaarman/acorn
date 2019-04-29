@@ -18,21 +18,35 @@ package com.nhaarman.acorn.presentation
 
 import androidx.annotation.CallSuper
 import com.nhaarman.acorn.state.ContainerState
+import com.nhaarman.acorn.state.SceneState
+import com.nhaarman.acorn.state.get
+import com.nhaarman.acorn.state.sceneState
 
 /**
- * A basic abstract [Scene] implementation that provides some basic functionality.
+ * An abstract basic [Scene] implementation that provides commonly used
+ * functionality.
  *
  * This class provides an [attachedView] property which provides the currently
  * attached [V] instance, if available.
  *
+ * If the [Container] type [V] implements [RestorableContainer], this class
+ * will save and restore the view state between subsequent calls to [attach] and
+ * [detach].
+ *
+ * This class is able to save and restore its instance state in
+ * [saveInstanceState], but does not implement [SavableScene] itself.
+ * You can opt in to this state saving by explicitly implementing the
+ * [SavableScene] interface.
+ *
  * @param V The view type for this [Scene]. Can implement [RestorableContainer]
  * to save and restore view state between different views attached to the Scene.
- * @property containerState The initial view state for this [Scene].
- * May be `null`.
- * @constructor Creates a new [BasicScene], restoring view state when available.
+ * @param savedState A previous saved state instance for this [Scene] as
+ * returned by [saveInstanceState]. May be `null`.
+ * @constructor Creates a new [BasicScene], restoring view state when
+ * available.
  */
 abstract class BasicScene<V : Container>(
-    private var containerState: ContainerState? = null
+    savedState: SceneState?
 ) : Scene<V> {
 
     /**
@@ -45,9 +59,12 @@ abstract class BasicScene<V : Container>(
     protected var attachedView: V? = null
         private set
 
+    private var containerState: ContainerState? = savedState?.containerState
+
     @CallSuper
     override fun attach(v: V) {
         containerState?.let { (v as? RestorableContainer)?.restoreInstanceState(it) }
+        containerState = null
         attachedView = v
     }
 
@@ -55,5 +72,32 @@ abstract class BasicScene<V : Container>(
     override fun detach(v: V) {
         containerState = (v as? RestorableContainer)?.saveInstanceState()
         attachedView = null
+    }
+
+    /**
+     * Saves the instance state for this Scene.
+     *
+     * The default implementation of this method will save the view state if [V]
+     * implements [RestorableContainer].
+     *
+     * Implementers of this class may override this method to save additional
+     * information.
+     * However, it is recommended to call the default implementation.
+     */
+    @CallSuper
+    open fun saveInstanceState(): SceneState {
+        return sceneState {
+            it.containerState = containerState
+                ?: (attachedView as? RestorableContainer)?.saveInstanceState()
+        }
+    }
+
+    companion object {
+
+        private var SceneState.containerState: ContainerState?
+            set(value) {
+                this["view_state"] = value
+            }
+            get() = get("view_state")
     }
 }

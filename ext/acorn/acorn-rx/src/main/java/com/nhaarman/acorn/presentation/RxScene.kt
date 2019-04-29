@@ -38,7 +38,7 @@ import io.reactivex.subjects.BehaviorSubject
  * of view changes, and a [disposables] property is provided for easy clearing
  * of [Disposable]s.
  *
- * @see BaseSavableScene
+ * @see BasicScene
  *
  * @param V The view type for this [Scene]. Can implement [RestorableContainer]
  * to save and restore view state between different views attached to the Scene.
@@ -48,7 +48,7 @@ import io.reactivex.subjects.BehaviorSubject
  */
 abstract class RxScene<V : Container>(
     savedState: SceneState?
-) : BaseSavableScene<V>(savedState) {
+) : BasicScene<V>(savedState) {
 
     /**
      * A disposable container which will be cleared when this Scene receives a

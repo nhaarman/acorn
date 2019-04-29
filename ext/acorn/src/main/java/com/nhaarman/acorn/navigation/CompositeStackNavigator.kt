@@ -34,15 +34,17 @@ import kotlin.reflect.KClass
  * to manipulate the stack. Implementers must implement [initialStack] to provide
  * the initial stack to work with.
  *
- * This Navigator implements [SavableNavigator] and thus can have its state saved
- * and restored when necessary.
+ * This Navigator is able to save and restore its instance state in
+ * [saveInstanceState], but does not implement [SavableNavigator] itself.
+ * You can opt in to this state saving by explicitly implementing the
+ * [SavableNavigator] interface.
  *
  * @param savedState An optional instance that contains saved state as returned
- *                   by this class's saveInstanceState() method.
+ * by [saveInstanceState].
  */
 abstract class CompositeStackNavigator(
     private val savedState: NavigatorState?
-) : Navigator, Navigator.Events, SavableNavigator, OnBackPressListener {
+) : Navigator, Navigator.Events, OnBackPressListener {
 
     /**
      * Creates the initial stack of [Navigator]s for this CompositeStackNavigator.
@@ -70,7 +72,10 @@ abstract class CompositeStackNavigator(
     private var state by lazyVar {
         @Suppress("UNCHECKED_CAST")
         fun initialStack(): List<Navigator> {
-            val size: Int = savedState?.get("size") ?: return this@CompositeStackNavigator.initialStack()
+            if (savedState == null) return this@CompositeStackNavigator.initialStack()
+
+            val size: Int? = savedState.get("size")
+            if (size == null || size == 0) return this@CompositeStackNavigator.initialStack()
 
             return (0 until size)
                 .map { index ->
@@ -232,15 +237,17 @@ abstract class CompositeStackNavigator(
     }
 
     @CallSuper
-    override fun saveInstanceState(): NavigatorState {
-        return state.navigators
+    open fun saveInstanceState(): NavigatorState {
+        val savableStack = state.navigators.takeWhile { it is SavableNavigator }
+
+        return savableStack
             .foldIndexed(NavigatorState()) { index, bundle, navigator ->
                 bundle.also {
                     it["${index}_class"] = navigator::class.java.name
                     it["${index}_state"] = (navigator as? SavableNavigator)?.saveInstanceState()
                 }
             }
-            .also { it["size"] = state.navigators.size }
+            .also { it["size"] = savableStack.size }
     }
 
     override fun isDestroyed(): Boolean {

@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test
 
 class SingleSceneNavigatorTest {
 
-    val navigator = TestSingleSceneNavigator(null)
+    val navigator = TestSingleSceneNavigator()
 
     private val listener = spy(TestListener())
 
@@ -434,18 +434,52 @@ class SingleSceneNavigatorTest {
     inner class SavingState {
 
         @Test
-        fun `saving and restoring state`() {
+        fun `SingleSceneNavigator does not implement SavableNavigator by default`() {
             /* Given */
+            val navigator: Navigator = TestSingleSceneNavigator()
+
+            /* Then */
+            expect(navigator is SavableNavigator).toBe(false)
+        }
+
+        @Test
+        fun `saving and restoring state for savable navigator and scene`() {
+            /* Given */
+            val scene1 = SavableTestScene(foo = 3)
+            val navigator = SavableSingleSceneNavigator(null) { scene1 }
             navigator.onStart()
-            navigator.scene.foo = 3
 
             /* When */
             val bundle = navigator.saveInstanceState()
-            val restoredNavigator = TestSingleSceneNavigator(bundle)
+            scene1.foo = 4
+            val restoredNavigator = SavableSingleSceneNavigator(bundle) { SavableTestScene.create(it) }
             restoredNavigator.onStart()
 
             /* Then */
-            expect(restoredNavigator.scene.foo).toBe(3)
+            expect(restoredNavigator.scene).toBeInstanceOf<SavableTestScene> {
+                expect(it.foo).toBe(3)
+            }
+        }
+
+        @Test
+        fun `saving and restoring state for savable navigator and non savable scene`() {
+            /* Given */
+            val scene1 = TestScene(foo = 3)
+            val navigator = SavableSingleSceneNavigator(null) { scene1 }
+            navigator.onStart()
+
+            /* When */
+            val bundle = navigator.saveInstanceState()
+            scene1.foo = 4
+            val restoredNavigator = SavableSingleSceneNavigator(bundle) {
+                TestScene(foo = 5)
+            }
+            restoredNavigator.onStart()
+
+            /* Then */
+            expect(restoredNavigator.scene).toBeInstanceOf<TestScene> {
+                expect(it.foo).toBe(5)
+            }
         }
     }
 
@@ -465,12 +499,25 @@ class SingleSceneNavigatorTest {
         }
     }
 
-    class TestSingleSceneNavigator(savedState: NavigatorState?) : SingleSceneNavigator(savedState) {
+    class TestSingleSceneNavigator : SingleSceneNavigator(null) {
 
         lateinit var scene: SavableTestScene
 
         override fun createScene(state: SceneState?): Scene<out Container> {
             return spy(SavableTestScene.create(state)).also { scene = it }
+        }
+    }
+
+    class SavableSingleSceneNavigator(
+        savedState: NavigatorState?,
+        private val sceneCreator: (SceneState?) -> Scene<out Container>
+    ) : SingleSceneNavigator(savedState),
+        SavableNavigator {
+
+        lateinit var scene: Scene<out Container>
+
+        override fun createScene(state: SceneState?): Scene<out Container> {
+            return spy(sceneCreator.invoke(state)).also { scene = it }
         }
     }
 }

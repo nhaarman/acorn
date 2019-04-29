@@ -34,7 +34,8 @@ import java.util.concurrent.TimeUnit
 class FirstScene(
     private val listener: Events,
     scheduler: Scheduler = AndroidSchedulers.mainThread()
-) : RxScene<FirstSceneContainer>(null), ProvidesView {
+) : RxScene<FirstSceneContainer>(null),
+    ProvidesView {
 
     private val counter = Observable
         .interval(0, 100, TimeUnit.MILLISECONDS, scheduler)

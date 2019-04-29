@@ -40,15 +40,17 @@ import kotlin.reflect.KClass
  *
  * Implementers must implement [createScene] to provide the proper Scenes.
  *
- * This Navigator implements [SavableNavigator] and thus can have its state saved
- * and restored when necessary.
+ * This Navigator is able to save and restore its instance state in
+ * [saveInstanceState], but does not implement [SavableNavigator] itself.
+ * You can opt in to this state saving by explicitly implementing the
+ * [SavableNavigator] interface.
  *
  * @param savedState An optional instance that contains saved state as returned
- *                   by this class's saveInstanceState() method.
+ * by [saveInstanceState].
  */
 abstract class WizardNavigator(
     private val savedState: NavigatorState?
-) : Navigator, SavableNavigator, OnBackPressListener {
+) : Navigator, OnBackPressListener {
 
     /**
      * Creates the Scene for given [index], starting at `0`.
@@ -75,7 +77,7 @@ abstract class WizardNavigator(
     private var state by lazyVar {
         val size: Int? = savedState?.get("size")
         val activeIndex: Int? = savedState?.get("active_index")
-        if (size == null || activeIndex == null || savedState == null) {
+        if (size == null || size == 0 || activeIndex == null || savedState == null) {
             val scene = createScene(0) ?: error("Initial Scene may not be null.")
             return@lazyVar State.create(listOf(scene), 0) { index -> createScene(index) }
         }
@@ -83,10 +85,15 @@ abstract class WizardNavigator(
         @Suppress("UNCHECKED_CAST")
         val scenes = (0 until size)
             .map { index ->
-                instantiateScene(
-                    sceneClass = Class.forName(savedState["${index}_class"]).kotlin as KClass<out Scene<*>>,
-                    state = savedState["${index}_state"]
-                )
+                val className: String? = savedState["${index}_class"]
+                if (className == null) {
+                    createScene(index)!!
+                } else {
+                    instantiateScene(
+                        sceneClass = Class.forName(className).kotlin as KClass<out Scene<*>>,
+                        state = savedState["${index}_state"]
+                    )
+                }
             }
 
         State.create(scenes, activeIndex) { index -> createScene(index) }
@@ -212,12 +219,14 @@ abstract class WizardNavigator(
     }
 
     @CallSuper
-    override fun saveInstanceState(): NavigatorState {
+    open fun saveInstanceState(): NavigatorState {
         return state.scenes
             .foldIndexed(NavigatorState()) { index, bundle, scene ->
                 bundle.also {
-                    it["${index}_class"] = scene::class.java.name
-                    it["${index}_state"] = (scene as? SavableScene)?.saveInstanceState()
+                    if (scene is SavableScene) {
+                        it["${index}_class"] = scene::class.java.name
+                        it["${index}_state"] = scene.saveInstanceState()
+                    }
                 }
             }
             .also {
