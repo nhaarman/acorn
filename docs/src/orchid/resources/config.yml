@@ -1,0 +1,57 @@
+site:
+  about:
+    siteName: Acorn
+    siteDescription: Mastering Android navigation
+
+Editorial:
+  primaryColor: '#FF5722'
+  social:
+    github: 'nhaarman/acorn'
+  menu:
+    - type: 'separator'
+      title: 'Wiki'
+    - type: 'wiki'
+    - type: 'separator'
+      title: 'API Docs'
+    - type: 'kotlindocPackages'
+    - type: 'kotlindocClasses'
+  extraCss:
+    - 'assets/css/site.scss'
+    - 'assets/css/pygments.scss'
+
+assets:
+  sourceDirs:
+    - 'assets/media'
+    - '**/media'
+
+kotlindoc:
+  args: empty list
+  sourceDirs: [
+    ../../../../core/acorn-core/src/main/java,
+    ../../../../core/acorn-android-core/src/main/java,
+    ../../../../ext/acorn/src/main/java,
+    ../../../../ext/acorn/acorn-experimental/src/main/java,
+    ../../../../ext/acorn/acorn-rx/src/main/java,
+    ../../../../ext/acorn/acorn-testing/src/main/java,
+    ../../../../ext/acorn-android/src/main/java,
+    ../../../../ext/acorn-android/acorn-android-appcompat/src/main/java
+  ]
+  pages:
+    extraCss:
+      - 'assets/css/orchidKotlindoc.scss'
+    menu:
+      - type: "kotlindocClassLinks"
+        includeItems: true
+
+services:
+  compilers:
+    binaryExtensions:
+      - 'gif'
+  publications:
+    stages:
+      ghPages:
+        branch: gh-pages
+        repo: 'acorn'
+        username: 'nhaarman'
+#      githubReleases:
+#        repo: 'nhaarman/acorn'

@@ -14,10 +14,10 @@ building blocks, building up your application into several composable flows.
 The view layer is decoupled from navigation and reacts to screen changes, giving
 you full control over transition animations.
 
-![](https://cdn-images-1.medium.com/max/800/1*_PXlm-IPwZNH2mKeTIAizg.gif)
+![](/docs/src/orchid/resources/media/acorn_diagram_extended.svg)
 
 You can read more about Acorn on the
-[documentation website](https://nhaarman.github.io/Acorn).
+[documentation website](https://nhaarman.github.io/acorn).
 
 ## Easy setup [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.nhaarman.acorn/acorn/badge.png)](https://maven-badges.herokuapp.com/maven-central/com.nhaarman.acorn/acorn)
 
@@ -40,12 +40,12 @@ Using the dependencies above will transitively pull all other dependencies you
 need as well.  
 
 For more advanced configuration, see 
-[Setup](https://nhaarman.github.io/Acorn/usage/setup.html).
+[Setup](https://nhaarman.github.io/acorn/wiki/setup.html).
 
 ## Getting started
 
 Acorn has several [sample projects](samples) introducing the different concepts.
-You can also visit the [Getting started](https://nhaarman.github.io/Acorn/wiki/getting_started/)
+You can also visit the [Getting started](https://nhaarman.github.io/acorn/wiki/getting_started/)
 documentation page for more information.
 
 ## Building Acorn

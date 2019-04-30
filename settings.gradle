@@ -28,6 +28,8 @@ include(':samples:hello-concurrentpairnavigator')
 include(":samples:notes-app")
 include(":samples:notes-app:android")
 
+include(":docs")
+
 project(":acorn").projectDir = file("core/acorn-core")
 project(":acorn-android").projectDir = file("core/acorn-android-core")
 
