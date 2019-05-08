@@ -19,8 +19,6 @@ package com.nhaarman.acorn.presentation
 import androidx.annotation.CallSuper
 import arrow.core.Option
 import arrow.core.toOption
-import com.nhaarman.acorn.presentation.RxScene.ContainerEvent.Attached
-import com.nhaarman.acorn.presentation.RxScene.ContainerEvent.Detached
 import com.nhaarman.acorn.state.SceneState
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -75,20 +73,13 @@ abstract class RxScene<V : Container>(
 
     private val startedEventsSubject = BehaviorSubject.createDefault(false)
 
-    private val containerEventsSubject = BehaviorSubject.createDefault<ContainerEvent<V>>(Detached)
+    private val viewSubject = BehaviorSubject.createDefault(Option.empty<V>())
 
     /**
      * Publishes a stream of optional [V] instances that are attached to this
      * Scene.
      */
-    protected val view: Observable<Option<V>> = containerEventsSubject
-        .map { event ->
-            when (event) {
-                is Attached<V> -> event.v.toOption()
-                is Detached -> Option.empty()
-            }
-        }
-        .replay(1).autoConnect()
+    protected val view: Observable<Option<V>> = viewSubject.hide()
 
     @CallSuper
     override fun onStart() {
@@ -99,12 +90,12 @@ abstract class RxScene<V : Container>(
     @CallSuper
     override fun attach(v: V) {
         super.attach(v)
-        containerEventsSubject.onNext(Attached(v))
+        viewSubject.onNext(v.toOption())
     }
 
     @CallSuper
     override fun detach(v: V) {
-        containerEventsSubject.onNext(Detached)
+        viewSubject.onNext(Option.empty())
         super.detach(v)
     }
 
@@ -117,12 +108,6 @@ abstract class RxScene<V : Container>(
     @CallSuper
     override fun onDestroy() {
         sceneDisposables.dispose()
-    }
-
-    @Suppress("unused")
-    private sealed class ContainerEvent<out V> {
-        class Attached<V>(val v: V) : ContainerEvent<V>()
-        object Detached : ContainerEvent<Nothing>()
     }
 
     /**

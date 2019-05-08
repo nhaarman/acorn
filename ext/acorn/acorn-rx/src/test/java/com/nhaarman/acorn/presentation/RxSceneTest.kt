@@ -52,6 +52,18 @@ class RxSceneTest {
     }
 
     @Test
+    fun `subscribing after view attach`() {
+        /* Given */
+        scene.attach(testView)
+
+        /* When */
+        val observer = scene.viewObservable.test()
+
+        /* Then */
+        expect(observer.lastValue).toBe(Option.just(testView))
+    }
+
+    @Test
     fun `detaching a view notifies observers`() {
         /* Given */
         val observer = scene.viewObservable.test()
