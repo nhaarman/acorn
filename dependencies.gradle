@@ -29,7 +29,7 @@ dependencyManagement {
 
 
         // "Hello"-sample apps
-        dependency "androidx.core:core-ktx:1.0.1"
+        dependency "androidx.core:core-ktx:1.0.2"
         dependency "com.google.android.material:material:1.0.0"
         dependency "androidx.constraintlayout:constraintlayout:2.0.0-alpha4"
         dependency "io.reactivex.rxjava2:rxandroid:2.1.1"
@@ -48,8 +48,8 @@ dependencyManagement {
         // Testing & checks
         dependency "com.nhaarman:expect.kt:1.0.1"
         dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
-        dependency "org.junit.jupiter:junit-jupiter-api:5.4.1"
-        dependency "org.junit.jupiter:junit-jupiter-engine:5.4.1"
+        dependency "org.junit.jupiter:junit-jupiter-api:5.4.2"
+        dependency "org.junit.jupiter:junit-jupiter-engine:5.4.2"
 
         dependency "com.github.shyiko:ktlint:0.31.0"
 
@@ -59,7 +59,7 @@ dependencyManagement {
         dependency "androidx.test:rules:1.1.1"
         dependency "androidx.test.uiautomator:uiautomator:2.2.0"
 
-        def androidToolsVersion = "26.3.2"
+        def androidToolsVersion = "26.4.1"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"

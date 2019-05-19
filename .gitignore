@@ -10,6 +10,7 @@
 **.hprof
 
 **.log
+**.swp
 
 *.orig
 *.attach_*
