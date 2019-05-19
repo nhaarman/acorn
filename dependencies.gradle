@@ -59,7 +59,7 @@ dependencyManagement {
         dependency "androidx.test:rules:1.1.1"
         dependency "androidx.test.uiautomator:uiautomator:2.2.0"
 
-        def androidToolsVersion = "26.3.2"
+        def androidToolsVersion = "26.4.1"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"
