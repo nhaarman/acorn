@@ -32,22 +32,32 @@ import kotlin.reflect.KClass
  * @see [SceneTransitionFactoryBuilder]
  */
 fun sceneTransitionFactory(
+    init: SceneTransitionFactoryBuilder.() -> Unit
+): SceneTransitionFactory {
+    return SceneTransitionFactoryBuilder().apply(init).build()
+}
+
+/**
+ * Entry point for the [SceneTransitionFactory] DSL.
+ *
+ * @see [SceneTransitionFactoryBuilder]
+ */
+@Deprecated(
+    "Use sceneTransitionFactory(SceneTransitionFactoryBuilder.() -> Unit) instead",
+    ReplaceWith("sceneTransitionFactory(init)")
+)
+fun sceneTransitionFactory(
     viewControllerFactory: ViewControllerFactory,
     init: SceneTransitionFactoryBuilder.() -> Unit
 ): SceneTransitionFactory {
-    return SceneTransitionFactoryBuilder(viewControllerFactory).apply(init).build()
+    return sceneTransitionFactory(init)
 }
 
 /**
  * A DSL that can create [SceneTransitionFactory] instances by binding pairs of Scenes
  * to [SceneTransition] instances.
- *
- * @param viewControllerFactory The [ViewControllerFactory] instance to use for
- * layout inflation for fallback transition animations.
  */
-class SceneTransitionFactoryBuilder internal constructor(
-    private val viewControllerFactory: ViewControllerFactory
-) {
+class SceneTransitionFactoryBuilder {
 
     private val bindings = mutableListOf<TransitionBinding>()
 
@@ -77,9 +87,6 @@ class SceneTransitionFactoryBuilder internal constructor(
     }
 
     fun build(): SceneTransitionFactory {
-        return BindingSceneTransitionFactory(
-            viewControllerFactory,
-            bindings.asSequence()
-        )
+        return BindingSceneTransitionFactory(bindings.asSequence())
     }
 }

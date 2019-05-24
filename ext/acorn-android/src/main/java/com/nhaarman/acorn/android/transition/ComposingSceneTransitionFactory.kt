@@ -16,6 +16,7 @@
 
 package com.nhaarman.acorn.android.transition
 
+import com.nhaarman.acorn.android.transition.internal.TransitionCreationFailure
 import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Scene
 
@@ -32,8 +33,9 @@ class ComposingSceneTransitionFactory private constructor(
 
     override fun transitionFor(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): SceneTransition {
         return sources
-            .first { it.supports(previousScene, newScene, data) }
-            .transitionFor(previousScene, newScene, data)
+            .firstOrNull { it.supports(previousScene, newScene, data) }
+            ?.transitionFor(previousScene, newScene, data)
+            ?: throw TransitionCreationFailure(previousScene, newScene)
     }
 
     companion object {
