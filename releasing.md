@@ -6,3 +6,6 @@ To push a release to Maven Central:
  - Push the tags: `git push --tags`
  - Execute `./gradlew publish`
  - Head over to `https://oss.sonatype.org/#stagingRepositories` and close and release the repository.
+
+ - Execute `./gradlew orchidDeploy` to deploy the documentation website;
+   - `./gradlew orchidDeploy -PversionName=1.0.0` to force the version name.
