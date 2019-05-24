@@ -23,7 +23,7 @@ To include this artifact, add the following to your `dependencies`
 section:
 
 ```groovy
-debugImplementation "com.nhaarman.acorn.ext:acorn-android-statechecker:x.x.x"
+debugImplementation "com.nhaarman.acorn.ext:acorn-android-statechecks:x.x.x"
 ```
 
 Be careful to not include this artifact in production builds!
