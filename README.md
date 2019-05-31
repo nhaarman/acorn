@@ -62,9 +62,6 @@ Acorn is built with Gradle.
 Acorn follows [semantic versioning](https://semver.org/), and will determine the
 version number based on [git tags](.ops/git.gradle).
 
-**Warning!** Acorn's API *may* not have stabilized yet, and breaking API changes
-may occur until 1.0 is reached.
-
 ### Linter
 
 Acorn uses [ktlint](https://github.com/shyiko/ktlint) which is enforced in CI.
