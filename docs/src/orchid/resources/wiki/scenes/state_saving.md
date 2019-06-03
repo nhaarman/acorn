@@ -1,6 +1,68 @@
 ---
 ---
 
+## Saving and restoring state
+
+It is possible that an application is killed while the user has navigated to a 
+particular {{ anchor('Scene') }}.
+When the user returns to the application it is expected that the application
+restores to the state it was left in.
+This means that it is necessary to be able to restore Scenes from a serialized
+state.
+
+For 'static' Scenes that take no arguments (like our `HelloWorldScene` above)
+this usually is no problem.
+Scenes that do take arguments or have other state they wish to preserve need to
+implement the {{ anchor('SavableScene') }} interface.
+This introduces a `saveInstanceState` function, allowing the Scene to persist its
+state to a serializable format.
+When the Scene needs to be restored, this serialized state will then be provided.
+
+{% highlight 'kotlin' %}
+class ShowItemScene(
+    private val itemId: Long
+) : Scene<ShowItemContainer>, StateSaveable {
+
+    override fun saveInstanceState(): SceneState {
+        return sceneState {
+            it["item_id"] = itemId
+        }
+    }
+    
+    companion object {
+    
+        fun create(state: SceneState): ShowItemScene {
+            return ShowItemScene(itemId = state["item_id"])
+        }
+    }
+}
+{% endhighlight %}
+
+When a Scene implements the SavableScene interface, {{ anchor('Navigators') }}
+can call the `saveInstanceState` function to retrieve the serializable state.
+
+### Container state
+
+{{ anchor('Container') }} state (or view state) saving and restoring is a very 
+important topic for mobile applications.
+Whenever a user has entered text or scrolled a list to a particular position and
+navigates away from the screen to later return again, it is expected that the 
+entered text or the scroll position is still there.
+
+Next to saving their own state, Scenes are also responsible for saving and
+restoring the Container states.
+Since multiple Containers can be attached to and detached from the Scene, their
+state needs to be saved and restored between the Container instances as well.
+This can easily be done by saving the Container state in the `detach` method,
+and restoring it in the `attach` method.
+
+Finally, when saving the Scene state, the most recent container state needs to
+be persisted as well.
+The {{ anchor('BasicScene') }} class provides a base implementation that 
+handles all this.
+
+## In Acorn
+
 By default, a {{ anchor('Scene') }} does not support state saving, nor does it 
 save or restore view hierarchy state such as user input or scroll positions.
 From a user's perspective however, it is important that you _do_ save your 

@@ -1,4 +1,6 @@
 ---
+pageId: 'scene_interface'
+
 extraCss:
     - |
         inline:.scss:
@@ -13,9 +15,10 @@ extraCss:
 ![]({{ 'wiki/scenes/media/acorn_diagram_scene_interface.svg'|asset }})
 {.image-preview}
 
-The [`Scene`]({{site.baseUrl}}/com/nhaarman/acorn/presentation/Scene) interface describes the 
-basic functionality for a screen: it supplies a `SceneKey` property that can be 
-used to identify separate instances.  
+The [`Scene`]({{site.baseUrl}}/com/nhaarman/acorn/presentation/Scene)
+interface describes the basic functionality for a screen.
+Firstly, it supplies a `SceneKey` property that can be used to identify separate
+instances.
 Next to that, it provides several lifecycle describing methods: 
 
 {% highlight 'kotlin' %}
@@ -37,9 +40,10 @@ The first three methods describe the Scene's own lifecycle:
  - `onStart()`: Called when the Scene is started;
  - `onStop()`: Called when the Scene is stopped;
  - `onDestroy()`: Called when the Scene gets destroyed.
- 
-To be able to access the user interface, it also provides the `attach` and 
-`detach` methods:
+
+These allow you to start or stop doing work at the appropriate times.  
+To be able to access the user interface, the Scene also provides the `attach`
+and `detach` methods:
  
  - `attach(V)`: Attaches the Container of type `V` to the Scene;
  - `detach(V)`: Detaches the Container of type `V` from the Scene;
@@ -48,8 +52,8 @@ To be able to access the user interface, it also provides the `attach` and
 #### `onStart` / `onStop`
 
 These two methods mark the active stage of the Scene.
-You could choose to register to location updates when the Scene becomes active,
-and cancel the registration when the Scene becomes inactive:
+You could for example choose to register to location updates when the Scene 
+becomes active, and cancel the registration when the Scene becomes inactive:
 
 {% highlight 'kotlin' %}
 interface MyContainer : Container

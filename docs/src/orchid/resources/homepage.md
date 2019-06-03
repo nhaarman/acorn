@@ -10,46 +10,29 @@ extraCss:
         }
 ---
 
-Acorn is a carefully designed library that brings true modularity to 
-navigation flow and allows you to have full control over your transition
-animations.
+Acorn turns your navigation back stack in a composable and decoupled navigation
+structure.
 
-Acorn's main principles lie around two interfaces: The 
-{{ anchor('Scene') }} and the {{ anchor('Navigator') }}.
-The Scene represents a screen in an application and can be regarded 
-as a basic building block for the application flow.
-The Navigator controls the application flow and determines which screen
-is presented to the user.
+At its core, Acorn is a set of interfaces that describe the basics of mobile
+screen navigation. A {{ anchor('Scene') }} interface represents a screen and 
+can be regarded as a basic building block for the application flow.
+{{ anchor('Navigators','Navigator') }} control this application flow, and can
+be composed together to form a large structure.
+Finally, {{ anchor('Containers','Container') }} form the boundary between your
+presentation layer and the UI elements.
 
 ![]({{ 'media/acorn_diagram.svg'|asset }})
 {.image-preview}
 
-A Scene class can be viewed as the simplest form of what a screen can be.
-It has a simple lifecycle describing the four stages necessary to interact with
-your application logic: 'created' - 'started' - 'stopped' - 'destroyed'.  
-In addition the user interface gets 'attached' to and 'detached' from the Scene, allowing
-you to interact with the user.  
-This separation of the lifecycle protects your presentation layer from
-recreation of the Android Activity: Scenes survive configuration changes such
-as rotation of the device.
-See {{ anchor('Scenes') }} for more information.
+On top of this, Acorn provides an extensive set of default implementations to
+do the work for you: several base Scene implementations that provide the basics,
+and a couple of Navigators that can be composed together to create the
+navigational structure that you need.
 
-The Navigator controls the navigational state of the application and notifies the
-UI layer of the active Scene.
-A Navigator is completely free to choose how it is implemented: it does not 
-necessarily have to use a back-stack like structure to model the application 
-flow, but can use any data structure they like.
-Navigators can even be composed together to combine several sub-flows into one 
-major application flow.
-See {{ anchor('Navigators') }} for more information.
-
-In Acorn, the Activity is regarded as a 'window' to the user.
-Its only responsibility is to react to screen changes and show the proper
-user interface. 
-This decoupling of navigation and the user interface results in an excellent
-way to do transition animations: whenever the screen changes you get full
-control over the root ViewGroup in the Activity, allowing you to do anything
-you want.
+Acorn decouples the UI from navigation, meaning the user interface becomes a
+plugin into the navigational state.
+This gives you full control over your view elements and especially your
+transition animations.
 
 In the {{ anchor('Wiki') }} section you can find information on several topics 
 when working with Acorn.
