@@ -89,6 +89,10 @@ class AcornActivityDelegate private constructor(
     }
 
     fun onBackPressed(): Boolean {
+        if (dispatcher.onBackPressed()) {
+            return true
+        }
+
         return (navigator as? OnBackPressListener)?.onBackPressed() ?: false
     }
 

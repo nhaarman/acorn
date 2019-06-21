@@ -42,6 +42,16 @@ interface UIHandler {
     fun onUINotVisible()
 
     /**
+     * Invoked when the user presses the back button.
+     *
+     * Implementations can consume the event by returning `true` and stop
+     * further propagation of the event.
+     *
+     * @return true if the event is consumed.
+     */
+    fun onBackPressed(): Boolean
+
+    /**
      * Applies given [scene] to the UI.
      *
      * Depending on the current internal state the Scene change may occur

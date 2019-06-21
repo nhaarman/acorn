@@ -37,6 +37,7 @@ subprojects {
             content {
                 includeGroup "com.andreapivetta.kolor"
                 includeGroup "org.jetbrains.trove4j"
+                includeGroup "nl.dionsegijn"
             }
         }
     }

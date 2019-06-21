@@ -14,17 +14,14 @@
  *    limitations under the License.
  */
 
-package com.nhaarman.acorn.android.util
+package com.nhaarman.acorn.samples.hellooverridingback
 
-import android.view.View
-import com.nhaarman.acorn.OnBackPressListener
-import com.nhaarman.acorn.android.presentation.ViewController
+import com.nhaarman.acorn.android.navigation.AbstractNavigatorProvider
+import com.nhaarman.acorn.state.NavigatorState
 
-class TestViewController(
-    override val view: View
-) : ViewController, OnBackPressListener {
+object HelloOverridingBackNavigatorProvider : AbstractNavigatorProvider<HelloOverridingBackNavigator>() {
 
-    override fun onBackPressed(): Boolean {
-        return false
+    override fun createNavigator(savedState: NavigatorState?): HelloOverridingBackNavigator {
+        return HelloOverridingBackNavigator()
     }
 }

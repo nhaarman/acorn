@@ -18,6 +18,7 @@ package com.nhaarman.acorn.android.uistate
 
 import android.view.ViewGroup
 import androidx.annotation.CheckResult
+import com.nhaarman.acorn.OnBackPressListener
 import com.nhaarman.acorn.android.internal.v
 import com.nhaarman.acorn.android.internal.w
 import com.nhaarman.acorn.android.presentation.ViewController
@@ -60,6 +61,16 @@ sealed class UIState {
      */
     @CheckResult
     abstract fun uiNotVisible(): UIState
+
+    /**
+     * Invoked when the user presses the back button.
+     *
+     * Implementations can consume the event by returning `true` and stop
+     * further propagation of the event.
+     *
+     * @return true if the event is consumed.
+     */
+    abstract fun onBackPressed(): Boolean
 
     /**
      * Applies given [scene] to the UI.
@@ -130,6 +141,10 @@ internal class NotVisible(
      * Makes no transition.
      */
     override fun uiNotVisible() = this
+
+    override fun onBackPressed(): Boolean {
+        return false
+    }
 
     /**
      * Transitions to the [NotVisibleWithDestination] state.
@@ -206,6 +221,10 @@ internal class NotVisibleWithDestination(
      */
     override fun uiNotVisible() = this
 
+    override fun onBackPressed(): Boolean {
+        return false
+    }
+
     /**
      * Discards the current scene and transitions to a new [NotVisibleWithDestination]
      * state with the new given [destination].
@@ -247,6 +266,10 @@ internal class Visible(
     override fun uiNotVisible(): UIState {
         v("UIState.Visible", "UI becomes not visible.")
         return NotVisible(root, transitionFactory)
+    }
+
+    override fun onBackPressed(): Boolean {
+        return false
     }
 
     /**
@@ -324,6 +347,14 @@ internal class VisibleWithDestination(
             currentDestination,
             currentViewController
         )
+    }
+
+    override fun onBackPressed(): Boolean {
+        if (transitionCallback != null) {
+            return false
+        }
+
+        return (currentViewController as? OnBackPressListener)?.onBackPressed() ?: false
     }
 
     /**

@@ -18,6 +18,7 @@ include(":ext-acorn-android-statechecks")
 
 include(":samples:hello-world")
 include(":samples:hello-navigation")
+include(":samples:hello-overridingback")
 include(":samples:hello-staterestoration")
 include(":samples:hello-viewfactory")
 include(":samples:hello-startactivity")
