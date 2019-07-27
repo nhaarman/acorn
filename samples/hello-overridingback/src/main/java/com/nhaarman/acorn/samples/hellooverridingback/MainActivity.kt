@@ -14,17 +14,14 @@
  *    limitations under the License.
  */
 
-package com.nhaarman.acorn.android.util
+package com.nhaarman.acorn.samples.hellooverridingback
 
-import android.view.View
-import com.nhaarman.acorn.OnBackPressListener
-import com.nhaarman.acorn.android.presentation.ViewController
+import com.nhaarman.acorn.android.AcornActivity
+import com.nhaarman.acorn.android.navigation.NavigatorProvider
 
-class TestViewController(
-    override val view: View
-) : ViewController, OnBackPressListener {
+class MainActivity : AcornActivity() {
 
-    override fun onBackPressed(): Boolean {
-        return false
+    override fun provideNavigatorProvider(): NavigatorProvider {
+        return HelloOverridingBackNavigatorProvider
     }
 }

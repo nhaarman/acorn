@@ -14,17 +14,15 @@
  *    limitations under the License.
  */
 
-package com.nhaarman.acorn.android.util
+package com.nhaarman.acorn.samples.hellooverridingback
 
-import android.view.View
-import com.nhaarman.acorn.OnBackPressListener
-import com.nhaarman.acorn.android.presentation.ViewController
+import android.app.Application
+import com.nhaarman.acorn.android.AndroidLogger
 
-class TestViewController(
-    override val view: View
-) : ViewController, OnBackPressListener {
+class MyApplication : Application() {
 
-    override fun onBackPressed(): Boolean {
-        return false
+    override fun onCreate() {
+        acorn.logger = AndroidLogger()
+        super.onCreate()
     }
 }

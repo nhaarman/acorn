@@ -14,17 +14,16 @@
  *    limitations under the License.
  */
 
-package com.nhaarman.acorn.android.util
+package com.nhaarman.acorn.samples.hellooverridingback
 
-import android.view.View
-import com.nhaarman.acorn.OnBackPressListener
-import com.nhaarman.acorn.android.presentation.ViewController
+import com.nhaarman.acorn.navigation.SingleSceneNavigator
+import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.state.SceneState
 
-class TestViewController(
-    override val view: View
-) : ViewController, OnBackPressListener {
+class HelloOverridingBackNavigator : SingleSceneNavigator(null) {
 
-    override fun onBackPressed(): Boolean {
-        return false
+    override fun createScene(state: SceneState?): Scene<out Container> {
+        return FirstScene()
     }
 }

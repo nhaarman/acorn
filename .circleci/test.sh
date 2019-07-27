@@ -10,6 +10,7 @@
     \
     :samples:hello-concurrentpairnavigator:lintRelease \
     :samples:hello-navigation:lintRelease \
+    :samples:hello-overridingback:lintRelease \
     :samples:hello-sharedata:lintRelease \
     :samples:hello-startactivity:lintRelease \
     :samples:hello-staterestoration:lintRelease \

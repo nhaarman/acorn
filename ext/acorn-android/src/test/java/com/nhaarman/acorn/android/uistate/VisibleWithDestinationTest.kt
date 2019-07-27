@@ -19,8 +19,8 @@ package com.nhaarman.acorn.android.uistate
 import com.nhaarman.acorn.android.uistate.internal.Destination
 import com.nhaarman.acorn.android.util.RootViewGroup
 import com.nhaarman.acorn.android.util.TestScene
-import com.nhaarman.acorn.android.util.TestTransition
 import com.nhaarman.acorn.android.util.TestSceneTransitionFactory
+import com.nhaarman.acorn.android.util.TestTransition
 import com.nhaarman.acorn.android.util.TestView
 import com.nhaarman.acorn.android.util.TestViewController
 import com.nhaarman.acorn.android.util.TestViewControllerFactory
@@ -29,6 +29,7 @@ import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -43,7 +44,7 @@ internal class VisibleWithDestinationTest {
 
     val scene = spy(TestScene())
     val sceneView = TestView()
-    val sceneViewController = TestViewController(sceneView)
+    val sceneViewController = spy(TestViewController(sceneView))
     val uiDestination = Destination(
         scene,
         TestViewControllerFactory(),
@@ -52,7 +53,7 @@ internal class VisibleWithDestinationTest {
 
     val scene2 = spy(TestScene())
     val sceneView2 = TestView()
-    val sceneViewController2 = TestViewController(sceneView2)
+    val sceneViewController2 = spy(TestViewController(sceneView2))
     val sceneViewControllerFactory2 = TestViewControllerFactory()
 
     val scene3 = spy(TestScene())
@@ -81,6 +82,19 @@ internal class VisibleWithDestinationTest {
 
     @Nested
     inner class NoTransitionInProgress {
+
+        @Test
+        fun `'onBackPressed' delegates to current ViewController`() {
+            /* Given */
+            whenever(sceneViewController.onBackPressed()).thenReturn(true)
+
+            /* When */
+            val result = state.onBackPressed()
+
+            /* Then */
+            verify(sceneViewController).onBackPressed()
+            expect(result).toBe(true)
+        }
 
         @Test
         fun `'uiNotVisible' results in NotVisibleWithDestination state`() {
@@ -135,6 +149,19 @@ internal class VisibleWithDestinationTest {
         @BeforeEach
         fun setup() {
             state.withScene(scene2, sceneViewControllerFactory2, null)
+        }
+
+        @Test
+        fun `'onBackPressed' does not delegate`() {
+            /* Given */
+            whenever(sceneViewController.onBackPressed()).thenReturn(true)
+
+            /* When */
+            val result = state.onBackPressed()
+
+            /* Then */
+            verify(sceneViewController, never()).onBackPressed()
+            expect(result).toBe(false)
         }
 
         @Test
@@ -203,6 +230,19 @@ internal class VisibleWithDestinationTest {
         @BeforeEach
         fun setup() {
             state.withScene(scene2, sceneViewControllerFactory2, null)
+        }
+
+        @Test
+        fun `'onBackPressed' does not delegate`() {
+            /* Given */
+            whenever(sceneViewController.onBackPressed()).thenReturn(true)
+
+            /* When */
+            val result = state.onBackPressed()
+
+            /* Then */
+            verify(sceneViewController, never()).onBackPressed()
+            expect(result).toBe(false)
         }
 
         @Test
@@ -281,6 +321,31 @@ internal class VisibleWithDestinationTest {
 
             /* Then */
             verify(scene, times(1)).detach(sceneViewController)
+        }
+    }
+
+    @Nested
+    inner class TransitionFinished {
+
+        @BeforeEach
+        fun setup() {
+            state.withScene(scene2, sceneViewControllerFactory2, null)
+            transitionTo2.complete(sceneViewController2)
+        }
+
+        @Test
+        fun `'onBackPressed' delegates to new ViewController`() {
+            /* Given */
+            whenever(sceneViewController.onBackPressed()).thenReturn(false)
+            whenever(sceneViewController2.onBackPressed()).thenReturn(true)
+
+            /* When */
+            val result = state.onBackPressed()
+
+            /* Then */
+            verify(sceneViewController, never()).onBackPressed()
+            verify(sceneViewController2).onBackPressed()
+            expect(result).toBe(true)
         }
     }
 }

@@ -53,6 +53,16 @@ interface SceneDispatcher {
     fun onUINotVisible()
 
     /**
+     * Invoked when the user presses the back button.
+     *
+     * Implementations can consume the event by returning `true` and stop
+     * further propagation of the event.
+     *
+     * @return true if the event is consumed.
+     */
+    fun onBackPressed(): Boolean
+
+    /**
      * To be invoked when the [Activity] receives an invocation to its
      * [Activity.onActivityResult] method.
      */

@@ -317,7 +317,10 @@ abstract class StackNavigator(
                 }
             }
 
-            override fun replace(scene: Scene<out Container>, data: TransitionData?): StateTransition {
+            override fun replace(
+                scene: Scene<out Container>,
+                data: TransitionData?
+            ): StateTransition {
                 val newScenes = scenes.dropLast(1) + scene
 
                 return StateTransition(Inactive(newScenes, listeners)) {
@@ -390,7 +393,10 @@ abstract class StackNavigator(
                 }
             }
 
-            override fun replace(scene: Scene<out Container>, data: TransitionData?): StateTransition {
+            override fun replace(
+                scene: Scene<out Container>,
+                data: TransitionData?
+            ): StateTransition {
                 val poppedScene = scenes.last()
                 val newScenes = scenes.dropLast(1) + scene
 
@@ -424,7 +430,10 @@ abstract class StackNavigator(
             }
 
             override fun start(): StateTransition {
-                w("StackNavigator.State", "Warning: Cannot start state after navigator is destroyed.")
+                w(
+                    "StackNavigator.State",
+                    "Warning: Cannot start state after navigator is destroyed."
+                )
                 return StateTransition(this)
             }
 
@@ -437,7 +446,10 @@ abstract class StackNavigator(
             }
 
             override fun push(scene: Scene<out Container>, data: TransitionData?): StateTransition {
-                w("StackNavigator.State", "Warning: Cannot push scene after navigator is destroyed.")
+                w(
+                    "StackNavigator.State",
+                    "Warning: Cannot push scene after navigator is destroyed."
+                )
                 return StateTransition(this)
             }
 
@@ -446,13 +458,22 @@ abstract class StackNavigator(
                 return StateTransition(this)
             }
 
-            override fun replace(scene: Scene<out Container>, data: TransitionData?): StateTransition {
-                w("StackNavigator.State", "Warning: Cannot replace scene after navigator is destroyed.")
+            override fun replace(
+                scene: Scene<out Container>,
+                data: TransitionData?
+            ): StateTransition {
+                w(
+                    "StackNavigator.State",
+                    "Warning: Cannot replace scene after navigator is destroyed."
+                )
                 return StateTransition(this)
             }
 
             override fun finish(): StateTransition {
-                w("StackNavigator.State", "Warning: Cannot finish navigator after navigator is destroyed.")
+                w(
+                    "StackNavigator.State",
+                    "Warning: Cannot finish navigator after navigator is destroyed."
+                )
                 return StateTransition(this)
             }
         }

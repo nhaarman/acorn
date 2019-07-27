@@ -46,6 +46,10 @@ class UIStateUIHandler private constructor(
         state = state.uiNotVisible()
     }
 
+    override fun onBackPressed(): Boolean {
+        return state.onBackPressed()
+    }
+
     override fun withScene(
         scene: Scene<out Container>,
         viewControllerFactory: ViewControllerFactory,
