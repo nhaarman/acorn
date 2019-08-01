@@ -46,7 +46,7 @@ dependencyManagement {
         dependency "org.junit.jupiter:junit-jupiter-api:5.5.1"
         dependency "org.junit.jupiter:junit-jupiter-engine:5.5.1"
 
-        dependency "com.github.shyiko:ktlint:0.31.0"
+        dependency "com.pinterest:ktlint:0.34.2"
 
         dependency "androidx.test.espresso:espresso-core:3.2.0"
         dependency "androidx.test.espresso:espresso-contrib:3.2.0"

@@ -28,9 +28,9 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
+import java.util.concurrent.TimeUnit
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.first_scene.*
-import java.util.concurrent.TimeUnit
 
 class FirstScene(
     private val listener: Events,

@@ -20,13 +20,13 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.test.platform.app.InstrumentationRegistry
-import com.nhaarman.acorn.android.test.R
-import com.nhaarman.expect.expect
-import org.junit.Test
 import com.nhaarman.acorn.android.presentation.internal.InflatingViewControllerFactory
+import com.nhaarman.acorn.android.test.R
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.presentation.SceneKey
+import com.nhaarman.expect.expect
+import org.junit.Test
 
 internal class InflatingViewControllerFactoryTest {
 

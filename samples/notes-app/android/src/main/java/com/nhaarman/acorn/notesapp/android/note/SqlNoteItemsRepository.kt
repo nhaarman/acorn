@@ -16,9 +16,9 @@
 
 package com.nhaarman.acorn.notesapp.android.note
 
-import androidx.sqlite.db.SupportSQLiteDatabase
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
+import androidx.sqlite.db.SupportSQLiteDatabase
 import arrow.core.Option
 import arrow.core.toOption
 import com.nhaarman.acorn.notesapp.note.NoteItem

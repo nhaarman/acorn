@@ -16,10 +16,10 @@
 
 package com.nhaarman.acorn.notesapp.android
 
+import android.content.Context
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
-import android.content.Context
 import com.nhaarman.acorn.notesapp.NotesAppComponent
 import com.nhaarman.acorn.notesapp.android.note.SqlNoteItemsRepository
 import com.nhaarman.acorn.notesapp.note.NoteItemsRepository

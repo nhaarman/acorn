@@ -17,10 +17,10 @@
 package com.nhaarman.acorn.android.internal
 
 import android.graphics.drawable.ColorDrawable
-import androidx.test.rule.ActivityTestRule
 import android.view.View
-import com.nhaarman.acorn.android.test.R
+import androidx.test.rule.ActivityTestRule
 import com.nhaarman.acorn.android.TestActivity
+import com.nhaarman.acorn.android.test.R
 import com.nhaarman.expect.expect
 import org.junit.Rule
 import org.junit.Test

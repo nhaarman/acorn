@@ -16,12 +16,12 @@
 
 package com.nhaarman.acorn.notesapp.integration
 
-import com.nhaarman.acorn.notesapp.presentation.createitem.CreateItemScene
 import com.nhaarman.acorn.notesapp.integration.presentation.createitem.TestCreateItemContainer
-import com.nhaarman.acorn.notesapp.presentation.edititem.EditItemScene
 import com.nhaarman.acorn.notesapp.integration.presentation.edititem.TestEditItemContainer
-import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListScene
 import com.nhaarman.acorn.notesapp.integration.presentation.itemlist.TestItemListContainer
+import com.nhaarman.acorn.notesapp.presentation.createitem.CreateItemScene
+import com.nhaarman.acorn.notesapp.presentation.edititem.EditItemScene
+import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListScene
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.testing.ContainerProvider

@@ -18,12 +18,12 @@ package com.nhaarman.acorn.samples.hellosharedata.presentation.picturegallery
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nhaarman.acorn.samples.hellosharedata.R
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
 import com.squareup.picasso.Picasso

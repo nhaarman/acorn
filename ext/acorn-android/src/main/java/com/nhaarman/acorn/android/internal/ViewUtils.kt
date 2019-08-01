@@ -16,10 +16,10 @@
 
 package com.nhaarman.acorn.android.internal
 
-import androidx.annotation.AnyRes
-import androidx.annotation.ColorInt
 import android.util.TypedValue
 import android.view.View
+import androidx.annotation.AnyRes
+import androidx.annotation.ColorInt
 
 /**
  * Applies the window background from the View's theme as this View's background.
