@@ -16,11 +16,11 @@
 
 package com.nhaarman.acorn.samples.helloworld
 
-import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.navigation.SingleSceneNavigator
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.state.SceneState
 
 /**
  * A [Navigator] that shows a single "Hello, world!" [Scene].

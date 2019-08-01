@@ -28,14 +28,14 @@ dependencyManagement {
         // "Hello"-sample apps
         dependency "androidx.core:core-ktx:1.0.2"
         dependency "com.google.android.material:material:1.0.0"
-        dependency "androidx.constraintlayout:constraintlayout:2.0.0-alpha4"
+        dependency "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
         dependency "io.reactivex.rxjava2:rxandroid:2.1.1"
         dependency "com.squareup.picasso:picasso:2.71828"
         dependency "nl.dionsegijn:konfetti:1.1.3"
 
         // Notes app
-        dependency "com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2"
-        dependency "com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2"
+        dependency "com.jakewharton.rxbinding3:rxbinding:3.0.0"
+        dependency "com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0"
         dependency "com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0"
         dependency "android.arch.persistence:db-framework:1.1.1"
 
@@ -43,18 +43,18 @@ dependencyManagement {
         // Testing & checks
         dependency "com.nhaarman:expect.kt:1.0.1"
         dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
-        dependency "org.junit.jupiter:junit-jupiter-api:5.4.2"
-        dependency "org.junit.jupiter:junit-jupiter-engine:5.4.2"
+        dependency "org.junit.jupiter:junit-jupiter-api:5.5.1"
+        dependency "org.junit.jupiter:junit-jupiter-engine:5.5.1"
 
-        dependency "com.github.shyiko:ktlint:0.31.0"
+        dependency "com.pinterest:ktlint:0.34.2"
 
-        dependency "androidx.test.espresso:espresso-core:3.1.1"
-        dependency "androidx.test.espresso:espresso-contrib:3.1.1"
-        dependency "androidx.test:runner:1.1.1"
-        dependency "androidx.test:rules:1.1.1"
+        dependency "androidx.test.espresso:espresso-core:3.2.0"
+        dependency "androidx.test.espresso:espresso-contrib:3.2.0"
+        dependency "androidx.test:runner:1.2.0"
+        dependency "androidx.test:rules:1.2.0"
         dependency "androidx.test.uiautomator:uiautomator:2.2.0"
 
-        def androidToolsVersion = "26.4.1"
+        def androidToolsVersion = "26.4.2"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"

@@ -17,12 +17,12 @@
 package com.nhaarman.acorn.notesapp.android.ui.itemlist
 
 import android.content.Context
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.note.NoteItem

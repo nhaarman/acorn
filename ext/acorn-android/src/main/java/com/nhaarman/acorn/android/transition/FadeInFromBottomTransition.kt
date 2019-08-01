@@ -16,9 +16,9 @@
 
 package com.nhaarman.acorn.android.transition
 
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import android.view.View
 import android.view.ViewGroup
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import com.nhaarman.acorn.android.R
 import com.nhaarman.acorn.android.internal.applyWindowBackground
 import com.nhaarman.acorn.android.presentation.ViewController

@@ -16,9 +16,9 @@
 
 package com.nhaarman.acorn.notesapp.presentation.itemlist
 
-import com.nhaarman.acorn.presentation.RestorableContainer
 import com.nhaarman.acorn.notesapp.note.NoteItem
 import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.RestorableContainer
 import io.reactivex.Observable
 
 interface ItemListContainer : Container, RestorableContainer {

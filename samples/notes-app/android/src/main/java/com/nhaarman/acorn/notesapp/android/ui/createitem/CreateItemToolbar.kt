@@ -17,8 +17,8 @@
 package com.nhaarman.acorn.notesapp.android.ui.createitem
 
 import android.content.Context
-import androidx.appcompat.widget.Toolbar
 import android.util.AttributeSet
+import androidx.appcompat.widget.Toolbar
 import com.nhaarman.acorn.notesapp.android.R
 
 class CreateItemToolbar @JvmOverloads constructor(

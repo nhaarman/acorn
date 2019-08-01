@@ -28,10 +28,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withHint
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import java.lang.Thread.sleep
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.Rule
 import org.junit.Test
-import java.lang.Thread.sleep
 
 class HelloStateRestorationTest {
 

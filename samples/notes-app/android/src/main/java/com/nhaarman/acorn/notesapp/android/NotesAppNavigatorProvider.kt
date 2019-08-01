@@ -16,10 +16,10 @@
 
 package com.nhaarman.acorn.notesapp.android
 
-import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.android.navigation.AbstractNavigatorProvider
 import com.nhaarman.acorn.notesapp.NotesAppComponent
 import com.nhaarman.acorn.notesapp.navigation.NotesAppNavigator
+import com.nhaarman.acorn.state.NavigatorState
 
 class NotesAppNavigatorProvider(
     private val notesAppComponent: NotesAppComponent

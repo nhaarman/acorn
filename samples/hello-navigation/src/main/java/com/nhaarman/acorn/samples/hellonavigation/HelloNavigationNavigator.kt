@@ -16,11 +16,11 @@
 
 package com.nhaarman.acorn.samples.hellonavigation
 
-import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.navigation.StackNavigator
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
+import com.nhaarman.acorn.state.SceneState
 import kotlin.reflect.KClass
 
 /**

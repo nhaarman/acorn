@@ -16,10 +16,10 @@
 
 package com.nhaarman.acorn.android.util
 
-import androidx.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 
 fun ViewGroup.inflateView(@LayoutRes layoutResId: Int, attachToParent: Boolean = false): View {
     return inflate(layoutResId, attachToParent)

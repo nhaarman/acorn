@@ -16,8 +16,8 @@
 
 package com.nhaarman.acorn.samples.hellostaterestoration
 
-import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.android.navigation.AbstractNavigatorProvider
+import com.nhaarman.acorn.state.NavigatorState
 
 object HelloStateRestorationNavigatorProvider : AbstractNavigatorProvider<HelloStateRestorationNavigator>() {
 

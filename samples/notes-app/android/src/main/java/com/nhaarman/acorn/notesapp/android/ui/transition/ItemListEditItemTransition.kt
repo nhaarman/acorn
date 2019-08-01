@@ -17,9 +17,9 @@
 package com.nhaarman.acorn.notesapp.android.ui.transition
 
 import android.graphics.Color
-import androidx.constraintlayout.widget.ConstraintLayout
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnPreDraw
 import com.nhaarman.acorn.android.transition.FadeInFromBottomTransition
 import com.nhaarman.acorn.android.transition.SceneTransition

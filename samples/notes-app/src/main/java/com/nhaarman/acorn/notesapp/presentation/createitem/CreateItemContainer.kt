@@ -16,8 +16,8 @@
 
 package com.nhaarman.acorn.notesapp.presentation.createitem
 
-import com.nhaarman.acorn.presentation.RestorableContainer
 import com.nhaarman.acorn.presentation.Container
+import com.nhaarman.acorn.presentation.RestorableContainer
 import io.reactivex.Observable
 
 interface CreateItemContainer : Container, RestorableContainer {

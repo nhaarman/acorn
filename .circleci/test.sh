@@ -23,4 +23,4 @@
     packageDebugAndroidTest \
     \
     publishToMavenLocal \
-    --max-workers=1 --rerun-tasks
+    --max-workers=1 --rerun-tasks -Dorg.gradle.jvmargs=-Xmx1536m
