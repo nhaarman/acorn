@@ -16,6 +16,9 @@ include(":ext-acorn-android-appcompat")
 include(":ext-acorn-android-lifecycle")
 include(":ext-acorn-android-statechecks")
 
+include(":ext-acorn-graphgen-android")
+include(":ext-acorn-graphgen-client")
+
 include(":samples:hello-world")
 include(":samples:hello-navigation")
 include(":samples:hello-staterestoration")
@@ -45,5 +48,8 @@ project(":ext-acorn-android-timber").projectDir = file("ext/acorn-android/acorn-
 project(":ext-acorn-android-appcompat").projectDir = file("ext/acorn-android/acorn-android-appcompat")
 project(":ext-acorn-android-lifecycle").projectDir = file("ext/acorn-android/acorn-android-lifecycle")
 project(":ext-acorn-android-statechecks").projectDir = file("ext/acorn-android/acorn-android-statechecks")
+
+project(":ext-acorn-graphgen-android").projectDir = file("ext/acorn-graphgen/android")
+project(":ext-acorn-graphgen-client").projectDir = file("ext/acorn-graphgen/client")
 
 enableFeaturePreview("STABLE_PUBLISHING")

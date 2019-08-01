@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nhaarman.acorn.graphgen.android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <application>
+
+        <provider
+            android:name=".GraphGenInitProvider"
+            android:exported="false"
+            android:initOrder="3"
+            android:authorities="${applicationId}.GraphGenInitProvider" />
+    </application>
+
+</manifest>

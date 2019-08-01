@@ -1,0 +1,9 @@
+plugins {
+    id("application")
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}

@@ -49,6 +49,8 @@ dependencies {
 
     implementation "com.jakewharton.timber:timber"
 
+    debugImplementation project(":ext-acorn-graphgen-android")
+
     debugImplementation project(":ext-acorn-android-testing")
     androidTestImplementation "junit:junit"
     androidTestImplementation "com.nhaarman:expect.kt"
