@@ -87,7 +87,7 @@ subprojects {
             project.apply from: "$rootDir/.ops/ktlint.gradle"
         }
 
-        if (project.hasProperty("test") || project.hasProperty("android")) {
+        if (project.name != "docs" && (project.hasProperty("test") || project.hasProperty("android"))) {
             project.apply from: "$rootDir/.ops/testing.gradle"
             project.apply from: "$rootDir/.ops/pitest.gradle"
         }
