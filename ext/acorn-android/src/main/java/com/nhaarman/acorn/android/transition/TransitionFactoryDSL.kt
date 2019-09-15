@@ -44,7 +44,8 @@ fun sceneTransitionFactory(
  */
 @Deprecated(
     "Use sceneTransitionFactory(SceneTransitionFactoryBuilder.() -> Unit) instead",
-    ReplaceWith("sceneTransitionFactory(init)")
+    ReplaceWith("sceneTransitionFactory(init)"),
+    DeprecationLevel.ERROR
 )
 fun sceneTransitionFactory(
     viewControllerFactory: ViewControllerFactory,

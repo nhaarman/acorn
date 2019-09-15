@@ -34,7 +34,7 @@ class MainActivity : AcornAppCompatActivity() {
     }
 
     override fun provideTransitionFactory(viewControllerFactory: ViewControllerFactory): SceneTransitionFactory {
-        return sceneTransitionFactory(viewControllerFactory) {
+        return sceneTransitionFactory {
             (SceneKey.defaultKey<FirstScene>() to SceneKey.defaultKey<SecondScene>()) use FirstSecondTransition
             (SceneKey.defaultKey<SecondScene>() to SceneKey.defaultKey<FirstScene>()) use SecondFirstTransition
         }

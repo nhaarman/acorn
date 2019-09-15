@@ -5,28 +5,28 @@ dependencyManagement {
         dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
         // core dependencies
-        dependency "androidx.annotation:annotation:1.0.2"
+        dependency "androidx.annotation:annotation:1.1.0"
 
         // ext-acorn
         dependency "io.arrow-kt:arrow-core:0.8.2"
 
         // ext-acorn-android
-        dependency "androidx.appcompat:appcompat:1.0.2"
+        dependency "androidx.appcompat:appcompat:1.1.0"
         dependency "androidx.interpolator:interpolator:1.0.0"
 
         // ext-acorn-rx
-        dependency "io.reactivex.rxjava2:rxjava:2.2.8"
-        dependency "io.reactivex.rxjava2:rxkotlin:2.3.0"
+        dependency "io.reactivex.rxjava2:rxjava:2.2.12"
+        dependency "io.reactivex.rxjava2:rxkotlin:2.4.0"
 
         // ext-acorn-android-timber
         dependency "com.jakewharton.timber:timber:4.7.1"
 
         // ext-acorn-android-lifecycle
-        dependency "androidx.lifecycle:lifecycle-runtime:2.0.0"
+        dependency "androidx.lifecycle:lifecycle-runtime:2.1.0"
 
 
         // "Hello"-sample apps
-        dependency "androidx.core:core-ktx:1.0.2"
+        dependency "androidx.core:core-ktx:1.1.0"
         dependency "com.google.android.material:material:1.0.0"
         dependency "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
         dependency "io.reactivex.rxjava2:rxandroid:2.1.1"
