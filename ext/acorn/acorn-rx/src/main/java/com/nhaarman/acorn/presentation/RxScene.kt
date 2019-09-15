@@ -131,7 +131,7 @@ abstract class RxScene<V : Container>(
      * A utility function to combine an arbitrary stream of [T]'s with the
      * currently attached [V] instance.
      */
-    protected fun <T> Observable<T>.combineWithLatestView(): Observable<Pair<T, V?>> {
+    protected fun <T : Any> Observable<T>.combineWithLatestView(): Observable<Pair<T, V?>> {
         return Observables.combineLatest(this, view) { t, v -> t to v.orNull() }
     }
 

@@ -16,7 +16,7 @@ dependencyManagement {
 
         // ext-acorn-rx
         dependency "io.reactivex.rxjava2:rxjava:2.2.12"
-        dependency "io.reactivex.rxjava2:rxkotlin:2.3.0"
+        dependency "io.reactivex.rxjava2:rxkotlin:2.4.0"
 
         // ext-acorn-android-timber
         dependency "com.jakewharton.timber:timber:4.7.1"
@@ -42,9 +42,9 @@ dependencyManagement {
 
         // Testing & checks
         dependency "com.nhaarman:expect.kt:1.0.1"
-        dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
-        dependency "org.junit.jupiter:junit-jupiter-api:5.5.2"
-        dependency "org.junit.jupiter:junit-jupiter-engine:5.5.2"
+        dependency "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+        dependency "org.junit.jupiter:junit-jupiter-api:5.5.1"
+        dependency "org.junit.jupiter:junit-jupiter-engine:5.5.1"
 
         dependency "com.pinterest:ktlint:0.34.2"
 
@@ -54,7 +54,7 @@ dependencyManagement {
         dependency "androidx.test:rules:1.2.0"
         dependency "androidx.test.uiautomator:uiautomator:2.2.0"
 
-        def androidToolsVersion = "26.5.0"
+        def androidToolsVersion = "26.4.2"
         dependency "com.android.tools.lint:lint:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-api:$androidToolsVersion"
         dependency "com.android.tools.lint:lint-checks:$androidToolsVersion"
