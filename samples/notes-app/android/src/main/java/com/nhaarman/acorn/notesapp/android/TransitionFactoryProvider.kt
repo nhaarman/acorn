@@ -30,7 +30,7 @@ import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListScene
 object TransitionFactoryProvider {
 
     val transitionFactory: SceneTransitionFactory by lazy {
-        sceneTransitionFactory(ViewFactoryProvider.viewFactory) {
+        sceneTransitionFactory {
             (ItemListScene::class to CreateItemScene::class) use ItemListCreateItemTransition
 
             (ItemListScene::class to EditItemScene::class) use ItemListEditItemTransition
