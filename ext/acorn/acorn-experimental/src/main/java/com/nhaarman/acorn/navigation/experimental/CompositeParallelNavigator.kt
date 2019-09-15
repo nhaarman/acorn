@@ -30,6 +30,9 @@ import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.get
 import com.nhaarman.acorn.util.lazyVar
 
+@UseExperimental(ExperimentalCompositeParallelNavigator::class)
+typealias BottomBarNavigator<Destination> = CompositeParallelNavigator<Destination>
+
 @ExperimentalCompositeParallelNavigator
 abstract class CompositeParallelNavigator<Destination>(
     private val initialDestination: Destination,

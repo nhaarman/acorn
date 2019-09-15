@@ -18,7 +18,7 @@ package com.nhaarman.acorn.samples.hellobottombar
 
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.navigation.SavableNavigator
-import com.nhaarman.acorn.navigation.experimental.CompositeParallelNavigator
+import com.nhaarman.acorn.navigation.experimental.BottomBarNavigator
 import com.nhaarman.acorn.navigation.experimental.ExperimentalCompositeParallelNavigator
 import com.nhaarman.acorn.samples.hellobottombar.MyDestination.Favorites
 import com.nhaarman.acorn.samples.hellobottombar.MyDestination.Music
@@ -33,7 +33,7 @@ import com.nhaarman.acorn.state.NavigatorState
 @UseExperimental(ExperimentalCompositeParallelNavigator::class)
 class HelloBottomBarNavigator(
     savedState: NavigatorState?
-) : CompositeParallelNavigator<MyDestination>(Favorites, savedState),
+) : BottomBarNavigator<MyDestination>(Favorites, savedState),
     SavableNavigator {
 
     override fun serialize(destination: MyDestination): String {
