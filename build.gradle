@@ -8,7 +8,7 @@ buildscript {
 
     configurations.maybeCreate("pitest")
     dependencies {
-        classpath("com.android.tools.build:gradle:3.4.2")
+        classpath("com.android.tools.build:gradle:3.5.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.5.0.0")
         classpath("com.adarshr:gradle-test-logger-plugin:1.7.0")
