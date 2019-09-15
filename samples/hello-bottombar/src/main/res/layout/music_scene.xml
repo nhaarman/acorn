@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/valueTV"
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/musicIV"
+        app:layout_constraintEnd_toEndOf="@+id/musicIV"
+        app:layout_constraintStart_toStartOf="@+id/musicIV" />
+
+    <ImageView
+        android:id="@+id/musicIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_music_white_196dp"
+        android:textSize="46sp"
+        android:tint="?android:colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <Button
+        android:id="@+id/musicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/music_pushstackbutton"
+        app:layout_constraintEnd_toEndOf="@+id/musicIV"
+        app:layout_constraintStart_toStartOf="@+id/musicIV"
+        app:layout_constraintTop_toBottomOf="@+id/musicIV" />
+
+    <TextView
+        android:id="@+id/explanationTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:text="@string/music_explanation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/musicButton"
+        app:layout_constraintStart_toStartOf="@+id/musicButton"
+        app:layout_constraintTop_toBottomOf="@+id/musicButton" />
+
+</merge>

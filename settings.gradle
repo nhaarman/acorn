@@ -25,6 +25,7 @@ include(":samples:hello-startactivity")
 include(":samples:hello-sharedata")
 include(":samples:hello-transitionanimation")
 include(':samples:hello-concurrentpairnavigator')
+include(':samples:hello-bottombar')
 
 include(":samples:notes-app")
 include(":samples:notes-app:android")
