@@ -8,6 +8,7 @@
     :ext-acorn-android-timber:lint \
     :ext-acorn-android-lifecycle:lint \
     \
+    :samples:hello-bottombar:lintRelease \
     :samples:hello-concurrentpairnavigator:lintRelease \
     :samples:hello-navigation:lintRelease \
     :samples:hello-overridingback:lintRelease \

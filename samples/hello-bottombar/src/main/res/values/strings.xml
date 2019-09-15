@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_music">Music</string>
+    <string name="menu_places">Places</string>
+    <string name="menu_news">News</string>
+
+    <string name="music_pushstackbutton">Push nested stack</string>
+    <string name="music_explanation">Press the back button to pop the nested stack.\nWhen the nested stack is empty, the Navigator in this tab will finish.</string>
+
+</resources>

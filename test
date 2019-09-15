@@ -9,6 +9,7 @@ adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put 
     :ext-acorn-android-testing:lint \
     :ext-acorn-android-timber:lint \
     :ext-acorn-android-lifecycle:lint \
+    :samples:hello-bottombar:lintRelease \
     :samples:hello-concurrentpairnavigator:lintRelease \
     :samples:hello-navigation:lintRelease \
     :samples:hello-overridingback:lintRelease \

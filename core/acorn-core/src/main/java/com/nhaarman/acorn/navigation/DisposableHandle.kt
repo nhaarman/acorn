@@ -30,4 +30,27 @@ interface DisposableHandle {
      * @return true if this handle has been disposed of.
      */
     fun isDisposed(): Boolean
+
+    companion object {
+
+        /**
+         * Creates a non-thread-safe [DisposableHandle] that executes
+         * given [dispose] function on dispose.
+         */
+        operator fun invoke(dispose: () -> Unit): DisposableHandle {
+            return object : DisposableHandle {
+
+                private var isDisposed = false
+
+                override fun dispose() {
+                    isDisposed = true
+                    dispose.invoke()
+                }
+
+                override fun isDisposed(): Boolean {
+                    return isDisposed
+                }
+            }
+        }
+    }
 }
