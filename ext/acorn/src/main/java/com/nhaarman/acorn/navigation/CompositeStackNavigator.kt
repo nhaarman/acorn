@@ -278,14 +278,13 @@ abstract class CompositeStackNavigator(
         companion object {
 
             fun create(initialStack: List<Navigator>): LifecycleState {
-                return Inactive(initialStack, emptyList(), null)
+                return Inactive(initialStack, emptyList())
             }
         }
 
         class Inactive(
             override val navigators: List<Navigator>,
-            override var listeners: List<Navigator.Events>,
-            private var activeScene: Scene<out Container>?
+            override var listeners: List<Navigator.Events>
         ) : LifecycleState() {
 
             init {
@@ -303,7 +302,7 @@ abstract class CompositeStackNavigator(
             }
 
             override fun start(): StateTransition {
-                return StateTransition(Active(navigators, listeners, activeScene)) {
+                return StateTransition(Active(navigators, listeners)) {
                     navigators.last().onStart()
                 }
             }
@@ -319,11 +318,10 @@ abstract class CompositeStackNavigator(
             }
 
             override fun scene(scene: Scene<out Container>, data: TransitionData?) {
-                this.activeScene = scene
             }
 
             override fun push(navigator: Navigator): StateTransition {
-                return StateTransition(Inactive(navigators + navigator, listeners, activeScene))
+                return StateTransition(Inactive(navigators + navigator, listeners))
             }
 
             override fun pop(): StateTransition {
@@ -334,7 +332,7 @@ abstract class CompositeStackNavigator(
                         navigators.last().onDestroy()
                         listeners.forEach { it.finished() }
                     }
-                    else -> StateTransition(Inactive(newScenes, listeners, activeScene)) {
+                    else -> StateTransition(Inactive(newScenes, listeners)) {
                         navigators.last().onDestroy()
                     }
                 }
@@ -342,7 +340,7 @@ abstract class CompositeStackNavigator(
 
             override fun replace(navigator: Navigator): StateTransition {
                 val newScenes = navigators.dropLast(1) + navigator
-                return StateTransition(Inactive(newScenes, listeners, activeScene)) {
+                return StateTransition(Inactive(newScenes, listeners)) {
                     navigators.last().onDestroy()
                 }
             }
@@ -361,18 +359,13 @@ abstract class CompositeStackNavigator(
 
         class Active(
             override var navigators: List<Navigator>,
-            override var listeners: List<Navigator.Events>,
-            private var activeScene: Scene<out Container>?
+            override var listeners: List<Navigator.Events>
         ) : LifecycleState() {
+
+            private var activeScene: Scene<out Container>? = null
 
             init {
                 check(navigators.isNotEmpty()) { "Stack may not be empty." }
-
-                activeScene?.let {
-                    listeners.forEach { listener ->
-                        listener.scene(it, null)
-                    }
-                }
             }
 
             val navigator: Navigator get() = navigators.last()
@@ -391,7 +384,7 @@ abstract class CompositeStackNavigator(
             }
 
             override fun stop(): StateTransition {
-                return StateTransition(Inactive(navigators, listeners, activeScene)) {
+                return StateTransition(Inactive(navigators, listeners)) {
                     navigators.last().onStop()
                 }
             }
@@ -463,7 +456,7 @@ abstract class CompositeStackNavigator(
             }
 
             override fun finish(): StateTransition {
-                return StateTransition(Inactive(navigators, listeners, activeScene)) {
+                return StateTransition(Inactive(navigators, listeners)) {
                     listeners.forEach { it.finished() }
                     navigators.last().onStop()
                 }.andThen { destroy() }
@@ -480,14 +473,20 @@ abstract class CompositeStackNavigator(
             override val listeners: List<Navigator.Events> = emptyList()
 
             override fun addListener(listener: Navigator.Events) {
-                w("CompositeStackNavigator.LifecycleState", "Warning: Ignoring listener for destroyed navigator.")
+                w(
+                    "CompositeStackNavigator.LifecycleState",
+                    "Warning: Ignoring listener for destroyed navigator."
+                )
             }
 
             override fun removeListener(listener: Navigator.Events) {
             }
 
             override fun start(): StateTransition {
-                w("CompositeStackNavigator.LifecycleState", "Warning: Cannot start state after navigator is destroyed.")
+                w(
+                    "CompositeStackNavigator.LifecycleState",
+                    "Warning: Cannot start state after navigator is destroyed."
+                )
                 return StateTransition(this)
             }
 
@@ -511,7 +510,10 @@ abstract class CompositeStackNavigator(
             }
 
             override fun pop(): StateTransition {
-                w("CompositeStackNavigator.LifecycleState", "Warning: Cannot pop scene after navigator is destroyed.")
+                w(
+                    "CompositeStackNavigator.LifecycleState",
+                    "Warning: Cannot pop scene after navigator is destroyed."
+                )
                 return StateTransition(this)
             }
 
