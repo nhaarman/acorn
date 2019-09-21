@@ -10,8 +10,31 @@ extraCss:
         }
 ---
 
+
+Acorn allows you to create finegrained little blocks for the navigational states in your application, 
+and lets you compose them together into a well-defined tree structure.
+
+
+
 Acorn turns your navigation back stack in a composable and decoupled navigation
 structure.
+
+Acorn allows you to create little blocks that represent the states of navigation in your application,
+and create a tree-like navigational strucutre out of it.
+
+Acorn allows you to create finegrained little blocks for the navigational states in your application, 
+and lets you compose them together into a well-defined tree structure.
+
+Acorn allows you to define the navigational structure of your application in finegrained,
+composable blocks.
+
+With acorn you can create finegrained 
+
+.. you can structure the 
+
+
+
+## Acorn's filosophy
 
 At its core, Acorn is a set of interfaces that describe the basics of mobile
 screen navigation. A {{ anchor('Scene') }} interface represents a screen and 
