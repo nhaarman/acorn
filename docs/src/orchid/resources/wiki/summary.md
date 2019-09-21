@@ -17,6 +17,7 @@
     * [The ViewController](displaying_scenes/viewcontroller.md)
     * [Mapping Scenes to Layouts](displaying_scenes/mapping_scenes_layouts.md)
     * [Transition Animations](displaying_scenes/transition_animations.md)
+    * [Binding transitions](displaying_scenes/mapping_transitions.md)
 * [The Activity](activity.md)
     * [About](activity/about.md)
     * [The Activity as a Plugin](activity/concepts.md)
