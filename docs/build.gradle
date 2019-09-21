@@ -7,6 +7,7 @@ dependencies {
     orchidRuntime "io.github.javaeden.orchid:OrchidKotlindoc:0.17.4"
     orchidRuntime "io.github.javaeden.orchid:OrchidPluginDocs:0.17.4"
     orchidRuntime "io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.17.4"
+    orchidRuntime "io.github.javaeden.orchid:OrchidGithub:0.17.4"
 }
 
 repositories {
@@ -19,4 +20,6 @@ orchid {
     theme = "Editorial"
     baseUrl = "https://nhaarman.github.io/acorn"
     version = git.versionName()
+
+    githubToken = "${System.getenv('GITHUB_TOKEN')}" 
 }

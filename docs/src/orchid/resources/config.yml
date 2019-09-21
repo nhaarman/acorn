@@ -49,7 +49,7 @@ services:
       - 'gif'
   publications:
     stages:
-      ghPages:
+      githubPages:
         branch: gh-pages
         repo: 'acorn'
         username: 'nhaarman'
