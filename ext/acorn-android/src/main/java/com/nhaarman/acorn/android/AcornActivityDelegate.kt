@@ -27,7 +27,6 @@ import com.nhaarman.acorn.android.dispatching.SceneDispatcherFactory
 import com.nhaarman.acorn.android.experimental.AcornEvents
 import com.nhaarman.acorn.android.experimental.ExperimentalAcornEvents
 import com.nhaarman.acorn.android.experimental.HookingSceneDispatcher
-import com.nhaarman.acorn.android.internal.contentView
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
 import com.nhaarman.acorn.android.presentation.ActivityController
 import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
@@ -150,6 +149,13 @@ class AcornActivityDelegate private constructor(
          * used to create [SceneTransition] instances when animating Scene
          * transitions. Defaults to [DefaultSceneTransitionFactory].
          */
+        @Deprecated(
+            "" +
+                "Use from(Activity, ViewGroup, NavigatorProvider, ViewControllerFactory, ActivityControllerFactory, SceneTransitionFactory) " +
+                "instead and provide the root ViewGroup to use.\n" +
+                "This method uses the android.R.id.content ViewGroup, which can result in theming issues.",
+            level = DeprecationLevel.WARNING
+        )
         fun from(
             activity: Activity,
             navigatorProvider: NavigatorProvider,
@@ -159,7 +165,7 @@ class AcornActivityDelegate private constructor(
         ): AcornActivityDelegate {
             return AcornActivityDelegate.from(
                 activity,
-                activity.contentView,
+                activity.findViewById(android.R.id.content),
                 navigatorProvider,
                 viewControllerFactory,
                 activityControllerFactory,

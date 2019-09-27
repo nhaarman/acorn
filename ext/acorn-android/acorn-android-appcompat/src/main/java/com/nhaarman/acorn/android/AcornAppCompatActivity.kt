@@ -20,6 +20,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
@@ -94,9 +95,20 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
 
     /**
      * Returns the root [ViewGroup] that is used to inflate Scene views in.
+     *
+     * This method will be called once by Acorn, so it is safe to create new instances here.
+     *
+     * Override this method if you want to provide your own ViewGroup implementation.
+     * If the returned ViewGroup has no parent, it will be passed to a call to [setContentView].
+     *
+     * This method returns `null` by default, which will result in an empty [FrameLayout] being
+     * used as the content view.
+     *
+     * @return a ViewGroup to be used as the root view, or `null` to fall back to default behavior.
+     * @see rootView
      */
-    protected open fun provideRootView(): ViewGroup {
-        return findViewById(android.R.id.content)
+    protected open fun provideRootView(): ViewGroup? {
+        return null
     }
 
     private val navigatorProvider: NavigatorProvider by lazy {
@@ -129,10 +141,18 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
         return acornDelegate.navigator()
     }
 
+    private val rootView by lazy {
+        val rootView = provideRootView() ?: FrameLayout(this)
+        if (rootView.parent == null) {
+            setContentView(rootView)
+        }
+        rootView
+    }
+
     private val acornDelegate: AcornActivityDelegate by lazy {
         AcornActivityDelegate.from(
             activity = this,
-            root = provideRootView(),
+            root = rootView,
             navigatorProvider = navigatorProvider,
             viewControllerFactory = viewControllerFactory,
             activityControllerFactory = activityControllerFactory,

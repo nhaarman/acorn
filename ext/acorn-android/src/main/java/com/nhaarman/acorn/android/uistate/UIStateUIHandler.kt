@@ -18,7 +18,6 @@ package com.nhaarman.acorn.android.uistate
 
 import android.app.Activity
 import android.view.ViewGroup
-import com.nhaarman.acorn.android.internal.contentView
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.android.transition.SceneTransitionFactory
 import com.nhaarman.acorn.navigation.TransitionData
@@ -74,12 +73,19 @@ class UIStateUIHandler private constructor(
             )
         }
 
+        @Deprecated(
+            "" +
+                "Use create(ViewGroup, SceneTransitionFactory) " +
+                "instead and provide the root ViewGroup to use.\n" +
+                "This method uses the android.R.id.content ViewGroup, which can result in theming issues.",
+            level = DeprecationLevel.WARNING
+        )
         fun create(
             activity: Activity,
             transitionFactory: SceneTransitionFactory
         ): UIStateUIHandler {
             return UIStateUIHandler(
-                activity.contentView,
+                activity.findViewById(android.R.id.content),
                 transitionFactory
             )
         }
