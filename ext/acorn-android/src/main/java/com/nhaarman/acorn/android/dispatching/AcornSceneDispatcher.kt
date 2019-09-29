@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.annotation.CheckResult
 import com.nhaarman.acorn.android.dispatching.internal.ActivityHandler
 import com.nhaarman.acorn.android.dispatching.internal.DefaultActivityHandler
-import com.nhaarman.acorn.android.internal.contentView
 import com.nhaarman.acorn.android.internal.d
 import com.nhaarman.acorn.android.presentation.ActivityControllerFactory
 import com.nhaarman.acorn.android.presentation.ViewControllerFactory
@@ -123,6 +122,13 @@ class AcornSceneDispatcher internal constructor(
 
     companion object {
 
+        @Deprecated(
+            "" +
+                "Use create(Activity, ViewGroup, ViewControllerFactory, ActivityControllerFactory, SceneTransitionFactory, Callback, SavedState?) " +
+                "instead and provide the root ViewGroup to use.\n" +
+                "This method uses the android.R.id.content ViewGroup, which can result in theming issues.",
+            level = DeprecationLevel.WARNING
+        )
         fun create(
             activity: Activity,
             viewControllerFactory: ViewControllerFactory,
@@ -133,7 +139,7 @@ class AcornSceneDispatcher internal constructor(
         ): AcornSceneDispatcher {
             return create(
                 activity,
-                activity.contentView,
+                activity.findViewById(android.R.id.content),
                 viewControllerFactory,
                 activityControllerFactory,
                 transitionFactory,
