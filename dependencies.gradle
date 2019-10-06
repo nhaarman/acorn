@@ -13,7 +13,7 @@ dependencyManagement {
 
         // ext-acorn-rx
         dependency "io.arrow-kt:arrow-core:0.10.0"
-        dependency "io.reactivex.rxjava2:rxjava:2.2.12"
+        dependency "io.reactivex.rxjava2:rxjava:2.2.13"
         dependency "io.reactivex.rxjava2:rxkotlin:2.4.0"
 
         // ext-acorn-android-timber
