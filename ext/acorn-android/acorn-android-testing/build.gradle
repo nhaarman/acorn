@@ -16,5 +16,7 @@ android {
 dependencies {
     api project(":ext-acorn-android")
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
     compileOnly "androidx.test:rules"
 }
