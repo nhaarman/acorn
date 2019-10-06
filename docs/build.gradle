@@ -1,13 +1,13 @@
 plugins {
-    id "com.eden.orchidPlugin" version "0.17.4"
+    id "com.eden.orchidPlugin" version "0.17.5"
 }
 
 dependencies {
-    orchidRuntime "io.github.javaeden.orchid:OrchidDocs:0.17.4"
-    orchidRuntime "io.github.javaeden.orchid:OrchidKotlindoc:0.17.4"
-    orchidRuntime "io.github.javaeden.orchid:OrchidPluginDocs:0.17.4"
-    orchidRuntime "io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.17.4"
-    orchidRuntime "io.github.javaeden.orchid:OrchidGithub:0.17.4"
+    orchidRuntime "io.github.javaeden.orchid:OrchidDocs:0.17.5"
+    orchidRuntime "io.github.javaeden.orchid:OrchidKotlindoc:0.17.5"
+    orchidRuntime "io.github.javaeden.orchid:OrchidPluginDocs:0.17.5"
+    orchidRuntime "io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.17.5"
+    orchidRuntime "io.github.javaeden.orchid:OrchidGithub:0.17.5"
 }
 
 repositories {
