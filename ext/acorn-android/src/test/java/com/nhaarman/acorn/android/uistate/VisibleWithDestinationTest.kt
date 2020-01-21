@@ -25,6 +25,7 @@ import com.nhaarman.acorn.android.util.TestView
 import com.nhaarman.acorn.android.util.TestViewController
 import com.nhaarman.acorn.android.util.TestViewControllerFactory
 import com.nhaarman.expect.expect
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.times
@@ -57,6 +58,8 @@ internal class VisibleWithDestinationTest {
     val sceneViewControllerFactory2 = TestViewControllerFactory()
 
     val scene3 = spy(TestScene())
+    val sceneView3 = TestView()
+    val sceneViewController3 = spy(TestViewController(sceneView3))
     val sceneViewControllerFactory3 = TestViewControllerFactory()
 
     val state = VisibleWithDestination(
@@ -229,6 +232,9 @@ internal class VisibleWithDestinationTest {
 
         @BeforeEach
         fun setup() {
+            sceneViewControllerFactory2.register(scene2.key, sceneViewController2)
+            sceneViewControllerFactory3.register(scene3.key, sceneViewController3)
+
             state.withScene(scene2, sceneViewControllerFactory2, null)
         }
 
@@ -321,6 +327,39 @@ internal class VisibleWithDestinationTest {
 
             /* Then */
             verify(scene, times(1)).detach(sceneViewController)
+        }
+
+        @Test
+        fun `'uiNotVisible' during a transition remembers the transition's destination`() {
+            /* When */
+            val newState = state.uiNotVisible()
+
+            /* Then */
+            verify(scene2, never()).attach(any())
+
+            /* When */
+            newState.uiVisible()
+
+            /* Then */
+            verify(scene2).attach(sceneViewController2)
+        }
+
+        @Test
+        fun `'uiNotVisible' during a transition with a scheduled remembers the scheduled transition's destination`() {
+            /* Given */
+            state.withScene(scene3, sceneViewControllerFactory3, null)
+
+            /* When */
+            val newState = state.uiNotVisible()
+
+            /* Then */
+            verify(scene3, never()).attach(any())
+
+            /* When */
+            newState.uiVisible()
+
+            /* Then */
+            verify(scene3).attach(sceneViewController3)
         }
     }
 
