@@ -55,7 +55,7 @@ The {{ anchor('RxScene') }} abstract class extends the
 {{ anchor('BasicScene') }} class and provides helper functions for working 
 with Rx streams.
 
-### {{ anchor('LifecycleScene') }}<sup>2</sup>
+### {{ anchor('LifecycleScene') }}<sup>3</sup>
 
 The {{ anchor('LifecycleScene') }} abstract class extends the 
 {{ anchor('BasicScene') }} class and implements the 
