@@ -1,0 +1,31 @@
+{
+  "ownKey": "home",
+  "ownPages": [
+    {
+      "reference": {
+        "path": "",
+        "baseUrl": "https://nhaarman.github.io/acorn",
+        "fileName": "",
+        "extension": "html",
+        "usePrettyUrl": true,
+        "link": "https://nhaarman.github.io/acorn"
+      },
+      "description": "",
+      "title": "Acorn",
+      "content": "<p>Acorn turns your navigation back stack in a composable and decoupled navigation\nstructure.<\/p>\n<p>At its core, Acorn is a set of interfaces that describe the basics of mobile\nscreen navigation. A <a href=\"https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene\">Scene<\/a> interface represents a screen and\ncan be regarded as a basic building block for the application flow.\n<a href=\"https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator\">Navigators<\/a> control this application flow, and can\nbe composed together to form a large structure.\nFinally, <a href=\"https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container\">Containers<\/a> form the boundary between your\npresentation layer and the UI elements.<\/p>\n<p class=\"image-preview\"><img src=\"https://nhaarman.github.io/acorn/media/acorn_diagram.svg\" alt=\"\" /><\/p>\n<p>On top of this, Acorn provides an extensive set of default implementations to\ndo the work for you: several base Scene implementations that provide the basics,\nand a couple of Navigators that can be composed together to create the\nnavigational structure that you need.<\/p>\n<p>Acorn decouples the UI from navigation, meaning the user interface becomes a\nplugin into the navigational state.\nThis gives you full control over your view elements and especially your\ntransition animations.<\/p>\n<p>In the <a href=\"https://nhaarman.github.io/acorn/wiki\">Wiki<\/a> section you can find information on several topics\nwhen working with Acorn.<\/p>\n<p><em>Note: this documentation website is work in progress, and some sections may be\nmissing or incomplete.<\/em><\/p>\n"
+    },
+    {
+      "reference": {
+        "path": "",
+        "baseUrl": "https://nhaarman.github.io/acorn",
+        "fileName": "404",
+        "extension": "html",
+        "usePrettyUrl": false,
+        "link": "https://nhaarman.github.io/acorn/404.html"
+      },
+      "description": "",
+      "title": "Acorn",
+      "content": ""
+    }
+  ]
+}

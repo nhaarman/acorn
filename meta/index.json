@@ -1,0 +1,56 @@
+{
+  "ownKey": "index",
+  "childrenPages": {"meta": {
+    "ownKey": "meta",
+    "ownPages": [
+      {
+        "reference": {
+          "path": "meta",
+          "baseUrl": "https://nhaarman.github.io/acorn",
+          "fileName": "home.index",
+          "extension": "json",
+          "usePrettyUrl": false,
+          "link": "https://nhaarman.github.io/acorn/meta/home.index.json"
+        },
+        "description": "",
+        "title": "Home . Index"
+      },
+      {
+        "reference": {
+          "path": "meta",
+          "baseUrl": "https://nhaarman.github.io/acorn",
+          "fileName": "kotlindoc.index",
+          "extension": "json",
+          "usePrettyUrl": false,
+          "link": "https://nhaarman.github.io/acorn/meta/kotlindoc.index.json"
+        },
+        "description": "",
+        "title": "Kotlindoc . Index"
+      },
+      {
+        "reference": {
+          "path": "meta",
+          "baseUrl": "https://nhaarman.github.io/acorn",
+          "fileName": "wiki.index",
+          "extension": "json",
+          "usePrettyUrl": false,
+          "link": "https://nhaarman.github.io/acorn/meta/wiki.index.json"
+        },
+        "description": "",
+        "title": "Wiki . Index"
+      },
+      {
+        "reference": {
+          "path": "meta",
+          "baseUrl": "https://nhaarman.github.io/acorn",
+          "fileName": "all.index",
+          "extension": "json",
+          "usePrettyUrl": false,
+          "link": "https://nhaarman.github.io/acorn/meta/all.index.json"
+        },
+        "description": "",
+        "title": "All . Index"
+      }
+    ]
+  }}
+}

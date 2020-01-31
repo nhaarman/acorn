@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/RestorableTestContainer</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/ContainerProvider</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/TestLogger</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/TestContext</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/SingleSceneNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/StackNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/DisposableHandle</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeStackNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/SavableNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeDisposableHandle</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ExperimentalCompositeParallelNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedContainer</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CompositeParallelNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/BottomBarNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ConcurrentPairNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedScene</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ExperimentalConcurrentPairNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator/Events</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/TransitionData</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/ReplacingNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/WizardNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeReplacingNavigator</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RestorableContainer</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableScene</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/BasicScene</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SceneKey</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RxScene</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableContainer</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/state</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SceneState</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/NavigatorState</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SavedState</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/ContainerState</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation/AbstractNavigatorProvider</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation/NavigatorProvider</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornActivity</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornActivityDelegate</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/NoopActivityControllerFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ActivityController</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewControllerFactoryBuilder</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/SceneViewControllerFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ProvidesView</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ComposingViewControllerFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewControllerFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/NoopViewControllerFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewController</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ActivityControllerFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewProvidingScene</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/RestorableViewController</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AndroidLogger</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornAppCompatActivity</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/HookingSceneDispatcher</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/ExperimentalAcornEvents</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/AcornEvents</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/AcornEvents/DispatchingListener</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIState</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIHandler</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIStateUIHandler</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/NoopSceneTransitionFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransition</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransition/Callback</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/DefaultSceneTransitionFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/DoBeforeTransition</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransitionFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/FadeInFromBottomTransition</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/FadeOutToBottomTransition</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/ComposingSceneTransitionFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransitionFactoryBuilder</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/SceneDispatcherFactory</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher/Callback</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/SceneDispatcher</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/util</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/util</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/util/LazyVar</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/OnBackPressListener</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/com/nhaarman/acorn/Logger</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://nhaarman.github.io/acorn/acorn</loc>
+        <lastmod>2020-01-31</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    
+</urlset>

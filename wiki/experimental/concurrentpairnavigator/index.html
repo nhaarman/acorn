@@ -1,0 +1,1353 @@
+<!DOCTYPE HTML>
+<!--
+    Editorial by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.17.5"/>
+<link rel="icon" href="https://nhaarman.github.io/acorn/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>ConcurrentPairNavigator</title>
+
+
+<meta name="description" content="Mastering Android navigation">
+
+
+
+<link rel="prev" href="https://nhaarman.github.io/acorn/wiki/experimental">
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.17.5","baseUrl":"https://nhaarman.github.io/acorn","environment":"debug","version":"1.2.1"};
+</script>
+
+
+
+
+
+<!-- start:debug info -->
+
+<!-- THEME -->
+<!-- Type: Editorial -->
+<!-- Class: com.eden.orchid.editorial.EditorialTheme -->
+
+<!-- PAGE -->
+<!-- Type: wiki -->
+<!-- Class: com.eden.orchid.wiki.pages.WikiPage -->
+<!-- Layout: index -->
+<!-- Resolved Layout: templates/layouts/index.peb -->
+<!-- Page Template: wiki, page -->
+<!-- Resolved Page Template:  -->
+
+<!-- RESOURCE -->
+<!-- Class: com.eden.orchid.api.resources.resource.FileResource -->
+<!-- Source Filename: wiki/experimental/concurrentpairnavigator.md -->
+
+<!-- COMPLETE PAGE CONFIGURATION -->
+<script>
+    window.allData = {"reference":{"path":"wiki/experimental","baseUrl":"https://nhaarman.github.io/acorn","fileName":"concurrentpairnavigator","extension":"html","usePrettyUrl":true,"link":"https://nhaarman.github.io/acorn/wiki/experimental/concurrentpairnavigator"},"previous":{"path":"wiki","baseUrl":"https://nhaarman.github.io/acorn","fileName":"experimental","extension":"html","usePrettyUrl":true,"link":"https://nhaarman.github.io/acorn/wiki/experimental"},"description":"","title":"ConcurrentPairNavigator"};
+</script>
+
+<!-- end:debug info -->
+
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/css/editorial_main.css"/>
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/css/editorial_orchidCustomizations.css"/>
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/css/orchidSearch.css"/>
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/assets/css/site.css"/>
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/assets/css/pygments.css"/>
+<style>
+.image-preview {
+  text-align: center; }
+  .image-preview img {
+    max-width: 80%; }
+
+</style>
+<!-- end:inject styles -->
+
+</head>
+<body class="is-loading">
+
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Main -->
+    <div id="main">
+        <div class="inner">
+
+            <!-- Header -->
+            
+                <header id="header">
+    <a href="https://nhaarman.github.io/acorn" class="logo">Acorn</a>
+    <ul class="icons">
+    
+    
+        <li>
+            <a href="https://github.com/nhaarman/acorn" class="icon fa-github">
+                <span class="label">github</span>
+            </a>
+        </li>
+    
+    
+    </ul>
+</header>
+            
+            
+            
+            
+                <section id="pageContent">
+                    <header class="major"><h2>ConcurrentPairNavigator</h2></header>
+                    <article>
+                        
+    <!-- start:inject components -->
+    
+        
+            
+                
+                    
+                        <p>The <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ConcurrentPairNavigator">ConcurrentPairNavigator</a> is a stacking
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator">Navigator</a> that allows up to two
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scenes</a> in its stack.
+Whenever a second Scene is stacked upon the initial Scene, both the initial
+Scene and the second Scene will <em>simultaneously</em> be in their 'started' states,
+hereby differing from navigators such as the <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/StackNavigator">StackNavigator</a>
+which only allow a single Scene in the 'started' state.</p>
+<p>This Navigator can come in useful when implementing complex overlays that
+warrant their own Scene instance:</p>
+<p class="image-preview"><img src="https://nhaarman.github.io/acorn/wiki/experimental/media/overlay_example.gif" alt="" /></p>
+<p><em>A 'complex overlay' here means an overlay that is <em>not</em> a simple dialog.
+The ConcurrentPairNavigator allows for great flexibility to define your layout
+and its transitions perfectly, but comes with a fair amount of overhead.
+If you want to display a simple dialog showing a message or asking a question,
+use an AlertDialog instead.</em></p>
+<h2 id="usage">Usage</h2>
+<p><em>You can find a working sample project demonstrating usage of this class
+<a href="https://github.com/nhaarman/Acorn/tree/master/samples/hello-concurrentpairnavigator">here</a></em></p>
+<p>To be able to allow two <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scenes</a> to be active at once, the
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ConcurrentPairNavigator">ConcurrentPairNavigator</a> wraps the two Scenes in a
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedScene">CombinedScene</a> instance with the key of the second Scene.
+This special Scene implementation ignores any lifecycle calls, and ensures both
+Scenes receive the proper <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container">Container</a> instances in <code>attach</code> and
+<code>detach</code>.</p>
+<p>It does this by accepting a special <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedContainer">CombinedContainer</a>
+specialization of the Container interface, which allows access to the two sub
+Containers.
+It is then the responsibility of the UI layer to properly provide instances of
+the CombinedContainer interface.</p>
+<p>In the following sections you can find out how to make use of the
+ConcurrentPairNavigator.</p>
+<h3 id="the-initial-scene">The initial Scene</h3>
+<p>The <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ConcurrentPairNavigator">ConcurrentPairNavigator</a> requires a first, initial
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a>.
+This Scene is just like any other regular Scene, and can implement
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ProvidesView">ProvidesView</a> if you want to.</p>
+<p>For example, we can create the first Scene from above using RxJava like this<sup>1</sup>:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">interface</span>&nbsp;<span class="nc">FirstSceneContainer</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Container</span>&nbsp;<span class="p">{</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">var</span>&nbsp;<span class="py">count</span><span class="p">:</span>&nbsp;<span class="n">Long</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**&nbsp;Registers&nbsp;a&nbsp;listener&nbsp;for&nbsp;when&nbsp;an&nbsp;action&nbsp;is&nbsp;clicked&nbsp;*/</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">onActionClicked</span><span class="p">(</span><span class="n">f</span><span class="p">:</span>&nbsp;<span class="p">()</span>&nbsp;<span class="p">-&gt;</span>&nbsp;<span class="n">Unit</span><span class="p">)</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span><span class="p">}</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span><span class="cm">/**</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span><span class="cm">&nbsp;*&nbsp;Displays&nbsp;a&nbsp;counter&nbsp;value&nbsp;that&nbsp;continuously&nbsp;increases&nbsp;starting&nbsp;when&nbsp;this&nbsp;Scene</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span><span class="cm">&nbsp;*&nbsp;is&nbsp;started,&nbsp;until&nbsp;this&nbsp;Scene&nbsp;is&nbsp;destroyed.</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span><span class="cm">&nbsp;*/</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">FirstScene</span><span class="p">(</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">listener</span><span class="p">:</span>&nbsp;<span class="n">Events</span><span class="p">,</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">scheduler</span><span class="p">:</span>&nbsp;<span class="n">Scheduler</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">AndroidSchedulers</span><span class="p">.</span><span class="n">mainThread</span><span class="p">()</span><br><a name="line-16"></a><span class="lineno">16&nbsp;</span><span class="p">)</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">RxScene</span><span class="p">&lt;</span><span class="n">FirstSceneContainer</span><span class="p">&gt;(</span><span class="k">null</span><span class="p">),</span>&nbsp;<span class="n">ProvidesView</span>&nbsp;<span class="p">{</span><br><a name="line-17"></a><span class="lineno">17&nbsp;</span><br><a name="line-18"></a><span class="lineno">18&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**</span><br><a name="line-19"></a><span class="lineno">19&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Emits&nbsp;a&nbsp;continuously&nbsp;increasing&nbsp;stream&nbsp;of&nbsp;Longs&nbsp;every&nbsp;100&nbsp;milliseconds,</span><br><a name="line-20"></a><span class="lineno">20&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;starting&nbsp;at&nbsp;the&nbsp;first&nbsp;subscription,&nbsp;until&nbsp;the&nbsp;Scene&nbsp;is&nbsp;destroyed.</span><br><a name="line-21"></a><span class="lineno">21&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br><a name="line-22"></a><span class="lineno">22&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">counter</span><span class="p">:</span>&nbsp;<span class="n">Observable</span><span class="p">&lt;</span><span class="n">Long</span><span class="p">&gt;</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">Observable</span><br><a name="line-23"></a><span class="lineno">23&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">interval</span><span class="p">(</span><span class="m">0</span><span class="p">,</span>&nbsp;<span class="m">100</span><span class="p">,</span>&nbsp;<span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">,</span>&nbsp;<span class="n">scheduler</span><span class="p">)</span><br><a name="line-24"></a><span class="lineno">24&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">replay</span><span class="p">(</span><span class="m">1</span><span class="p">).</span><span class="n">autoConnect</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><br><a name="line-25"></a><span class="lineno">25&nbsp;</span><br><a name="line-26"></a><span class="lineno">26&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**</span><br><a name="line-27"></a><span class="lineno">27&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Conveniently&nbsp;provides&nbsp;a&nbsp;View&nbsp;and&nbsp;ViewController&nbsp;for&nbsp;this&nbsp;Scene.</span><br><a name="line-28"></a><span class="lineno">28&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br><a name="line-29"></a><span class="lineno">29&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">createViewController</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span>&nbsp;<span class="n">ViewGroup</span><span class="p">):</span>&nbsp;<span class="n">ViewController</span>&nbsp;<span class="p">{</span><br><a name="line-30"></a><span class="lineno">30&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">FirstSceneViewController</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">inflate</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">first_scene</span><span class="p">))</span><br><a name="line-31"></a><span class="lineno">31&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-32"></a><span class="lineno">32&nbsp;</span><br><a name="line-33"></a><span class="lineno">33&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">onStart</span><span class="p">()</span>&nbsp;<span class="p">{</span><br><a name="line-34"></a><span class="lineno">34&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">super</span><span class="p">.</span><span class="n">onStart</span><span class="p">()</span><br><a name="line-35"></a><span class="lineno">35&nbsp;</span><br><a name="line-36"></a><span class="lineno">36&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Subscribe&nbsp;to&nbsp;the&nbsp;counter,&nbsp;updating&nbsp;the&nbsp;container&nbsp;when&nbsp;available.</span><br><a name="line-37"></a><span class="lineno">37&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">disposables</span>&nbsp;<span class="p">+=</span>&nbsp;<span class="n">counter</span><br><a name="line-38"></a><span class="lineno">38&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">combineWithLatestView</span><span class="p">()</span><br><a name="line-39"></a><span class="lineno">39&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">subscribe</span>&nbsp;<span class="p">{</span>&nbsp;<span class="p">(</span><span class="n">count</span><span class="p">,</span>&nbsp;<span class="n">container</span><span class="p">)</span>&nbsp;<span class="p">-&gt;</span><br><a name="line-40"></a><span class="lineno">40&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">container</span><span class="o">?.</span><span class="n">count</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">count</span><br><a name="line-41"></a><span class="lineno">41&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-42"></a><span class="lineno">42&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-43"></a><span class="lineno">43&nbsp;</span><br><a name="line-44"></a><span class="lineno">44&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span>&nbsp;<span class="n">FirstSceneContainer</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-45"></a><span class="lineno">45&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">super</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><br><a name="line-46"></a><span class="lineno">46&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><a name="line-47"></a><span class="lineno">47&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Registers&nbsp;a&nbsp;listener&nbsp;with&nbsp;the&nbsp;container.</span><br><a name="line-48"></a><span class="lineno">48&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">v</span><span class="p">.</span><span class="n">onActionClicked</span>&nbsp;<span class="p">{</span>&nbsp;<span class="n">listener</span><span class="p">.</span><span class="n">actionClicked</span><span class="p">()</span>&nbsp;<span class="p">}</span><br><a name="line-49"></a><span class="lineno">49&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-50"></a><span class="lineno">50&nbsp;</span><br><a name="line-51"></a><span class="lineno">51&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">interface</span>&nbsp;<span class="nc">Events</span>&nbsp;<span class="p">{</span><br><a name="line-52"></a><span class="lineno">52&nbsp;</span><br><a name="line-53"></a><span class="lineno">53&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**</span><br><a name="line-54"></a><span class="lineno">54&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Invoked&nbsp;when&nbsp;this&nbsp;Scene&#39;s&nbsp;action&nbsp;is&nbsp;clicked.</span><br><a name="line-55"></a><span class="lineno">55&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br><a name="line-56"></a><span class="lineno">56&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">actionClicked</span><span class="p">()</span><br><a name="line-57"></a><span class="lineno">57&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-58"></a><span class="lineno">58&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>As mentioned, there is nothing special about this Scene that makes it suitable
+for the ConcurrentPairNavigator.</p>
+<h3 id="the-second-scene">The second Scene</h3>
+<p>In our example from above we introduce a new layout that partially overlays the
+first Scene, while still keeping our first Scene active.
+This overlay is backed by a second Scene, which can be implemented like so:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">interface</span>&nbsp;<span class="nc">SecondSceneContainer</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Container</span>&nbsp;<span class="p">{</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**&nbsp;Registers&nbsp;a&nbsp;listener&nbsp;for&nbsp;when&nbsp;the&nbsp;&#39;back&#39;&nbsp;action&nbsp;is&nbsp;clicked&nbsp;*/</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">onBackClicked</span><span class="p">(</span><span class="n">f</span><span class="p">:</span>&nbsp;<span class="p">()</span>&nbsp;<span class="p">-&gt;</span>&nbsp;<span class="n">Unit</span><span class="p">)</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span><span class="p">}</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span><span class="cm">/**</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span><span class="cm">&nbsp;*&nbsp;Displays&nbsp;a&nbsp;simple&nbsp;&#39;back&#39;&nbsp;button.</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span><span class="cm">&nbsp;*/</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">SecondScene</span><span class="p">(</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">listener</span><span class="p">:</span>&nbsp;<span class="n">Events</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span><span class="p">)</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;</span><span class="n">SecondSceneContainer</span><span class="p">&gt;</span>&nbsp;<span class="p">{</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span>&nbsp;<span class="n">SecondSceneContainer</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<br><a name="line-16"></a><span class="lineno">16&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Registers&nbsp;a&nbsp;listener&nbsp;with&nbsp;the&nbsp;container.</span><br><a name="line-17"></a><span class="lineno">17&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">v</span><span class="p">.</span><span class="n">onBackClicked</span>&nbsp;<span class="p">{</span>&nbsp;<span class="n">listener</span><span class="p">.</span><span class="n">onBackClicked</span><span class="p">()</span>&nbsp;<span class="p">}</span><br><a name="line-18"></a><span class="lineno">18&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-19"></a><span class="lineno">19&nbsp;</span><br><a name="line-20"></a><span class="lineno">20&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">interface</span>&nbsp;<span class="nc">Events</span>&nbsp;<span class="p">{</span><br><a name="line-21"></a><span class="lineno">21&nbsp;</span><br><a name="line-22"></a><span class="lineno">22&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**</span><br><a name="line-23"></a><span class="lineno">23&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Invoked&nbsp;when&nbsp;this&nbsp;Scene&#39;s&nbsp;&#39;back&#39;&nbsp;action&nbsp;is&nbsp;clicked.</span><br><a name="line-24"></a><span class="lineno">24&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span>&nbsp;<br><a name="line-25"></a><span class="lineno">25&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">onBackClicked</span><span class="p">()</span><br><a name="line-26"></a><span class="lineno">26&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-27"></a><span class="lineno">27&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>This Scene does <strong>not</strong> implement <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ProvidesView">ProvidesView</a>, as this Scene has
+too little context about <em>how</em> to provide this container.
+For example, it actually doesn't know it is being displayed using an overlay, and
+does not know how to provide the entire layout.
+More on this in &quot;Providing the container&quot;.</p>
+<h3 id="the-concurrentpairnavigator">The ConcurrentPairNavigator</h3>
+<p>Now we can implement the <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ConcurrentPairNavigator">ConcurrentPairNavigator</a> class to tie
+our Scenes together:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">HelloConcurrentPairNavigator</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">ConcurrentPairNavigator</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Creates&nbsp;the&nbsp;first&nbsp;Scene&nbsp;when&nbsp;this&nbsp;Navigator&nbsp;is&nbsp;initialized.</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">createInitialScene</span><span class="p">():</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;</span><span class="k">out</span>&nbsp;<span class="n">Container</span><span class="p">&gt;</span>&nbsp;<span class="p">{</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">FirstScene</span><span class="p">(</span><span class="n">FirstSceneListener</span><span class="p">())</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">instantiateScene</span><span class="p">(</span><span class="n">sceneClass</span><span class="p">:</span>&nbsp;<span class="n">KClass</span><span class="p">&lt;</span><span class="k">out</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;*&gt;&gt;,</span>&nbsp;<span class="n">state</span><span class="p">:</span>&nbsp;<span class="n">SceneState</span><span class="p">?):</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;</span><span class="k">out</span>&nbsp;<span class="n">Container</span><span class="p">&gt;</span>&nbsp;<span class="p">{</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Normally&nbsp;you&nbsp;should&nbsp;implement&nbsp;this&nbsp;as&nbsp;well.</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;For&nbsp;this&nbsp;example&nbsp;however,&nbsp;restoring&nbsp;is&nbsp;omitted.</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">error</span><span class="p">(</span><span class="s">&quot;Not&nbsp;supported&quot;</span><span class="p">)</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span><br><a name="line-16"></a><span class="lineno">16&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">inner</span>&nbsp;<span class="k">class</span>&nbsp;<span class="nc">FirstSceneListener</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">FirstScene</span><span class="p">.</span><span class="n">Events</span>&nbsp;<span class="p">{</span><br><a name="line-17"></a><span class="lineno">17&nbsp;</span><br><a name="line-18"></a><span class="lineno">18&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**</span><br><a name="line-19"></a><span class="lineno">19&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Pushes&nbsp;a&nbsp;SecondScene&nbsp;instance&nbsp;on&nbsp;the&nbsp;stack.</span><br><a name="line-20"></a><span class="lineno">20&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br><a name="line-21"></a><span class="lineno">21&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">actionClicked</span><span class="p">()</span>&nbsp;<span class="p">{</span><br><a name="line-22"></a><span class="lineno">22&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">push</span><span class="p">(</span><span class="n">SecondScene</span><span class="p">(</span><span class="n">SecondSceneListener</span><span class="p">()))</span><br><a name="line-23"></a><span class="lineno">23&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-24"></a><span class="lineno">24&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-25"></a><span class="lineno">25&nbsp;</span><br><a name="line-26"></a><span class="lineno">26&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">inner</span>&nbsp;<span class="k">class</span>&nbsp;<span class="nc">SecondSceneListener</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">SecondScene</span><span class="p">.</span><span class="n">Events</span>&nbsp;<span class="p">{</span><br><a name="line-27"></a><span class="lineno">27&nbsp;</span><br><a name="line-28"></a><span class="lineno">28&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**</span><br><a name="line-29"></a><span class="lineno">29&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Pops&nbsp;the&nbsp;SecondScene&nbsp;instance&nbsp;from&nbsp;the&nbsp;stack.</span><br><a name="line-30"></a><span class="lineno">30&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br><a name="line-31"></a><span class="lineno">31&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">onBackClicked</span><span class="p">()</span>&nbsp;<span class="p">{</span><br><a name="line-32"></a><span class="lineno">32&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">pop</span><span class="p">()</span><br><a name="line-33"></a><span class="lineno">33&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-34"></a><span class="lineno">34&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-35"></a><span class="lineno">35&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>Whenever the <code>FirstSceneListener</code>'s <code>actionClicked</code> function is invoked, it
+pushes a new <code>SecondScene</code> instance on the stack.
+This triggers the Navigator to emit a <code>CombinedScene</code> instance to its listeners.</p>
+<p>When the <code>SecondSceneListener</code>'s <code>onBackClicked</code> function is invoked, the
+<code>SecondScene</code> is popped from the stack—leading to the Navigator emitting
+the <code>FirstScene</code> to its listeners again.</p>
+<h3 id="providing-the-layouts">Providing the layouts</h3>
+<p>Now this is where things get tricky and a bit cumbersome.
+As with all Scenes, there are three use cases to support when displaying their
+layouts:</p>
+<ul>
+<li>Displaying as part of a Scene transition from the <em>first</em> to the <em>second</em> Scene;</li>
+<li>Displaying as part of a Scene transition from the <em>second</em> to the <em>first</em> Scene;</li>
+<li>Displaying from scratch, for example when a fresh Activity appears.</li>
+</ul>
+<p>Usually when creating a Scene you can cover both of these by providing a simple
+ViewController, for example using the ProvidesView interface.
+The second use case is automatically covered by a default transition which
+replaces the entire layout with the new one.
+For the first Scene this is also the case.<br />
+In the case of a CombinedScene however, using ProvidesView for the second
+Scene isn't gonna cut it: the second Scene's layout is only a subset of the
+actual layout that needs to be shown. In our example case this would be the
+card at the bottom of the view.</p>
+<p>Therefore all these use cases need to be handled manually.</p>
+<h4 id="--the-viewcontroller">- The ViewController</h4>
+<p>First though, we need to provide a ViewController implementation.
+In this case we implement the CombinedContainer implementation:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="n">@UseExperimental</span><span class="p">(</span><span class="n">ExperimentalConcurrentPairNavigator</span><span class="o">::</span><span class="k">class</span><span class="p">)</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">FirstSecondViewController</span><span class="p">(</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">view</span><span class="p">:</span>&nbsp;<span class="n">ViewGroup</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span><span class="p">)</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">ViewController</span><span class="p">,</span>&nbsp;<span class="n">CombinedContainer</span>&nbsp;<span class="p">{</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">firstContainer</span><span class="p">:</span>&nbsp;<span class="n">Container</span>&nbsp;<span class="k">by</span>&nbsp;<span class="n">lazy</span>&nbsp;<span class="p">{</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">FirstSceneViewController</span><span class="p">(</span><span class="n">view</span><span class="p">.</span><span class="n">firstSceneRoot</span><span class="p">)</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">secondContainer</span><span class="p">:</span>&nbsp;<span class="n">Container</span>&nbsp;<span class="k">by</span>&nbsp;<span class="n">lazy</span>&nbsp;<span class="p">{</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">SecondSceneViewController</span><span class="p">(</span><span class="n">view</span><span class="p">.</span><span class="n">secondSceneRoot</span><span class="p">)</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>This allows Acorn to bind the correct part of the layout to the proper
+Scenes.</p>
+<h4 id="--displaying-as-part-from-a-scene-transition-from-the-first-to-the-second-scene">- Displaying as part from a Scene transition from the <em>first</em> to the <em>second</em> Scene</h4>
+<p>This is the case the user will see most of the time, when you call
+ConcurrentPairNavigator#push with your second Scene instance.
+When this happens, the navigator will transition from the  <code>FirstScene</code> instance
+to a CombinedScene instance.
+This CombinedScene takes the <code>key</code> from the <code>SecondScene</code>, so this can be used
+to define a transition animation.</p>
+<p>This transition animation can be implemented as any other transition animation.
+The only difference is that you don't remove the first Scene's layout at the end
+of the transition.
+For example, the transition in the GIF above is implemented as such:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">object</span>&nbsp;<span class="nc">FirstSecondTransition</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Transition</span>&nbsp;<span class="p">{</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">execute</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span>&nbsp;<span class="n">ViewGroup</span><span class="p">,</span>&nbsp;<span class="n">callback</span><span class="p">:</span>&nbsp;<span class="n">Transition</span><span class="p">.</span><span class="n">Callback</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Inflate&nbsp;and&nbsp;add&nbsp;the&nbsp;overlay&nbsp;to&nbsp;the&nbsp;layout</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">val</span>&nbsp;<span class="py">secondScene</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">inflateView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">second_scene</span><span class="p">)</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">addView</span><span class="p">(</span><span class="n">secondScene</span><span class="p">)</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Immediately&nbsp;create&nbsp;and&nbsp;attach&nbsp;the&nbsp;combined&nbsp;view&nbsp;controller.</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;This&nbsp;allows&nbsp;our&nbsp;first&nbsp;Scene&nbsp;to&nbsp;keep&nbsp;communicating&nbsp;with&nbsp;the</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;view&nbsp;seamlessly.</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">val</span>&nbsp;<span class="py">viewController</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">FirstSecondViewController</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">callback</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">doOnPreDraw</span>&nbsp;<span class="p">{</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Animate&nbsp;the&nbsp;dark&nbsp;overlay</span><br><a name="line-16"></a><span class="lineno">16&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">secondScene</span><span class="p">.</span><span class="n">overlayView</span><br><a name="line-17"></a><span class="lineno">17&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">apply</span>&nbsp;<span class="p">{</span><br><a name="line-18"></a><span class="lineno">18&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">alpha</span>&nbsp;<span class="p">=</span>&nbsp;<span class="m">0f</span><br><a name="line-19"></a><span class="lineno">19&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">animate</span><span class="p">().</span><span class="n">alpha</span><span class="p">(</span><span class="m">1f</span><span class="p">)</span><br><a name="line-20"></a><span class="lineno">20&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-21"></a><span class="lineno">21&nbsp;</span><br><a name="line-22"></a><span class="lineno">22&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Animate&nbsp;the&nbsp;card&nbsp;view</span><br><a name="line-23"></a><span class="lineno">23&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">secondScene</span><span class="p">.</span><span class="n">cardView</span><span class="p">.</span><span class="n">apply</span>&nbsp;<span class="p">{</span><br><a name="line-24"></a><span class="lineno">24&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">translationY</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">height</span><span class="p">.</span><span class="n">toFloat</span><span class="p">()</span><br><a name="line-25"></a><span class="lineno">25&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">animate</span><span class="p">().</span><span class="n">translationY</span><span class="p">(</span><span class="m">0f</span><span class="p">)</span><br><a name="line-26"></a><span class="lineno">26&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">withEndAction</span>&nbsp;<span class="p">{</span><br><a name="line-27"></a><span class="lineno">27&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Complete&nbsp;the&nbsp;transition</span><br><a name="line-28"></a><span class="lineno">28&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">callback</span><span class="p">.</span><span class="n">onComplete</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span><br><a name="line-29"></a><span class="lineno">29&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-30"></a><span class="lineno">30&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-31"></a><span class="lineno">31&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-32"></a><span class="lineno">32&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-33"></a><span class="lineno">33&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>This transition can be registered using the first and second Scene's key as
+mentioned before, for example using the transitionFactory DSL:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">1&nbsp;</span><span class="n">transitionFactory</span><span class="p">(</span><span class="n">viewControllerFactory</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-2"></a><span class="lineno">2&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">(</span><span class="n">FirstScene</span><span class="p">.</span><span class="n">key</span>&nbsp;<span class="n">to</span>&nbsp;<span class="n">SecondScene</span><span class="p">.</span><span class="n">key</span><span class="p">)</span>&nbsp;<span class="n">use</span>&nbsp;<span class="n">FirstSecondTransition</span><br><a name="line-3"></a><span class="lineno">3&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<h4 id="--displaying-from-scratch">- Displaying from scratch</h4>
+<p>Next to displaying the combination of the first and second layout
+through a transition, it can also occur that the entire layout needs to
+be created from scratch.
+This happens for example when a fresh Activity is presented, like after
+an orientation change.</p>
+<p>In this case we need to provide Acorn with a <strong>single</strong> View instance
+that contains both layouts.
+We can do this using a FrameLayout and the <code>&lt;include&gt;</code> tag.
+In <code>first_and_second_scene.xml</code>:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="cp">&lt;?xml&nbsp;version=&quot;1.0&quot;&nbsp;encoding=&quot;utf-8&quot;?&gt;</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><span class="nt">&lt;FrameLayout</span>&nbsp;<span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="na">xmlns:tools=</span><span class="s">&quot;http://schemas.android.com/tools&quot;</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="na">android:id=</span><span class="s">&quot;@+id/firstAndSecondRoot&quot;</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="na">android:layout_height=</span><span class="s">&quot;match_parent&quot;</span><span class="nt">&gt;</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;include</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="na">android:id=</span><span class="s">&quot;@+id/firstSceneRoot&quot;</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="na">layout=</span><span class="s">&quot;@layout/first_scene&quot;</span>&nbsp;<span class="nt">/&gt;</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;include</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="na">android:id=</span><span class="s">&quot;@+id/secondSceneRoot&quot;</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="na">layout=</span><span class="s">&quot;@layout/second_scene&quot;</span>&nbsp;<span class="nt">/&gt;</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span><br><a name="line-16"></a><span class="lineno">16&nbsp;</span><span class="nt">&lt;/FrameLayout&gt;</span><br></pre></div><br>
+<p>This will combine our two scene layouts in a single FrameLayout which
+we can provide to Acorn:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">MyViewControllerFactory</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">ViewControllerFactory</span>&nbsp;<span class="p">{</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">supports</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;*&gt;):</span>&nbsp;<span class="n">Boolean</span>&nbsp;<span class="p">{</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">scene</span><span class="p">.</span><span class="n">key</span>&nbsp;<span class="p">==</span>&nbsp;<span class="n">SecondScene</span><span class="p">.</span><span class="n">key</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">viewControllerFor</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;*&gt;,</span>&nbsp;<span class="n">parent</span><span class="p">:</span>&nbsp;<span class="n">ViewGroup</span><span class="p">):</span>&nbsp;<span class="n">ViewController</span>&nbsp;<span class="p">{</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">FirstSecondViewController</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<h4 id="--displaying-as-part-from-a-scene-transition-from-the-second-to-the-first-scene">- Displaying as part from a Scene transition from the <em>second</em> to the <em>first</em> Scene</h4>
+<p>This is also a case the user will see often.
+However, we now have to take <strong>two cases</strong> into account: one where the
+layout is built up using the transition from first to second, and the
+other where the layout is built up from scratch.
+In the latter case we have an intermediate extra FrameLayout we need to
+deal with.</p>
+<p>We can define a Transition just as before, but now need to take care
+that we leave our layout in a proper state.
+We can do this by checking what elements are present in the layout, in
+particular whether the intermediate FrameLayout is there:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">object</span>&nbsp;<span class="nc">SecondFirstTransition</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Transition</span>&nbsp;<span class="p">{</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">execute</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span>&nbsp;<span class="n">ViewGroup</span><span class="p">,</span>&nbsp;<span class="n">callback</span><span class="p">:</span>&nbsp;<span class="n">Transition</span><span class="p">.</span><span class="n">Callback</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;The&nbsp;firstAndSecondRoot&nbsp;id&nbsp;is&nbsp;an&nbsp;indicator&nbsp;that&nbsp;our&nbsp;intermediate&nbsp;</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;FrameLayout&nbsp;is&nbsp;present.</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">val</span>&nbsp;<span class="py">firstAndSecondRoot</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">findViewById</span><span class="p">&lt;</span><span class="n">ViewGroup</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">firstAndSecondRoot</span><span class="p">)</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">if</span>&nbsp;<span class="p">(</span><span class="n">firstAndSecondRoot</span>&nbsp;<span class="p">!=</span>&nbsp;<span class="k">null</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;&#39;Flatten&#39;&nbsp;the&nbsp;layout&nbsp;to&nbsp;the&nbsp;&#39;normal&#39;&nbsp;state&nbsp;</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">normalizeLayout</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><a name="line-12"></a><span class="lineno">12&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Now&nbsp;we&nbsp;can&nbsp;execute&nbsp;the&nbsp;transition&nbsp;as&nbsp;usual.</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Immediately&nbsp;create&nbsp;and&nbsp;attach&nbsp;the&nbsp;combined&nbsp;view&nbsp;controller.</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;This&nbsp;allows&nbsp;our&nbsp;first&nbsp;Scene&nbsp;to&nbsp;keep&nbsp;communicating&nbsp;with&nbsp;the</span><br><a name="line-16"></a><span class="lineno">16&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;view&nbsp;seamlessly.</span><br><a name="line-17"></a><span class="lineno">17&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">val</span>&nbsp;<span class="py">viewController</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">FirstSceneViewController</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><br><a name="line-18"></a><span class="lineno">18&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">callback</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span><br><a name="line-19"></a><span class="lineno">19&nbsp;</span><br><a name="line-20"></a><span class="lineno">20&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Animate&nbsp;the&nbsp;dark&nbsp;overlay</span><br><a name="line-21"></a><span class="lineno">21&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">secondSceneRoot</span><span class="p">.</span><span class="n">overlayView</span><br><a name="line-22"></a><span class="lineno">22&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">animate</span><span class="p">()</span><br><a name="line-23"></a><span class="lineno">23&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">alpha</span><span class="p">(</span><span class="m">0f</span><span class="p">)</span><br><a name="line-24"></a><span class="lineno">24&nbsp;</span><br><a name="line-25"></a><span class="lineno">25&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Animate&nbsp;the&nbsp;card&nbsp;view</span><br><a name="line-26"></a><span class="lineno">26&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">val</span>&nbsp;<span class="py">cardView</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">secondSceneRoot</span><span class="p">.</span><span class="n">cardView</span><br><a name="line-27"></a><span class="lineno">27&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">cardView</span><span class="p">.</span><span class="n">animate</span><span class="p">()</span><br><a name="line-28"></a><span class="lineno">28&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">translationY</span><span class="p">(</span><span class="n">cardView</span><span class="p">.</span><span class="n">height</span><span class="p">.</span><span class="n">toFloat</span><span class="p">())</span><br><a name="line-29"></a><span class="lineno">29&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">.</span><span class="n">withEndAction</span>&nbsp;<span class="p">{</span><br><a name="line-30"></a><span class="lineno">30&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;Complete&nbsp;the&nbsp;transaction,&nbsp;taking&nbsp;care&nbsp;to&nbsp;remove&nbsp;any</span><br><a name="line-31"></a><span class="lineno">31&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c1">//&nbsp;obsolete&nbsp;views.</span><br><a name="line-32"></a><span class="lineno">32&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">removeView</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">secondSceneRoot</span><span class="p">)</span><br><a name="line-33"></a><span class="lineno">33&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">callback</span><span class="p">.</span><span class="n">onComplete</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span><br><a name="line-34"></a><span class="lineno">34&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-35"></a><span class="lineno">35&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-36"></a><span class="lineno">36&nbsp;</span><br><a name="line-37"></a><span class="lineno">37&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/**</span><br><a name="line-38"></a><span class="lineno">38&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&#39;Normalizes&#39;&nbsp;the&nbsp;layout&nbsp;by&nbsp;removing&nbsp;the&nbsp;intermediate&nbsp;FrameLayout.</span><br><a name="line-39"></a><span class="lineno">39&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;The&nbsp;resulting&nbsp;layout&nbsp;in&nbsp;[parent]&nbsp;contains&nbsp;the&nbsp;exact&nbsp;layout&nbsp;as&nbsp;it&nbsp;would</span><br><a name="line-40"></a><span class="lineno">40&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;be&nbsp;when&nbsp;transitioning&nbsp;using&nbsp;[FirstSecondTransition].</span><br><a name="line-41"></a><span class="lineno">41&nbsp;</span><span class="cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br><a name="line-42"></a><span class="lineno">42&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">normalizeLayout</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span>&nbsp;<span class="n">ViewGroup</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-43"></a><span class="lineno">43&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">val</span>&nbsp;<span class="py">firstAndSecondRoot</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">firstAndSecondRoot</span><br><a name="line-44"></a><span class="lineno">44&nbsp;</span><br><a name="line-45"></a><span class="lineno">45&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">firstAndSecondRoot</span><span class="p">.</span><span class="n">firstSceneRoot</span><span class="p">.</span><span class="n">let</span>&nbsp;<span class="p">{</span><br><a name="line-46"></a><span class="lineno">46&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">firstAndSecondRoot</span><span class="p">.</span><span class="n">removeView</span><span class="p">(</span><span class="n">it</span><span class="p">)</span><br><a name="line-47"></a><span class="lineno">47&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">addView</span><span class="p">(</span><span class="n">it</span><span class="p">)</span><br><a name="line-48"></a><span class="lineno">48&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-49"></a><span class="lineno">49&nbsp;</span><br><a name="line-50"></a><span class="lineno">50&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">firstAndSecondRoot</span><span class="p">.</span><span class="n">secondSceneRoot</span><span class="p">.</span><span class="n">let</span>&nbsp;<span class="p">{</span><br><a name="line-51"></a><span class="lineno">51&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">firstAndSecondRoot</span><span class="p">.</span><span class="n">removeView</span><span class="p">(</span><span class="n">it</span><span class="p">)</span><br><a name="line-52"></a><span class="lineno">52&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">addView</span><span class="p">(</span><span class="n">it</span><span class="p">)</span><br><a name="line-53"></a><span class="lineno">53&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-54"></a><span class="lineno">54&nbsp;</span><br><a name="line-55"></a><span class="lineno">55&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">parent</span><span class="p">.</span><span class="n">removeView</span><span class="p">(</span><span class="n">firstAndSecondRoot</span><span class="p">)</span><br><a name="line-56"></a><span class="lineno">56&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-57"></a><span class="lineno">57&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<hr />
+<p>1: This example uses the <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RxScene">RxScene</a> class available in the
+<code>com.nhaarman.acorn.ext:acorn-rx</code> artifact.</p>
+
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+                    </article>
+                </section>
+            
+        </div>
+        <hr>
+
+        <!-- Page Footer -->
+        <div class="inner">
+    <footer id="footer">
+        <div class="clearfix">
+            
+                <div class="float-left">
+                    <a href="https://nhaarman.github.io/acorn/wiki/experimental" class="button special small pill">
+                        <span>&larr;</span> Experimental
+                    </a>
+                </div>
+            
+            
+        </div>
+    </footer>
+</div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+    <div class="inner">
+
+        <!-- Search -->
+        <section id="search" class="alt">
+            <form data-orchid-search="">
+                <input type="text" name="query" id="query" placeholder="Search"/>
+            </form>
+            <div class="box" id="search-results" data-orchid-search-results style="display: none;">
+                <b>Search Results</b>
+                <ul></ul>
+            </div>
+            <div class="box" id="search-progress" data-orchid-search-progress style="display: none;">
+                <div class="loader">Loading...</div>
+            </div>
+        </section>
+
+        <!-- Menu -->
+        <nav id="siteNav" class="menu">
+            <header class="major">
+                <h2>Acorn</h2>
+            </header>
+            <ul class="top-level">
+                
+                    
+    
+    <li>
+        <a class="subheader">Wiki</a>
+    </li>
+    
+
+                
+                    
+    <li>
+        <span class="opener">Scenes</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/about">About Scenes</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/lifecycle">The Lifecyle</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/interface">The Scene interface</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/state_saving">Saving state</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/events">Events</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/base_implementations">Base implementations</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    <li>
+        <span class="opener">Navigators</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/about">About Navigators</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/interface">The Navigator interface</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/state_saving">Saving state</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/base_implementations">Base implementations</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/composing_implementations">Composing implementations</a>
+    </li>
+    
+
+        
+            
+    <li>
+        <span class="opener">Advanced</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/advanced/scene_management">Scene management</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    <li>
+        <span class="opener">Displaying Scenes</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/displaying_scenes/about">About</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/displaying_scenes/viewcontroller">The ViewController</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/displaying_scenes/mapping_scenes_layouts">Mapping Scenes to Layouts</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/displaying_scenes/transition_animations">Transition Animations</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    <li>
+        <span class="opener">The Activity</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/activity/about">About</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/activity/concepts">The Activity as a Plugin</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/activity/navigator_providing">Providing the Navigator</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/setup">Setup</a>
+    </li>
+    
+
+                
+                    
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/getting_started">Getting started</a>
+    </li>
+    
+
+                
+                    
+    <li>
+        <span class="opener">Experimental</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/experimental/concurrentpairnavigator">ConcurrentPairNavigator</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    
+    <li>
+        <a class="subheader">API Docs</a>
+    </li>
+    
+
+                
+                    
+    <li>
+        <span class="opener">All Packages</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/acorn">acorn</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn">com.nhaarman.acorn</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android">com.nhaarman.acorn.android</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching">com.nhaarman.acorn.android.dispatching</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental">com.nhaarman.acorn.android.experimental</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation">com.nhaarman.acorn.android.navigation</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation">com.nhaarman.acorn.android.presentation</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition">com.nhaarman.acorn.android.transition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate">com.nhaarman.acorn.android.uistate</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/util">com.nhaarman.acorn.android.util</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation">com.nhaarman.acorn.navigation</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental">com.nhaarman.acorn.navigation.experimental</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation">com.nhaarman.acorn.presentation</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state">com.nhaarman.acorn.state</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing">com.nhaarman.acorn.testing</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/util">com.nhaarman.acorn.util</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    <li>
+        <span class="opener">All Classes</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation/AbstractNavigatorProvider">AbstractNavigatorProvider</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornActivity">AcornActivity</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornActivityDelegate">AcornActivityDelegate</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornAppCompatActivity">AcornAppCompatActivity</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/AcornEvents">AcornEvents</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher">AcornSceneDispatcher</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ActivityController">ActivityController</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ActivityControllerFactory">ActivityControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AndroidLogger">AndroidLogger</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/BasicScene">BasicScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/BottomBarNavigator">BottomBarNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransition/Callback">Callback</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher/Callback">Callback</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedContainer">CombinedContainer</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedScene">CombinedScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/ComposingSceneTransitionFactory">ComposingSceneTransitionFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ComposingViewControllerFactory">ComposingViewControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeDisposableHandle">CompositeDisposableHandle</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CompositeParallelNavigator">CompositeParallelNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeReplacingNavigator">CompositeReplacingNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeStackNavigator">CompositeStackNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ConcurrentPairNavigator">ConcurrentPairNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container">Container</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/ContainerProvider">ContainerProvider</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/ContainerState">ContainerState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/DefaultSceneTransitionFactory">DefaultSceneTransitionFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/AcornEvents/DispatchingListener">DispatchingListener</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/DisposableHandle">DisposableHandle</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/DoBeforeTransition">DoBeforeTransition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator/Events">Events</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/ExperimentalAcornEvents">ExperimentalAcornEvents</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ExperimentalCompositeParallelNavigator">ExperimentalCompositeParallelNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ExperimentalConcurrentPairNavigator">ExperimentalConcurrentPairNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/FadeInFromBottomTransition">FadeInFromBottomTransition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/FadeOutToBottomTransition">FadeOutToBottomTransition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/HookingSceneDispatcher">HookingSceneDispatcher</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/util/LazyVar">LazyVar</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/Logger">Logger</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator">Navigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation/NavigatorProvider">NavigatorProvider</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/NavigatorState">NavigatorState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/NoopActivityControllerFactory">NoopActivityControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/NoopSceneTransitionFactory">NoopSceneTransitionFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/NoopViewControllerFactory">NoopViewControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/OnBackPressListener">OnBackPressListener</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ProvidesView">ProvidesView</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/ReplacingNavigator">ReplacingNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RestorableContainer">RestorableContainer</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/RestorableTestContainer">RestorableTestContainer</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/RestorableViewController">RestorableViewController</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RxScene">RxScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableContainer">SavableContainer</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/SavableNavigator">SavableNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableScene">SavableScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SavedState">SavedState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/SceneDispatcher">SceneDispatcher</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/SceneDispatcherFactory">SceneDispatcherFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SceneKey">SceneKey</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SceneState">SceneState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransition">SceneTransition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransitionFactory">SceneTransitionFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransitionFactoryBuilder">SceneTransitionFactoryBuilder</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/SceneViewControllerFactory">SceneViewControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/SingleSceneNavigator">SingleSceneNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/StackNavigator">StackNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/TestContext">TestContext</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/TestLogger">TestLogger</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/TransitionData">TransitionData</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIHandler">UIHandler</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIState">UIState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIStateUIHandler">UIStateUIHandler</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewController">ViewController</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewControllerFactory">ViewControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewControllerFactoryBuilder">ViewControllerFactoryBuilder</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewProvidingScene">ViewProvidingScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/WizardNavigator">WizardNavigator</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+            </ul>
+        </nav>
+        
+
+        <!-- Section -->
+        <section>
+            <p class="text-center">
+                Currently 1.2.1. Created with <a href="https://orchid.netlify.com">Orchid </a> and <b>Orchid Editorial Theme</b>.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <p class="copyright text-center">&copy; Acorn. All rights reserved.<br>Design by <a href="https://html5up.net">HTML5 UP</a></p>
+        </footer>
+
+    </div>
+</div>
+
+</div>
+
+<!-- start:inject scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
+<script src="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/js/editorial_util.js"></script>
+<script src="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/js/editorial_main.js"></script>
+<script src="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/js/editorial_orchidCustomizations.js"></script>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script src="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/js/orchidSearch.js"></script>
+<!-- end:inject scripts -->
+
+</body>
+</html>

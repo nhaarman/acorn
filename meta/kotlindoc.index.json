@@ -1,0 +1,1525 @@
+{
+  "ownKey": "kotlindoc",
+  "childrenPages": {
+    "com": {
+      "ownKey": "com",
+      "childrenPages": {"nhaarman": {
+        "ownKey": "nhaarman",
+        "childrenPages": {"acorn": {
+          "ownKey": "acorn",
+          "childrenPages": {
+            "presentation": {
+              "ownKey": "presentation",
+              "childrenPages": {
+                "SceneKey": {
+                  "ownKey": "SceneKey",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/presentation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "SceneKey",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SceneKey"
+                    },
+                    "description": "",
+                    "title": "SceneKey",
+                    "content": "<p>A class representing the key for a Scene.<init>\nA class representing the key for a Scene.\nvalue<\/p>\n<p>toString<\/p>\n<p>equals<\/p>\n<p>hashCode<\/p>\n"
+                  }]
+                },
+                "RxScene": {
+                  "ownKey": "RxScene",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/presentation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "RxScene",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RxScene"
+                    },
+                    "description": "",
+                    "title": "RxScene",
+                    "content": "<p>An abstract base Scene implementation that provides commonly used\nfunctionality, including some helper functions for Rx usage.<p>Implementers of this class gain access to the view property to get notified\nof view changes, and a disposables property is provided for easy clearing\nof <a href=\"#\">Disposable<\/a>s.<\/p><init>\nCreates a new RxScene, restoring view state when available.\ndisposables\nA disposable container which will be cleared when this Scene receives a\ncall to onStop.\nNote that the instance will be <i>cleared<\/i> not disposed, so this instance\ncan be reused multiple times.<p>This container should only be used in the onStart method. When used in\nother methods like attach, memory leaks may occur.<\/p>\nview\nPublishes a stream of optional V instances that are attached to this\nScene.\nonStart\nCalled when this Scene is started.\nattach\nAttaches given V to this Scene.\ndetach\nDetaches any views from this scene.<p>Will always be preceded by a call to attach.<\/p>\nonStop\nCalled when this Scene is stopped.\nonDestroy\nCalled when this Scene will be destroyed.<p>After a call to this method no more calls should be made to this Scene.<\/p>\nwhenStarted\nA utility function to automatically subscribe and dispose of source\n<a href=\"#\">Observable<\/a> instance when this Scene starts and stops.\ncombineWithLatestView\nA utility function to combine an arbitrary stream of T's with the\ncurrently attached V instance.\nwhenAvailable\nA utility function to switchMap the stream of attached V instances to\nstreams that V provides.\nautoConnect\nReturns an <a href=\"#\">Observable<\/a> that automatically connects at most once to the\nreceiving <a href=\"#\">ConnectableObservable<\/a> when the first Observer subscribes to it.\nThe connection will automatically be disposed of when scene is destroyed.<p>This can be used to keep an Observable alive for as long as the Scene\nlives.<\/p><\/p>\n"
+                  }]
+                },
+                "Container": {
+                  "ownKey": "Container",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/presentation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "Container",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container"
+                    },
+                    "description": "",
+                    "title": "Container",
+                    "content": "<p>An upper bound for Scene parameter types.<\/p>\n"
+                  }]
+                },
+                "SavableContainer": {
+                  "ownKey": "SavableContainer",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/presentation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "SavableContainer",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableContainer"
+                    },
+                    "description": "",
+                    "title": "SavableContainer",
+                    "content": "<p>Indicates that implementers can have their instance state saved.<\/p>\n<p>saveInstanceState\nSave instance state.<\/p>\n"
+                  }]
+                },
+                "SavableScene": {
+                  "ownKey": "SavableScene",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/presentation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "SavableScene",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableScene"
+                    },
+                    "description": "",
+                    "title": "SavableScene",
+                    "content": "<p>Indicates that implementers can have their instance state saved.<\/p>\n<p>saveInstanceState\nSave instance state.<\/p>\n"
+                  }]
+                },
+                "Scene": {
+                  "ownKey": "Scene",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/presentation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "Scene",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene"
+                    },
+                    "description": "",
+                    "title": "Scene",
+                    "content": "<p>A Scene is a destination in the application the user can navigate to.<p>Scenes are the boundary between your application logic and the UI that is\ndisplayed to the user.<\/p><p>The lifecycle of a Scene is very simple:<\/p><ul><li>'stopped'  : The Scene is dormant, waiting to be started or to\nbe destroyed.<\/li><li>'started'  : The Scene is started.<\/li><li>'destroyed': The Scene is destroyed and will not be started anymore.<\/li><\/ul><p>On top of that, the user interface can attach to and detach itself from this\nScene via the attach and detach methods, providing interaction with\nthe user. It is therefore possible that the Scene is started without having\na user interface attached.<\/p><p>Scenes may implement SavableScene to indicate that their instance state\ncan be saved. When this is the case, SavableScene.saveInstanceState will\nbe called at the appropriate time.<\/p>\nkey\nA unique identifier for this Scene.<p>This key can be used to determine what layout to show, and can be used\nto save and restore instance state, if needed.<\/p>\nonStart\nCalled when this Scene is started.\nattach\nAttaches given V to this Scene.\ndetach\nDetaches any views from this scene.<p>Will always be preceded by a call to attach.<\/p>\nonStop\nCalled when this Scene is stopped.\nonDestroy\nCalled when this Scene will be destroyed.<p>After a call to this method no more calls should be made to this Scene.<\/p><\/p>\n"
+                  }]
+                },
+                "BasicScene": {
+                  "ownKey": "BasicScene",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/presentation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "BasicScene",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/BasicScene"
+                    },
+                    "description": "",
+                    "title": "BasicScene",
+                    "content": "<p>An abstract basic Scene implementation that provides commonly used\nfunctionality.<p>This class provides an attachedView property which provides the currently\nattached V instance, if available.<\/p><p>If the Container type V implements RestorableContainer, this class\nwill save and restore the view state between subsequent calls to attach and\ndetach.<\/p><p>This class is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableScene itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableScene interface.<\/p><init>\nCreates a new BasicScene, restoring view state when\navailable.\nattachedView\nThe currently attached V instance, if available.<p>This property will be updated when attach or detach is called.<\/p><p>Returns <code>null<\/code> if no instance is attached.<\/p>\nattach\nAttaches given V to this Scene.\ndetach\nDetaches any views from this scene.<p>Will always be preceded by a call to attach.<\/p>\nsaveInstanceState\nSaves the instance state for this Scene.<p>The default implementation of this method will save the view state if V\nimplements RestorableContainer.<\/p><p>Implementers of this class may override this method to save additional\ninformation.\nHowever, it is recommended to call the default implementation.<\/p><\/p>\n"
+                  }]
+                },
+                "RestorableContainer": {
+                  "ownKey": "RestorableContainer",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/presentation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "RestorableContainer",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RestorableContainer"
+                    },
+                    "description": "",
+                    "title": "RestorableContainer",
+                    "content": "<p>Indicates that implementers can have their instance state saved and restored.<\/p>\n<p>restoreInstanceState\nRestore given instance state.<\/p>\n"
+                  }]
+                }
+              },
+              "ownPages": [{
+                "reference": {
+                  "path": "com/nhaarman/acorn",
+                  "baseUrl": "https://nhaarman.github.io/acorn",
+                  "fileName": "presentation",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation"
+                },
+                "description": "",
+                "title": "com.nhaarman.acorn.presentation",
+                "content": ""
+              }]
+            },
+            "navigation": {
+              "ownKey": "navigation",
+              "childrenPages": {
+                "CompositeDisposableHandle": {
+                  "ownKey": "CompositeDisposableHandle",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "CompositeDisposableHandle",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeDisposableHandle"
+                    },
+                    "description": "",
+                    "title": "CompositeDisposableHandle",
+                    "content": "<p>A non-thread-safe DisposableHandle implementation that can serve\nas a container for multiple DisposableHandle instances.<init>\nA non-thread-safe DisposableHandle implementation that can serve\nas a container for multiple DisposableHandle instances.<\/p>\n<p>plusAssign<\/p>\n<p>dispose\nDisposes the resource.\nclear\nDisposes all the DisposableHandle instances this CompositeDisposableHandle\ncontains, but does not dispose of this CompositeDisposableHandle itself.\nisDisposed<\/p>\n<p>asDisposable\nWraps the receiving DisposableHandle as a <a href=\"#\">Disposable<\/a>.<\/p>\n"
+                  }]
+                },
+                "SavableNavigator": {
+                  "ownKey": "SavableNavigator",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "SavableNavigator",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/SavableNavigator"
+                    },
+                    "description": "",
+                    "title": "SavableNavigator",
+                    "content": "<p>Indicates that implementers can have their instance state saved.<\/p>\n<p>saveInstanceState\nSave instance state.<\/p>\n"
+                  }]
+                },
+                "ReplacingNavigator": {
+                  "ownKey": "ReplacingNavigator",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "ReplacingNavigator",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/ReplacingNavigator"
+                    },
+                    "description": "",
+                    "title": "ReplacingNavigator",
+                    "content": "<p>A navigator class that can switch between Scenes, but has no 'back'\nbehavior.<p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><init>\nA navigator class that can switch between Scenes, but has no 'back'\nbehavior.<p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><\/p>\n<p>initialScene\nReturns the Scene this Navigator should start with.<p>Will only be called once in the lifetime of the Navigator, and zero times\nif the Navigator is being restored from a saved state.<\/p>\ninstantiateScene\nInstantiates the Scene for given sceneClass and state.<p>This method is usually invoked when the Navigator is being restored from\na saved state.<\/p>\nreplace\nReplaces the current Scene with newScene.<p>If this Navigator is currently active, the current Scene will go through\nits destroying lifecycle calling Scene.onStop and Scene.onDestroy.\nnewScene will have its Scene.onStart method called, and any listeners\nwill be notified of the Scene change.<\/p><p>If this Navigator is currently stopped, no Scene lifecycle events will be\ncalled at all, and listeners will not be notified. Calling this Navigator's\nonStart will trigger a call to the Scene.onStart method of newScene\nnotify the listeners.<\/p><p>Calling this method when the Navigator has been destroyed will have no\neffect.<\/p>\nfinish\nFinishes this Navigator.<p>If this Navigator is currently active, the current Scene will go through\nits destroying lifecycle calling Scene.onStop and Scene.onDestroy.<\/p><p>If this Navigator is currently not active, the current Scene will only\nhave its Scene.onDestroy method called.<\/p><p>Calling this method when the Navigator has been destroyed will have no\neffect.<\/p>\naddNavigatorEventsListener\nRegisters given listener with this Navigator.\nonStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nonBackPressed\nInvoked when the user presses the back button.\nsaveInstanceState<\/p>\n<p>isDestroyed\nReturns whether this Navigator has been destroyed.<\/p>\n"
+                  }]
+                },
+                "StackNavigator": {
+                  "ownKey": "StackNavigator",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "StackNavigator",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/StackNavigator"
+                    },
+                    "description": "",
+                    "title": "StackNavigator",
+                    "content": "<p>An abstract Navigator class that uses a stack to navigate through Scenes.<p>This Navigator supports basic pop and push operations to manipulate the\nstack. Implementers must implement initialStack to provide the initial stack\nto work with.<\/p><p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><init>\nAn abstract Navigator class that uses a stack to navigate through Scenes.<p>This Navigator supports basic pop and push operations to manipulate the\nstack. Implementers must implement initialStack to provide the initial stack\nto work with.<\/p><p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><\/p>\n<p>initialStack\nCreates the initial stack of Scenes for this StackNavigator.<p>The last Scene in the resulting list is regarded as the top element.<\/p>\ninstantiateScene\nInstantiates a Scene instance for given sceneClass and state.<p>This function is called when restoring the StackNavigator from a saved state.<\/p>\naddNavigatorEventsListener\nRegisters given listener with this Navigator.\npush\nPushes given scene onto the stack.<p>If this Navigator is currently active, the current Scene will be stopped,\nand given scene will receive a call to Scene.onStart.<\/p><p>If this Navigator is currently inactive, no Scene lifecycle events will\nbe called at all. Starting this Navigator will trigger a call to the\nScene.onStart method of given scene.<\/p><p>Calling this method when this Navigator has been destroyed will have no\neffect.<\/p>\npop\nPops the top most Scene off the stack.<p>If this Navigator is currently active, the current child Scene will be\nstopped and destroyed. If the stack becomes empty, this Navigator will be\ndestroyed, otherwise the new top Scene will be started.<\/p><p>If this Navigator is currently inactive and there is only one element on\nthe stack, the Navigator will be destroyed. Otherwise, the current Scene\nwill be destroyed. Starting this Navigator will trigger a call to the\nScene.onStart method of the new top Scene.<\/p><p>Calling this method when the receiving Navigator has been destroyed will\nhave no effect.<\/p>\nreplace\nReplaces the top most Scene with given scene.<p>If this Navigator is currently active, the current active child Scene\nwill be stopped and destroyed, and given scene will be started.<\/p><p>If this Navigator is currently inactive, the current active child Scene\nwill be destroyed. Starting this Navigator will trigger a call to the\nScene.onStart method of given scene.<\/p>\nfinish\nFinishes this Navigator.<p>If this Navigator is currently active, the current Scene will go through\nits destroying lifecycle calling Scene.onStop and Scene.onDestroy.<\/p><p>If this Navigator is currently not active, the current Scene will only\nhave its Scene.onDestroy method called.<\/p><p>Calling this method when the Navigator has been destroyed will have no\neffect.<\/p>\nonStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nonBackPressed\nInvoked when the user presses the back button.\nisDestroyed\nReturns whether this Navigator has been destroyed.\nsaveInstanceState<\/p>\n"
+                  }]
+                },
+                "SingleSceneNavigator": {
+                  "ownKey": "SingleSceneNavigator",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "SingleSceneNavigator",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/SingleSceneNavigator"
+                    },
+                    "description": "",
+                    "title": "SingleSceneNavigator",
+                    "content": "<p>A simple Navigator that only hosts a single Scene.<p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><init>\nA simple Navigator that only hosts a single Scene.<p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><\/p>\n<p>createScene\nCreates the Scene instance to host.\nfinish\nFinishes this Navigator.<p>If this Navigator is currently active, the current Scene will go through\nits destroying lifecycle calling Scene.onStop and Scene.onDestroy.<\/p><p>If this Navigator is currently not active, the current Scene will only\nhave its Scene.onDestroy method called.<\/p><p>Calling this method when the Navigator has been destroyed will have no\neffect.<\/p>\naddNavigatorEventsListener\nRegisters given listener with this Navigator.\nonStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nonBackPressed\nInvoked when the user presses the back button.\nsaveInstanceState<\/p>\n<p>isDestroyed\nReturns whether this Navigator has been destroyed.<\/p>\n"
+                  }]
+                },
+                "Navigator": {
+                  "ownKey": "Navigator",
+                  "childrenPages": {"Events": {
+                    "ownKey": "Events",
+                    "ownPages": [{
+                      "reference": {
+                        "path": "com/nhaarman/acorn/navigation/Navigator",
+                        "baseUrl": "https://nhaarman.github.io/acorn",
+                        "fileName": "Events",
+                        "extension": "html",
+                        "usePrettyUrl": true,
+                        "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator/Events"
+                      },
+                      "description": "",
+                      "title": "Events",
+                      "content": "<p>An interface that is used to notify interested parties of Scene changes\nor finish events.<p>Navigator implementations can extend this interface to add functionality.<\/p><\/p>\n<p>scene\nCalled when a Scene change occurs in the Navigator.<p>Will only be called if a Scene change occurs when the Navigator is in\nthe started state, or when the Navigator enters the started state.<\/p>\nfinished\nCalled when the Navigator has finished.<p>Finish events occur when the Navigator has no more Scenes to show,\nsuch as a stack-based Navigator with an empty stack, or a wizard\nNavigator that reached the end of the wizard.<\/p><\/p>\n"
+                    }]
+                  }},
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "Navigator",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator"
+                    },
+                    "description": "",
+                    "title": "Navigator",
+                    "content": "<p>An interface that describes a flow through the application.<p>The Navigator is a class that takes care of navigating the user through an\napplication by showing a sequence of Scenes.\nInterested parties may subscribe a listener using addNavigatorEventsListener, through which\nScene changes will be published.<\/p><p>Navigators are responsible for handling the lifecycles of the Scenes they\nmanage. To be able to do this, the Navigator has a very simple lifecycle as\nwell:<\/p><ul><li><code>stopped<\/code>  : The Navigator is currently idle and will not emit any changes\nin Scenery.<\/li><li><code>started<\/code>  : The Navigator is currently started and will notify interested\nparties of changes in Scenes.<\/li><li><code>destroyed<\/code>: The Navigator has been destroyed and will not be started\nanymore.<\/li><\/ul><p>Navigator instances start in the <code>stopped<\/code> state and can switch between\n<code>stopped<\/code> and <code>started<\/code> an infinite amount of times.\nOnce a Navigator has been destroyed, it must be considered as dead, and any\nfurther interactions with it will be ignored.<\/p><p>Navigators that are not <code>started<\/code> must never have Scenes in their <code>started<\/code>\nstate.<\/p><p>Navigators may implement SavableNavigator to indicate that their instance state\ncan be saved. When this is the case, SavableNavigator.saveInstanceState will\nbe called at the appropriate time.<\/p><\/p>\n<p>addNavigatorEventsListener\nRegisters given listener with this Navigator.\nonStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nisDestroyed\nReturns whether this Navigator has been destroyed.<\/p>\n"
+                  }]
+                },
+                "CompositeReplacingNavigator": {
+                  "ownKey": "CompositeReplacingNavigator",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "CompositeReplacingNavigator",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeReplacingNavigator"
+                    },
+                    "description": "",
+                    "title": "CompositeReplacingNavigator",
+                    "content": "<p>A navigator class that can switch between Scenes, but has no 'back'\nbehavior of its own.<p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><init>\nA navigator class that can switch between Scenes, but has no 'back'\nbehavior of its own.<p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><\/p>\n<p>initialNavigator\nCreates the initial Navigator for this CompositeReplacingNavigator.<p>Will only be called once in the lifetime of this Navigator, and zero\ntimes if this Navigator is being restored from a saved state.<\/p>\ninstantiateNavigator\nInstantiates a Navigator instance for given navigatorClass and state.<p>This function is called when restoring the CompositeReplacingNavigator from a\nsaved state.<\/p>\naddNavigatorEventsListener\nRegisters given listener with this Navigator.\nreplace\nReplaces the current Navigator with given navigator.<p>If the receiving Navigator is currently active, the current child\nNavigator will be stopped and destroyed, and given navigator will\nreceive a call to Navigator.onStart.<\/p><p>If the receiving Navigator is currently inactive, the current child\nNavigator will be destroyed. Starting the receiving Navigator will trigger\na call to the Navigator.onStart method of given navigator.<\/p><p>Calling this method when the receiving Navigator has been destroyed will\nhave no effect.<\/p>\nfinish\nFinishes this Navigator.<p>If this Navigator is currently active, the current child Navigator will\nbe stopped and destroyed, and the receiving Navigator will be destroyed.<\/p><p>If this Navigator is currently not active, the current navigator will only\nhave its Scene.onDestroy method called.<\/p><p>Calling this method when the Navigator has been destroyed will have no\neffect.<\/p>\nonStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nscene\nCalled when a Scene change occurs in the Navigator.<p>Will only be called if a Scene change occurs when the Navigator is in\nthe started state, or when the Navigator enters the started state.<\/p>\nfinished\nCalled when the Navigator has finished.<p>Finish events occur when the Navigator has no more Scenes to show,\nsuch as a stack-based Navigator with an empty stack, or a wizard\nNavigator that reached the end of the wizard.<\/p>\nonBackPressed\nInvoked when the user presses the back button.\nsaveInstanceState<\/p>\n<p>isDestroyed\nReturns whether this Navigator has been destroyed.<\/p>\n"
+                  }]
+                },
+                "CompositeStackNavigator": {
+                  "ownKey": "CompositeStackNavigator",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "CompositeStackNavigator",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeStackNavigator"
+                    },
+                    "description": "",
+                    "title": "CompositeStackNavigator",
+                    "content": "<p>An abstract Navigator class that uses a stack to navigate through Navigators.<p>Like StackNavigator this class supports basic pop and push operations\nto manipulate the stack. Implementers must implement initialStack to provide\nthe initial stack to work with.<\/p><p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><init>\nAn abstract Navigator class that uses a stack to navigate through Navigators.<p>Like StackNavigator this class supports basic pop and push operations\nto manipulate the stack. Implementers must implement initialStack to provide\nthe initial stack to work with.<\/p><p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><\/p>\n<p>initialStack\nCreates the initial stack of Navigators for this CompositeStackNavigator.<p>The last Navigator in the resulting list is regarded as the top element.<\/p>\ninstantiateNavigator\nInstantiates a Navigator instance for given navigatorClass and state.<p>This function is called when restoring the CompositeStackNavigator from a\nsaved state.<\/p>\naddNavigatorEventsListener\nRegisters given listener with this Navigator.\npush\nPushes given navigator onto the stack.<p>If the receiving Navigator is currently active, the current child\nNavigator will be stopped, and given navigator will receive a call to\nNavigator.onStart.<\/p><p>If the receiving Navigator is currently inactive, no Navigator lifecycle\nevents will be called at all. Starting the receiving Navigator will trigger\na call to the Navigator.onStart method of given navigator.<\/p><p>Calling this method when the receiving Navigator has been destroyed will\nhave no effect.<\/p>\npop\nPops the top most Navigator off the stack.<p>If the receiving Navigator is currently active, the current child\nNavigator will be stopped and destroyed. If the stack becomes empty, the\nreceiving Navigator will be destroyed, otherwise the new top Navigator\nwill be started.<\/p><p>If the receiving Navigator is currently inactive and there is only one\nelement on the stack, the Navigator will be destroyed. Otherwise, no\nevents will be called at all. Starting the receiving Navigator will\ntrigger a call to the Navigator.onStart method of the new top Navigator.<\/p><p>Calling this method when the receiving Navigator has been destroyed will\nhave no effect.<\/p>\nreplace\nReplaces the current active Navigator with given navigator.<p>If the receiving Navigator is currently active, the current child\nNavigator will be stopped, and given navigator will receive a call to\nNavigator.onStart.<\/p><p>If the receiving Navigator is currently inactive, the current top child\nNavigator will be destroyed.Starting the receiving Navigator will trigger\na call to the Navigator.onStart method of given navigator.<\/p><p>Calling this method when the receiving Navigator has been destroyed will\nhave no effect.<\/p>\nfinish\nFinishes this Navigator.<p>If this Navigator is currently active, the current child Navigator will\nbe stopped and destroyed, and the receiving Navigator will be destroyed.<\/p><p>If this Navigator is currently not active, the current navigator will only\nhave its Scene.onDestroy method called.<\/p><p>Calling this method when the Navigator has been destroyed will have no\neffect.<\/p>\nonStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nscene\nCalled when a Scene change occurs in the Navigator.<p>Will only be called if a Scene change occurs when the Navigator is in\nthe started state, or when the Navigator enters the started state.<\/p>\nfinished\nCalled when the Navigator has finished.<p>Finish events occur when the Navigator has no more Scenes to show,\nsuch as a stack-based Navigator with an empty stack, or a wizard\nNavigator that reached the end of the wizard.<\/p>\nonBackPressed\nInvoked when the user presses the back button.\nsaveInstanceState<\/p>\n<p>isDestroyed\nReturns whether this Navigator has been destroyed.<\/p>\n"
+                  }]
+                },
+                "experimental": {
+                  "ownKey": "experimental",
+                  "childrenPages": {
+                    "CombinedContainer": {
+                      "ownKey": "CombinedContainer",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/navigation/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "CombinedContainer",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedContainer"
+                        },
+                        "description": "",
+                        "title": "CombinedContainer",
+                        "content": "<p>A Container that combines two Containers into one.<p>This interface is used in conjunction with ConcurrentPairNavigator.<\/p>\nfirstContainer<\/p>\n<p>secondContainer<\/p>\n<p>saveInstanceState\nSave instance state.\nrestoreInstanceState\nRestore given instance state.<\/p>\n"
+                      }]
+                    },
+                    "CompositeParallelNavigator": {
+                      "ownKey": "CompositeParallelNavigator",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/navigation/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "CompositeParallelNavigator",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CompositeParallelNavigator"
+                        },
+                        "description": "",
+                        "title": "CompositeParallelNavigator",
+                        "content": "<p><init><\/p>\n<p>serialize<\/p>\n<p>deserialize<\/p>\n<p>createNavigator<\/p>\n<p>addNavigatorEventsListener\nRegisters given listener with this Navigator.\nselect<\/p>\n<p>onStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nonBackPressed\nInvoked when the user presses the back button.\nsaveInstanceState<\/p>\n<p>isDestroyed\nReturns whether this Navigator has been destroyed.<\/p>\n"
+                      }]
+                    },
+                    "ExperimentalCompositeParallelNavigator": {
+                      "ownKey": "ExperimentalCompositeParallelNavigator",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/navigation/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ExperimentalCompositeParallelNavigator",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ExperimentalCompositeParallelNavigator"
+                        },
+                        "description": "",
+                        "title": "ExperimentalCompositeParallelNavigator",
+                        "content": "<p>Marks all CompositeParallelNavigator declarations as an experimental API to\nindicate that it is still experimental.<p>The CompositeParallelNavigator has no backward compatibility guarantees\nwhatsoever.<\/p><init>\nMarks all CompositeParallelNavigator declarations as an experimental API to\nindicate that it is still experimental.<p>The CompositeParallelNavigator has no backward compatibility guarantees\nwhatsoever.<\/p><\/p>\n"
+                      }]
+                    },
+                    "BottomBarNavigator": {
+                      "ownKey": "BottomBarNavigator",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/navigation/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "BottomBarNavigator",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/BottomBarNavigator"
+                        },
+                        "description": "",
+                        "title": "BottomBarNavigator",
+                        "content": ""
+                      }]
+                    },
+                    "CombinedScene": {
+                      "ownKey": "CombinedScene",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/navigation/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "CombinedScene",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedScene"
+                        },
+                        "description": "",
+                        "title": "CombinedScene",
+                        "content": "<p>A Scene that combines two Scenes into one.\nThe key of this Scene is taken from secondScene.<p>This class is used in conjunction with ConcurrentPairNavigator.<\/p><init>\nA Scene that combines two Scenes into one.\nThe key of this Scene is taken from secondScene.<p>This class is used in conjunction with ConcurrentPairNavigator.<\/p>\nkey\nA unique identifier for this Scene.<p>This key can be used to determine what layout to show, and can be used\nto save and restore instance state, if needed.<\/p>\nfirstScene<\/p>\n<p>secondScene<\/p>\n<p>onStart\nCalled when this Scene is started.\nattach\nAttaches given V to this Scene.\ndetach\nDetaches any views from this scene.<p>Will always be preceded by a call to attach.<\/p>\nonStop\nCalled when this Scene is stopped.\nonDestroy\nCalled when this Scene will be destroyed.<p>After a call to this method no more calls should be made to this Scene.<\/p><\/p>\n"
+                      }]
+                    },
+                    "ConcurrentPairNavigator": {
+                      "ownKey": "ConcurrentPairNavigator",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/navigation/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ConcurrentPairNavigator",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ConcurrentPairNavigator"
+                        },
+                        "description": "",
+                        "title": "ConcurrentPairNavigator",
+                        "content": "<p>An abstract Navigator class that supports a second, overlapping Scene.<p>This Navigator supports two states: one where only the initial Scene is\nactive, and one where both the initial Scene and an additional Scene are\nactive. When adding the second Scene using push, both the initial and the\nadditional Scene will be in their 'started' state. This can be useful when\nshowing a sophisticated modal kind of overlay.<\/p><p>When the additional Scene is pushed, this Navigator wraps both the initial\nScene and the second Scene in a CombinedScene and notifies interested\nNavigator.Events of this CombinedScene.<\/p><p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><init>\nAn abstract Navigator class that supports a second, overlapping Scene.<p>This Navigator supports two states: one where only the initial Scene is\nactive, and one where both the initial Scene and an additional Scene are\nactive. When adding the second Scene using push, both the initial and the\nadditional Scene will be in their 'started' state. This can be useful when\nshowing a sophisticated modal kind of overlay.<\/p><p>When the additional Scene is pushed, this Navigator wraps both the initial\nScene and the second Scene in a CombinedScene and notifies interested\nNavigator.Events of this CombinedScene.<\/p><p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><\/p>\n<p>createInitialScene\nCreates the initial Scene for this ConcurrentPairNavigator.\ninstantiateScene\nInstantiates a Scene instance for given sceneClass and state.<p>This function is called when restoring the ConcurrentPairNavigator from a\nsaved state.<\/p>\naddNavigatorEventsListener\nRegisters given listener with this Navigator.\npush\nSets given Scene as the second Scene in this ConcurrentPairNavigator.<p>If this Navigator is currently active and there is already a second\nScene active, this second Scene will be stopped and destroyed. Given\nScene will receive a call to Scene.onStart. The initial Scene will\nreceive no lifecycle methods.<\/p><p>If this Navigator is currently inactive and there is already a second\nScene active, this second Scene will be destroyed. No further lifecycle\nmethods will be called. Starting this Navigator will start both the\ninitial Scene and given second Scene.<\/p><p>Calling this method when this Navigator has been destroyed will have no\neffect.<\/p>\npop\nRemoves the second Scene if there is any.<p>If there is no second Scene, nothing will happen.<\/p><p>If this Navigator is currently active and there is a second Scene, this\nsecond Scene will be stopped and destroyed.<\/p><p>If this Navigator is currently inactive and there is a second Scene, this\nsecond Scene will be destroyed.<\/p><p>Calling this method when the receiving Navigator has been destroyed will\nhave no effect.<\/p>\nfinish\nFinishes this Navigator.<p>If this Navigator is currently active, any active Scenes will go through\ntheir destroying lifecycles calling Scene.onStop and Scene.onDestroy.<\/p><p>If this Navigator is currently not active, any active Scenes will only\nhave their Scene.onDestroy method called.<\/p><p>Calling this method when the Navigator has been destroyed will have no\neffect.<\/p>\nonStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nonBackPressed\nInvoked when the user presses the back button.\nisDestroyed\nReturns whether this Navigator has been destroyed.\nsaveInstanceState<\/p>\n"
+                      }]
+                    },
+                    "ExperimentalConcurrentPairNavigator": {
+                      "ownKey": "ExperimentalConcurrentPairNavigator",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/navigation/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ExperimentalConcurrentPairNavigator",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ExperimentalConcurrentPairNavigator"
+                        },
+                        "description": "",
+                        "title": "ExperimentalConcurrentPairNavigator",
+                        "content": "<p>Marks all ConcurrentPairNavigator declarations as an experimental API to\nindicate that it is still experimental.<p>The ConcurrentPairNavigator has no backward compatibility guarantees\nwhatsoever.<\/p><init>\nMarks all ConcurrentPairNavigator declarations as an experimental API to\nindicate that it is still experimental.<p>The ConcurrentPairNavigator has no backward compatibility guarantees\nwhatsoever.<\/p><\/p>\n"
+                      }]
+                    }
+                  },
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "experimental",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental"
+                    },
+                    "description": "",
+                    "title": "com.nhaarman.acorn.navigation.experimental",
+                    "content": ""
+                  }]
+                },
+                "DisposableHandle": {
+                  "ownKey": "DisposableHandle",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "DisposableHandle",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/DisposableHandle"
+                    },
+                    "description": "",
+                    "title": "DisposableHandle",
+                    "content": "<p>A handle that can be disposed of.<\/p>\n<p>dispose\nDisposes the resource.\nisDisposed<\/p>\n<p>asDisposable\nWraps the receiving DisposableHandle as a <a href=\"#\">Disposable<\/a>.<\/p>\n"
+                  }]
+                },
+                "TransitionData": {
+                  "ownKey": "TransitionData",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "TransitionData",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/TransitionData"
+                    },
+                    "description": "",
+                    "title": "TransitionData",
+                    "content": "<p>A data class that carries properties about a Scene transition.\nisBackwards\nDenoted whether the transition is a transition that goes back to a\nprevious Scene.\nequals<\/p>\n<p>hashCode<\/p>\n<p>toString<\/p>\n"
+                  }]
+                },
+                "WizardNavigator": {
+                  "ownKey": "WizardNavigator",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/navigation",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "WizardNavigator",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/WizardNavigator"
+                    },
+                    "description": "",
+                    "title": "WizardNavigator",
+                    "content": "<p>An abstract Navigator class that is able to go back and forth through a\nlist of Scenes.<p>This Navigator has two methods next and previous to navigate through the\nScenes. Calling previous when the first Scene is being shown will have no\neffect, calling next when the last Scene is being shown will finish this\nNavigator.<\/p><p>Implementers must implement createScene to provide the proper Scenes.<\/p><p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><init>\nAn abstract Navigator class that is able to go back and forth through a\nlist of Scenes.<p>This Navigator has two methods next and previous to navigate through the\nScenes. Calling previous when the first Scene is being shown will have no\neffect, calling next when the last Scene is being shown will finish this\nNavigator.<\/p><p>Implementers must implement createScene to provide the proper Scenes.<\/p><p>This Navigator is able to save and restore its instance state in\nsaveInstanceState, but does not implement SavableNavigator itself.\nYou can opt in to this state saving by explicitly implementing the\nSavableNavigator interface.<\/p><\/p>\n<p>createScene\nCreates the Scene for given index, starting at <code>0<\/code>.<p>This method will be called up to once for each index, results will be\nreused when navigating through the wizard.<\/p>\ninstantiateScene\nInstantiates a Scene instance for given sceneClass and state.<p>This function is called when restoring the StackNavigator from a saved state.<\/p>\naddNavigatorEventsListener\nRegisters given listener with this Navigator.\nnext\nNavigates to the next Scene in this wizard if possible.<p>If there is no next Scene, this Navigator will finish and all Scenes will\nbe destroyed.<\/p><p>If there is a next Scene and this Navigator is currently active, the\ncurrent Scene will be stopped, and the next Scene will be started.<\/p><p>If there is a next Scene and this Navigator is currently inactive, no Scene\nlifecycle events will be called at all. Starting this Navigator will trigger\na call to the Scene.onStart of the next Scene in the wizard.<\/p><p>Calling this method when this Navigator has been destroyed will have no\neffect.<\/p>\nprevious\nNavigates to the next Scene in this wizard if possible.<p>If there is no previous Scene, nothing will happen.<\/p><p>If there is a previous Scene and this Navigator is currently active, the\ncurrent Scene will be stopped, and the previous Scene will be started.<\/p><p>If there is a previous Scene and this Navigator is currently inactive, no\nScene lifecycle events will be called at all. Starting this Navigator will\ntrigger a call to the Scene.onStart of the previous Scene in the wizard.<\/p><p>Calling this method when this Navigator has been destroyed will have no\neffect.<\/p>\nfinish\nFinishes this Navigator.<p>If this Navigator is currently active, the current Scene will go through\nits destroying lifecycle calling Scene.onStop and Scene.onDestroy.<\/p><p>If this Navigator is currently not active, the current Scene will only\nhave its Scene.onDestroy method called.<\/p><p>Calling this method when the Navigator has been destroyed will have no\neffect.<\/p>\nonStart\nStarts this Navigator.<p>Calling this method when the Navigator is not started or destroyed triggers\na call to Scene.onStart for the Scene that is currently active in the\nNavigator.\nListeners registered with addNavigatorEventsListener will be notified of that Scene\nthrough Events.scene.<\/p><p>Calling this method when the Navigator is started or destroyed has no effect.<\/p>\nonStop\nStops this Navigator.<p>Calling this method when the Navigator is started triggers a call to\nScene.onStop for any Scenes that are currently active in the\nNavigator.<\/p><p>Calling this method when the Navigator is stopped or destroyed has no effect.<\/p>\nonDestroy\nDestroys this Navigator.<p>Calling this method when the Navigator is started will trigger a call to\nScene.onStop for the Scene that is currently active in the Navigator.\nFurthermore, a call to Scene.onDestroy is triggered for <i>every<\/i> Scene\nthis Navigator is managing.<\/p><p>Calling this method when the Navigator is stopped triggers a call to\nScene.onDestroy for every Scene this Navigator is managing.<\/p><p>Calling this method when the Navigator is destroyed has no effect.<\/p><p>When this method has been called, the Navigator must be considered as dead,\nand no calls to onStart or onStop should be done anymore.<\/p>\nonBackPressed\nInvoked when the user presses the back button.\nsaveInstanceState<\/p>\n<p>isDestroyed\nReturns whether this Navigator has been destroyed.<\/p>\n"
+                  }]
+                }
+              },
+              "ownPages": [{
+                "reference": {
+                  "path": "com/nhaarman/acorn",
+                  "baseUrl": "https://nhaarman.github.io/acorn",
+                  "fileName": "navigation",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation"
+                },
+                "description": "",
+                "title": "com.nhaarman.acorn.navigation",
+                "content": "<p>asDisposable\nWraps the receiving DisposableHandle as a <a href=\"#\">Disposable<\/a>.<\/p>\n"
+              }]
+            },
+            "util": {
+              "ownKey": "util",
+              "childrenPages": {"LazyVar": {
+                "ownKey": "LazyVar",
+                "ownPages": [{
+                  "reference": {
+                    "path": "com/nhaarman/acorn/util",
+                    "baseUrl": "https://nhaarman.github.io/acorn",
+                    "fileName": "LazyVar",
+                    "extension": "html",
+                    "usePrettyUrl": true,
+                    "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/util/LazyVar"
+                  },
+                  "description": "",
+                  "title": "LazyVar",
+                  "content": "<p>Represents a variable with lazy initialization.<p>If the value is read before written, the initializer will be called.\nIf the value is written to before being read, the initializer will not be used.<\/p><\/p>\n<p>getValue\nRetrieves the value.\nsetValue\nSets the value.<\/p>\n"
+                }]
+              }},
+              "ownPages": [{
+                "reference": {
+                  "path": "com/nhaarman/acorn",
+                  "baseUrl": "https://nhaarman.github.io/acorn",
+                  "fileName": "util",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/util"
+                },
+                "description": "",
+                "title": "com.nhaarman.acorn.util",
+                "content": "<p>lazyVar\nCreates a new LazyVar implementation.<\/p>\n"
+              }]
+            },
+            "testing": {
+              "ownKey": "testing",
+              "childrenPages": {
+                "ContainerProvider": {
+                  "ownKey": "ContainerProvider",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/testing",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "ContainerProvider",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/ContainerProvider"
+                    },
+                    "description": "",
+                    "title": "ContainerProvider",
+                    "content": "<p>An interface that can provide Container instances for Scenes when working\nwith TestContext.<\/p>\n<p>containerFor<\/p>\n"
+                  }]
+                },
+                "RestorableTestContainer": {
+                  "ownKey": "RestorableTestContainer",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/testing",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "RestorableTestContainer",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/RestorableTestContainer"
+                    },
+                    "description": "",
+                    "title": "RestorableTestContainer",
+                    "content": "<p>An interface with default implementations for RestorableContainer.<p>Test implementations of Container can also implement this interface to\navoid writing boilerplate code for state saving.<\/p><\/p>\n<p>restoreInstanceState\nRestore given instance state.\nsaveInstanceState\nSave instance state.<\/p>\n"
+                  }]
+                },
+                "TestContext": {
+                  "ownKey": "TestContext",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/testing",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "TestContext",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/TestContext"
+                    },
+                    "description": "",
+                    "title": "TestContext",
+                    "content": "<p>A class that provides simple Scene/Container management for tests.<p>This class acts as an observer to the Scene events provided by given\nnavigator, and attaches and detaches the Container provided by given\nContainerProvider to the Scene at appropriate points.<\/p><p>Users of this class should call start, stop and destroy at appropriate\ntimes. testWith does this for you.<\/p>\nfinished\nReturns <code>true<\/code> when the navigator has finished.\ncontainer\nReturns the currently attached Container, cast to T.<p>This function is here as syntax sugar: if the container instance is <code>null<\/code>\nor is not of type T, you may get exceptions thrown.<\/p>\nstart<\/p>\n<p>scene\nCalled when a Scene change occurs in the Navigator.<p>Will only be called if a Scene change occurs when the Navigator is in\nthe started state, or when the Navigator enters the started state.<\/p>\nfinished\nCalled when the Navigator has finished.<p>Finish events occur when the Navigator has no more Scenes to show,\nsuch as a stack-based Navigator with an empty stack, or a wizard\nNavigator that reached the end of the wizard.<\/p>\npressBack<\/p>\n<p>stop<\/p>\n<p>destroy<\/p>\n"
+                  }]
+                },
+                "TestLogger": {
+                  "ownKey": "TestLogger",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/testing",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "TestLogger",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/TestLogger"
+                    },
+                    "description": "",
+                    "title": "TestLogger",
+                    "content": "<p>A Logger implementation that outputs its logs to standard out.<init>\nA Logger implementation that outputs its logs to standard out.<\/p>\n<p>v\nLog a verbose message with given tag.\nd\nLog a debug message with given tag.\ni\nLog an informational message with given tag.\nw\nLog a warning message with given tag.\ne\nLog an error message with given tag.<\/p>\n"
+                  }]
+                }
+              },
+              "ownPages": [{
+                "reference": {
+                  "path": "com/nhaarman/acorn",
+                  "baseUrl": "https://nhaarman.github.io/acorn",
+                  "fileName": "testing",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing"
+                },
+                "description": "",
+                "title": "com.nhaarman.acorn.testing",
+                "content": ""
+              }]
+            },
+            "android": {
+              "ownKey": "android",
+              "childrenPages": {
+                "presentation": {
+                  "ownKey": "presentation",
+                  "childrenPages": {
+                    "ViewController": {
+                      "ownKey": "ViewController",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ViewController",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewController"
+                        },
+                        "description": "",
+                        "title": "ViewController",
+                        "content": "<p>A Container specialization that acts as a wrapper around a <a href=\"#\">View<\/a>.<p>The term 'ViewController' here is used in the sense that it acts as a bridge\nbetween a Scene and a <a href=\"#\">View<\/a>, being some sort of 'controller' of the view.<\/p><p>When creating a ViewController, the view property must reference the root\nof the scene layout.<\/p>\nview\nThe root <a href=\"#\">View<\/a> of the scene that can be used to control the contents\nof the View.<p>This property must return the root of the scene layout.<\/p><\/p>\n"
+                      }]
+                    },
+                    "NoopActivityControllerFactory": {
+                      "ownKey": "NoopActivityControllerFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "NoopActivityControllerFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/NoopActivityControllerFactory"
+                        },
+                        "description": "",
+                        "title": "NoopActivityControllerFactory",
+                        "content": "<p>A No-op ActivityControllerFactory that does not create any instances.<\/p>\n<p>supports\nReturns <code>true<\/code> when this ActivityControllerFactory can create an\nActivityController when activityControllerFor is called.\nIf this method returns false for a specific SceneKey, no calls to\nactivityControllerFor with the same SceneKey must be made.\nactivityControllerFor\nCreates an ActivityController for given Scene key.<\/p>\n"
+                      }]
+                    },
+                    "SceneViewControllerFactory": {
+                      "ownKey": "SceneViewControllerFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "SceneViewControllerFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/SceneViewControllerFactory"
+                        },
+                        "description": "",
+                        "title": "SceneViewControllerFactory",
+                        "content": "<p>A ViewControllerFactory that uses the Scene itself to create ViewController\ninstances.<p>This class only supports Scenes that implement the ViewControllerFactory\ninterface.<\/p><\/p>\n<p>supports\nReturns <code>true<\/code> when this ViewControllerFactory can create a ViewController\nwhen viewControllerFor is called.\nIf this method returns false for a specific SceneKey, no calls to\nviewControllerFor with the same SceneKey must be made.\nviewControllerFor\nCreates a ViewController for given Scene key.<\/p>\n"
+                      }]
+                    },
+                    "ProvidesView": {
+                      "ownKey": "ProvidesView",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ProvidesView",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ProvidesView"
+                        },
+                        "description": "",
+                        "title": "ProvidesView",
+                        "content": "<p>A convenience interface that can be used to make Scene instances provide\ntheir own ViewControllers. It implements ViewControllerFactory and takes\naway some of the boilerplate code when working with Scenes.<p>This interface must only be used in conjunction with Scenes.<\/p><\/p>\n<p>supports\nReturns <code>true<\/code> when this ViewControllerFactory can create a ViewController\nwhen viewControllerFor is called.\nIf this method returns false for a specific SceneKey, no calls to\nviewControllerFor with the same SceneKey must be made.\nviewControllerFor\nCreates a ViewController for given Scene key.\ncreateViewController\nCreates the ViewController.<p>This method can be called zero or multiple times in a Scene's lifetime,\nfor example when the device is rotated. Do not keep a reference to the\nresult yourself, use Scene.attach and Scene.detach to obtain references.<\/p><\/p>\n"
+                      }]
+                    },
+                    "NoopViewControllerFactory": {
+                      "ownKey": "NoopViewControllerFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "NoopViewControllerFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/NoopViewControllerFactory"
+                        },
+                        "description": "",
+                        "title": "NoopViewControllerFactory",
+                        "content": "<p>A ViewControllerFactory that cannot create ViewController instances.<\/p>\n<p>supports\nReturns <code>true<\/code> when this ViewControllerFactory can create a ViewController\nwhen viewControllerFor is called.\nIf this method returns false for a specific SceneKey, no calls to\nviewControllerFor with the same SceneKey must be made.\nviewControllerFor\nCreates a ViewController for given Scene key.<\/p>\n"
+                      }]
+                    },
+                    "ActivityController": {
+                      "ownKey": "ActivityController",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ActivityController",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ActivityController"
+                        },
+                        "description": "",
+                        "title": "ActivityController",
+                        "content": "<p>A Container specialization that can be used to dispatch Scenes as Activities.<\/p>\n<p>createIntent\nCreates the <a href=\"#\">Intent<\/a> that can be used to start the <a href=\"#\">Activity<\/a>.\nonResult\nCalled when the <a href=\"#\">Activity<\/a> started with the <a href=\"#\">Intent<\/a> provided by\ncreateIntent finishes.<\/p>\n"
+                      }]
+                    },
+                    "ComposingViewControllerFactory": {
+                      "ownKey": "ComposingViewControllerFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ComposingViewControllerFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ComposingViewControllerFactory"
+                        },
+                        "description": "",
+                        "title": "ComposingViewControllerFactory",
+                        "content": "<p>A ViewControllerFactory implementation that can delegate to other implementations.<\/p>\n<p>supports\nReturns <code>true<\/code> when this ViewControllerFactory can create a ViewController\nwhen viewControllerFor is called.\nIf this method returns false for a specific SceneKey, no calls to\nviewControllerFor with the same SceneKey must be made.\nviewControllerFor\nCreates a ViewController for given Scene key.<\/p>\n"
+                      }]
+                    },
+                    "ActivityControllerFactory": {
+                      "ownKey": "ActivityControllerFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ActivityControllerFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ActivityControllerFactory"
+                        },
+                        "description": "",
+                        "title": "ActivityControllerFactory",
+                        "content": "<p>A factory interface that can create ActivityController instances for Scenes.<\/p>\n<p>supports\nReturns <code>true<\/code> when this ActivityControllerFactory can create an\nActivityController when activityControllerFor is called.\nIf this method returns false for a specific SceneKey, no calls to\nactivityControllerFor with the same SceneKey must be made.\nactivityControllerFor\nCreates an ActivityController for given Scene key.<\/p>\n"
+                      }]
+                    },
+                    "RestorableViewController": {
+                      "ownKey": "RestorableViewController",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "RestorableViewController",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/RestorableViewController"
+                        },
+                        "description": "",
+                        "title": "RestorableViewController",
+                        "content": "<p>A helper interface that offers default implementations for <a href=\"#\">View<\/a> state saving\nand restoration.<p>Classes that utilize the ViewController interface and implement\nRestorableContainer need to manually implement saving the hierarchy\nstate. To make this easier, you can implement this interface instead:<\/p><pre><code class=\"language-\">\ninterface MyContainer: RestorableContainer<\/p>\n<p>class MyViewController : MyContainer, RestorableViewController<\/p>\n<\/code><\/pre>\ncontext\nA handle to the <a href=\"#\">Context<\/a> the view is running in.\nresources\nA handle to the <a href=\"#\">Resources<\/a> associated to the view.\nsaveInstanceState\nSave instance state.\nrestoreInstanceState\nRestore given instance state.\ngetHierarchyState\n"
+                      }]
+                    },
+                    "ViewProvidingScene": {
+                      "ownKey": "ViewProvidingScene",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ViewProvidingScene",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewProvidingScene"
+                        },
+                        "description": "",
+                        "title": "ViewProvidingScene",
+                        "content": "<p>A Scene that implements ProvidesView.<\/p>\n"
+                      }]
+                    },
+                    "ViewControllerFactoryBuilder": {
+                      "ownKey": "ViewControllerFactoryBuilder",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ViewControllerFactoryBuilder",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewControllerFactoryBuilder"
+                        },
+                        "description": "",
+                        "title": "ViewControllerFactoryBuilder",
+                        "content": "<p>A DSL that can create ViewControllerFactory instances by binding Scene\nkeys to inflatable layouts.<\/p>\n<p>bindView\nBinds Scenes with given sceneKey to the layout with given\nlayoutResId.\nbindViewGroup\nBinds Scenes with given sceneKey to the layout with given\nlayoutResId.\nbind\nBinds Scenes with given sceneKey to the layout with given\nlayoutResId.<\/p>\n"
+                      }]
+                    },
+                    "ViewControllerFactory": {
+                      "ownKey": "ViewControllerFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/presentation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ViewControllerFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewControllerFactory"
+                        },
+                        "description": "",
+                        "title": "ViewControllerFactory",
+                        "content": "<p>A factory interface that can create ViewController instances for Scenes.<p>This interface uses the ViewController interface to be able to provide both\nthe attachable Container and the <a href=\"#\">View<\/a> to be displayed to the user.<\/p><\/p>\n<p>supports\nReturns <code>true<\/code> when this ViewControllerFactory can create a ViewController\nwhen viewControllerFor is called.\nIf this method returns false for a specific SceneKey, no calls to\nviewControllerFor with the same SceneKey must be made.\nviewControllerFor\nCreates a ViewController for given Scene key.<\/p>\n"
+                      }]
+                    }
+                  },
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "presentation",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation"
+                    },
+                    "description": "",
+                    "title": "com.nhaarman.acorn.android.presentation",
+                    "content": "<p>bindViews\nAn entry point for the ViewControllerFactory DSL.<\/p>\n"
+                  }]
+                },
+                "dispatching": {
+                  "ownKey": "dispatching",
+                  "childrenPages": {
+                    "SceneDispatcherFactory": {
+                      "ownKey": "SceneDispatcherFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/dispatching",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "SceneDispatcherFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/SceneDispatcherFactory"
+                        },
+                        "description": "",
+                        "title": "SceneDispatcherFactory",
+                        "content": ""
+                      }]
+                    },
+                    "SceneDispatcher": {
+                      "ownKey": "SceneDispatcher",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/dispatching",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "SceneDispatcher",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/SceneDispatcher"
+                        },
+                        "description": "",
+                        "title": "SceneDispatcher",
+                        "content": "<p>A SceneDispatcher is responsible for bridging between <a href=\"#\">Activity<\/a> instances\nand the Navigator, handling changes of Scene instances, and ensuring the\nUI is properly updated.<\/p>\n<p>dispatchScenesFor\nStarts dispatching the Scene instances for given navigator.<p>By disposing the resulting DisposableHandle one can stop the\ndispatching.<\/p>\nonUIVisible\nTo be invoked when the application's UI becomes visible to the user.\nA good place to invoke this would be in <a href=\"#\">Activity.onStart<\/a>.\nonUINotVisible\nTo be invoked when the application's UI becomes invisible to the user.\nA good place to invoke this would be in <a href=\"#\">Activity.onStop<\/a>.\nonBackPressed\nInvoked when the user presses the back button.<p>Implementations can consume the event by returning <code>true<\/code> and stop\nfurther propagation of the event.<\/p>\nonActivityResult\nTo be invoked when the <a href=\"#\">Activity<\/a> receives an invocation to its\n<a href=\"#\">Activity.onActivityResult<\/a> method.\nsaveInstanceState\nSaves any state for this SceneDispatcher.<\/p>\n"
+                      }]
+                    },
+                    "AcornSceneDispatcher": {
+                      "ownKey": "AcornSceneDispatcher",
+                      "childrenPages": {"Callback": {
+                        "ownKey": "Callback",
+                        "ownPages": [{
+                          "reference": {
+                            "path": "com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher",
+                            "baseUrl": "https://nhaarman.github.io/acorn",
+                            "fileName": "Callback",
+                            "extension": "html",
+                            "usePrettyUrl": true,
+                            "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher/Callback"
+                          },
+                          "description": "",
+                          "title": "Callback",
+                          "content": "<p>startForResult<\/p>\n<p>finished<\/p>\n"
+                        }]
+                      }},
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/dispatching",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "AcornSceneDispatcher",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher"
+                        },
+                        "description": "",
+                        "title": "AcornSceneDispatcher",
+                        "content": "<p>A default SceneDispatcher implementation that utilizes a UIHandler and\nan ActivityHandler to dispatch Scenes.<\/p>\n<p>dispatchScenesFor\nStarts dispatching the Scene instances for given navigator.<p>By disposing the resulting DisposableHandle one can stop the\ndispatching.<\/p>\nonUIVisible\nTo be invoked when the application's UI becomes visible to the user.\nA good place to invoke this would be in <a href=\"#\">Activity.onStart<\/a>.\nonUINotVisible\nTo be invoked when the application's UI becomes invisible to the user.\nA good place to invoke this would be in <a href=\"#\">Activity.onStop<\/a>.\nonBackPressed\nInvoked when the user presses the back button.<p>Implementations can consume the event by returning <code>true<\/code> and stop\nfurther propagation of the event.<\/p>\nonActivityResult\nTo be invoked when the <a href=\"#\">Activity<\/a> receives an invocation to its\n<a href=\"#\">Activity.onActivityResult<\/a> method.\nsaveInstanceState\nSaves any state for this SceneDispatcher.<\/p>\n"
+                      }]
+                    }
+                  },
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "dispatching",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching"
+                    },
+                    "description": "",
+                    "title": "com.nhaarman.acorn.android.dispatching",
+                    "content": ""
+                  }]
+                },
+                "navigation": {
+                  "ownKey": "navigation",
+                  "childrenPages": {
+                    "NavigatorProvider": {
+                      "ownKey": "NavigatorProvider",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/navigation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "NavigatorProvider",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation/NavigatorProvider"
+                        },
+                        "description": "",
+                        "title": "NavigatorProvider",
+                        "content": "<p>An interface that provides a Navigator instance to be used in the <a href=\"#\">Activity<\/a>.<p>Implementations generally need to cache a created Navigator to deliver the\nsame instance to multiple Activities.<\/p><\/p>\n<p>navigatorFor\nReturns the Navigator instance to work with.\nIf one needs to be created, given savedState can be used to restore\nany state, if applicable.\nnewInstance\nUnlike navigatorFor, this function should always return a <i>new<\/i>\nNavigator instance.\nsaveNavigatorState\nReturns the saved state for the Navigator as returned by navigatorFor.\nImplementations can add extra data to the resulting state to suit their\nneeds.<\/p>\n"
+                      }]
+                    },
+                    "AbstractNavigatorProvider": {
+                      "ownKey": "AbstractNavigatorProvider",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/navigation",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "AbstractNavigatorProvider",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation/AbstractNavigatorProvider"
+                        },
+                        "description": "",
+                        "title": "AbstractNavigatorProvider",
+                        "content": "<p>A NavigatorProvider that caches its created Navigator for as long as it\nisn't destroyed.<p>This instance uses a 30-minute timeout to determine whether to restore any\nsaved Navigator state. This means that if the saved state is older than 30\nminutes, the state is dropped and a fresh instance is created.<\/p><init>\nA NavigatorProvider that caches its created Navigator for as long as it\nisn't destroyed.<p>This instance uses a 30-minute timeout to determine whether to restore any\nsaved Navigator state. This means that if the saved state is older than 30\nminutes, the state is dropped and a fresh instance is created.<\/p><\/p>\n<p>navigatorFor\nReturns the Navigator instance to work with.\nIf one needs to be created, given savedState can be used to restore\nany state, if applicable.\nnewInstance\nUnlike navigatorFor, this function should always return a <i>new<\/i>\nNavigator instance.\ncreateNavigator<\/p>\n<p>saveNavigatorState\nReturns the saved state for the Navigator as returned by navigatorFor.\nImplementations can add extra data to the resulting state to suit their\nneeds.<\/p>\n"
+                      }]
+                    }
+                  },
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "navigation",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation"
+                    },
+                    "description": "",
+                    "title": "com.nhaarman.acorn.android.navigation",
+                    "content": ""
+                  }]
+                },
+                "util": {
+                  "ownKey": "util",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "util",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/util"
+                    },
+                    "description": "",
+                    "title": "com.nhaarman.acorn.android.util",
+                    "content": "<p>toBundle<\/p>\n<p>toNavigatorState<\/p>\n<p>inflateView<\/p>\n<p>inflate<\/p>\n<p>saveHierarchyState<\/p>\n"
+                  }]
+                },
+                "AndroidLogger": {
+                  "ownKey": "AndroidLogger",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "AndroidLogger",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AndroidLogger"
+                    },
+                    "description": "",
+                    "title": "AndroidLogger",
+                    "content": "<p>A Logger implementation that uses Android's <a href=\"#\">Log<\/a> class for logging.<init>\nA Logger implementation that uses Android's <a href=\"#\">Log<\/a> class for logging.<\/p>\n<p>v\nLog a verbose message with given tag.\nd\nLog a debug message with given tag.\ni\nLog an informational message with given tag.\nw\nLog a warning message with given tag.\ne\nLog an error message with given tag.<\/p>\n"
+                  }]
+                },
+                "AcornAppCompatActivity": {
+                  "ownKey": "AcornAppCompatActivity",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "AcornAppCompatActivity",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornAppCompatActivity"
+                    },
+                    "description": "",
+                    "title": "AcornAppCompatActivity",
+                    "content": "<p>A base <a href=\"#\">AppCompatActivity<\/a> implementation to simplify Acorn usage.<p>If you can't or don't want to inherit from this class, you can use the\nAcornActivityDelegate class and route the necessary Activity function\ncalls to it.<\/p><init>\nA base <a href=\"#\">AppCompatActivity<\/a> implementation to simplify Acorn usage.<p>If you can't or don't want to inherit from this class, you can use the\nAcornActivityDelegate class and route the necessary Activity function\ncalls to it.<\/p><\/p>\n<p>provideNavigatorProvider\nReturns the NavigatorProvider to use in this Activity.<p>NavigatorProvider instances should be shared across instances, so\nmake sure you cache this instance outside of this Activity.<\/p>\nprovideViewControllerFactory\nReturns the ViewControllerFactory that can provide\nViewController instances for this Activity.<p>The instance returned here will be combined with a\nSceneViewControllerFactory to be able to use Scene instances as\nViewController factories.<\/p><p>Returns NoopViewControllerFactory by default.<\/p>\nprovideTransitionFactory\nReturns the SceneTransitionFactory to create SceneTransition instances\nfor this Activity. The resulting factory instance will be combined with\na DefaultSceneTransitionFactory as fallback.<p>By default, this returns a NoopSceneTransitionFactory.<\/p>\nprovideActivityControllerFactory\nReturns the ActivityControllerFactory that can provide\nActivityController instances when using external Activities.\nprovideRootView\nReturns the root <a href=\"#\">ViewGroup<\/a> that is used to inflate Scene views in.<p>This method will be called once by Acorn, so it is safe to create new instances here.<\/p><p>Override this method if you want to provide your own ViewGroup implementation.\nIf the returned ViewGroup has no parent, it will be passed to a call to <a href=\"#\">setContentView<\/a>.<\/p><p>This method returns <code>null<\/code> by default, which will result in an empty <a href=\"#\">FrameLayout<\/a> being\nused as the content view.<\/p>\nnavigator\nReturns the navigator used in this instance.\nMust only be called <i>after<\/i> onCreate has been called.\nonCreate<\/p>\n<p>onStart<\/p>\n<p>onActivityResult<\/p>\n<p>onBackPressed<\/p>\n<p>onStop<\/p>\n<p>onDestroy<\/p>\n<p>onSaveInstanceState\n<a href=\"#\">AppCompatActivity.onSaveInstanceState<\/a> saves the view hierarchy state,\nwhich is something we do manually. Therefore we do not call the super\nimplementation.<\/p>\n"
+                  }]
+                },
+                "experimental": {
+                  "ownKey": "experimental",
+                  "childrenPages": {
+                    "ExperimentalAcornEvents": {
+                      "ownKey": "ExperimentalAcornEvents",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ExperimentalAcornEvents",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/ExperimentalAcornEvents"
+                        },
+                        "description": "",
+                        "title": "ExperimentalAcornEvents",
+                        "content": "<p>Marks all AcornEvents declarations as an experimental API to\nindicate that it is still experimental.<p>The AcornEvents class has no backward compatibility guarantees\nwhatsoever.<\/p><init>\nMarks all AcornEvents declarations as an experimental API to\nindicate that it is still experimental.<p>The AcornEvents class has no backward compatibility guarantees\nwhatsoever.<\/p><\/p>\n"
+                      }]
+                    },
+                    "AcornEvents": {
+                      "ownKey": "AcornEvents",
+                      "childrenPages": {"DispatchingListener": {
+                        "ownKey": "DispatchingListener",
+                        "ownPages": [{
+                          "reference": {
+                            "path": "com/nhaarman/acorn/android/experimental/AcornEvents",
+                            "baseUrl": "https://nhaarman.github.io/acorn",
+                            "fileName": "DispatchingListener",
+                            "extension": "html",
+                            "usePrettyUrl": true,
+                            "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/AcornEvents/DispatchingListener"
+                          },
+                          "description": "",
+                          "title": "DispatchingListener",
+                          "content": "<p>onStartDispatching\nCalled when a component starts dispatching Scenes for given instance.\nonStopDispatching\nCalled when the component that started dispatching Scenes for given\ninstance stops dispatching.<\/p>\n"
+                        }]
+                      }},
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "AcornEvents",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/AcornEvents"
+                        },
+                        "description": "",
+                        "title": "AcornEvents",
+                        "content": "<p>An experimental class to provide hooks for Acorn.<\/p>\n<p>registerDispatchingListener<\/p>\n<p>onStartDispatching<\/p>\n<p>onStopDispatching<\/p>\n"
+                      }]
+                    },
+                    "HookingSceneDispatcher": {
+                      "ownKey": "HookingSceneDispatcher",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/experimental",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "HookingSceneDispatcher",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/HookingSceneDispatcher"
+                        },
+                        "description": "",
+                        "title": "HookingSceneDispatcher",
+                        "content": "<p>A SceneDispatcher that wraps an existing instance, notifying the\nexperimental AcornEvents class of dispatching events.<\/p>\n<p>dispatchScenesFor\nStarts dispatching the Scene instances for given navigator.<p>By disposing the resulting DisposableHandle one can stop the\ndispatching.<\/p><\/p>\n"
+                      }]
+                    }
+                  },
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "experimental",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental"
+                    },
+                    "description": "",
+                    "title": "com.nhaarman.acorn.android.experimental",
+                    "content": ""
+                  }]
+                },
+                "AcornActivity": {
+                  "ownKey": "AcornActivity",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "AcornActivity",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornActivity"
+                    },
+                    "description": "",
+                    "title": "AcornActivity",
+                    "content": "<p>A base <a href=\"#\">Activity<\/a> implementation to simplify Acorn usage.<p>If you can't or don't want to inherit from this class, you can use the\nAcornActivityDelegate class and route the necessary Activity function\ncalls to it.<\/p><init>\nA base <a href=\"#\">Activity<\/a> implementation to simplify Acorn usage.<p>If you can't or don't want to inherit from this class, you can use the\nAcornActivityDelegate class and route the necessary Activity function\ncalls to it.<\/p><\/p>\n<p>provideNavigatorProvider\nReturns the NavigatorProvider to use in this Activity.<p>NavigatorProvider instances should be shared across instances, so\nmake sure you cache this instance outside of this Activity.<\/p>\nprovideViewControllerFactory\nReturns the ViewControllerFactory that can provide\nViewController instances for this Activity.<p>The instance returned here will be combined with a\nSceneViewControllerFactory to be able to use Scene instances as\nViewController factories.<\/p><p>Returns NoopViewControllerFactory by default.<\/p>\nprovideTransitionFactory\nReturns the SceneTransitionFactory to create SceneTransition instances\nfor this Activity. The resulting factory instance will be combined with\na DefaultSceneTransitionFactory as fallback.<p>By default, this returns a NoopSceneTransitionFactory.<\/p>\nprovideActivityControllerFactory\nReturns the ActivityControllerFactory that can provide\nActivityController instances when using external Activities.\nprovideRootView\nReturns the root <a href=\"#\">ViewGroup<\/a> that is used to inflate Scene views in.<p>This method will be called once by Acorn, so it is safe to create new instances here.<\/p><p>Override this method if you want to provide your own ViewGroup implementation.\nIf the returned ViewGroup has no parent, it will be passed to a call to <a href=\"#\">setContentView<\/a>.<\/p><p>This method returns <code>null<\/code> by default, which will result in an empty <a href=\"#\">ViewGroup<\/a> being\nused as the content view.<\/p>\nnavigator\nReturns the navigator used in this instance.\nMust only be called <i>after<\/i> onCreate has been called.\nonCreate<\/p>\n<p>onStart<\/p>\n<p>onActivityResult<\/p>\n<p>onBackPressed<\/p>\n<p>onStop<\/p>\n<p>onDestroy<\/p>\n<p>onSaveInstanceState<\/p>\n"
+                  }]
+                },
+                "AcornActivityDelegate": {
+                  "ownKey": "AcornActivityDelegate",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "AcornActivityDelegate",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornActivityDelegate"
+                    },
+                    "description": "",
+                    "title": "AcornActivityDelegate",
+                    "content": "<p>A convenience class which deals with the Activity lifecycle and connecting\na SceneDispatcher to the Navigator.<\/p>\n<p>navigator\nReturns the navigator used in this instance.\nMust only be called <i>after<\/i> onCreate has been called.\nonCreate<\/p>\n<p>onStart<\/p>\n<p>onActivityResult<\/p>\n<p>onBackPressed<\/p>\n<p>onStop<\/p>\n<p>onDestroy<\/p>\n<p>onSaveInstanceState<\/p>\n"
+                  }]
+                },
+                "uistate": {
+                  "ownKey": "uistate",
+                  "childrenPages": {
+                    "UIHandler": {
+                      "ownKey": "UIHandler",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/uistate",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "UIHandler",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIHandler"
+                        },
+                        "description": "",
+                        "title": "UIHandler",
+                        "content": "<p>An interface that provides UI handling when working with Scenes.<\/p>\n<p>onUIVisible\nDenotes that the UI window becomes visible to the user,\nfor example when the Activity enters its 'started' state.\nonUINotVisible\nDenotes that the UI window becomes invisible to the user,\nfor example when the Activity enters its 'stopped' state.\nonBackPressed\nInvoked when the user presses the back button.<p>Implementations can consume the event by returning <code>true<\/code> and stop\nfurther propagation of the event.<\/p>\nwithScene\nApplies given scene to the UI.<p>Depending on the current internal state the Scene change may occur\ndirectly or be scheduled, for example when a transition animation is\nrunning.<\/p>\nwithoutScene\nIndicates that there is no local Scene currently active.<\/p>\n"
+                      }]
+                    },
+                    "UIState": {
+                      "ownKey": "UIState",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/uistate",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "UIState",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIState"
+                        },
+                        "description": "",
+                        "title": "UIState",
+                        "content": "<p>A sealed hierarchy that manages layout inflation and Scene transition\nanimations.<p>These set of classes form a state machine that can manage switching views\nwhen a new Scene becomes active.<\/p><p>Invoking methods on this class may cause a state transition: the resulting\nstate is returned. Consumers of this class must call its methods at the\nappropriate times (uiVisible, uiNotVisible, withScene, withoutScene)\nand update their reference to the resulting state accordingly.<\/p><p>This class is not thread-safe, and should only be invoked from the main thread.<\/p><\/p>\n<p>uiVisible\nDenotes that the UI window becomes visible to the user.\nuiNotVisible\nDenotes that the UI window becomes invisible to the user.\nonBackPressed\nInvoked when the user presses the back button.<p>Implementations can consume the event by returning <code>true<\/code> and stop\nfurther propagation of the event.<\/p>\nwithScene\nApplies given scene to the UI.\nwithoutScene\nIndicates that there is no local Scene currently active.<\/p>\n"
+                      }]
+                    },
+                    "UIStateUIHandler": {
+                      "ownKey": "UIStateUIHandler",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/uistate",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "UIStateUIHandler",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIStateUIHandler"
+                        },
+                        "description": "",
+                        "title": "UIStateUIHandler",
+                        "content": "<p>A UIHandler that utilizes the UIState state machine to handle the UI.<\/p>\n<p>onUIVisible\nDenotes that the UI window becomes visible to the user,\nfor example when the Activity enters its 'started' state.\nonUINotVisible\nDenotes that the UI window becomes invisible to the user,\nfor example when the Activity enters its 'stopped' state.\nonBackPressed\nInvoked when the user presses the back button.<p>Implementations can consume the event by returning <code>true<\/code> and stop\nfurther propagation of the event.<\/p>\nwithScene\nApplies given scene to the UI.<p>Depending on the current internal state the Scene change may occur\ndirectly or be scheduled, for example when a transition animation is\nrunning.<\/p>\nwithoutScene\nIndicates that there is no local Scene currently active.<\/p>\n"
+                      }]
+                    }
+                  },
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "uistate",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate"
+                    },
+                    "description": "",
+                    "title": "com.nhaarman.acorn.android.uistate",
+                    "content": ""
+                  }]
+                },
+                "transition": {
+                  "ownKey": "transition",
+                  "childrenPages": {
+                    "FadeInFromBottomTransition": {
+                      "ownKey": "FadeInFromBottomTransition",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "FadeInFromBottomTransition",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/FadeInFromBottomTransition"
+                        },
+                        "description": "",
+                        "title": "FadeInFromBottomTransition",
+                        "content": "<p>A transition that fades the new <a href=\"#\">View<\/a> from the bottom.<p>Any views that live in the parent <a href=\"#\">ViewGroup<\/a> before the transition starts\nwil be removed.<\/p><init>\nA transition that fades the new <a href=\"#\">View<\/a> from the bottom.<p>Any views that live in the parent <a href=\"#\">ViewGroup<\/a> before the transition starts\nwil be removed.<\/p><\/p>\n<p>execute\nExecutes the transition.<p>Implementers of this interface have full control over parent and must\nupdate its child hierarchy accordingly. That means any old views should\nbe removed and new views must be inflated and added to the parent.<\/p><p>When the transition is done, implementers must always invoke\nCallback.onComplete. Optionally, Callback.attach can be invoked to\nattach the resulting Container to the Scene before the transition\nhas finished.<\/p>\ndoOnStart\nReturns a SceneTransition that runs action before the receiving SceneTransition\ninstance is started.\nhideKeyboardOnStart\nReturns a new SceneTransition instance that hides the keyboard before the\nreceiving SceneTransition is invoked.<\/p>\n"
+                      }]
+                    },
+                    "SceneTransitionFactory": {
+                      "ownKey": "SceneTransitionFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "SceneTransitionFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransitionFactory"
+                        },
+                        "description": "",
+                        "title": "SceneTransitionFactory",
+                        "content": "<p>An interface that can create SceneTransition instances to animate transitions\nbetween Scenes.<\/p>\n<p>supports\nReturns <code>true<\/code> when this SceneTransitionFactory can create a SceneTransition\nwhen transitionFor is called.\nIf this method returns false for a specific combination of its parameters,\nno calls to transitionFor with that combination must be made.\ntransitionFor\nCreates a new SceneTransition for given Scenes.<\/p>\n"
+                      }]
+                    },
+                    "SceneTransitionFactoryBuilder": {
+                      "ownKey": "SceneTransitionFactoryBuilder",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "SceneTransitionFactoryBuilder",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransitionFactoryBuilder"
+                        },
+                        "description": "",
+                        "title": "SceneTransitionFactoryBuilder",
+                        "content": "<p>A DSL that can create SceneTransitionFactory instances by binding pairs of Scenes\nto SceneTransition instances.<init>\nA DSL that can create SceneTransitionFactory instances by binding pairs of Scenes\nto SceneTransition instances.<\/p>\n<p>use\nBinds two SceneKeys to a SceneTransition instance.\nuse\nBinds two Scene classes to a SceneTransition instance.\nuse\nBinds two Scene classes to a lazily evaluated SceneTransition instance.\nbuild<\/p>\n"
+                      }]
+                    },
+                    "SceneTransition": {
+                      "ownKey": "SceneTransition",
+                      "childrenPages": {"Callback": {
+                        "ownKey": "Callback",
+                        "ownPages": [{
+                          "reference": {
+                            "path": "com/nhaarman/acorn/android/transition/SceneTransition",
+                            "baseUrl": "https://nhaarman.github.io/acorn",
+                            "fileName": "Callback",
+                            "extension": "html",
+                            "usePrettyUrl": true,
+                            "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransition/Callback"
+                          },
+                          "description": "",
+                          "title": "Callback",
+                          "content": "<p>A callback interface to be able to get notified when a SceneTransition ends.\nImplementers of SceneTransition.execute, must always invoke onComplete\nwhen the SceneTransition is finished.\nOptionally, attach can be invoked during the transition animation to\nhave the view attached to the Scene before the animation ends.<\/p>\n<p>attach\nAn function that can optionally  be invoked to attach given\nviewController to the Scene at any time during the transition.<p>When invoking this method, this must be done before onComplete,\notherwise its invocation is ignored.\nIf this method is not invoked at all, onComplete will take care of\nattaching the view to the Scene.<\/p>\nonComplete\nImplementers of SceneTransition.execute must invoke this method when the\ntransition is finished. If no call to attach was made before\ninvoking this method, given viewController will be attached to the\nScene.<\/p>\n"
+                        }]
+                      }},
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "SceneTransition",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransition"
+                        },
+                        "description": "",
+                        "title": "SceneTransition",
+                        "content": "<p>An interface to manually implement Scene transition animations.<\/p>\n<p>execute\nExecutes the transition.<p>Implementers of this interface have full control over parent and must\nupdate its child hierarchy accordingly. That means any old views should\nbe removed and new views must be inflated and added to the parent.<\/p><p>When the transition is done, implementers must always invoke\nCallback.onComplete. Optionally, Callback.attach can be invoked to\nattach the resulting Container to the Scene before the transition\nhas finished.<\/p>\ndoOnStart\nReturns a SceneTransition that runs action before the receiving SceneTransition\ninstance is started.\nhideKeyboardOnStart\nReturns a new SceneTransition instance that hides the keyboard before the\nreceiving SceneTransition is invoked.<\/p>\n"
+                      }]
+                    },
+                    "DoBeforeTransition": {
+                      "ownKey": "DoBeforeTransition",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "DoBeforeTransition",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/DoBeforeTransition"
+                        },
+                        "description": "",
+                        "title": "DoBeforeTransition",
+                        "content": "<p>A SceneTransition implementation that can execute an action before a delegate\nSceneTransition is executed.<p>This can be used to hide the keyboard before the transition starts, for\nexample.<\/p><\/p>\n<p>execute\nExecutes the transition.<p>Implementers of this interface have full control over parent and must\nupdate its child hierarchy accordingly. That means any old views should\nbe removed and new views must be inflated and added to the parent.<\/p><p>When the transition is done, implementers must always invoke\nCallback.onComplete. Optionally, Callback.attach can be invoked to\nattach the resulting Container to the Scene before the transition\nhas finished.<\/p>\ndoOnStart\nReturns a SceneTransition that runs action before the receiving SceneTransition\ninstance is started.\nhideKeyboardOnStart\nReturns a new SceneTransition instance that hides the keyboard before the\nreceiving SceneTransition is invoked.<\/p>\n"
+                      }]
+                    },
+                    "DefaultSceneTransitionFactory": {
+                      "ownKey": "DefaultSceneTransitionFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "DefaultSceneTransitionFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/DefaultSceneTransitionFactory"
+                        },
+                        "description": "",
+                        "title": "DefaultSceneTransitionFactory",
+                        "content": "<p>A SceneTransitionFactory that uses the TransitionData.isBackwards flag to\ndetermine the transition.<init>\nA SceneTransitionFactory that uses the TransitionData.isBackwards flag to\ndetermine the transition.<\/p>\n<p>supports\nReturns <code>true<\/code> when this SceneTransitionFactory can create a SceneTransition\nwhen transitionFor is called.\nIf this method returns false for a specific combination of its parameters,\nno calls to transitionFor with that combination must be made.\ntransitionFor\nCreates a new SceneTransition for given Scenes.<\/p>\n"
+                      }]
+                    },
+                    "ComposingSceneTransitionFactory": {
+                      "ownKey": "ComposingSceneTransitionFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "ComposingSceneTransitionFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/ComposingSceneTransitionFactory"
+                        },
+                        "description": "",
+                        "title": "ComposingSceneTransitionFactory",
+                        "content": "<p>A SceneTransitionFactory implementation that can delegate to other implementations.<\/p>\n<p>supports\nReturns <code>true<\/code> when this SceneTransitionFactory can create a SceneTransition\nwhen transitionFor is called.\nIf this method returns false for a specific combination of its parameters,\nno calls to transitionFor with that combination must be made.\ntransitionFor\nCreates a new SceneTransition for given Scenes.<\/p>\n"
+                      }]
+                    },
+                    "FadeOutToBottomTransition": {
+                      "ownKey": "FadeOutToBottomTransition",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "FadeOutToBottomTransition",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/FadeOutToBottomTransition"
+                        },
+                        "description": "",
+                        "title": "FadeOutToBottomTransition",
+                        "content": "<p>A SceneTransition that fades the current <a href=\"#\">View<\/a> out to bottom, revealing the new\nView underneath.<p>This class assumes there is currently a single View present in the parent\n<a href=\"#\">ViewGroup<\/a>. If there is more than one View, the first child is used to fade\nout.<\/p><p>Any views that live in the parent <a href=\"#\">ViewGroup<\/a> before the transition starts\nwil be removed.<\/p><init>\nA SceneTransition that fades the current <a href=\"#\">View<\/a> out to bottom, revealing the new\nView underneath.<p>This class assumes there is currently a single View present in the parent\n<a href=\"#\">ViewGroup<\/a>. If there is more than one View, the first child is used to fade\nout.<\/p><p>Any views that live in the parent <a href=\"#\">ViewGroup<\/a> before the transition starts\nwil be removed.<\/p><\/p>\n<p>execute\nExecutes the transition.<p>Implementers of this interface have full control over parent and must\nupdate its child hierarchy accordingly. That means any old views should\nbe removed and new views must be inflated and added to the parent.<\/p><p>When the transition is done, implementers must always invoke\nCallback.onComplete. Optionally, Callback.attach can be invoked to\nattach the resulting Container to the Scene before the transition\nhas finished.<\/p>\ndoOnStart\nReturns a SceneTransition that runs action before the receiving SceneTransition\ninstance is started.\nhideKeyboardOnStart\nReturns a new SceneTransition instance that hides the keyboard before the\nreceiving SceneTransition is invoked.<\/p>\n"
+                      }]
+                    },
+                    "NoopSceneTransitionFactory": {
+                      "ownKey": "NoopSceneTransitionFactory",
+                      "ownPages": [{
+                        "reference": {
+                          "path": "com/nhaarman/acorn/android/transition",
+                          "baseUrl": "https://nhaarman.github.io/acorn",
+                          "fileName": "NoopSceneTransitionFactory",
+                          "extension": "html",
+                          "usePrettyUrl": true,
+                          "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/NoopSceneTransitionFactory"
+                        },
+                        "description": "",
+                        "title": "NoopSceneTransitionFactory",
+                        "content": "<p>supports\nReturns <code>true<\/code> when this SceneTransitionFactory can create a SceneTransition\nwhen transitionFor is called.\nIf this method returns false for a specific combination of its parameters,\nno calls to transitionFor with that combination must be made.\ntransitionFor\nCreates a new SceneTransition for given Scenes.<\/p>\n"
+                      }]
+                    }
+                  },
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/android",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "transition",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition"
+                    },
+                    "description": "",
+                    "title": "com.nhaarman.acorn.android.transition",
+                    "content": "<p>doOnStart\nReturns a SceneTransition that runs action before the receiving SceneTransition\ninstance is started.\nhideKeyboardOnStart\nReturns a new SceneTransition instance that hides the keyboard before the\nreceiving SceneTransition is invoked.\nsceneTransitionFactory\nEntry point for the SceneTransitionFactory DSL.\nsceneTransitionFactory\nEntry point for the SceneTransitionFactory DSL.\nhideKeyboardOnStart<\/p>\n"
+                  }]
+                }
+              },
+              "ownPages": [{
+                "reference": {
+                  "path": "com/nhaarman/acorn",
+                  "baseUrl": "https://nhaarman.github.io/acorn",
+                  "fileName": "android",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/android"
+                },
+                "description": "",
+                "title": "com.nhaarman.acorn.android",
+                "content": ""
+              }]
+            },
+            "state": {
+              "ownKey": "state",
+              "childrenPages": {
+                "SavedState": {
+                  "ownKey": "SavedState",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/state",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "SavedState",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SavedState"
+                    },
+                    "description": "",
+                    "title": "SavedState",
+                    "content": "<p>Provides a container to be able to save state.<p>This interface uses a key-value strategy to store state.<\/p>\nentries\nThe set of entries that were saved in this container.\nclear\nClears the value for given key.\nset\nSets a boolean value for given key.\nset\nSets a number value for given key.\nset\nSets a char value for given key.\nset\nSets a String value for given key.\nset\nSets a SavedState value for given key.\nsetUnchecked\nSets any value for given key.<p>This method should be used with caution, as value types generally need\nto be serializable in some form.\nFailure to do so may cause in an Exception being thrown.<\/p>\ngetUnchecked\nRetrieves the value for given key.\nget\nRetrieves the value for given key and tries to cast it as a T.<p>If the value for given key is not of type T, <code>null<\/code> will be returned.<\/p>\ntoBundle<\/p>\n"
+                  }]
+                },
+                "NavigatorState": {
+                  "ownKey": "NavigatorState",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/state",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "NavigatorState",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/NavigatorState"
+                    },
+                    "description": "",
+                    "title": "NavigatorState",
+                    "content": "<p>set<\/p>\n<p>set<\/p>\n<p>get\nRetrieves the value for given key and tries to cast it as a T.<p>If the value for given key is not of type T, <code>null<\/code> will be returned.<\/p>\ntoBundle<\/p>\n"
+                  }]
+                },
+                "SceneState": {
+                  "ownKey": "SceneState",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/state",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "SceneState",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SceneState"
+                    },
+                    "description": "",
+                    "title": "SceneState",
+                    "content": "<p>set<\/p>\n<p>get\nRetrieves the value for given key and tries to cast it as a T.<p>If the value for given key is not of type T, <code>null<\/code> will be returned.<\/p>\ntoBundle<\/p>\n"
+                  }]
+                },
+                "ContainerState": {
+                  "ownKey": "ContainerState",
+                  "ownPages": [{
+                    "reference": {
+                      "path": "com/nhaarman/acorn/state",
+                      "baseUrl": "https://nhaarman.github.io/acorn",
+                      "fileName": "ContainerState",
+                      "extension": "html",
+                      "usePrettyUrl": true,
+                      "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/ContainerState"
+                    },
+                    "description": "",
+                    "title": "ContainerState",
+                    "content": "<p>get\nRetrieves the value for given key and tries to cast it as a T.<p>If the value for given key is not of type T, <code>null<\/code> will be returned.<\/p>\ntoBundle<\/p>\n"
+                  }]
+                }
+              },
+              "ownPages": [{
+                "reference": {
+                  "path": "com/nhaarman/acorn",
+                  "baseUrl": "https://nhaarman.github.io/acorn",
+                  "fileName": "state",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/state"
+                },
+                "description": "",
+                "title": "com.nhaarman.acorn.state",
+                "content": "<p>ContainerState\nCreates a new ContainerState instance.\ncontainerState\nCreates a new ContainerState instance, providing a DSL-like initialization\nfunction.\nNavigatorState\nCreates a new NavigatorState instance.\nnavigatorState\nCreates a new NavigatorState instance, providing a DSL-like initialization\nfunction.\nSavedState\nCreates a new SavedState instance.\nsavedState\nCreates a new SavedState instance, providing a DSL-like initialization\nfunction.\nget\nRetrieves the value for given key and tries to cast it as a T.<p>If the value for given key is not of type T, <code>null<\/code> will be returned.<\/p>\nSceneState\nCreates a new SceneState instance.\nsceneState\nCreates a new SceneState instance, providing a DSL-like initialization\nfunction.<\/p>\n"
+              }]
+            },
+            "Logger": {
+              "ownKey": "Logger",
+              "ownPages": [{
+                "reference": {
+                  "path": "com/nhaarman/acorn",
+                  "baseUrl": "https://nhaarman.github.io/acorn",
+                  "fileName": "Logger",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/Logger"
+                },
+                "description": "",
+                "title": "Logger",
+                "content": "<p>An interface to facilitate logging with several levels.<\/p>\n<p>v\nLog a verbose message with given tag.\nd\nLog a debug message with given tag.\ni\nLog an informational message with given tag.\nw\nLog a warning message with given tag.\ne\nLog an error message with given tag.<\/p>\n"
+              }]
+            },
+            "OnBackPressListener": {
+              "ownKey": "OnBackPressListener",
+              "ownPages": [{
+                "reference": {
+                  "path": "com/nhaarman/acorn",
+                  "baseUrl": "https://nhaarman.github.io/acorn",
+                  "fileName": "OnBackPressListener",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn/OnBackPressListener"
+                },
+                "description": "",
+                "title": "OnBackPressListener",
+                "content": "<p>An interface Navigators can implement to indicate they are interested in back\nbutton presses.<\/p>\n<p>onBackPressed\nInvoked when the user presses the back button.<\/p>\n"
+              }]
+            }
+          },
+          "ownPages": [{
+            "reference": {
+              "path": "com/nhaarman",
+              "baseUrl": "https://nhaarman.github.io/acorn",
+              "fileName": "acorn",
+              "extension": "html",
+              "usePrettyUrl": true,
+              "link": "https://nhaarman.github.io/acorn/com/nhaarman/acorn"
+            },
+            "description": "",
+            "title": "com.nhaarman.acorn",
+            "content": ""
+          }]
+        }}
+      }}
+    },
+    "acorn": {
+      "ownKey": "acorn",
+      "ownPages": [{
+        "reference": {
+          "path": "",
+          "baseUrl": "https://nhaarman.github.io/acorn",
+          "fileName": "acorn",
+          "extension": "html",
+          "usePrettyUrl": true,
+          "link": "https://nhaarman.github.io/acorn/acorn"
+        },
+        "description": "",
+        "title": "acorn",
+        "content": ""
+      }]
+    }
+  }
+}

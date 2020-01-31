@@ -1,0 +1,1308 @@
+<!DOCTYPE HTML>
+<!--
+    Editorial by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.17.5"/>
+<link rel="icon" href="https://nhaarman.github.io/acorn/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>Saving state</title>
+
+
+<meta name="description" content="Mastering Android navigation">
+
+
+
+<link rel="prev" href="https://nhaarman.github.io/acorn/wiki/scenes/interface">
+
+
+<link rel="next" href="https://nhaarman.github.io/acorn/wiki/scenes/events">
+
+
+<script>
+    window.site = {"orchidVersion":"0.17.5","baseUrl":"https://nhaarman.github.io/acorn","environment":"debug","version":"1.2.1"};
+</script>
+
+
+
+
+
+<!-- start:debug info -->
+
+<!-- THEME -->
+<!-- Type: Editorial -->
+<!-- Class: com.eden.orchid.editorial.EditorialTheme -->
+
+<!-- PAGE -->
+<!-- Type: wiki -->
+<!-- Class: com.eden.orchid.wiki.pages.WikiPage -->
+<!-- Layout: index -->
+<!-- Resolved Layout: templates/layouts/index.peb -->
+<!-- Page Template: wiki, page -->
+<!-- Resolved Page Template:  -->
+
+<!-- RESOURCE -->
+<!-- Class: com.eden.orchid.api.resources.resource.FileResource -->
+<!-- Source Filename: wiki/scenes/state_saving.md -->
+
+<!-- COMPLETE PAGE CONFIGURATION -->
+<script>
+    window.allData = {"reference":{"path":"wiki/scenes","baseUrl":"https://nhaarman.github.io/acorn","fileName":"state_saving","extension":"html","usePrettyUrl":true,"link":"https://nhaarman.github.io/acorn/wiki/scenes/state_saving"},"next":{"path":"wiki/scenes","baseUrl":"https://nhaarman.github.io/acorn","fileName":"events","extension":"html","usePrettyUrl":true,"link":"https://nhaarman.github.io/acorn/wiki/scenes/events"},"previous":{"path":"wiki/scenes","baseUrl":"https://nhaarman.github.io/acorn","fileName":"interface","extension":"html","usePrettyUrl":true,"link":"https://nhaarman.github.io/acorn/wiki/scenes/interface"},"description":"","title":"Saving state"};
+</script>
+
+<!-- end:debug info -->
+
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/css/editorial_main.css"/>
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/css/editorial_orchidCustomizations.css"/>
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/css/orchidSearch.css"/>
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/assets/css/site.css"/>
+<link rel="stylesheet" type="text/css" href="https://nhaarman.github.io/acorn/assets/css/pygments.css"/>
+<!-- end:inject styles -->
+
+</head>
+<body class="is-loading">
+
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Main -->
+    <div id="main">
+        <div class="inner">
+
+            <!-- Header -->
+            
+                <header id="header">
+    <a href="https://nhaarman.github.io/acorn" class="logo">Acorn</a>
+    <ul class="icons">
+    
+    
+        <li>
+            <a href="https://github.com/nhaarman/acorn" class="icon fa-github">
+                <span class="label">github</span>
+            </a>
+        </li>
+    
+    
+    </ul>
+</header>
+            
+            
+            
+            
+                <section id="pageContent">
+                    <header class="major"><h2>Saving state</h2></header>
+                    <article>
+                        
+    <!-- start:inject components -->
+    
+        
+            
+                
+                    
+                        <h2 id="saving-and-restoring-state">Saving and restoring state</h2>
+<p>It is possible that an application is killed while the user has navigated to a
+particular <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a>.
+When the user returns to the application it is expected that the application
+restores to the state it was left in.
+This means that it is necessary to be able to restore Scenes from a serialized
+state.</p>
+<p>For 'static' Scenes that take no arguments (like our <code>HelloWorldScene</code> above)
+this usually is no problem.
+Scenes that do take arguments or have other state they wish to preserve need to
+implement the <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableScene">SavableScene</a> interface.
+This introduces a <code>saveInstanceState</code> function, allowing the Scene to persist its
+state to a serializable format.
+When the Scene needs to be restored, this serialized state will then be provided.</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">ShowItemScene</span><span class="p">(</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">itemId</span><span class="p">:</span>&nbsp;<span class="n">Long</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span><span class="p">)</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;</span><span class="n">ShowItemContainer</span><span class="p">&gt;,</span>&nbsp;<span class="n">StateSaveable</span>&nbsp;<span class="p">{</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">saveInstanceState</span><span class="p">():</span>&nbsp;<span class="n">SceneState</span>&nbsp;<span class="p">{</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">sceneState</span>&nbsp;<span class="p">{</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">it</span><span class="p">[</span><span class="s">&quot;item_id&quot;</span><span class="p">]</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">itemId</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">companion</span>&nbsp;<span class="k">object</span>&nbsp;<span class="p">{</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<br><a name="line-13"></a><span class="lineno">13&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">create</span><span class="p">(</span><span class="n">state</span><span class="p">:</span>&nbsp;<span class="n">SceneState</span><span class="p">):</span>&nbsp;<span class="n">ShowItemScene</span>&nbsp;<span class="p">{</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">ShowItemScene</span><span class="p">(</span><span class="n">itemId</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">state</span><span class="p">[</span><span class="s">&quot;item_id&quot;</span><span class="p">])</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-16"></a><span class="lineno">16&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-17"></a><span class="lineno">17&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>When a Scene implements the SavableScene interface, <a href="https://nhaarman.github.io/acorn/wiki/navigators">Navigators</a>
+can call the <code>saveInstanceState</code> function to retrieve the serializable state.</p>
+<h3 id="container-state">Container state</h3>
+<p><a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container">Container</a> state (or view state) saving and restoring is a very
+important topic for mobile applications.
+Whenever a user has entered text or scrolled a list to a particular position and
+navigates away from the screen to later return again, it is expected that the
+entered text or the scroll position is still there.</p>
+<p>Next to saving their own state, Scenes are also responsible for saving and
+restoring the Container states.
+Since multiple Containers can be attached to and detached from the Scene, their
+state needs to be saved and restored between the Container instances as well.
+This can easily be done by saving the Container state in the <code>detach</code> method,
+and restoring it in the <code>attach</code> method.</p>
+<p>Finally, when saving the Scene state, the most recent container state needs to
+be persisted as well.
+The <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/BasicScene">BasicScene</a> class provides a base implementation that
+handles all this.</p>
+<h2 id="in-acorn">In Acorn</h2>
+<p>By default, a <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a> does not support state saving, nor does it
+save or restore view hierarchy state such as user input or scroll positions.
+From a user's perspective however, it is important that you <em>do</em> save your
+Scene's state: not only can an Android application be killed at any time after which it
+should be properly restored, but a lost scroll position on orientation change
+can also be very annoying.</p>
+<h3 id="view-hierarchy-state-saving">View hierarchy state saving</h3>
+<p>During the lifetime of a <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a> it can happen that it receives
+multiple calls to <code>attach</code> and <code>detach</code>.
+Often, subsequent calls to <code>attach</code> will have fresh instances of the
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container">Container</a> passed to it, losing any view hierarchy state.
+The Activity being recreated due to a device orientation change is one example
+of this.</p>
+<p>The Scene can save and restore the container state between these subsequent
+calls to <code>attach</code> if the Container type implements the
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RestorableContainer">RestorableContainer</a> interface.
+This interface provides a <code>saveInstanceState</code> method and a
+<code>restoreInstanceState</code> method, which the Scene can use to restore the container
+state:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">interface</span>&nbsp;<span class="nc">MyContainer</span><span class="p">:</span>&nbsp;<span class="n">RestorableContainer</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">MyScene</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;</span>&nbsp;<span class="p">{</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">var</span>&nbsp;<span class="py">containerState</span><span class="p">:</span>&nbsp;<span class="n">ContainerState</span><span class="p">?</span>&nbsp;<span class="p">=</span>&nbsp;<span class="k">null</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span>&nbsp;<span class="n">MyContainer</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">containerState</span><span class="o">?.</span><span class="n">let</span>&nbsp;<span class="p">{</span>&nbsp;<span class="n">v</span><span class="p">.</span><span class="n">restoreInstanceState</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>&nbsp;<span class="p">}</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">detach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span>&nbsp;<span class="n">MyContainer</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">containerState</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">v</span><span class="p">.</span><span class="n">saveInstanceState</span><span class="p">()</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>This <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a> will now save the <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container">Container</a>'s
+instance state when it gets detached from the Scene.
+A new Container instance that gets attached to the Scene will receive the
+previous Container's state and can restore the view hierarchy.</p>
+<h3 id="scene-state-saving">Scene state saving</h3>
+<p>To have your <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a>'s state saved to prepare for process deaths,
+implement the <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableScene">SavableScene</a> interface.
+This interface provides a <code>saveInstanceState()</code> method that will be called at
+appropriate times.<br />
+When saving a Scene, you generally want to save as little as possible, but just
+enough to be able to reconstruct it after process death.
+Think of saving a <code>userId</code> value, but not the entire <code>User</code> instance.</p>
+<p>Next to this, you can also choose to save the view hierarchy state with it, if
+the <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container">Container</a> supports it:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">interface</span>&nbsp;<span class="nc">MyContainer</span><span class="p">:</span>&nbsp;<span class="n">RestorableContainer</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">MyScene</span><span class="p">(</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">userId</span><span class="p">:</span>&nbsp;<span class="n">String</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span><span class="p">)</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;,</span>&nbsp;<span class="n">SavableScene</span>&nbsp;<span class="p">{</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">var</span>&nbsp;<span class="py">containerState</span><span class="p">:</span>&nbsp;<span class="n">ContainerState</span><span class="p">?</span>&nbsp;<span class="p">=</span>&nbsp;<span class="k">null</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span>&nbsp;<span class="n">MyContainer</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">containerState</span><span class="o">?.</span><span class="n">let</span>&nbsp;<span class="p">{</span>&nbsp;<span class="n">v</span><span class="p">.</span><span class="n">restoreInstanceState</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>&nbsp;<span class="p">}</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">detach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span>&nbsp;<span class="n">MyContainer</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">containerState</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">v</span><span class="p">.</span><span class="n">saveInstanceState</span><span class="p">()</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-16"></a><span class="lineno">16&nbsp;</span><br><a name="line-17"></a><span class="lineno">17&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">saveInstanceState</span><span class="p">():</span>&nbsp;<span class="n">SceneState</span>&nbsp;<span class="p">{</span><br><a name="line-18"></a><span class="lineno">18&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">sceneState</span>&nbsp;<span class="p">{</span><br><a name="line-19"></a><span class="lineno">19&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">it</span><span class="p">[</span><span class="s">&quot;user_id&quot;</span><span class="p">]</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">userId</span><br><a name="line-20"></a><span class="lineno">20&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">it</span><span class="p">[</span><span class="s">&quot;container_state&quot;</span><span class="p">]</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">containerState</span><br><a name="line-21"></a><span class="lineno">21&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-22"></a><span class="lineno">22&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-23"></a><span class="lineno">23&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>This snippet extends the previous snippet by implementing the <code>SavableScene</code>
+interface and overriding the <code>saveInstanceState()</code> method.</p>
+<h3 id="scene-state-restoration">Scene state restoration</h3>
+<p>After a process death, a <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator">Navigator</a> class can ask you to restore
+your <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a> from a saved state
+(see <a href="https://nhaarman.github.io/acorn/wiki/navigators">Navigators</a>).<br />
+If your Scene implements <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableScene">SavableScene</a>, you will be passed the
+<a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SceneState">SceneState</a> instance that you returned from <code>saveInstanceState()</code>.
+You can then pull out everything you need to be able to restore the Scene.</p>
+<p>If we again expand on the previous example, we can add restoration support by
+implementing a <code>create</code> method in the Scene's <code>companion object</code> as follows:</p>
+<div class="highlight"><pre><span></span><a name="line-1"></a><span class="lineno">&nbsp;1&nbsp;</span><span class="k">interface</span>&nbsp;<span class="nc">MyContainer</span><span class="p">:</span>&nbsp;<span class="n">RestorableContainer</span><br><a name="line-2"></a><span class="lineno">&nbsp;2&nbsp;</span><br><a name="line-3"></a><span class="lineno">&nbsp;3&nbsp;</span><span class="k">class</span>&nbsp;<span class="nc">MyScene</span><span class="p">(</span><br><a name="line-4"></a><span class="lineno">&nbsp;4&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">val</span>&nbsp;<span class="py">userId</span><span class="p">:</span>&nbsp;<span class="n">String</span><span class="p">,</span><br><a name="line-5"></a><span class="lineno">&nbsp;5&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">savedState</span><span class="p">:</span>&nbsp;<span class="n">SceneState</span><span class="p">?</span>&nbsp;<span class="p">=</span>&nbsp;<span class="k">null</span><br><a name="line-6"></a><span class="lineno">&nbsp;6&nbsp;</span><span class="p">)</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">Scene</span><span class="p">&lt;</span><span class="n">MyContainer</span><span class="p">&gt;,</span>&nbsp;<span class="n">SavableScene</span>&nbsp;<span class="p">{</span><br><a name="line-7"></a><span class="lineno">&nbsp;7&nbsp;</span><br><a name="line-8"></a><span class="lineno">&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">private</span>&nbsp;<span class="k">var</span>&nbsp;<span class="py">containerState</span><span class="p">:</span>&nbsp;<span class="n">ContainerState</span><span class="p">?</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">savedState</span><span class="o">?.</span><span class="k">get</span><span class="p">(</span><span class="s">&quot;container_state&quot;</span><span class="p">)</span><br><a name="line-9"></a><span class="lineno">&nbsp;9&nbsp;</span><br><a name="line-10"></a><span class="lineno">10&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">attach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span>&nbsp;<span class="n">MyContainer</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-11"></a><span class="lineno">11&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">containerState</span><span class="o">?.</span><span class="n">let</span>&nbsp;<span class="p">{</span>&nbsp;<span class="n">v</span><span class="p">.</span><span class="n">restoreInstanceState</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>&nbsp;<span class="p">}</span><br><a name="line-12"></a><span class="lineno">12&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-13"></a><span class="lineno">13&nbsp;</span><br><a name="line-14"></a><span class="lineno">14&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">detach</span><span class="p">(</span><span class="n">v</span><span class="p">:</span>&nbsp;<span class="n">MyContainer</span><span class="p">)</span>&nbsp;<span class="p">{</span><br><a name="line-15"></a><span class="lineno">15&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">containerState</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">v</span><span class="p">.</span><span class="n">saveInstanceState</span><span class="p">()</span><br><a name="line-16"></a><span class="lineno">16&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-17"></a><span class="lineno">17&nbsp;</span><br><a name="line-18"></a><span class="lineno">18&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">override</span>&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">saveInstanceState</span><span class="p">():</span>&nbsp;<span class="n">SceneState</span>&nbsp;<span class="p">{</span><br><a name="line-19"></a><span class="lineno">19&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">sceneState</span>&nbsp;<span class="p">{</span><br><a name="line-20"></a><span class="lineno">20&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">it</span><span class="p">[</span><span class="s">&quot;user_id&quot;</span><span class="p">]</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">userId</span><br><a name="line-21"></a><span class="lineno">21&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">it</span><span class="p">[</span><span class="s">&quot;container_state&quot;</span><span class="p">]</span>&nbsp;<span class="p">=</span>&nbsp;<span class="n">containerState</span><br><a name="line-22"></a><span class="lineno">22&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-23"></a><span class="lineno">23&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-24"></a><span class="lineno">24&nbsp;</span><br><a name="line-25"></a><span class="lineno">25&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">companion</span>&nbsp;<span class="k">object</span>&nbsp;<span class="p">{</span><br><a name="line-26"></a><span class="lineno">26&nbsp;</span><br><a name="line-27"></a><span class="lineno">27&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fun</span>&nbsp;<span class="nf">create</span><span class="p">(</span><span class="n">savedState</span><span class="p">:</span>&nbsp;<span class="n">SceneState</span><span class="p">)</span>&nbsp;<span class="p">:</span>&nbsp;<span class="n">MyScene</span>&nbsp;<span class="p">{</span><br><a name="line-28"></a><span class="lineno">28&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span>&nbsp;<span class="n">MyScene</span><span class="p">(</span><br><a name="line-29"></a><span class="lineno">29&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">savedState</span><span class="p">[</span><span class="s">&quot;user_id&quot;</span><span class="p">],</span><br><a name="line-30"></a><span class="lineno">30&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">savedState</span><br><a name="line-31"></a><span class="lineno">31&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">)</span><br><a name="line-32"></a><span class="lineno">32&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-33"></a><span class="lineno">33&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span><br><a name="line-34"></a><span class="lineno">34&nbsp;</span><span class="p">}</span><br></pre></div><br>
+<p>Now, we have restored our <code>userId</code> from the saved state, as well as any view
+state that was saved with it.</p>
+
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+                    </article>
+                </section>
+            
+        </div>
+        <hr>
+
+        <!-- Page Footer -->
+        <div class="inner">
+    <footer id="footer">
+        <div class="clearfix">
+            
+                <div class="float-left">
+                    <a href="https://nhaarman.github.io/acorn/wiki/scenes/interface" class="button special small pill">
+                        <span>&larr;</span> The Scene interface
+                    </a>
+                </div>
+            
+            
+                <div class="float-right">
+                    <a href="https://nhaarman.github.io/acorn/wiki/scenes/events" class="button special small pill">
+                        Events<span>&rarr;</span>
+                    </a>
+                </div>
+            
+        </div>
+    </footer>
+</div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+    <div class="inner">
+
+        <!-- Search -->
+        <section id="search" class="alt">
+            <form data-orchid-search="">
+                <input type="text" name="query" id="query" placeholder="Search"/>
+            </form>
+            <div class="box" id="search-results" data-orchid-search-results style="display: none;">
+                <b>Search Results</b>
+                <ul></ul>
+            </div>
+            <div class="box" id="search-progress" data-orchid-search-progress style="display: none;">
+                <div class="loader">Loading...</div>
+            </div>
+        </section>
+
+        <!-- Menu -->
+        <nav id="siteNav" class="menu">
+            <header class="major">
+                <h2>Acorn</h2>
+            </header>
+            <ul class="top-level">
+                
+                    
+    
+    <li>
+        <a class="subheader">Wiki</a>
+    </li>
+    
+
+                
+                    
+    <li>
+        <span class="opener">Scenes</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/about">About Scenes</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/lifecycle">The Lifecyle</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/interface">The Scene interface</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/state_saving">Saving state</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/events">Events</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/scenes/base_implementations">Base implementations</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    <li>
+        <span class="opener">Navigators</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/about">About Navigators</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/interface">The Navigator interface</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/state_saving">Saving state</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/base_implementations">Base implementations</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/composing_implementations">Composing implementations</a>
+    </li>
+    
+
+        
+            
+    <li>
+        <span class="opener">Advanced</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/navigators/advanced/scene_management">Scene management</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    <li>
+        <span class="opener">Displaying Scenes</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/displaying_scenes/about">About</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/displaying_scenes/viewcontroller">The ViewController</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/displaying_scenes/mapping_scenes_layouts">Mapping Scenes to Layouts</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/displaying_scenes/transition_animations">Transition Animations</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    <li>
+        <span class="opener">The Activity</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/activity/about">About</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/activity/concepts">The Activity as a Plugin</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/activity/navigator_providing">Providing the Navigator</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/setup">Setup</a>
+    </li>
+    
+
+                
+                    
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/getting_started">Getting started</a>
+    </li>
+    
+
+                
+                    
+    <li>
+        <span class="opener">Experimental</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/wiki/experimental/concurrentpairnavigator">ConcurrentPairNavigator</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    
+    <li>
+        <a class="subheader">API Docs</a>
+    </li>
+    
+
+                
+                    
+    <li>
+        <span class="opener">All Packages</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/acorn">acorn</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn">com.nhaarman.acorn</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android">com.nhaarman.acorn.android</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching">com.nhaarman.acorn.android.dispatching</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental">com.nhaarman.acorn.android.experimental</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation">com.nhaarman.acorn.android.navigation</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation">com.nhaarman.acorn.android.presentation</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition">com.nhaarman.acorn.android.transition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate">com.nhaarman.acorn.android.uistate</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/util">com.nhaarman.acorn.android.util</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation">com.nhaarman.acorn.navigation</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental">com.nhaarman.acorn.navigation.experimental</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation">com.nhaarman.acorn.presentation</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state">com.nhaarman.acorn.state</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing">com.nhaarman.acorn.testing</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/util">com.nhaarman.acorn.util</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+                    
+    <li>
+        <span class="opener">All Classes</span>
+        <ul>
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation/AbstractNavigatorProvider">AbstractNavigatorProvider</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornActivity">AcornActivity</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornActivityDelegate">AcornActivityDelegate</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AcornAppCompatActivity">AcornAppCompatActivity</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/AcornEvents">AcornEvents</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher">AcornSceneDispatcher</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ActivityController">ActivityController</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ActivityControllerFactory">ActivityControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/AndroidLogger">AndroidLogger</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/BasicScene">BasicScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/BottomBarNavigator">BottomBarNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransition/Callback">Callback</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/AcornSceneDispatcher/Callback">Callback</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedContainer">CombinedContainer</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CombinedScene">CombinedScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/ComposingSceneTransitionFactory">ComposingSceneTransitionFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ComposingViewControllerFactory">ComposingViewControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeDisposableHandle">CompositeDisposableHandle</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/CompositeParallelNavigator">CompositeParallelNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeReplacingNavigator">CompositeReplacingNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/CompositeStackNavigator">CompositeStackNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ConcurrentPairNavigator">ConcurrentPairNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Container">Container</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/ContainerProvider">ContainerProvider</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/ContainerState">ContainerState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/DefaultSceneTransitionFactory">DefaultSceneTransitionFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/AcornEvents/DispatchingListener">DispatchingListener</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/DisposableHandle">DisposableHandle</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/DoBeforeTransition">DoBeforeTransition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator/Events">Events</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/ExperimentalAcornEvents">ExperimentalAcornEvents</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ExperimentalCompositeParallelNavigator">ExperimentalCompositeParallelNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/experimental/ExperimentalConcurrentPairNavigator">ExperimentalConcurrentPairNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/FadeInFromBottomTransition">FadeInFromBottomTransition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/FadeOutToBottomTransition">FadeOutToBottomTransition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/experimental/HookingSceneDispatcher">HookingSceneDispatcher</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/util/LazyVar">LazyVar</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/Logger">Logger</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/Navigator">Navigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/navigation/NavigatorProvider">NavigatorProvider</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/NavigatorState">NavigatorState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/NoopActivityControllerFactory">NoopActivityControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/NoopSceneTransitionFactory">NoopSceneTransitionFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/NoopViewControllerFactory">NoopViewControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/OnBackPressListener">OnBackPressListener</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ProvidesView">ProvidesView</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/ReplacingNavigator">ReplacingNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RestorableContainer">RestorableContainer</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/RestorableTestContainer">RestorableTestContainer</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/RestorableViewController">RestorableViewController</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/RxScene">RxScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableContainer">SavableContainer</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/SavableNavigator">SavableNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SavableScene">SavableScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SavedState">SavedState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/Scene">Scene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/SceneDispatcher">SceneDispatcher</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/dispatching/SceneDispatcherFactory">SceneDispatcherFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/presentation/SceneKey">SceneKey</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/state/SceneState">SceneState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransition">SceneTransition</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransitionFactory">SceneTransitionFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/transition/SceneTransitionFactoryBuilder">SceneTransitionFactoryBuilder</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/SceneViewControllerFactory">SceneViewControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/SingleSceneNavigator">SingleSceneNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/StackNavigator">StackNavigator</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/TestContext">TestContext</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/testing/TestLogger">TestLogger</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/TransitionData">TransitionData</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIHandler">UIHandler</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIState">UIState</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/uistate/UIStateUIHandler">UIStateUIHandler</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewController">ViewController</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewControllerFactory">ViewControllerFactory</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewControllerFactoryBuilder">ViewControllerFactoryBuilder</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/android/presentation/ViewProvidingScene">ViewProvidingScene</a>
+    </li>
+    
+
+        
+            
+    
+    <li>
+        <a href="https://nhaarman.github.io/acorn/com/nhaarman/acorn/navigation/WizardNavigator">WizardNavigator</a>
+    </li>
+    
+
+        
+        </ul>
+    </li>
+
+                
+            </ul>
+        </nav>
+        
+
+        <!-- Section -->
+        <section>
+            <p class="text-center">
+                Currently 1.2.1. Created with <a href="https://orchid.netlify.com">Orchid </a> and <b>Orchid Editorial Theme</b>.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <p class="copyright text-center">&copy; Acorn. All rights reserved.<br>Design by <a href="https://html5up.net">HTML5 UP</a></p>
+        </footer>
+
+    </div>
+</div>
+
+</div>
+
+<!-- start:inject scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
+<script src="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/js/editorial_util.js"></script>
+<script src="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/js/editorial_main.js"></script>
+<script src="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/js/editorial_orchidCustomizations.js"></script>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script src="https://nhaarman.github.io/acorn/Editorial/6090f8c6/assets/js/orchidSearch.js"></script>
+<!-- end:inject scripts -->
+
+</body>
+</html>
