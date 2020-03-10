@@ -25,6 +25,7 @@ import com.nhaarman.acorn.state.navigatorState
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
@@ -412,6 +413,57 @@ internal class StackNavigatorTest {
 
             /* Then */
             expect(listener.lastSavableScene).toBeNull()
+        }
+
+        @Test
+        fun `replacing a scene for inactive navigator does not notify listeners`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            navigator.replace(scene2)
+
+            /* Then */
+            expect(listener.lastSavableScene).toBeNull()
+        }
+
+        @Test
+        fun `replacing a scene for destroyed navigator does not notify listeners`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onDestroy()
+
+            /* When */
+            navigator.replace(scene2)
+
+            /* Then */
+            expect(listener.lastSavableScene).toBeNull()
+        }
+
+        @Test
+        fun `replacing a scene for active navigator does notify listeners`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
+
+            /* When */
+            navigator.replace(scene2)
+
+            /* Then */
+            expect(listener.lastSavableScene).toBe(scene2)
+        }
+
+        @Test
+        fun `replacing a scene for active navigator - scene notification has forward transition data`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
+
+            /* When */
+            navigator.replace(scene2)
+
+            /* Then */
+            expect(listener.lastTransitionData?.isBackwards).toBe(false)
         }
 
         @Test
@@ -1174,6 +1226,71 @@ internal class StackNavigatorTest {
 
             /* Then */
             expect(state1).toBe(state2)
+        }
+    }
+
+    @Nested
+    inner class `Order of scene start and listener invocation` {
+
+        /**
+         * A Scene (A) that _immediately_ causes another transition to
+         * another Scene (B) when A's `onStart` method is invoked results
+         * in the wrong order of scene notifications if the listener
+         * invocation happens after starting the scene: First B is reported
+         * and only then A.
+         *
+         * Ensuring listener invocation happens before starting the Scene
+         * resolves this issue.
+         */
+
+        @Test
+        fun `pushing a scene invokes listeners before starting the new scene`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
+
+            /* When */
+            navigator.push(scene2)
+
+            /* Then */
+            inOrder(listener, scene2) {
+                verify(listener).scene(eq(scene2), anyOrNull())
+                verify(scene2).onStart()
+            }
+        }
+
+        @Test
+        fun `replacing a scene invokes listeners before starting the new scene`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
+
+            /* When */
+            navigator.replace(scene2)
+
+            /* Then */
+            inOrder(listener, scene2) {
+                verify(listener).scene(eq(scene2), anyOrNull())
+                verify(scene2).onStart()
+            }
+        }
+
+        @Test
+        fun `popping a scene invokes listeners before starting the new scene`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
+            navigator.push(scene2)
+
+            /* When */
+            navigator.pop()
+
+            /* Then */
+            inOrder(listener, scene1) {
+                verify(scene1).onStop()
+                verify(listener).scene(eq(scene1), anyOrNull())
+                verify(scene1).onStart()
+            }
         }
     }
 

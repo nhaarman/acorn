@@ -86,11 +86,7 @@ abstract class ReplacingNavigator(
      * @param data Any transition data for this transition.
      */
     fun replace(newScene: Scene<out Container>, data: TransitionData? = null) {
-        execute(state.replaceWith(newScene))
-
-        if (state is LifecycleState.Active) {
-            state.listeners.forEach { it.scene(state.scene, data) }
-        }
+        execute(state.replaceWith(newScene, data))
     }
 
     /**
@@ -201,7 +197,7 @@ abstract class ReplacingNavigator(
         abstract fun stop(): StateTransition
         abstract fun destroy(): StateTransition
 
-        abstract fun replaceWith(scene: Scene<out Container>): StateTransition
+        abstract fun replaceWith(scene: Scene<out Container>, data: TransitionData?): StateTransition
         abstract fun finish(): StateTransition
 
         companion object {
@@ -241,7 +237,7 @@ abstract class ReplacingNavigator(
                 }
             }
 
-            override fun replaceWith(scene: Scene<out Container>): StateTransition {
+            override fun replaceWith(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 return StateTransition(Inactive(scene, listeners))
             }
 
@@ -283,10 +279,11 @@ abstract class ReplacingNavigator(
                 }
             }
 
-            override fun replaceWith(scene: Scene<out Container>): StateTransition {
+            override fun replaceWith(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 return StateTransition(Active(scene, listeners)) {
                     this.scene.onStop()
                     this.scene.onDestroy()
+                    listeners.forEach { it.scene(scene, data) }
                     scene.onStart()
                 }
             }
@@ -323,7 +320,7 @@ abstract class ReplacingNavigator(
                 return StateTransition(this)
             }
 
-            override fun replaceWith(scene: Scene<out Container>): StateTransition {
+            override fun replaceWith(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 w("LifecycleState", "Warning: Cannot replace scene after state is destroyed.")
                 return StateTransition(this)
             }

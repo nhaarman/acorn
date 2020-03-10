@@ -1,0 +1,14 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.java-library")
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    testImplementation project(":ext-acorn-testing")
+    testImplementation "com.nhaarman:expect.kt"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}

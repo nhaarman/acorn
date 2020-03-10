@@ -366,8 +366,8 @@ abstract class StackNavigator(
             override fun push(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 return StateTransition(Active(scenes + scene, listeners)) {
                     scenes.last().onStop()
-                    scene.onStart()
                     listeners.forEach { it.scene(scene, data) }
+                    scene.onStart()
                 }
             }
 
@@ -386,9 +386,8 @@ abstract class StackNavigator(
                         poppedScene.onStop()
                         poppedScene.onDestroy()
 
-                        newScenes.last().onStart()
-
                         listeners.forEach { it.scene(newScenes.last(), TransitionData.backwards) }
+                        newScenes.last().onStart()
                     }
                 }
             }
@@ -404,8 +403,8 @@ abstract class StackNavigator(
                     poppedScene.onStop()
                     poppedScene.onDestroy()
 
-                    scene.onStart()
                     listeners.forEach { it.scene(scene, data) }
+                    scene.onStart()
                 }
             }
 
