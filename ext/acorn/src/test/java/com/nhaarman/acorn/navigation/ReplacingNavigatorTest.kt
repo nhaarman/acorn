@@ -24,6 +24,7 @@ import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
@@ -666,6 +667,37 @@ internal class ReplacingNavigatorTest {
 
             /* Then */
             expect(listener.lastScene).toBe(scene1)
+        }
+    }
+
+    @Nested
+    inner class `Order of scene start and listener invocation` {
+
+        /**
+         * A Scene (A) that _immediately_ causes another transition to
+         * another Scene (B) when A's `onStart` method is invoked results
+         * in the wrong order of scene notifications if the listener
+         * invocation happens after starting the scene: First B is reported
+         * and only then A.
+         *
+         * Ensuring listener invocation happens before starting the Scene
+         * resolves this issue.
+         */
+
+        @Test
+        fun `replacing a scene invokes listeners before starting the new scene`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+            navigator.onStart()
+
+            /* When */
+            navigator.replace(scene1)
+
+            /* Then */
+            inOrder(listener, scene1) {
+                verify(listener).scene(eq(scene1), anyOrNull())
+                verify(scene1).onStart()
+            }
         }
     }
 
