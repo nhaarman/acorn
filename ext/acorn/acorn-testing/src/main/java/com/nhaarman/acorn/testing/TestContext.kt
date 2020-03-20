@@ -82,6 +82,12 @@ class TestContext private constructor(
     }
 
     fun pressBack() {
+        val container = container
+        if (container is OnBackPressListener) {
+            container.onBackPressed()
+            return
+        }
+
         (navigator as OnBackPressListener).onBackPressed()
     }
 
