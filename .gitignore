@@ -10,32 +10,20 @@
 **.hprof
 
 **.log
-**.swp
 
 *.orig
-*.attach_*
+**/.attach*
 
-.idea/assetWizardSettings.xml
-.idea/caches/*
-.idea/libraries/*
-.idea/gradle.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/runConfigurations.xml
-.idea/vcs.xml
-.idea/workspace.xml
-.idea/shelf
-.idea/markdown-navigator.xml
-.idea/markdown-navigator
+.idea/*
+
+!/.idea/codeStyles
+!/.idea/runConfigurations
+!/.idea/inspectionProfiles
+!/.idea/encodings.xml
+!/.idea/misc.xml
+!/.idea/vcs.xml
+!/.idea/dictionaries
+!/.idea/icon.png
+!/.idea/icon_dark.png
 
 .projectFilesBackup
-/.idea/navEditor.xml
-
-.wiki
-.docs
-
-/.idea/markdown-exported-files.xml
-/.idea/kotlinScripting.xml
-/.idea/kotlinc.xml
-/.idea/codeStyleSettings.xml
-/.idea/compiler.xml
