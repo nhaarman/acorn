@@ -50,6 +50,9 @@ internal class DefaultActivityHandler(
                 "ActivityHandler",
                 "New external Scene has the same key as the previously dispatched Scene, not starting Activity."
             )
+
+            lastScene = scene
+            lastActivityController = activityController
             return
         }
 

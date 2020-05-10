@@ -214,6 +214,34 @@ internal class DefaultActivityHandlerTest {
                 verify(scene).detach(activityController)
             }
         }
+
+        @Nested
+        inner class ResultsWithSavedState {
+
+            private val activityHandler by lazy {
+                val original = DefaultActivityHandler(mock(), null)
+                original.withScene(scene, activityController)
+                val state = original.saveInstanceState()
+                DefaultActivityHandler(callback, state)
+            }
+
+            @Test
+            // https://github.com/nhaarman/acorn/issues/165
+            fun `onActivityResult notifies activityController for restored state`() {
+                /* Given */
+                activityHandler.withScene(scene, activityController)
+
+                /* When */
+                activityHandler.onActivityResult(3, null)
+
+                /* Then */
+                inOrder(scene, activityController) {
+                    verify(scene).attach(activityController)
+                    verify(activityController).onResult(3, null)
+                    verify(scene).detach(activityController)
+                }
+            }
+        }
     }
 
     private class TestActivityController(private val intent: Intent) : ActivityController {
