@@ -17,6 +17,10 @@
 package com.nhaarman.acorn.samples.hellostartactivity
 
 import android.content.Intent
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
@@ -50,6 +54,7 @@ class AppTest {
         exitMaps()
 
         expect(device.currentPackageName).toBe(appPackage)
+        onView(withText("START MAPS")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -69,6 +74,7 @@ class AppTest {
         exitMaps()
 
         expect(device.currentPackageName).toBe(appPackage)
+        onView(withText("START MAPS")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -88,6 +94,7 @@ class AppTest {
         exitMaps()
 
         expect(device.currentPackageName).toBe(appPackage)
+        onView(withText("START MAPS")).check(matches(isDisplayed()))
     }
 
     @After
