@@ -35,7 +35,7 @@ class FirstSceneTest {
         container.clickSecondScene()
 
         /* Then */
-        verify(listener).mapsRequested()
+        verify(listener).settingsRequested()
     }
 
     private class TestContainer : FirstSceneContainer {

@@ -34,11 +34,11 @@ class MainActivity : AcornAppCompatActivity() {
         return object : ActivityControllerFactory {
 
             override fun supports(sceneKey: SceneKey): Boolean {
-                return sceneKey == SceneKey.from(MapsScene::class)
+                return sceneKey == SceneKey.from(AppSettingsScene::class)
             }
 
             override fun activityControllerFor(scene: Scene<*>, context: Context): ActivityController {
-                return MapsActivityController()
+                return AppSettingsActivityController(context)
             }
         }
     }

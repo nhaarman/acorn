@@ -35,12 +35,12 @@ class FirstScene(
     }
 
     override fun attach(v: FirstSceneContainer) {
-        v.onButtonClicked { listener.mapsRequested() }
+        v.onButtonClicked { listener.settingsRequested() }
     }
 
     interface Events {
 
-        fun mapsRequested()
+        fun settingsRequested()
     }
 }
 
@@ -54,7 +54,7 @@ class FirstSceneViewController(
 ) : RestorableViewController, FirstSceneContainer, LayoutContainer {
 
     override fun onButtonClicked(f: () -> Unit) {
-        mapsButton.setOnClickListener { f() }
+        settingsButton.setOnClickListener { f() }
     }
 
     override val containerView = view

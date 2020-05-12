@@ -16,19 +16,25 @@
 
 package com.nhaarman.acorn.samples.hellostartactivity
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.Settings
 import com.nhaarman.acorn.android.presentation.ActivityController
 
-class MapsActivityController : MapsContainer, ActivityController {
+class AppSettingsActivityController(
+    private val context: Context
+) : AppSettingsContainer, ActivityController {
 
     private var done = false
 
     private var listeners = listOf<() -> Unit>()
 
     override fun createIntent(): Intent {
-        return Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("https://www.google.com/maps/search/?api=1&query=taj+mahal+agra")
+        return Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            addCategory(Intent.CATEGORY_DEFAULT)
+            data = Uri.parse("package:" + context.getPackageName())
         }
     }
 
