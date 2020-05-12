@@ -37,24 +37,24 @@ class HelloStartActivityNavigator(
     savedState: NavigatorState?
 ) : StackNavigator(savedState),
     FirstScene.Events,
-    MapsScene.Events {
+    AppSettingsScene.Events {
 
     override fun initialStack(): List<Scene<out Container>> {
         return listOf(FirstScene(this))
     }
 
-    override fun mapsRequested() {
-        push(MapsScene(this))
+    override fun settingsRequested() {
+        push(AppSettingsScene(this))
     }
 
-    override fun mapsFinished() {
+    override fun settingsFinished() {
         pop()
     }
 
     override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
         return when (sceneClass) {
             FirstScene::class -> FirstScene(this)
-            MapsScene::class -> MapsScene(this)
+            AppSettingsScene::class -> AppSettingsScene(this)
             else -> error("Unknown scene: $sceneClass")
         }
     }

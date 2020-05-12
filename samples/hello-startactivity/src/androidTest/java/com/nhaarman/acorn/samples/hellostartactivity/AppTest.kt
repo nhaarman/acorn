@@ -39,22 +39,22 @@ class AppTest {
     @Test
     fun clickThroughApp() {
         startApp()
-        clickMapsButton()
+        clickSettingsButton()
 
-        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+        expect(device.currentPackageName).toBe("com.android.settings")
 
-        exitMaps()
-
-        expect(device.currentPackageName).toBe(appPackage)
-
-        clickMapsButton()
-
-        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
-
-        exitMaps()
+        exitSettings()
 
         expect(device.currentPackageName).toBe(appPackage)
-        onView(withText("START MAPS")).check(matches(isDisplayed()))
+
+        clickSettingsButton()
+
+        expect(device.currentPackageName).toBe("com.android.settings")
+
+        exitSettings()
+
+        expect(device.currentPackageName).toBe(appPackage)
+        onView(withText("OPEN SETTINGS")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -63,18 +63,18 @@ class AppTest {
         setPortrait()
 
         startApp()
-        clickMapsButton()
+        clickSettingsButton()
 
-        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+        expect(device.currentPackageName).toBe("com.android.settings")
 
         rotate()
 
-        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+        expect(device.currentPackageName).toBe("com.android.settings")
 
-        exitMaps()
+        exitSettings()
 
         expect(device.currentPackageName).toBe(appPackage)
-        onView(withText("START MAPS")).check(matches(isDisplayed()))
+        onView(withText("OPEN SETTINGS")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -83,18 +83,18 @@ class AppTest {
         setPortrait()
 
         startApp()
-        clickMapsButton()
+        clickSettingsButton()
 
-        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+        expect(device.currentPackageName).toBe("com.android.settings")
 
         Runtime.getRuntime().exec(arrayOf("am", "force-stop", appPackage))
 
-        expect(device.currentPackageName).toBe("com.google.android.apps.maps")
+        expect(device.currentPackageName).toBe("com.android.settings")
 
-        exitMaps()
+        exitSettings()
 
         expect(device.currentPackageName).toBe(appPackage)
-        onView(withText("START MAPS")).check(matches(isDisplayed()))
+        onView(withText("OPEN SETTINGS")).check(matches(isDisplayed()))
     }
 
     @After
@@ -126,20 +126,20 @@ class AppTest {
         )
     }
 
-    private fun clickMapsButton() {
-        val mapsButton = device.findObject(
-            UiSelector().text("START MAPS").className("android.widget.Button")
+    private fun clickSettingsButton() {
+        val settingsButton = device.findObject(
+            UiSelector().text("OPEN SETTINGS").className("android.widget.Button")
         )
 
-        mapsButton.click()
+        settingsButton.click()
 
         device.wait(
-            Until.hasObject(By.pkg("com.google.android.apps.maps")),
+            Until.hasObject(By.pkg("com.android.settings")),
             3000
         )
     }
 
-    private fun exitMaps() {
+    private fun exitSettings() {
         device.pressBack()
         val isAppPackage = device.wait(
             Until.hasObject(By.pkg(appPackage)),

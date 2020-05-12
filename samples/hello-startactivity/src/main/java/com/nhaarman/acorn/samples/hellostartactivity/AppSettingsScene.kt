@@ -19,29 +19,29 @@ package com.nhaarman.acorn.samples.hellostartactivity
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.Scene
 
-interface MapsContainer : Container {
+interface AppSettingsContainer : Container {
 
     fun addFinishedEventListener(f: () -> Unit)
 
     fun removeFinishedEventListener(f: () -> Unit)
 }
 
-class MapsScene(
+class AppSettingsScene(
     private val listener: Events
-) : Scene<MapsContainer> {
+) : Scene<AppSettingsContainer> {
 
-    private val finishListener = { listener.mapsFinished() }
+    private val finishListener = { listener.settingsFinished() }
 
-    override fun attach(v: MapsContainer) {
+    override fun attach(v: AppSettingsContainer) {
         v.addFinishedEventListener(finishListener)
     }
 
-    override fun detach(v: MapsContainer) {
+    override fun detach(v: AppSettingsContainer) {
         v.removeFinishedEventListener(finishListener)
     }
 
     interface Events {
 
-        fun mapsFinished()
+        fun settingsFinished()
     }
 }
