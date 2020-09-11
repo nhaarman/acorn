@@ -1292,6 +1292,21 @@ internal class StackNavigatorTest {
                 verify(scene1).onStart()
             }
         }
+
+        @Test
+        fun `starting the navigator invokes listeners before starting the scene`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            navigator.onStart()
+
+            /* Then */
+            inOrder(listener, scene1) {
+                verify(listener).scene(eq(scene1), anyOrNull())
+                verify(scene1).onStart()
+            }
+        }
     }
 
     class TestStackNavigator(
