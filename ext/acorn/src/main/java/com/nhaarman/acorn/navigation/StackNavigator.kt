@@ -277,8 +277,9 @@ abstract class StackNavigator(
 
             override fun start(): StateTransition {
                 return StateTransition(Active(scenes, listeners)) {
-                    scenes.last().onStart()
+                    // These lines should be swapped
                     listeners.forEach { it.scene(scenes.last(), null) }
+                    scenes.last().onStart()
                 }
             }
 
