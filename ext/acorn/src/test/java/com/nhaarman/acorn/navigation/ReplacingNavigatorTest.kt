@@ -699,6 +699,21 @@ internal class ReplacingNavigatorTest {
                 verify(scene1).onStart()
             }
         }
+
+        @Test
+        fun `starting the navigator invokes listeners before starting the scene`() {
+            /* Given */
+            navigator.addNavigatorEventsListener(listener)
+
+            /* When */
+            navigator.onStart()
+
+            /* Then */
+            inOrder(listener, initialScene) {
+                verify(listener).scene(eq(initialScene), anyOrNull())
+                verify(initialScene).onStart()
+            }
+        }
     }
 
     private open class TestListener : Navigator.Events {
