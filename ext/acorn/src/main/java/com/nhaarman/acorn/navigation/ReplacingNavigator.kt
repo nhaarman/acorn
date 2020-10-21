@@ -222,8 +222,8 @@ abstract class ReplacingNavigator(
 
             override fun start(): StateTransition {
                 return StateTransition(Active(scene, listeners)) {
-                    scene.onStart()
                     listeners.forEach { it.scene(scene) }
+                    scene.onStart()
                 }
             }
 
