@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ext-acorn-tests" type="AndroidJUnit" factoryName="Android JUnit">
-    <module name="ext-acorn" />
+    <module name="acorn.ext-acorn" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="acorn.*" />
@@ -24,4 +23,3 @@
     </method>
   </configuration>
 </component>
-
