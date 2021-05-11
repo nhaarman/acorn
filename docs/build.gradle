@@ -1,13 +1,13 @@
 plugins {
-    id "com.eden.orchidPlugin" version "0.17.5"
+    id "com.eden.orchidPlugin" version "0.21.1"
 }
 
 dependencies {
-    orchidRuntime "io.github.javaeden.orchid:OrchidDocs:0.17.5"
-    orchidRuntime "io.github.javaeden.orchid:OrchidKotlindoc:0.17.5"
-    orchidRuntime "io.github.javaeden.orchid:OrchidPluginDocs:0.17.5"
-    orchidRuntime "io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.17.5"
-    orchidRuntime "io.github.javaeden.orchid:OrchidGithub:0.17.5"
+    orchidRuntime "io.github.javaeden.orchid:OrchidDocs:0.21.1"
+    orchidRuntime "io.github.javaeden.orchid:OrchidKotlindoc:0.21.1"
+    orchidRuntime "io.github.javaeden.orchid:OrchidPluginDocs:0.21.1"
+    orchidRuntime "io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.21.1"
+    orchidRuntime "io.github.javaeden.orchid:OrchidGithub:0.21.1"
 }
 
 repositories {
@@ -21,5 +21,5 @@ orchid {
     baseUrl = "https://nhaarman.github.io/acorn"
     version = git.versionName()
 
-    githubToken = "${System.getenv('GITHUB_TOKEN')}" 
+    githubToken = "${System.getenv('GITHUB_TOKEN')}"
 }
