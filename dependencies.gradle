@@ -8,7 +8,7 @@ dependencyManagement {
         dependency "androidx.annotation:annotation:1.2.0"
 
         // ext-acorn-android
-        dependency "androidx.appcompat:appcompat:1.1.0"
+        dependency "androidx.appcompat:appcompat:1.2.0"
         dependency "androidx.interpolator:interpolator:1.0.0"
 
         // ext-acorn-rx
