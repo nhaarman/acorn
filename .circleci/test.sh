@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
+./ktlint
+
 ./gradlew clean \
     test \
-    ktlint \
     \
     :ext-acorn-android-testing:lint \
     :ext-acorn-android-timber:lint \

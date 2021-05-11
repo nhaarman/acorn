@@ -20,8 +20,8 @@ import com.nhaarman.expect.expect
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.schedulers.TestScheduler
-import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.Test
+import java.util.concurrent.TimeUnit
 
 class FirstSceneTest {
 

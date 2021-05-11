@@ -23,7 +23,8 @@ import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.Extension
 import org.junit.jupiter.api.extension.ExtensionContext
 
-class ImmediateMainThreadExtension : Extension,
+class ImmediateMainThreadExtension :
+    Extension,
     BeforeAllCallback,
     AfterAllCallback {
 

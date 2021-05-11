@@ -48,9 +48,12 @@ class PickPictureActivity : AcornAppCompatActivity(), PickPictureNavigator.Event
     }
 
     override fun picturePicked(picture: Picture) {
-        setResult(Activity.RESULT_OK, Intent().apply {
-            data = PictureContentProvider.uriFor(picture.file)
-        })
+        setResult(
+            Activity.RESULT_OK,
+            Intent().apply {
+                data = PictureContentProvider.uriFor(picture.file)
+            }
+        )
         finish()
     }
 

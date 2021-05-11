@@ -28,8 +28,8 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
-import kotlin.reflect.KClass
 import org.junit.jupiter.api.Test
+import kotlin.reflect.KClass
 
 /**
  * When a Scene (A) _immediately_ causes another transition to

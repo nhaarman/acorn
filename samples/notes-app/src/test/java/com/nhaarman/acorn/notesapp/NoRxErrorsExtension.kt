@@ -24,7 +24,8 @@ import org.junit.jupiter.api.extension.Extension
 import org.junit.jupiter.api.extension.ExtensionContext
 
 @Suppress("UNCHECKED_CAST")
-class NoRxErrorsExtension : Extension,
+class NoRxErrorsExtension :
+    Extension,
     BeforeTestExecutionCallback,
     AfterTestExecutionCallback {
 

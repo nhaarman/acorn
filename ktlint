@@ -1,0 +1,46 @@
+#!/bin/bash
+ktlint_version="0.41.0"
+
+########################################################################
+# A wrapper for ktlint which automatically downloads and runs ktlint.
+# ktlint executables will be installed under `build/ktlint`.
+#
+# Usage
+#
+# Download and run ktlint, passing arguments:
+#
+#  ./ktlint -F --color
+#
+# Update this file to the latest release:
+#
+#  ./ktlint --update
+#
+########################################################################
+
+if [[ "$*" == *--update* ]]; then
+  echo "Current ktlint version: $ktlint_version"
+  ktlint_version=$(curl --silent https://api.github.com/repos/pinterest/ktlint/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
+  echo "Latest ktlint version: $ktlint_version"
+
+  # Update ktlint_version in this file on line 2
+  sed -e "2s/ktlint_version=\".*\"/ktlint_version=\"$ktlint_version\"/" ktlint > build/ktlint/ktlint.tmp
+  chmod +x build/ktlint/ktlint.tmp
+  mv build/ktlint/ktlint.tmp ktlint
+fi
+
+folder="build/ktlint/$ktlint_version"
+current_sha256=$(cat $folder/ktlint 2> /dev/null | openssl dgst -sha256 | sed 's/^.* //')
+ktlint_sha256="$(cat $folder/ktlint.sha 2> /dev/null )"
+
+if [ "$current_sha256" != "$ktlint_sha256" ]; then
+  echo "Downloading ktlint $ktlint_version..."
+  mkdir -p $folder
+  curl -L -o $folder/ktlint.dl https://github.com/pinterest/ktlint/releases/download/"$ktlint_version"/ktlint
+  chmod a+x $folder/ktlint.dl
+  mv $folder/ktlint.dl $folder/ktlint
+  echo $(cat $folder/ktlint | openssl dgst -sha256 | sed 's/^.* //') > $folder/ktlint.sha
+fi
+
+if [[ "$*" != *--update* ]]; then
+  $folder/ktlint "$@"
+fi

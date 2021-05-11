@@ -4,8 +4,8 @@ adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put 
 adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put global transition_animation_scale 0
 adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put global animator_duration_scale 0
 
+./ktlint
 ./gradlew test \
-    ktlint \
     :ext-acorn-android-testing:lint \
     :ext-acorn-android-timber:lint \
     :ext-acorn-android-lifecycle:lint \
