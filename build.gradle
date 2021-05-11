@@ -83,19 +83,19 @@ subprojects {
                     jvmTarget = "1.8"
                 }
             }
+
+            if (project.hasProperty("publishing")) {
+                project.apply from: "$rootDir/.ops/publishing-android.gradle"
+            }
+        } else {
+            if (project.hasProperty("publishing")) {
+                project.apply from: "$rootDir/.ops/publishing-kotlin.gradle"
+            }
         }
 
         if (project.name != "docs" && (project.hasProperty("test") || project.hasProperty("android"))) {
             project.apply from: "$rootDir/.ops/testing.gradle"
             project.apply from: "$rootDir/.ops/pitest.gradle"
-        }
-
-        if (project.hasProperty("dokka")) {
-            project.apply from: "$rootDir/.ops/dokka.gradle"
-        }
-
-        if (project.hasProperty("publishing")) {
-            project.apply from: "$rootDir/.ops/publishing.gradle"
         }
     }
 }
