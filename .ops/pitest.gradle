@@ -3,6 +3,10 @@ def hasAndroid = plugins.hasPlugin("com.android.library") || plugins.hasPlugin("
 if (!hasAndroid && project.name != "ext-acorn-android-lint") {
     project.apply plugin: "info.solidsoft.pitest"
 
+    project.dependencies {
+        pitest("org.pitest:pitest-junit5-plugin:0.14")
+    }
+
     pitest {
         targetClasses = ["com.*", "acorn.*"]
         pitestVersion = "1.4.9"

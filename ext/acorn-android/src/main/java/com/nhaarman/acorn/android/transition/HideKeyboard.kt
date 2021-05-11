@@ -34,8 +34,10 @@ fun ((Scene<*>) -> SceneTransition).hideKeyboardOnStart(): (Scene<*>) -> SceneTr
 }
 
 private val hideKeyboard: (ViewGroup) -> Unit = { viewGroup ->
-    (viewGroup
-        .context
-        .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+    (
+        viewGroup
+            .context
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        )
         .hideSoftInputFromWindow(viewGroup.windowToken, 0)
 }

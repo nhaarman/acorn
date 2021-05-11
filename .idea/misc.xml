@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="samples/hello-bottombar/src/main/res/drawable/ic_favorite_white_196dp.xml" value="0.3536458333333333" />
+        <entry key="samples/hello-bottombar/src/main/res/drawable/ic_music_white_196dp.xml" value="0.3536458333333333" />
+        <entry key="samples/hello-bottombar/src/main/res/drawable/ic_news_white_196dp.xml" value="0.3536458333333333" />
+        <entry key="samples/hello-bottombar/src/main/res/drawable/ic_place_white_196p.xml" value="0.3536458333333333" />
+        <entry key="samples/notes-app/android/src/main/res/drawable/ic_check_white_24dp.xml" value="0.3536458333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
   </component>
 </project>

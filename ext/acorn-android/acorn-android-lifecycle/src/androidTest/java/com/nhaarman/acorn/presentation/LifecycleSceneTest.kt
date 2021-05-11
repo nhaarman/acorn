@@ -17,9 +17,10 @@
 package com.nhaarman.acorn.presentation
 
 import androidx.lifecycle.Lifecycle
+import androidx.test.annotation.UiThreadTest
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 class LifecycleSceneTest {
 
@@ -27,12 +28,14 @@ class LifecycleSceneTest {
     val currentState get() = scene.lifecycle.currentState
 
     @Test
-    fun `initially the state is created`() {
+    @UiThreadTest
+    fun initiallyTheStateIsCreated() {
         expect(currentState).toBe(Lifecycle.State.CREATED)
     }
 
     @Test
-    fun `after onStart the state is started`() {
+    @UiThreadTest
+    fun afterOnStartTheStateIsStarted() {
         /* When */
         scene.onStart()
 
@@ -41,7 +44,8 @@ class LifecycleSceneTest {
     }
 
     @Test
-    fun `after onStop the state is created`() {
+    @UiThreadTest
+    fun afterOnStopTheStateIsCreated() {
         /* When */
         scene.onStart()
         scene.onStop()
@@ -51,7 +55,8 @@ class LifecycleSceneTest {
     }
 
     @Test
-    fun `after onStop and onStart the state is started`() {
+    @UiThreadTest
+    fun afterOnStopAndOnStartTheStateIsStarted() {
         /* When */
         scene.onStart()
         scene.onStop()
@@ -62,7 +67,8 @@ class LifecycleSceneTest {
     }
 
     @Test
-    fun `after onDestroy the state is destroyed`() {
+    @UiThreadTest
+    fun afterOnDestroyTheStateIsDestroyed() {
         /* When */
         scene.onDestroy()
 

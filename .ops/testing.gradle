@@ -13,7 +13,7 @@ if (!hasAndroid) {
     }
 } else {
     project.apply plugin: "de.mannodermaus.android-junit5"
-    android.testOptions.junitPlatform {
+    junitPlatform {
         configurationParameter "junit.jupiter.extensions.autodetection.enabled", "true"
     }
 }

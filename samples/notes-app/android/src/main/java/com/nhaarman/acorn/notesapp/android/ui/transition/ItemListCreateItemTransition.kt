@@ -45,22 +45,24 @@ object ItemListCreateItemTransition : SceneTransition {
         )
 
         anim.duration = parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-        anim.addListener(onEnd = {
-            val viewController = CreateItemViewController(parent)
+        anim.addListener(
+            onEnd = {
+                val viewController = CreateItemViewController(parent)
 
-            parent.removeView(itemListLayout)
-            val createItemLayout = parent.inflateView(R.layout.createitem_scene)
-            parent.addView(createItemLayout, 0)
-            callback.attach(viewController)
+                parent.removeView(itemListLayout)
+                val createItemLayout = parent.inflateView(R.layout.createitem_scene)
+                parent.addView(createItemLayout, 0)
+                callback.attach(viewController)
 
-            view.animate()
-                .alpha(0f)
-                .setDuration(parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
-                .withEndAction {
-                    parent.removeView(view)
-                    callback.onComplete(viewController)
-                }
-        })
+                view.animate()
+                    .alpha(0f)
+                    .setDuration(parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
+                    .withEndAction {
+                        parent.removeView(view)
+                        callback.onComplete(viewController)
+                    }
+            }
+        )
         anim.start()
     }
 }

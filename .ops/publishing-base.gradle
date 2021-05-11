@@ -1,5 +1,3 @@
-def hasAndroid = plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")
-
 publishing {
     def sonatype_username = "${findProperty('sonatype_username') ?: System.getenv("sonatype_username")}"
     def sonatype_password = "${findProperty('sonatype_password') ?: System.getenv("sonatype_password")}"
@@ -24,25 +22,8 @@ publishing {
         }
     }
 
-    task sourcesJar(type: Jar) {
-        classifier = "sources"
-        if (hasAndroid) {
-            from(android.sourceSets["main"].java.srcDirs)
-        } else {
-            from(sourceSets["main"].allSource)
-        }
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = "javadoc"
-        from(javadoc.destinationDir)
-    }
-
     publications {
         maven(MavenPublication) {
-            from(components[hasAndroid ? "android" : "java"])
-            artifact(sourcesJar)
-            artifact(javadocJar)
 
             version = git.versionName()
 

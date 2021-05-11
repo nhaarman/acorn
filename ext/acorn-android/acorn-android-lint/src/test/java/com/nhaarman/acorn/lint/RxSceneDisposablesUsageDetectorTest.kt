@@ -27,7 +27,7 @@ class RxSceneDisposablesUsageDetectorTest {
         """
        package $pkg
        class RxScene
-    """.trimIndent()
+        """.trimIndent()
     )
 
     @Test

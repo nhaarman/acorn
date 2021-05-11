@@ -41,7 +41,9 @@ abstract class LifecycleScene<V : Container>(
 
     private val lifecycle by lazy {
         LifecycleRegistry(this)
-            .also { it.markState(Lifecycle.State.CREATED) }
+            .also {
+                it.currentState = Lifecycle.State.CREATED
+            }
     }
 
     override fun getLifecycle(): Lifecycle {

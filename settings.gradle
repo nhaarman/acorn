@@ -49,5 +49,3 @@ project(":ext-acorn-android-timber").projectDir = file("ext/acorn-android/acorn-
 project(":ext-acorn-android-appcompat").projectDir = file("ext/acorn-android/acorn-android-appcompat")
 project(":ext-acorn-android-lifecycle").projectDir = file("ext/acorn-android/acorn-android-lifecycle")
 project(":ext-acorn-android-statechecks").projectDir = file("ext/acorn-android/acorn-android-statechecks")
-
-enableFeaturePreview("STABLE_PUBLISHING")

@@ -35,9 +35,9 @@ import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListScene
 import com.nhaarman.expect.expect
 import com.nhaarman.expect.lastValue
 import io.reactivex.android.schedulers.AndroidSchedulers
-import java.lang.Thread.sleep
 import org.junit.Rule
 import org.junit.Test
+import java.lang.Thread.sleep
 
 class ItemListViewTest {
 
