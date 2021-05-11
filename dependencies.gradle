@@ -20,7 +20,7 @@ dependencyManagement {
         dependency "com.jakewharton.timber:timber:4.7.1"
 
         // ext-acorn-android-lifecycle
-        dependency "androidx.lifecycle:lifecycle-runtime:2.1.0"
+        dependency "androidx.lifecycle:lifecycle-runtime:2.3.1"
 
 
         // "Hello"-sample apps
