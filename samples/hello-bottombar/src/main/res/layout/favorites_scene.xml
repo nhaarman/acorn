@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_favorite_white_196dp"
         android:textSize="46sp"
-        android:tint="?android:colorPrimary"
+        app:tint="?android:colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
