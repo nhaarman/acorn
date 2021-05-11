@@ -5,7 +5,7 @@ dependencyManagement {
         dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
         // core dependencies
-        dependency "androidx.annotation:annotation:1.1.0"
+        dependency "androidx.annotation:annotation:1.2.0"
 
         // ext-acorn-android
         dependency "androidx.appcompat:appcompat:1.1.0"
