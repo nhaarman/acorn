@@ -31,7 +31,7 @@ internal interface ActivityHandler {
 
     fun withoutScene()
 
-    fun onActivityResult(resultCode: Int, data: Intent?)
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
 
     fun saveInstanceState(): SavedState
 }

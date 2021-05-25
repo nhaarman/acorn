@@ -66,7 +66,7 @@ interface SceneDispatcher {
      * To be invoked when the [Activity] receives an invocation to its
      * [Activity.onActivityResult] method.
      */
-    fun onActivityResult(resultCode: Int, data: Intent?)
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
 
     /**
      * Saves any state for this [SceneDispatcher].
