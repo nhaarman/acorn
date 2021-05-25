@@ -205,7 +205,7 @@ internal class DefaultActivityHandlerTest {
             activityHandler.withScene(scene, activityController)
 
             /* When */
-            activityHandler.onActivityResult(3, null)
+            activityHandler.onActivityResult(42, 3, null)
 
             /* Then */
             inOrder(scene, activityController) {
@@ -232,7 +232,7 @@ internal class DefaultActivityHandlerTest {
                 activityHandler.withScene(scene, activityController)
 
                 /* When */
-                activityHandler.onActivityResult(3, null)
+                activityHandler.onActivityResult(42, 3, null)
 
                 /* Then */
                 inOrder(scene, activityController) {

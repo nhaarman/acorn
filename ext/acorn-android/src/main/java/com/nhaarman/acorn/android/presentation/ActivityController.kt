@@ -23,17 +23,53 @@ import com.nhaarman.acorn.presentation.Scene
 
 /**
  * A [Container] specialization that can be used to dispatch [Scene]s as Activities.
+ *
+ * Implementers must either implement [createIntent] or [start].
  */
 interface ActivityController : Container {
 
     /**
      * Creates the [Intent] that can be used to start the [Activity].
+     *
+     * Override this function if you simply want to build an Intent
+     * and don't worry about anything else. Use [start] if you want
+     * to have more control.
      */
-    fun createIntent(): Intent
+    fun createIntent(): Intent? {
+        return null
+    }
+
+    /**
+     * Starts the designated Activity.
+     *
+     * Override this function to start the Activity. To be able to
+     * call [Activity.startActivityForResult], implementers are
+     * responsible to deliver the receiving Activity instance.
+     *
+     * Implementations should invoke [Activity.startActivityForResult]
+     * rather than [Activity.startActivity], to ensure Acorn is notified
+     * when the Activity has finished.
+     *
+     * If you simply want to provide an Intent that should be started
+     * for you, override [createIntent].
+     */
+    fun start() {
+        error("Either override createIntent() or start() to start an Activity.")
+    }
 
     /**
      * Called when the [Activity] started with the [Intent] provided by
      * [createIntent] finishes.
      */
-    fun onResult(resultCode: Int, data: Intent?)
+    fun onResult(resultCode: Int, data: Intent?) {
+        error("You must override onResult")
+    }
+
+    /**
+     * Called when the [Activity] started with the [Intent] provided by
+     * [createIntent] finishes.
+     */
+    fun onResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        onResult(resultCode, data)
+    }
 }

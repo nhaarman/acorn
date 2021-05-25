@@ -81,10 +81,8 @@ class AcornActivityDelegate private constructor(
         dispatcher.onUIVisible()
     }
 
-    // We suppress the unused parameter to keep a uniform API.
-    @Suppress("UNUSED_PARAMETER")
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        dispatcher.onActivityResult(resultCode, data)
+        dispatcher.onActivityResult(requestCode, resultCode, data)
     }
 
     fun onBackPressed(): Boolean {

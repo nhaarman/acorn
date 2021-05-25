@@ -75,8 +75,8 @@ class AcornSceneDispatcher internal constructor(
         return uiHandler.onBackPressed()
     }
 
-    override fun onActivityResult(resultCode: Int, data: Intent?) {
-        activityHandler.onActivityResult(resultCode, data)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        activityHandler.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun saveInstanceState(): SavedState {

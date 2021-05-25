@@ -59,10 +59,19 @@ internal class DefaultActivityHandler(
         lastScene = scene
         lastActivityController = activityController
 
-        val intent = activityController.createIntent()
+        scene.forceAttach(activityController)
 
-        v("ActivityHandler", "Starting Intent: $intent.")
-        callback.startForResult(intent)
+        val intent = activityController.createIntent()
+        if (intent != null) {
+            v("ActivityHandler", "Starting Intent: $intent.")
+            callback.startForResult(intent)
+            scene.forceDetach(activityController)
+            return
+        }
+
+        v("ActivityHandler", "Starting ActivityController $activityController")
+        activityController.start()
+        scene.forceDetach(activityController)
     }
 
     override fun withoutScene() {
@@ -73,8 +82,8 @@ internal class DefaultActivityHandler(
         }
     }
 
-    override fun onActivityResult(resultCode: Int, data: Intent?) {
-        d("ActivityHandler", "Activity result: resultCode=$resultCode, data=$data")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        d("ActivityHandler", "Activity result: requestCode=$requestCode, resultCode=$resultCode, data=$data")
 
         val scene = lastScene
         val activityController = lastActivityController
@@ -90,7 +99,7 @@ internal class DefaultActivityHandler(
         scene.forceAttach(activityController)
 
         v("ActivityHandler", "Notifying ActivityController of result.")
-        activityController.onResult(resultCode, data)
+        activityController.onResult(requestCode, resultCode, data)
 
         v("ActivityHandler", "Detaching container from $scene.")
         scene.forceDetach(activityController)
