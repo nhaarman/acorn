@@ -24,11 +24,11 @@ import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.testing.ContainerProvider
 import com.nhaarman.acorn.testing.TestContext
 import com.nhaarman.acorn.testing.TestContext.Companion.testWith
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
 import kotlin.reflect.KClass
 
 /**
@@ -52,18 +52,18 @@ class `ReplacingNavigator tests for scenes that cause a transition in their onSt
             override fun containerFor(scene: Scene<*>): Container {
                 return mock()
             }
-        }
+        },
     )
 
     @Test
     fun `replacing an immediately finishing scene results in proper navigator notifications`() = testWith(context) {
-        /* Given */
+        // Given
         navigator.addNavigatorEventsListener(navigatorListener)
 
-        /* When */
+        // When
         navigator.replace(immediatelyFinishingScene)
 
-        /* Then */
+        // Then
         inOrder(navigatorListener) {
             verify(navigatorListener).scene(any<InitialScene>(), anyOrNull())
             verify(navigatorListener).scene(any<ImmediatelyFinishingScene>(), anyOrNull())

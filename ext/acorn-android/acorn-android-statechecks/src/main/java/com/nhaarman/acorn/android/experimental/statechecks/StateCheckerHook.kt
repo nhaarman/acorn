@@ -23,7 +23,7 @@ import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.navigation.SavableNavigator
 
 @ExperimentalStateChecker
-@UseExperimental(ExperimentalAcornEvents::class)
+@OptIn(ExperimentalAcornEvents::class)
 internal class StateCheckerHook {
 
     private val listener = MyDispatchingListener()

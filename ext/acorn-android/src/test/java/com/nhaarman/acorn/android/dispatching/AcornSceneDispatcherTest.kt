@@ -27,11 +27,11 @@ import com.nhaarman.acorn.navigation.TestNavigator
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.presentation.SceneKey
 import com.nhaarman.expect.expectErrorWithMessage
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 internal class AcornSceneDispatcherTest {
 
@@ -50,46 +50,45 @@ internal class AcornSceneDispatcherTest {
         activityControllerFactory = activityControllerFactory,
         uiHandler = uiHandler,
         activityHandler = activityHandler,
-        callback = mock()
+        callback = mock(),
     )
 
     @Test
     fun `an error is thrown for unknown scenes`() {
-        /* Given */
+        // Given
         dispatcher.dispatchScenesFor(navigator)
 
-        /* Expect */
+        // Expect
         expectErrorWithMessage("Could not dispatch") on {
-
-            /* When */
+            // When
             navigator.onScene(scene)
         }
     }
 
     @Test
     fun `dispatching a scene with a view controller`() {
-        /* Given */
+        // Given
         viewControllerFactory.register(scene.key, mock())
         dispatcher.dispatchScenesFor(navigator)
 
-        /* When */
+        // When
         navigator.onScene(scene)
 
-        /* Then */
+        // Then
         verify(uiHandler).withScene(eq(scene), eq(viewControllerFactory), anyOrNull())
     }
 
     @Test
     fun `dispatching a scene with an activity controller`() {
-        /* Given */
+        // Given
         val controller = mock<ActivityController>()
         activityControllerFactory.register(scene.key, controller)
         dispatcher.dispatchScenesFor(navigator)
 
-        /* When */
+        // When
         navigator.onScene(scene)
 
-        /* Then */
+        // Then
         verify(activityHandler).withScene(scene, controller)
     }
 

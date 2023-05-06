@@ -1,14 +1,22 @@
 plugins {
     id("org.jetbrains.kotlin.jvm")
-    id("org.gradle.java-library")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     testImplementation project(":ext-acorn-testing")
     testImplementation "com.nhaarman:expect.kt"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.mockito.kotlin:mockito-kotlin"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }

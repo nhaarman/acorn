@@ -19,5 +19,5 @@ package com.nhaarman.acorn.samples.hellosharedata.pictures
 import java.io.File
 
 data class Picture(
-    val file: File
+    val file: File,
 )

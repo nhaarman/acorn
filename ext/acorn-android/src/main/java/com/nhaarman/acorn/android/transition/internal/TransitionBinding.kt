@@ -30,7 +30,7 @@ internal interface TransitionBinding {
 internal class KeyBinding(
     private val fromKey: SceneKey,
     private val toKey: SceneKey,
-    private val transition: SceneTransition
+    private val transition: SceneTransition,
 ) : TransitionBinding {
 
     override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): SceneTransition? {
@@ -48,7 +48,7 @@ internal class KeyBinding(
 internal class ClassBinding(
     private val fromClass: KClass<out Scene<*>>,
     private val toClass: KClass<out Scene<*>>,
-    private val transition: SceneTransition
+    private val transition: SceneTransition,
 ) : TransitionBinding {
 
     override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): SceneTransition? {
@@ -66,7 +66,7 @@ internal class ClassBinding(
 internal class LazyClassBinding(
     private val fromClass: KClass<out Scene<*>>,
     private val toClass: KClass<out Scene<*>>,
-    private val transition: (Scene<*>) -> SceneTransition
+    private val transition: (Scene<*>) -> SceneTransition,
 ) : TransitionBinding {
 
     override fun transitionFor(fromScene: Scene<*>, toScene: Scene<*>, data: TransitionData?): SceneTransition? {

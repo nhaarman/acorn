@@ -43,7 +43,7 @@ import kotlin.reflect.KClass
  * by [saveInstanceState].
  */
 abstract class ReplacingNavigator(
-    private val savedState: NavigatorState?
+    private val savedState: NavigatorState?,
 ) : Navigator, OnBackPressListener {
 
     /**
@@ -209,7 +209,7 @@ abstract class ReplacingNavigator(
 
         class Inactive(
             override val scene: Scene<out Container>,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : LifecycleState() {
 
             override fun addListener(listener: Navigator.Events) {
@@ -251,7 +251,7 @@ abstract class ReplacingNavigator(
 
         class Active(
             override val scene: Scene<out Container>,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : LifecycleState() {
 
             override fun addListener(listener: Navigator.Events) {
@@ -334,7 +334,7 @@ abstract class ReplacingNavigator(
 
     private class StateTransition(
         val newState: LifecycleState,
-        val action: (() -> Unit)? = null
+        val action: (() -> Unit)? = null,
     )
 
     companion object {

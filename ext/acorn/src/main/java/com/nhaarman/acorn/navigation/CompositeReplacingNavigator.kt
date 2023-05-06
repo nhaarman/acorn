@@ -41,7 +41,7 @@ import kotlin.reflect.KClass
  * by [saveInstanceState].
  */
 abstract class CompositeReplacingNavigator(
-    private val savedState: NavigatorState?
+    private val savedState: NavigatorState?,
 ) : Navigator, Navigator.Events, OnBackPressListener {
 
     /**
@@ -65,7 +65,7 @@ abstract class CompositeReplacingNavigator(
      */
     protected abstract fun instantiateNavigator(
         navigatorClass: KClass<out Navigator>,
-        state: NavigatorState?
+        state: NavigatorState?,
     ): Navigator
 
     private var state by lazyVar {
@@ -224,7 +224,7 @@ abstract class CompositeReplacingNavigator(
         class Inactive(
             override val navigator: Navigator,
             override var listeners: List<Navigator.Events>,
-            private var activeScene: Scene<out Container>?
+            private var activeScene: Scene<out Container>?,
         ) : LifecycleState() {
 
             override fun addListener(listener: Navigator.Events) {
@@ -277,7 +277,7 @@ abstract class CompositeReplacingNavigator(
         class Active(
             override var navigator: Navigator,
             override var listeners: List<Navigator.Events>,
-            private var activeScene: Scene<out Container>?
+            private var activeScene: Scene<out Container>?,
         ) : LifecycleState() {
 
             override fun addListener(listener: Navigator.Events) {
@@ -343,7 +343,7 @@ abstract class CompositeReplacingNavigator(
             override fun start(): StateTransition {
                 w(
                     "CompositeReplacingNavigator.LifecycleState",
-                    "Warning: Cannot start state after navigator is destroyed."
+                    "Warning: Cannot start state after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -366,7 +366,7 @@ abstract class CompositeReplacingNavigator(
             override fun replace(navigator: Navigator): StateTransition {
                 w(
                     "CompositeReplacingNavigator.LifecycleState",
-                    "Warning: Cannot replace navigator after parent navigator is destroyed."
+                    "Warning: Cannot replace navigator after parent navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -379,13 +379,13 @@ abstract class CompositeReplacingNavigator(
 
     private class StateTransition(
         val newState: LifecycleState,
-        val action: (() -> Unit)? = null
+        val action: (() -> Unit)? = null,
     ) {
 
         fun andThen(f: (LifecycleState) -> StateTransition): StateTransition {
             val newTransition = f(newState)
             return StateTransition(
-                newTransition.newState
+                newTransition.newState,
             ) {
                 action?.invoke()
                 newTransition.action?.invoke()

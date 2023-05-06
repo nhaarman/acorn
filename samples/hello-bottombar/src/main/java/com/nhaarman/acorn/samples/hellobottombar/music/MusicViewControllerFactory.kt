@@ -31,7 +31,7 @@ class MusicViewControllerFactory : ViewControllerFactory {
 
     override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
         return MusicViewController(
-            MainLayout.inflateWith(R.layout.music_scene, parent)
+            MainLayout.inflateWith(R.layout.music_scene, parent),
         )
     }
 }

@@ -18,7 +18,7 @@ package com.nhaarman.acorn.android.experimental.statechecks
 
 @ExperimentalStateChecker
 internal class StateSavingFailedException(
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ) : Exception(cause) {
 
     override val message: String?

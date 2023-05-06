@@ -23,19 +23,19 @@ import com.nhaarman.acorn.state.SavedState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.navigatorState
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.verifyNoMoreInteractions
 import kotlin.reflect.KClass
 
 internal class StackNavigatorTest {
@@ -52,136 +52,136 @@ internal class StackNavigatorTest {
 
         @Test
         fun `inactive navigator is not finished`() {
-            /* When */
+            // When
             navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `inactive navigator is not destroyed`() {
-            /* Then */
+            // Then
             expect(navigator.isDestroyed()).toBe(false)
         }
 
         @Test
         fun `active navigator is not destroyed`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* Then */
+            // Then
             expect(navigator.isDestroyed()).toBe(false)
         }
 
         @Test
         fun `stopped navigator is not destroyed`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             expect(navigator.isDestroyed()).toBe(false)
         }
 
         @Test
         fun `destroyed navigator is destroyed`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test
         fun `inactive navigator does not notify newly added listener of scene`() {
-            /* When */
+            // When
             navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
         fun `active navigator does notify newly added listener of scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
         fun `removed listener does not get notified of scene`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
             disposable.dispose()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener, never()).scene(any(), anyOrNull())
         }
 
         @Test
         fun `non disposed listener is not disposed`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(disposable.isDisposed()).toBe(false)
         }
 
         @Test
         fun `disposed listener is disposed`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             disposable.dispose()
 
-            /* Then */
+            // Then
             expect(disposable.isDisposed()).toBe(true)
         }
 
         @Test
         fun `starting navigator notifies listeners of scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
         fun `starting navigator multiple times notifies listeners of scene only once`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener, times(1)).scene(any(), anyOrNull())
         }
 
         @Test
         fun `starting navigator second time in a callback only notifies listener once`() {
-            /* Given */
+            // Given
             val listener = mock<Navigator.Events>()
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.addNavigatorEventsListener(object : Navigator.Events {
                 override fun scene(scene: Scene<out Container>, data: TransitionData?) {
                     navigator.onStart()
@@ -192,345 +192,345 @@ internal class StackNavigatorTest {
             })
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener, times(1)).scene(any(), anyOrNull())
         }
 
         @Test
         fun `starting navigator - scene notification has no transition data`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             expect(listener.lastTransitionData).toBeNull()
         }
 
         @Test
         fun `starting navigator does not finish`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `stopping navigator does not finish`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `destroying navigator does not finish`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `pushing a scene for inactive navigator does not notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
         fun `pushing a scene for destroyed navigator does not notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
         fun `pushing a scene for active navigator does notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBe(scene2)
         }
 
         @Test
         fun `pushing a scene for active navigator - scene notification has forward transition data`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             expect(listener.lastTransitionData?.isBackwards).toBe(false)
         }
 
         @Test
         fun `start navigator after scene push notifies pushed scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBe(scene2)
         }
 
         @Test
         fun `popping from single item stack for inactive navigator notifies finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(true)
         }
 
         @Test
         fun `popping from multi item stack for inactive navigator does not notify finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `popping from multi item stack for inactive navigator does not notify scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
         fun `popping from single item stack for active navigator notifies finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(true)
         }
 
         @Test
         fun `popping from multi item stack for active navigator does not notify finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `popping from multi item stack for active navigator notifies proper scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBe(scene1)
         }
 
         @Test
         fun `popping from multi item stack for active navigator - scene notification has backward transition data`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             expect(listener.lastTransitionData?.isBackwards).toBe(true)
         }
 
         @Test
         fun `popping from multi item stack for destroyed navigator does not notify scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onDestroy()
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
         fun `replacing a scene for inactive navigator does not notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.replace(scene2)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
         fun `replacing a scene for destroyed navigator does not notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.replace(scene2)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBeNull()
         }
 
         @Test
         fun `replacing a scene for active navigator does notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.replace(scene2)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBe(scene2)
         }
 
         @Test
         fun `replacing a scene for active navigator - scene notification has forward transition data`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.replace(scene2)
 
-            /* Then */
+            // Then
             expect(listener.lastTransitionData?.isBackwards).toBe(false)
         }
 
         @Test
         fun `onBackPressed for single scene stack notifies listeners of finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(true)
             expect(listener.finished).toBe(true)
         }
 
         @Test
         fun `finish notifies listeners of finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(true)
         }
 
         @Test
         fun `onBackPressed for single scene stack for inactive navigator notifies listeners of finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(true)
             expect(listener.finished).toBe(true)
         }
 
         @Test
         fun `onBackPressed for single scene stack after navigator is destroyed does not notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onDestroy()
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(false)
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `finish after navigator is destroyed does not notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
     }
@@ -540,10 +540,10 @@ internal class StackNavigatorTest {
 
         @Test
         fun `starting navigator starts Scene`() {
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -552,11 +552,11 @@ internal class StackNavigatorTest {
 
         @Test
         fun `starting navigator multiple times starts Scene only once`() {
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -565,22 +565,22 @@ internal class StackNavigatorTest {
 
         @Test
         fun `stopping an inactive navigator does not stop Scene`() {
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verifyNoMoreInteractions(scene1)
         }
 
         @Test
         fun `stopping an active navigator stops Scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -590,31 +590,31 @@ internal class StackNavigatorTest {
 
         @Test
         fun `destroy an inactive navigator does not stop Scene`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `destroy an inactive navigator does destroy Scene`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
         }
 
         @Test
         fun `destroy an active navigator stops and destroys Scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -625,39 +625,39 @@ internal class StackNavigatorTest {
 
         @Test
         fun `starting a destroyed navigator does not start Scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
             verify(scene1, never()).onStart()
         }
 
         @Test
         fun `stopping a destroyed navigator does not start Scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `destroying a destroyed navigator only destroys Scene once`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1, times(1)).onDestroy()
         }
     }
@@ -669,10 +669,10 @@ internal class StackNavigatorTest {
 
         @Test
         fun `starting navigator starts top Scene`() {
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             scene2.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -681,20 +681,20 @@ internal class StackNavigatorTest {
 
         @Test
         fun `starting navigator does not start bottom scenes`() {
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
-            verifyZeroInteractions(scene1)
+            // Then
+            verifyNoInteractions(scene1)
         }
 
         @Test
         fun `starting navigator multiple times starts Scene only once`() {
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             scene2.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -703,22 +703,22 @@ internal class StackNavigatorTest {
 
         @Test
         fun `stopping an inactive navigator does not stop Scene`() {
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verifyNoMoreInteractions(scene2)
         }
 
         @Test
         fun `stopping an active navigator stops Scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             scene2.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -728,20 +728,20 @@ internal class StackNavigatorTest {
 
         @Test
         fun `destroy an inactive navigator does not stop Scenes`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1, never()).onStop()
             verify(scene2, never()).onStop()
         }
 
         @Test
         fun `destroy an inactive navigator does destroy Scenes`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene2).onDestroy()
                 verify(scene1).onDestroy()
@@ -750,13 +750,13 @@ internal class StackNavigatorTest {
 
         @Test
         fun `destroy an active navigator stops top Scene and destroys all Scenes`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene2).onStart()
                 verify(scene2).onStop()
@@ -768,39 +768,39 @@ internal class StackNavigatorTest {
 
         @Test
         fun `starting a destroyed navigator does not start Scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(scene2).onDestroy()
             verify(scene2, never()).onStart()
         }
 
         @Test
         fun `stopping a destroyed navigator does not start Scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(scene2).onDestroy()
             verify(scene2, never()).onStop()
         }
 
         @Test
         fun `destroying a destroyed navigator only destroys Scene once`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene2, times(1)).onDestroy()
         }
     }
@@ -810,43 +810,43 @@ internal class StackNavigatorTest {
 
         @Test
         fun `popping from a single item stack for inactive navigator destroys scene`() {
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             verify(scene1).onDestroy()
         }
 
         @Test
         fun `popping from a single item stack for inactive navigator does not stop scene`() {
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `popping from a multi item stack for inactive navigator destroys latest scene`() {
-            /* Given */
+            // Given
             val navigator = TestStackNavigator(listOf(scene1, scene2))
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             verify(scene2).onDestroy()
         }
 
         @Test
         fun `popping from a single item stack for active navigator stops and destroys scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             scene1.inOrder {
                 verify().onStop()
                 verify().onDestroy()
@@ -855,14 +855,14 @@ internal class StackNavigatorTest {
 
         @Test
         fun `popping from a multi item stack for active navigator stops and destroys latest scene, and starts current scene`() {
-            /* Given */
+            // Given
             val navigator = TestStackNavigator(listOf(scene1, scene2))
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             inOrder(scene1, scene2) {
                 verify(scene2).onStop()
                 verify(scene2).onDestroy()
@@ -872,55 +872,55 @@ internal class StackNavigatorTest {
 
         @Test
         fun `replacing top item from a single item stack for inactive navigator destroys original scene`() {
-            /* When */
+            // When
             navigator.replace(scene2)
 
-            /* When */
+            // When
             verify(scene1).onDestroy()
         }
 
         @Test
         fun `replacing top item from a single item stack for inactive navigator does not stop original scene`() {
-            /* When */
+            // When
             navigator.replace(scene2)
 
-            /* When */
+            // When
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `replacing top item from a multi item stack for inactive navigator destroys latest scene`() {
-            /* Given */
+            // Given
             val navigator = TestStackNavigator(listOf(scene1, scene2))
 
-            /* When */
+            // When
             navigator.replace(scene3)
 
-            /* When */
+            // When
             verify(scene2).onDestroy()
         }
 
         @Test
         fun `replacing top item from a multi item stack for inactive navigator does not start replacing scene`() {
-            /* Given */
+            // Given
             val navigator = TestStackNavigator(listOf(scene1, scene2))
 
-            /* When */
+            // When
             navigator.replace(scene3)
 
-            /* When */
+            // When
             verifyNoMoreInteractions(scene3)
         }
 
         @Test
         fun `replacing top item from a single item stack for active navigator stops and destroys original scene, and starts replacing scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.replace(scene2)
 
-            /* When */
+            // When
             inOrder(scene1, scene2) {
                 verify(scene1).onStop()
                 verify(scene1).onDestroy()
@@ -930,14 +930,14 @@ internal class StackNavigatorTest {
 
         @Test
         fun `replacing top item from a multi item stack for active navigator stops and destroys latest scene, and starts replacing scene`() {
-            /* Given */
+            // Given
             val navigator = TestStackNavigator(listOf(scene1, scene2))
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.replace(scene3)
 
-            /* When */
+            // When
             inOrder(scene1, scene2, scene3) {
                 verify(scene2).onStop()
                 verify(scene2).onDestroy()
@@ -947,43 +947,43 @@ internal class StackNavigatorTest {
 
         @Test
         fun `onBackPressed from a single item stack for inactive navigator destroys scene`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(scene1).onDestroy()
         }
 
         @Test
         fun `onBackPressed from a single item stack for inactive navigator does not stop scene`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `onBackPressed from a multi item stack for inactive navigator destroys latest scene`() {
-            /* Given */
+            // Given
             val navigator = TestStackNavigator(listOf(scene1, scene2))
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(scene2).onDestroy()
         }
 
         @Test
         fun `onBackPressed from a single item stack for active navigator stops and destroys scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             scene1.inOrder {
                 verify().onStop()
                 verify().onDestroy()
@@ -992,14 +992,14 @@ internal class StackNavigatorTest {
 
         @Test
         fun `onBackPressed from a multi item stack for active navigator stops and destroys latest scene, and starts current scene`() {
-            /* Given */
+            // Given
             val navigator = TestStackNavigator(listOf(scene1, scene2))
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             inOrder(scene1, scene2) {
                 verify(scene2).onStop()
                 verify(scene2).onDestroy()
@@ -1009,43 +1009,43 @@ internal class StackNavigatorTest {
 
         @Test
         fun `pushing for inactive navigator does not stop previous`() {
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `pushing for inactive navigator does not start scene`() {
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             verify(scene2, never()).onStart()
         }
 
         @Test
         fun `pushing for destroyed navigator does not start scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             verify(scene2, never()).onStart()
         }
 
         @Test
         fun `pushing for started navigator stops previous scene and starts pushed scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene1).onStart()
                 verify(scene1).onStop()
@@ -1067,21 +1067,21 @@ internal class StackNavigatorTest {
 
         @Test
         fun `StackNavigator does not implement SavableNavigator by default`() {
-            /* Given */
+            // Given
             val navigator: Navigator = TestStackNavigator(listOf(savableScene1))
 
-            /* Then */
+            // Then
             expect(navigator is SavableNavigator).toBe(false)
         }
 
         @Test
         fun `saving and restoring state for single savable scene stack`() {
-            /* Given */
+            // Given
             val navigator = SavableTestStackNavigator(listOf(savableScene1))
             navigator.onStart()
             savableScene1.foo = 3
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             savableScene1.foo = 6
 
@@ -1089,18 +1089,18 @@ internal class StackNavigatorTest {
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene?.foo).toBe(3)
         }
 
         @Test
         fun `saving and restoring state for single non savable scene stack`() {
-            /* Given */
+            // Given
             val navigator = SavableTestStackNavigator(listOf(scene1))
             navigator.onStart()
             scene1.foo = 3
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             scene1.foo = 6
 
@@ -1108,46 +1108,46 @@ internal class StackNavigatorTest {
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBe(scene2)
         }
 
         @Test
         fun `saving and restoring state for multi savable scene stack`() {
-            /* Given */
+            // Given
             val navigator = SavableTestStackNavigator(listOf(savableScene1))
             navigator.onStart()
             savableScene1.foo = 3
             savableScene2.foo = 42
             navigator.push(savableScene2)
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             val restoredNavigator = SavableTestStackNavigator(listOf(savableScene1), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene?.foo).toBe(42)
         }
 
         @Test
         fun `saving and restoring state for mixed savable scene and non savable scene stack`() {
-            /* Given */
+            // Given
             val navigator = SavableTestStackNavigator(listOf(savableScene1))
             navigator.onStart()
             savableScene1.foo = 3
             scene2.foo = 42
             navigator.push(scene2)
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             savableScene1.foo = 1337
             val restoredNavigator = SavableTestStackNavigator(listOf(savableScene2), bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBeInstanceOf<SavableTestScene> {
                 expect(it.foo).toBe(3)
             }
@@ -1155,7 +1155,7 @@ internal class StackNavigatorTest {
 
         @Test
         fun `saving and restoring state mixed 2`() {
-            /* Given */
+            // Given
             val navigator = SavableTestStackNavigator(listOf(savableScene1))
             navigator.onStart()
             savableScene1.foo = 3
@@ -1165,7 +1165,7 @@ internal class StackNavigatorTest {
             navigator.push(scene2)
             navigator.push(SavableTestScene(8))
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             savableScene1.foo = 1337
             savableScene2.foo = 127
@@ -1173,7 +1173,7 @@ internal class StackNavigatorTest {
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBeInstanceOf<SavableTestScene> {
                 expect(it.foo).toBe(5)
             }
@@ -1181,34 +1181,34 @@ internal class StackNavigatorTest {
 
         @Test
         fun `restoring from empty state ignores state`() {
-            /* When */
+            // When
             val result = SavableTestStackNavigator(listOf(savableScene1), NavigatorState())
             result.onStart()
             result.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBe(savableScene1)
         }
 
         @Test
         fun `restoring from invalid state ignores state - size = 0`() {
-            /* Given */
+            // Given
             val state = navigatorState {
                 it["size"] = 0
             }
 
-            /* When */
+            // When
             val result = SavableTestStackNavigator(listOf(savableScene1), state)
             result.onStart()
             result.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastSavableScene).toBe(savableScene1)
         }
 
         @Test
         fun `saved state from callback is the same as saved state _after_ callback`() {
-            /* Given */
+            // Given
             var state1: SavedState? = null
             navigator.addNavigatorEventsListener(object : Navigator.Events {
                 override fun scene(scene: Scene<out Container>, data: TransitionData?) {
@@ -1220,11 +1220,11 @@ internal class StackNavigatorTest {
             })
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(savableScene2)
             val state2 = navigator.saveInstanceState()
 
-            /* Then */
+            // Then
             expect(state1).toBe(state2)
         }
     }
@@ -1245,14 +1245,14 @@ internal class StackNavigatorTest {
 
         @Test
         fun `pushing a scene invokes listeners before starting the new scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             inOrder(listener, scene2) {
                 verify(listener).scene(eq(scene2), anyOrNull())
                 verify(scene2).onStart()
@@ -1261,14 +1261,14 @@ internal class StackNavigatorTest {
 
         @Test
         fun `replacing a scene invokes listeners before starting the new scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.replace(scene2)
 
-            /* Then */
+            // Then
             inOrder(listener, scene2) {
                 verify(listener).scene(eq(scene2), anyOrNull())
                 verify(scene2).onStart()
@@ -1277,15 +1277,15 @@ internal class StackNavigatorTest {
 
         @Test
         fun `popping a scene invokes listeners before starting the new scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* Then */
+            // Then
             inOrder(listener, scene1) {
                 verify(scene1).onStop()
                 verify(listener).scene(eq(scene1), anyOrNull())
@@ -1295,13 +1295,13 @@ internal class StackNavigatorTest {
 
         @Test
         fun `starting the navigator invokes listeners before starting the scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             inOrder(listener, scene1) {
                 verify(listener).scene(eq(scene1), anyOrNull())
                 verify(scene1).onStart()
@@ -1310,7 +1310,7 @@ internal class StackNavigatorTest {
     }
 
     class TestStackNavigator(
-        private val initialStack: List<SavableTestScene>
+        private val initialStack: List<SavableTestScene>,
     ) : StackNavigator(null) {
 
         override fun initialStack(): List<Scene<out Container>> {
@@ -1324,7 +1324,7 @@ internal class StackNavigatorTest {
 
     class SavableTestStackNavigator(
         private val initialStack: List<Scene<*>>,
-        savedState: NavigatorState? = null
+        savedState: NavigatorState? = null,
     ) : StackNavigator(savedState) {
 
         override fun initialStack(): List<Scene<out Container>> {

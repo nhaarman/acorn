@@ -34,5 +34,5 @@ fun containerState(init: (ContainerState) -> Unit): ContainerState {
 }
 
 private data class DefaultContainerState(
-    private val delegate: SavedState
+    private val delegate: SavedState,
 ) : ContainerState, SavedState by delegate

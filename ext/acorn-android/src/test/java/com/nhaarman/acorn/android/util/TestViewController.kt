@@ -21,7 +21,7 @@ import com.nhaarman.acorn.OnBackPressListener
 import com.nhaarman.acorn.android.presentation.ViewController
 
 class TestViewController(
-    override val view: View
+    override val view: View,
 ) : ViewController, OnBackPressListener {
 
     override fun onBackPressed(): Boolean {

@@ -22,7 +22,7 @@ import com.nhaarman.acorn.state.SavedState
  * Provides a base implementation for the [SavedState] interface.
  */
 internal class BaseSavedState(
-    private val map: MutableMap<String, Any?> = mutableMapOf()
+    private val map: MutableMap<String, Any?> = mutableMapOf(),
 ) : SavedState {
 
     override val entries: Set<Map.Entry<String, Any?>>

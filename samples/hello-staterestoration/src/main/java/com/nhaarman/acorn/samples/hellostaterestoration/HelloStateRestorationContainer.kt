@@ -20,8 +20,7 @@ import android.view.View
 import com.nhaarman.acorn.android.presentation.RestorableViewController
 import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.presentation.RestorableContainer
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.myscene.*
+import com.nhaarman.acorn.samples.hellostaterestoration.databinding.MysceneBinding
 
 /**
  * An interface describing the view.
@@ -49,19 +48,18 @@ interface HelloStateRestorationContainer : RestorableContainer {
  * saving and restoring view state.
  */
 class HelloStateRestorationViewController(
-    override val view: View
+    override val view: View,
 ) : HelloStateRestorationContainer,
-    RestorableViewController,
-    LayoutContainer {
+    RestorableViewController {
+
+    private val binding = MysceneBinding.bind(view)
 
     override var counterValue: Int = 0
         set(value) {
-            counterTV.text = "$value"
+            binding.counterTV.text = "$value"
         }
 
     override fun onNextClicked(f: () -> Unit) {
-        nextButton.setOnClickListener { f.invoke() }
+        binding.nextButton.setOnClickListener { f.invoke() }
     }
-
-    override val containerView = view
 }

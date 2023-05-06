@@ -41,29 +41,30 @@ import java.lang.Thread.sleep
 
 class ItemListViewTest {
 
-    @Rule @JvmField val rule = AcornViewTestRule<ItemListContainer>(
+    @Rule @JvmField
+    val rule = AcornViewTestRule<ItemListContainer>(
         ViewFactoryProvider.viewFactory,
-        ItemListScene.key
+        ItemListScene.key,
     )
 
     @Test
     fun singleItemList() {
-        /* When */
+        // When
         rule.onUiThread { container.items = listOf(NoteItem(id = 3, text = "Hello!")) }
 
-        /* Then */
+        // Then
         onView(withText("Hello!")).check(matches(isDisplayed()))
     }
 
     @Test
     fun multiItemList() {
-        /* Given */
+        // Given
         val notes = (0..3).map { NoteItem(it.toLong(), "$it") }
 
-        /* When */
+        // When
         rule.onUiThread { container.items = notes }
 
-        /* Then */
+        // Then
         notes.forEach { noteItem ->
             onView(withText(noteItem.text)).check(matches(isDisplayed()))
         }
@@ -71,73 +72,73 @@ class ItemListViewTest {
 
     @Test
     fun hugeItemList() {
-        /* Given */
+        // Given
         val notes = (0..3000).map { NoteItem(it.toLong(), "$it") }
 
-        /* When */
+        // When
         rule.onUiThread { container.items = notes }
         onView(withId(R.id.itemsRecyclerView)).perform(
-            scrollToPosition<RecyclerView.ViewHolder>(3000)
+            scrollToPosition<RecyclerView.ViewHolder>(3000),
         )
 
-        /* Then */
+        // Then
         onView(withText("3000")).check(matches(isDisplayed()))
     }
 
     @Test
     fun changingItemLists() {
-        /* Given */
+        // Given
         rule.onUiThread { container.items = listOf(NoteItem(id = 3, text = "Hello!")) }
 
-        /* When */
+        // When
         rule.onUiThread { container.items = listOf(NoteItem(id = 4, text = "World!")) }
         sleep(300) // ugh
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
 
-        /* Then */
+        // Then
         onView(withText("Hello!")).check(doesNotExist())
         onView(withText("World!")).check(matches(isDisplayed()))
     }
 
     @Test
     fun createClicks() {
-        /* Given */
+        // Given
         val observer = rule.container.createClicks.subscribeOn(AndroidSchedulers.mainThread()).test()
 
-        /* When */
+        // When
         onView(withId(R.id.createButton)).perform(click())
 
-        /* Then */
+        // Then
         expect(observer.valueCount()).toBe(1)
     }
 
     @Test
     fun itemClicks() {
-        /* Given */
+        // Given
         val noteItem = NoteItem(id = 3, text = "Hello!")
         rule.onUiThread { container.items = listOf(noteItem) }
 
         val observer = rule.container.itemClicks.subscribeOn(AndroidSchedulers.mainThread()).test()
 
-        /* When */
+        // When
         onView(withText("Hello!")).perform(click())
 
-        /* Then */
+        // Then
         expect(observer.lastValue).toBe(noteItem)
     }
 
     @Test
     fun deleteClicks() {
-        /* Given */
+        // Given
         val noteItem = NoteItem(id = 3, text = "Hello!")
         rule.onUiThread { container.items = listOf(noteItem) }
 
         val observer = rule.container.deleteClicks.subscribeOn(AndroidSchedulers.mainThread()).test()
 
-        /* When */
+        // When
         onView(withId(R.id.deleteButton)).perform(click())
 
-        /* Then */
+        // Then
         expect(observer.lastValue).toBe(noteItem)
     }
 }

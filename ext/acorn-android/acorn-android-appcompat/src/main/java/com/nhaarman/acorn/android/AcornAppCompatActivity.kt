@@ -118,14 +118,14 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
     private val viewControllerFactory: ViewControllerFactory by lazy {
         ComposingViewControllerFactory.from(
             SceneViewControllerFactory,
-            provideViewControllerFactory()
+            provideViewControllerFactory(),
         )
     }
 
     private val transitionFactory: SceneTransitionFactory by lazy {
         ComposingSceneTransitionFactory.from(
             provideTransitionFactory(viewControllerFactory),
-            DefaultSceneTransitionFactory(viewControllerFactory)
+            DefaultSceneTransitionFactory(viewControllerFactory),
         )
     }
 
@@ -156,7 +156,7 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
             navigatorProvider = navigatorProvider,
             viewControllerFactory = viewControllerFactory,
             activityControllerFactory = activityControllerFactory,
-            transitionFactory = transitionFactory
+            transitionFactory = transitionFactory,
         )
     }
 

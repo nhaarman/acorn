@@ -24,7 +24,7 @@ import com.nhaarman.acorn.presentation.Scene
  * A [SceneTransitionFactory] implementation that can delegate to other implementations.
  */
 class ComposingSceneTransitionFactory private constructor(
-    private val sources: Sequence<SceneTransitionFactory>
+    private val sources: Sequence<SceneTransitionFactory>,
 ) : SceneTransitionFactory {
 
     override fun supports(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Boolean {

@@ -34,40 +34,40 @@ import kotlin.reflect.KClass
  */
 class HelloNavigationNavigator :
 // Extends StackNavigator to allow for pushing and popping Scenes of a stack.
-        StackNavigator(null),
-        // Implements the callbacks for the Scene to execute Scene transitions.
-        FirstScene.Events,
-        SecondScene.Events {
+    StackNavigator(null),
+    // Implements the callbacks for the Scene to execute Scene transitions.
+    FirstScene.Events,
+    SecondScene.Events {
 
-        override fun initialStack(): List<Scene<out Container>> {
-            return listOf(FirstScene(this))
-        }
+    override fun initialStack(): List<Scene<out Container>> {
+        return listOf(FirstScene(this))
+    }
 
-        /**
-         * Pushes a [SecondScene] on the stack.
-         *
-         * Calling [push] results in a notification to listeners of this Navigator
-         * that the [Scene] has changed.
-         */
-        override fun secondSceneRequested() {
-            push(SecondScene(this))
-        }
+    /**
+     * Pushes a [SecondScene] on the stack.
+     *
+     * Calling [push] results in a notification to listeners of this Navigator
+     * that the [Scene] has changed.
+     */
+    override fun secondSceneRequested() {
+        push(SecondScene(this))
+    }
 
-        /**
-         * Pops the [SecondScene] off the stack, showing [FirstScene].
-         *
-         * Calling [pop] results in a notification to listeners of this Navigator
-         * that the [Scene] has changed.
-         */
-        override fun onFirstSceneRequested() {
-            pop()
-        }
+    /**
+     * Pops the [SecondScene] off the stack, showing [FirstScene].
+     *
+     * Calling [pop] results in a notification to listeners of this Navigator
+     * that the [Scene] has changed.
+     */
+    override fun onFirstSceneRequested() {
+        pop()
+    }
 
-        override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
-            return when (sceneClass) {
-                FirstScene::class -> FirstScene(this)
-                SecondScene::class -> SecondScene(this)
-                else -> error("Unknown scene: $sceneClass")
-            }
+    override fun instantiateScene(sceneClass: KClass<out Scene<*>>, state: SceneState?): Scene<out Container> {
+        return when (sceneClass) {
+            FirstScene::class -> FirstScene(this)
+            SecondScene::class -> SecondScene(this)
+            else -> error("Unknown scene: $sceneClass")
         }
     }
+}

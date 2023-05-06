@@ -27,7 +27,7 @@ import com.nhaarman.acorn.state.get
 class MusicScene(
     private val value: Int,
     private val listener: Events,
-    savedState: SceneState? = null
+    savedState: SceneState? = null,
 ) : BasicScene<MusicContainer>(savedState),
     SavableScene {
 
@@ -65,12 +65,12 @@ class MusicScene(
 
         fun from(
             listener: Events,
-            savedState: SceneState
+            savedState: SceneState,
         ): MusicScene {
             return MusicScene(
                 savedState["value"]!!,
                 listener,
-                savedState
+                savedState,
             )
         }
     }

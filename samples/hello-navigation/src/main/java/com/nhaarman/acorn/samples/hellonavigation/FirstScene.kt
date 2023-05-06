@@ -25,8 +25,7 @@ import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.navigation.Navigator
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.SavableScene
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.first_scene.*
+import com.nhaarman.acorn.samples.hellonavigation.databinding.FirstSceneBinding
 
 /**
  * A Scene that shows a button to navigate to the second Scene.
@@ -42,7 +41,7 @@ import kotlinx.android.synthetic.main.first_scene.*
  */
 class FirstScene(
     /** The listener callback to be notified when an event happens. */
-    private val listener: Events
+    private val listener: Events,
 ) : ViewProvidingScene<FirstSceneContainer> {
 
     override fun createViewController(parent: ViewGroup): ViewController {
@@ -68,12 +67,12 @@ interface FirstSceneContainer : Container {
 }
 
 class FirstSceneViewController(
-    override val view: View
-) : RestorableViewController, FirstSceneContainer, LayoutContainer {
+    override val view: View,
+) : RestorableViewController, FirstSceneContainer {
+
+    private val binding = FirstSceneBinding.bind(view)
 
     override fun onSecondSceneClicked(f: () -> Unit) {
-        secondSceneButton.setOnClickListener { f() }
+        binding.secondSceneButton.setOnClickListener { f() }
     }
-
-    override val containerView = view
 }

@@ -18,5 +18,5 @@ package com.nhaarman.acorn.notesapp.android.ui.transition
 
 data class ClickedItemViewData(
     val clickedItemHeight: Int,
-    val clickedItemY: Int
+    val clickedItemY: Int,
 )

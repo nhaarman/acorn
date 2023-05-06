@@ -27,24 +27,24 @@ internal class AbstractNavigatorProviderTest {
 
     @Test
     fun `navigator is cached`() {
-        /* When */
+        // When
         val result1 = navigatorProvider.navigatorFor(null)
         val result2 = navigatorProvider.navigatorFor(null)
 
-        /* Then */
+        // Then
         expect(result1).toBeTheSameAs(result2)
     }
 
     @Test
     fun `destroyed navigator is renewed`() {
-        /* Given */
+        // Given
         val result1 = navigatorProvider.navigatorFor(null)
         result1.onDestroy()
 
-        /* When */
+        // When
         val result2 = navigatorProvider.navigatorFor(null)
 
-        /* Then */
+        // Then
         expect(result1).toNotBeTheSameAs(result2)
     }
 

@@ -25,13 +25,13 @@ include(":samples:hello-viewfactory")
 include(":samples:hello-startactivity")
 include(":samples:hello-sharedata")
 include(":samples:hello-transitionanimation")
-include(':samples:hello-concurrentpairnavigator')
-include(':samples:hello-bottombar')
+include(":samples:hello-concurrentpairnavigator")
+include(":samples:hello-bottombar")
 
 include(":samples:notes-app")
 include(":samples:notes-app:android")
 
-include(":docs")
+//include(":docs")
 
 project(":acorn").projectDir = file("core/acorn-core")
 project(":acorn-android").projectDir = file("core/acorn-android-core")

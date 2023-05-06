@@ -28,7 +28,7 @@ import kotlin.reflect.KClass
 
 class MusicNavigator(
     private val listener: Events,
-    savedState: NavigatorState? = null
+    savedState: NavigatorState? = null,
 ) : StackNavigator(savedState),
     SavableNavigator {
 

@@ -18,32 +18,32 @@ package acorn
 
 import com.nhaarman.acorn.Logger
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
 
 internal class LogKtTest {
 
     @Test
     fun `setting the logger`() {
-        /* Given */
+        // Given
         val instance = mock<Logger>()
 
-        /* When */
+        // When
         acorn.logger = instance
 
-        /* Then */
+        // Then
         expect(com.nhaarman.acorn.logger).toBe(instance)
     }
 
     @Test
     fun `reading the logger`() {
-        /* Given */
+        // Given
         val instance = mock<Logger>()
 
-        /* When */
+        // When
         com.nhaarman.acorn.logger = instance
 
-        /* Then */
+        // Then
         expect(acorn.logger).toBe(instance)
     }
 }

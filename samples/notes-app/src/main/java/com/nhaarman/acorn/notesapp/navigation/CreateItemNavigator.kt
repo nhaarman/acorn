@@ -29,7 +29,7 @@ class CreateItemNavigator(
     private val text: String?,
     private val notesAppComponent: NotesAppComponent,
     private val savedState: NavigatorState?,
-    private val listener: Events
+    private val listener: Events,
 ) : SingleSceneNavigator(savedState),
     CreateItemScene.Events {
 
@@ -38,7 +38,7 @@ class CreateItemNavigator(
             text,
             notesAppComponent.noteItemsRepository,
             this,
-            state
+            state,
         )
     }
 

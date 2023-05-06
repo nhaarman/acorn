@@ -21,7 +21,7 @@ import com.nhaarman.acorn.state.SavedState
 @ExperimentalStateChecker
 internal class StateRestorationFailedException(
     private val state: SavedState?,
-    cause: Throwable
+    cause: Throwable,
 ) : Exception(cause) {
 
     override val message: String?

@@ -1,12 +1,11 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nhaarman.acorn.android.experimental.statechecks">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
         <provider
             android:name="com.nhaarman.acorn.android.experimental.statechecks.StateChecksInitProvider"
+            android:authorities="${applicationId}.StateChecksInitProvider"
             android:exported="false"
-            android:initOrder="3"
-            android:authorities="${applicationId}.StateChecksInitProvider" />
+            android:initOrder="3" />
     </application>
 
 </manifest>

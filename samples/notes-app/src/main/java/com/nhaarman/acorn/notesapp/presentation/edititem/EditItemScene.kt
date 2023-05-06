@@ -18,6 +18,7 @@ package com.nhaarman.acorn.notesapp.presentation.edititem
 
 import com.nhaarman.acorn.notesapp.mainThread
 import com.nhaarman.acorn.notesapp.note.NoteItemsRepository
+import com.nhaarman.acorn.orNull
 import com.nhaarman.acorn.presentation.RxScene
 import com.nhaarman.acorn.presentation.SavableScene
 import com.nhaarman.acorn.presentation.SceneKey.Companion.defaultKey
@@ -29,7 +30,7 @@ class EditItemScene(
     private val itemId: Long,
     private val noteItemsRepository: NoteItemsRepository,
     private val listener: Events,
-    savedState: SceneState? = null
+    savedState: SceneState? = null,
 ) : RxScene<EditItemContainer>(savedState),
     SavableScene {
 
@@ -87,13 +88,13 @@ class EditItemScene(
         fun create(
             noteItemsRepository: NoteItemsRepository,
             listener: Events,
-            state: SceneState
+            state: SceneState,
         ): EditItemScene {
             return EditItemScene(
                 state["item_id"]!!,
                 noteItemsRepository,
                 listener,
-                state
+                state,
             )
         }
     }

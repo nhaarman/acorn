@@ -33,7 +33,7 @@ interface NewsContainer : RestorableContainer {
 }
 
 class NewsViewController(
-    override val view: View
+    override val view: View,
 ) : RestorableViewController, NewsContainer {
 
     init {

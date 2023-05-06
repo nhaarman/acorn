@@ -23,7 +23,7 @@ import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.SceneState
 import kotlin.reflect.KClass
 
-@UseExperimental(ExperimentalConcurrentPairNavigator::class)
+@OptIn(ExperimentalConcurrentPairNavigator::class)
 class HelloConcurrentPairNavigator : ConcurrentPairNavigator(null) {
 
     override fun createInitialScene(): Scene<out Container> {

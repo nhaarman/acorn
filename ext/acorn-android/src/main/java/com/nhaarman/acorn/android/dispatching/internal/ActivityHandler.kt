@@ -26,7 +26,7 @@ internal interface ActivityHandler {
 
     fun withScene(
         scene: Scene<out Container>,
-        activityController: ActivityController
+        activityController: ActivityController,
     )
 
     fun withoutScene()

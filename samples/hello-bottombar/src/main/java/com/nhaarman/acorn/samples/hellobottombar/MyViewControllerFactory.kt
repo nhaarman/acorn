@@ -32,7 +32,7 @@ class MyViewControllerFactory : ViewControllerFactory {
         FavoritesViewControllerFactory(),
         MusicViewControllerFactory(),
         PlacesViewControllerFactory(),
-        NewsViewControllerFactory()
+        NewsViewControllerFactory(),
     )
 
     override fun supports(scene: Scene<*>): Boolean {

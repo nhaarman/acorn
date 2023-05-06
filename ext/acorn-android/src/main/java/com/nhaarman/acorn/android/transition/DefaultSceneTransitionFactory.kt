@@ -25,7 +25,7 @@ import com.nhaarman.acorn.presentation.Scene
  * determine the transition.
  */
 class DefaultSceneTransitionFactory(
-    private val viewControllerFactory: ViewControllerFactory
+    private val viewControllerFactory: ViewControllerFactory,
 ) : SceneTransitionFactory {
 
     override fun supports(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Boolean {

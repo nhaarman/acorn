@@ -48,7 +48,7 @@ class AcornSceneDispatcher internal constructor(
     private val activityControllerFactory: ActivityControllerFactory,
     private val uiHandler: UIHandler,
     private val activityHandler: ActivityHandler,
-    private val callback: Callback
+    private val callback: Callback,
 ) : SceneDispatcher {
 
     private var listener: MyListener? = null
@@ -127,7 +127,7 @@ class AcornSceneDispatcher internal constructor(
                 "Use create(Activity, ViewGroup, ViewControllerFactory, ActivityControllerFactory, SceneTransitionFactory, Callback, SavedState?) " +
                 "instead and provide the root ViewGroup to use.\n" +
                 "This method uses the android.R.id.content ViewGroup, which can result in theming issues.",
-            level = DeprecationLevel.WARNING
+            level = DeprecationLevel.WARNING,
         )
         fun create(
             activity: Activity,
@@ -135,7 +135,7 @@ class AcornSceneDispatcher internal constructor(
             activityControllerFactory: ActivityControllerFactory,
             transitionFactory: SceneTransitionFactory,
             callback: Callback,
-            savedState: SavedState?
+            savedState: SavedState?,
         ): AcornSceneDispatcher {
             return create(
                 activity,
@@ -144,7 +144,7 @@ class AcornSceneDispatcher internal constructor(
                 activityControllerFactory,
                 transitionFactory,
                 callback,
-                savedState
+                savedState,
             )
         }
 
@@ -155,7 +155,7 @@ class AcornSceneDispatcher internal constructor(
             activityControllerFactory: ActivityControllerFactory,
             transitionFactory: SceneTransitionFactory,
             callback: Callback,
-            savedState: SavedState?
+            savedState: SavedState?,
         ): AcornSceneDispatcher {
             return AcornSceneDispatcher(
                 activity,
@@ -164,9 +164,9 @@ class AcornSceneDispatcher internal constructor(
                 UIStateUIHandler.create(root, transitionFactory),
                 DefaultActivityHandler(
                     ActivityHandlerCallbackAdapter(callback),
-                    savedState.activityHandlerState
+                    savedState.activityHandlerState,
                 ),
-                callback
+                callback,
             )
         }
 
@@ -179,7 +179,7 @@ class AcornSceneDispatcher internal constructor(
             }
 
         private class ActivityHandlerCallbackAdapter(
-            private val dispatcherCallback: Callback
+            private val dispatcherCallback: Callback,
         ) : DefaultActivityHandler.Callback {
 
             override fun startForResult(intent: Intent) {
@@ -189,7 +189,7 @@ class AcornSceneDispatcher internal constructor(
     }
 
     private class SceneDispatchFailureException(
-        private val scene: Scene<*>
+        private val scene: Scene<*>,
     ) : IllegalStateException() {
 
         override val message: String by lazy {

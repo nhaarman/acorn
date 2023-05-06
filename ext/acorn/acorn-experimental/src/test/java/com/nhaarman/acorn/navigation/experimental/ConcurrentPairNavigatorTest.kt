@@ -25,19 +25,19 @@ import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SavedState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 import kotlin.reflect.KClass
 
 @ExperimentalConcurrentPairNavigator
@@ -55,22 +55,22 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `non disposed listener is not disposed`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(disposable.isDisposed()).toBe(false)
         }
 
         @Test
         fun `disposed listener is disposed`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             disposable.dispose()
 
-            /* Then */
+            // Then
             expect(disposable.isDisposed()).toBe(true)
         }
 
@@ -79,137 +79,137 @@ internal class ConcurrentPairNavigatorTest {
 
             @Test
             fun `inactive navigator is not finished`() {
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `inactive navigator is not destroyed`() {
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
 
             @Test
             fun `inactive navigator does not notify newly added listener of scene`() {
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBeNull()
             }
 
             @Test
             fun `stopping inactive navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStop()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `destroying inactive navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onDestroy()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `pushing a scene for inactive navigator does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.push(scene2)
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBeNull()
             }
 
             @Test
             fun `popping for only base scene for inactive navigator does not notify finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.pop()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `popping for base and second scene for inactive navigator does not notify finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.push(scene2)
 
-                /* When */
+                // When
                 navigator.pop()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `popping for base and second scene for inactive navigator does not notify scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.push(scene2)
 
-                /* When */
+                // When
                 navigator.pop()
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBeNull()
             }
 
             @Test
             fun `finish for inactive navigator notifies listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.finish()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(true)
             }
 
             @Test
             fun `onBackPressed for only base scene for inactive navigator notifies listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 expect(listener.finished).toBe(true)
             }
 
             @Test
             fun `onBackPressed for base and second scene for inactive navigator does not notify listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.push(scene2)
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 expect(listener.finished).toBe(false)
             }
@@ -220,49 +220,49 @@ internal class ConcurrentPairNavigatorTest {
 
             @Test
             fun `starting navigator notifies listeners of scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBe(scene1)
             }
 
             @Test
             fun `starting navigator does not notify removed listeners of scene`() {
-                /* Given */
+                // Given
                 val disposable = navigator.addNavigatorEventsListener(listener)
                 disposable.dispose()
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), anyOrNull())
             }
 
             @Test
             fun `starting navigator multiple times notifies listeners of scene only once`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, times(1)).scene(any(), anyOrNull())
             }
 
             @Test
             fun `starting navigator second time in a callback only notifies listener once`() {
-                /* Given */
+                // Given
                 val listener = mock<Navigator.Events>()
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(object : Navigator.Events {
                     override fun scene(scene: Scene<out Container>, data: TransitionData?) {
                         navigator.onStart()
@@ -273,44 +273,44 @@ internal class ConcurrentPairNavigatorTest {
                 })
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, times(1)).scene(any(), anyOrNull())
             }
 
             @Test
             fun `starting navigator - scene notification has no transition data`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 expect(listener.lastTransitionData).toBeNull()
             }
 
             @Test
             fun `starting navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `start navigator after scene push notifies combined scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.push(scene2)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBeInstanceOf<CombinedScene> {
                     expect(it.key).toBe(scene2.key)
                     expect(it.firstScene).toBe(scene1)
@@ -324,35 +324,35 @@ internal class ConcurrentPairNavigatorTest {
 
             @Test
             fun `active navigator is not destroyed`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
 
             @Test
             fun `active navigator does notify newly added listener of scene`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBe(scene1)
             }
 
             @Test
             fun `active navigator with second scene does notify newly added listener of combined scene`() {
-                /* Given */
+                // Given
                 navigator.push(scene2)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBeInstanceOf<CombinedScene> {
                     expect(it.key).toBe(scene2.key)
                     expect(it.firstScene).toBe(scene1)
@@ -362,14 +362,14 @@ internal class ConcurrentPairNavigatorTest {
 
             @Test
             fun `pushing a scene for active navigator does notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.push(scene2)
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBeInstanceOf<CombinedScene> {
                     expect(it.key).toBe(scene2.key)
                     expect(it.firstScene).toBe(scene1)
@@ -379,162 +379,162 @@ internal class ConcurrentPairNavigatorTest {
 
             @Test
             fun `pushing a scene for active navigator does not notify removed listeners`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener).dispose()
 
-                /* When */
+                // When
                 navigator.push(scene2)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(eq(scene2), anyOrNull())
             }
 
             @Test
             fun `pushing a scene for active navigator - scene notification has forward transition data`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.push(scene2)
 
-                /* Then */
+                // Then
                 expect(listener.lastTransitionData?.isBackwards).toBe(false)
             }
 
             @Test
             fun `popping for only base scene for active navigator does not notify finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.pop()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `popping for base and second scene for active navigator does not notify finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.push(scene2)
 
-                /* When */
+                // When
                 navigator.pop()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `popping for base and second scene for active navigator notifies proper scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.push(scene2)
 
-                /* When */
+                // When
                 navigator.pop()
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBe(scene1)
             }
 
             @Test
             fun `popping for base and second scene for active navigator - scene notification has backward transition data`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.push(scene2)
 
-                /* When */
+                // When
                 navigator.pop()
 
-                /* Then */
+                // Then
                 expect(listener.lastTransitionData?.isBackwards).toBe(true)
             }
 
             @Test
             fun `onBackPressed for only base scene for active navigator notifies listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 expect(listener.finished).toBe(true)
             }
 
             @Test
             fun `onBackPressed for base and second scene for active navigator does not notify listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.push(scene2)
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `onBackPressed for base and second scene for active navigator notifies listener of base scene`() {
-                /* Given */
+                // Given
                 navigator.push(scene2)
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBe(scene1)
             }
 
             @Test
             fun `onBackPressed for only base scene for active navigator results in destroyed navigator`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(true)
             }
 
             @Test
             fun `finish for active navigator notifies listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.finish()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(true)
             }
 
             @Test
             fun `finish for active navigator results in destroyed navigator`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.finish()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(true)
             }
         }
@@ -544,13 +544,13 @@ internal class ConcurrentPairNavigatorTest {
 
             @Test
             fun `stopped navigator is not destroyed`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.onStop()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
         }
@@ -560,66 +560,66 @@ internal class ConcurrentPairNavigatorTest {
 
             @Test
             fun `destroyed navigator is destroyed`() {
-                /* When */
+                // When
                 navigator.onDestroy()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(true)
             }
 
             @Test
             fun `pushing a scene for destroyed navigator does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onDestroy()
 
-                /* When */
+                // When
                 navigator.push(scene2)
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBeNull()
             }
 
             @Test
             fun `popping for base and second scene for destroyed navigator does not notify scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onDestroy()
                 navigator.push(scene2)
 
-                /* When */
+                // When
                 navigator.pop()
 
-                /* Then */
+                // Then
                 expect(listener.lastScene).toBeNull()
             }
 
             @Test
             fun `onBackPressed for only base scene after navigator is destroyed does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.onDestroy()
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(false)
                 expect(listener.finished).toBe(false)
             }
 
             @Test
             fun `finish after navigator is destroyed does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.onDestroy()
 
-                /* When */
+                // When
                 navigator.finish()
 
-                /* Then */
+                // Then
                 expect(listener.finished).toBe(false)
             }
         }
@@ -630,10 +630,10 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `starting navigator starts Scene`() {
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -642,11 +642,11 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `starting navigator multiple times starts Scene only once`() {
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -655,22 +655,22 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `stopping an inactive navigator does not stop Scene`() {
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verifyNoMoreInteractions(scene1)
         }
 
         @Test
         fun `stopping an active navigator stops Scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -680,49 +680,49 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `destroy an inactive navigator does not stop Scene`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `destroy an inactive navigator does destroy Scene`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
         }
 
         @Test
         fun `finishing an inactive navigator does not stop Scene`() {
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `finishing an inactive navigator does destroy Scene`() {
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
         }
 
         @Test
         fun `destroy an active navigator stops and destroys Scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -733,13 +733,13 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `finishing an active navigator stops and destroys Scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             scene1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -750,39 +750,39 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `starting a destroyed navigator does not start Scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
             verify(scene1, never()).onStart()
         }
 
         @Test
         fun `stopping a destroyed navigator does not start Scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `destroying a destroyed navigator only destroys Scene once`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1, times(1)).onDestroy()
         }
     }
@@ -792,16 +792,16 @@ internal class ConcurrentPairNavigatorTest {
 
         @BeforeEach
         fun before() {
-            /* Given */
+            // Given
             navigator.push(scene2)
         }
 
         @Test
         fun `starting navigator starts both scene`() {
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene1).onStart()
                 verify(scene2).onStart()
@@ -811,11 +811,11 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `starting navigator multiple times starts Scene only once`() {
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene1).onStart()
                 verify(scene2).onStart()
@@ -825,23 +825,23 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `stopping an inactive navigator does not stop scenes`() {
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verifyNoMoreInteractions(scene1)
             verifyNoMoreInteractions(scene2)
         }
 
         @Test
         fun `stopping an active navigator stops both scenes`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene1).onStart()
                 verify(scene2).onStart()
@@ -853,20 +853,20 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `destroy an inactive navigator does not stop Scenes`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1, never()).onStop()
             verify(scene2, never()).onStop()
         }
 
         @Test
         fun `destroy an inactive navigator does destroy Scenes`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene2).onDestroy()
                 verify(scene1).onDestroy()
@@ -875,20 +875,20 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `finishing an inactive navigator does not stop Scenes`() {
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             verify(scene1, never()).onStop()
             verify(scene2, never()).onStop()
         }
 
         @Test
         fun `finishing an inactive navigator does destroy Scene`() {
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene2).onDestroy()
                 verify(scene1).onDestroy()
@@ -897,13 +897,13 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `destroy an active navigator stops both scenes and destroys both Scenes`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene1).onStart()
                 verify(scene2).onStart()
@@ -917,13 +917,13 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `finishing an active navigator stops both scenes and destroys both Scenes`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene1).onStart()
                 verify(scene2).onStart()
@@ -937,13 +937,13 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `starting a destroyed navigator does not start scenes`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
             verify(scene2).onDestroy()
             verify(scene1, never()).onStart()
@@ -952,13 +952,13 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `stopping a destroyed navigator does not stop scenes`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(scene1).onDestroy()
             verify(scene2).onDestroy()
             verify(scene1, never()).onStop()
@@ -967,13 +967,13 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `destroying a destroyed navigator only destroys scenes once`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(scene1, times(1)).onDestroy()
             verify(scene2, times(1)).onDestroy()
         }
@@ -984,68 +984,68 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `popping for only base scene for inactive navigator does not destroy scene`() {
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             verify(scene1, never()).onDestroy()
         }
 
         @Test
         fun `popping for only base scene for inactive navigator does not stop scene`() {
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `popping for base and second scene for inactive navigator destroys second scene`() {
-            /* Given */
+            // Given
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             verify(scene2).onDestroy()
         }
 
         @Test
         fun `popping for only base scene for active navigator does not stop scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `popping for only base scene for active navigator does not destroy scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             verify(scene1, never()).onDestroy()
         }
 
         @Test
         fun `popping for base and second scene for active navigator stops and destroys latest scene`() {
-            /* Given */
+            // Given
             navigator.push(scene2)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.pop()
 
-            /* When */
+            // When
             inOrder(scene2) {
                 verify(scene2).onStop()
                 verify(scene2).onDestroy()
@@ -1054,38 +1054,38 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `pushing a new scene for base and second scene for inactive navigator destroys original second scene`() {
-            /* Given */
+            // Given
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.push(scene3)
 
-            /* When */
+            // When
             verify(scene2).onDestroy()
         }
 
         @Test
         fun `pushing a new scene for base and second scene for inactive navigator does not start newly pushed scene`() {
-            /* Given */
+            // Given
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.push(scene3)
 
-            /* When */
+            // When
             verifyNoMoreInteractions(scene3)
         }
 
         @Test
         fun `pushing a new scene for base and second scene for active navigator stops and destroys latest scene, and starts newly pushed scene`() {
-            /* Given */
+            // Given
             navigator.push(scene2)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(scene3)
 
-            /* When */
+            // When
             inOrder(scene1, scene2, scene3) {
                 verify(scene2).onStop()
                 verify(scene2).onDestroy()
@@ -1095,43 +1095,43 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `onBackPressed for only base scene for inactive navigator destroys scene`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(scene1).onDestroy()
         }
 
         @Test
         fun `onBackPressed for only base scene for inactive navigator does not stop scene`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `onBackPressed for base and second scene for inactive navigator destroys second scene`() {
-            /* Given */
+            // Given
             navigator.push(scene2)
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(scene2).onDestroy()
         }
 
         @Test
         fun `onBackPressed for only base scene for active navigator stops and destroys scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             scene1.inOrder {
                 verify().onStop()
                 verify().onDestroy()
@@ -1140,14 +1140,14 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `onBackPressed for base and second scene for active navigator stops and destroys second scene, and does not start current scene`() {
-            /* Given */
+            // Given
             navigator.push(scene2)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             inOrder(scene1, scene2) {
                 verify(scene2).onStop()
                 verify(scene2).onDestroy()
@@ -1157,43 +1157,43 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `pushing for inactive navigator does not stop base scene`() {
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             verify(scene1, never()).onStop()
         }
 
         @Test
         fun `pushing for inactive navigator does not start pushed scene`() {
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             verify(scene2, never()).onStart()
         }
 
         @Test
         fun `pushing for destroyed navigator does not start pushed scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             verify(scene2, never()).onStart()
         }
 
         @Test
         fun `pushing for started navigator does not stop base scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             inOrder(scene1) {
                 verify(scene1).onStart()
                 verify(scene1, never()).onStop()
@@ -1203,13 +1203,13 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `pushing for started navigator starts pushed scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(scene2)
 
-            /* Then */
+            // Then
             inOrder(scene1, scene2) {
                 verify(scene1).onStart()
                 verify(scene2).onStart()
@@ -1232,21 +1232,21 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `ConcurrentPairNavigator does not implement SavableNavigator by default`() {
-            /* Given */
+            // Given
             val navigator: Navigator = TestConcurrentPairNavigator(savableScene1)
 
-            /* Then */
+            // Then
             expect(navigator is SavableNavigator).toBe(false)
         }
 
         @Test
         fun `saving and restoring state for only savable base scene`() {
-            /* Given */
+            // Given
             val navigator = TestConcurrentPairNavigator(savableScene1)
             navigator.onStart()
             savableScene1.foo = 3
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             savableScene1.foo = 6
 
@@ -1254,7 +1254,7 @@ internal class ConcurrentPairNavigatorTest {
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBeInstanceOf<SavableTestScene> {
                 expect(it.foo).toBe(3)
             }
@@ -1262,30 +1262,30 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `saving and restoring state for only non savable base scene`() {
-            /* Given */
+            // Given
             val navigator = TestConcurrentPairNavigator(scene1)
             navigator.onStart()
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
 
             val restoredNavigator = SavableTestConcurrentPairNavigator(scene2, bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBe(scene2)
         }
 
         @Test
         fun `saving and restoring state for base and second scenes`() {
-            /* Given */
+            // Given
             navigator.onStart()
             savableScene1.foo = 3
             savableScene2.foo = 42
             navigator.push(savableScene2)
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             val restoredNavigator = SavableTestConcurrentPairNavigator(savableScene3, bundle)
             restoredNavigator.onStart()
@@ -1294,7 +1294,7 @@ internal class ConcurrentPairNavigatorTest {
             savableScene1.foo = 1
             savableScene2.foo = 2
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBeInstanceOf<CombinedScene> {
                 expect((it.firstScene as SavableTestScene).foo).toBe(3)
                 expect((it.secondScene as SavableTestScene).foo).toBe(42)
@@ -1303,40 +1303,40 @@ internal class ConcurrentPairNavigatorTest {
 
         @Test
         fun `saving and restoring state for base and non savable second scenes`() {
-            /* Given */
+            // Given
             val navigator = SavableTestConcurrentPairNavigator(savableScene1)
             navigator.onStart()
             savableScene1.foo = 3
             scene2.foo = 42
             navigator.push(scene2)
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             val restoredNavigator = SavableTestConcurrentPairNavigator(savableScene2, bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBe(savableScene1)
         }
 
         @Test
         fun `restoring from empty state ignores state`() {
-            /* When */
+            // When
             val result = SavableTestConcurrentPairNavigator(
                 savableScene1,
-                NavigatorState()
+                NavigatorState(),
             )
             result.onStart()
             result.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBe(savableScene1)
         }
 
         @Test
         fun `saved state from callback is the same as saved state _after_ callback`() {
-            /* Given */
+            // Given
             var state1: SavedState? = null
             navigator.addNavigatorEventsListener(object : Navigator.Events {
                 override fun scene(scene: Scene<out Container>, data: TransitionData?) {
@@ -1348,17 +1348,17 @@ internal class ConcurrentPairNavigatorTest {
             })
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.push(savableScene2)
             val state2 = navigator.saveInstanceState()
 
-            /* Then */
+            // Then
             expect(state1).toBe(state2)
         }
     }
 
     class TestConcurrentPairNavigator(
-        private val initialScene: Scene<*>
+        private val initialScene: Scene<*>,
     ) : ConcurrentPairNavigator(null) {
 
         override fun createInitialScene(): Scene<out Container> {
@@ -1372,7 +1372,7 @@ internal class ConcurrentPairNavigatorTest {
 
     class SavableTestConcurrentPairNavigator(
         private val initialScene: Scene<*>,
-        savedState: NavigatorState? = null
+        savedState: NavigatorState? = null,
     ) : ConcurrentPairNavigator(savedState), SavableNavigator {
 
         override fun createInitialScene(): Scene<out Container> {

@@ -20,10 +20,9 @@ import android.view.View
 import com.nhaarman.acorn.android.presentation.RestorableViewController
 import com.nhaarman.acorn.presentation.RestorableContainer
 import com.nhaarman.acorn.samples.hellosharedata.R
+import com.nhaarman.acorn.samples.hellosharedata.databinding.PicturedetailSceneBinding
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
 import com.squareup.picasso.Picasso
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.picturedetail_scene.*
 
 interface PictureDetailContainer : RestorableContainer {
 
@@ -35,21 +34,23 @@ interface PictureDetailContainer : RestorableContainer {
 }
 
 class PictureDetailViewController(
-    override val view: View
-) : RestorableViewController, PictureDetailContainer, LayoutContainer {
+    override val view: View,
+) : RestorableViewController, PictureDetailContainer {
+
+    private val binding = PicturedetailSceneBinding.bind(view)
 
     override var picture: Picture? = null
         set(value) {
             if (value == null) {
-                pictureDetailIV.setImageDrawable(null)
+                binding.pictureDetailIV.setImageDrawable(null)
                 return
             }
 
-            toolbar.title = value.file.name
+            binding.toolbar.title = value.file.name
 
             Picasso.get()
                 .load(value.file)
-                .into(pictureDetailIV)
+                .into(binding.pictureDetailIV)
         }
 
     override var isPicking: Boolean = false
@@ -58,16 +59,16 @@ class PictureDetailViewController(
             field = value
 
             if (value) {
-                toolbar.inflateMenu(R.menu.pickpicture)
+                binding.toolbar.inflateMenu(R.menu.pickpicture)
             }
         }
 
     override fun setOnUpClickedListener(function: () -> Unit) {
-        toolbar.setNavigationOnClickListener { function.invoke() }
+        binding.toolbar.setNavigationOnClickListener { function.invoke() }
     }
 
     override fun setPicturePickedListener(function: () -> Unit) {
-        toolbar.setOnMenuItemClickListener { menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.pick) {
                 function.invoke()
                 true
@@ -76,6 +77,4 @@ class PictureDetailViewController(
             }
         }
     }
-
-    override val containerView = view
 }

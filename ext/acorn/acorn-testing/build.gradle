@@ -1,16 +1,23 @@
 plugins {
     id("org.jetbrains.kotlin.jvm")
-    id("org.gradle.java-library")
 
-    id("org.jetbrains.dokka")
     id("org.gradle.maven-publish")
     id("signing")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
 dependencies {
     api project(':ext-acorn')
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     compileOnly "androidx.annotation:annotation"
 }

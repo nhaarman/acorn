@@ -22,7 +22,7 @@ import com.nhaarman.acorn.notesapp.navigation.NotesAppNavigator
 import com.nhaarman.acorn.state.NavigatorState
 
 class NotesAppNavigatorProvider(
-    private val notesAppComponent: NotesAppComponent
+    private val notesAppComponent: NotesAppComponent,
 ) : AbstractNavigatorProvider<NotesAppNavigator>() {
 
     override fun createNavigator(savedState: NavigatorState?): NotesAppNavigator {

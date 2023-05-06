@@ -29,7 +29,7 @@ import com.nhaarman.acorn.presentation.SceneKey
 @ExperimentalConcurrentPairNavigator
 class CombinedScene(
     val firstScene: Scene<out Container>,
-    val secondScene: Scene<out Container>
+    val secondScene: Scene<out Container>,
 ) : Scene<CombinedContainer> {
 
     override val key: SceneKey

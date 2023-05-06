@@ -16,7 +16,6 @@
 
 package com.nhaarman.acorn.notesapp.android
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
@@ -33,8 +32,11 @@ import org.junit.Test
 
 class AppTest {
 
-    @Rule @JvmField val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
-    @Rule @JvmField val purgeDatabase = PurgeDatabaseRule()
+    @Rule @JvmField
+    val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+
+    @Rule @JvmField
+    val purgeDatabase = PurgeDatabaseRule()
 
     @Test
     fun clickThroughScreens() {

@@ -17,10 +17,10 @@
 package com.nhaarman.acorn.samples.helloconcurrentpairnavigator
 
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.schedulers.TestScheduler
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import java.util.concurrent.TimeUnit
 
 class FirstSceneTest {
@@ -32,39 +32,39 @@ class FirstSceneTest {
 
     @Test
     fun `clicking button notifies listener`() {
-        /* Given */
+        // Given
         scene.attach(container)
 
-        /* When */
+        // When
         container.clickAction()
 
-        /* Then */
+        // Then
         verify(listener).actionClicked()
     }
 
     @Test
     fun `count is applied to the container when attached later`() {
-        /* Given */
+        // Given
         scene.onStart()
 
-        /* When */
+        // When
         scheduler.advanceTimeBy(5, TimeUnit.SECONDS)
         scene.attach(container)
 
-        /* Then */
+        // Then
         expect(container.count).toBe(50)
     }
 
     @Test
     fun `count is applied to the container after attaching`() {
-        /* Given */
+        // Given
         scene.onStart()
 
-        /* When */
+        // When
         scene.attach(container)
         scheduler.advanceTimeBy(5, TimeUnit.SECONDS)
 
-        /* Then */
+        // Then
         expect(container.count).toBe(50)
     }
 

@@ -24,7 +24,7 @@ import com.nhaarman.acorn.notesapp.android.R
 class CreateItemToolbar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
-    defStyleAttr: Int = androidx.appcompat.R.attr.toolbarStyle
+    defStyleAttr: Int = androidx.appcompat.R.attr.toolbarStyle,
 ) : Toolbar(context, attrs, defStyleAttr) {
 
     override fun onFinishInflate() {

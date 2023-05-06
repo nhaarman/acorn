@@ -25,7 +25,7 @@ import com.nhaarman.acorn.state.SceneState
 
 class NewsScene(
     private val listener: Events,
-    savedState: SceneState?
+    savedState: SceneState?,
 ) : BasicScene<NewsContainer>(savedState),
     SavableScene {
 

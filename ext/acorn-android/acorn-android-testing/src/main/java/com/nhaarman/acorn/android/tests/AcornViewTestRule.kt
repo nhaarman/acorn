@@ -24,7 +24,7 @@ import com.nhaarman.acorn.presentation.SceneKey
 
 class AcornViewTestRule<C : Container>(
     private val viewControllerFactory: ViewControllerFactory,
-    private val sceneKey: SceneKey
+    private val sceneKey: SceneKey,
 ) : ActivityTestRule<AcornTestActivity>(AcornTestActivity::class.java) {
 
     private val viewController by lazy {

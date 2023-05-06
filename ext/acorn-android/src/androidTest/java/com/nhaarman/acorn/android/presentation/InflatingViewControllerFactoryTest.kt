@@ -32,31 +32,31 @@ internal class InflatingViewControllerFactoryTest {
 
     @Test
     fun properViewIsReturned() {
-        /* Given */
+        // Given
         val viewGroup = FrameLayout(InstrumentationRegistry.getInstrumentation().context)
         val factory = InflatingViewControllerFactory<View>(R.layout.linearlayout) {
             MyContainer(it)
         }
 
-        /* When */
+        // When
         val result = factory.viewControllerFor(TestScene(SceneKey("test")), viewGroup)
 
-        /* Then */
+        // Then
         expect(result.view).toBeInstanceOf<LinearLayout>()
     }
 
     @Test
     fun properContainerIsReturned() {
-        /* Given */
+        // Given
         val viewGroup = FrameLayout(InstrumentationRegistry.getInstrumentation().context)
         val factory = InflatingViewControllerFactory<View>(R.layout.linearlayout) {
             MyContainer(it)
         }
 
-        /* When */
+        // When
         val result = factory.viewControllerFor(TestScene(SceneKey("test")), viewGroup)
 
-        /* Then */
+        // Then
         expect(result).toBeInstanceOf<MyContainer> {
             expect(it.view).toBe(result.view)
         }

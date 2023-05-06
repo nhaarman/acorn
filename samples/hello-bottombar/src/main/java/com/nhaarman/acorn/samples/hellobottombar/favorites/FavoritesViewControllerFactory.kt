@@ -31,7 +31,7 @@ class FavoritesViewControllerFactory : ViewControllerFactory {
 
     override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
         return FavoritesViewController(
-            MainLayout.inflateWith(R.layout.favorites_scene, parent)
+            MainLayout.inflateWith(R.layout.favorites_scene, parent),
         )
     }
 }

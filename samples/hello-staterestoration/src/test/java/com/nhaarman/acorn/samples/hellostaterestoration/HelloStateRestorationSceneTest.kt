@@ -20,9 +20,9 @@ import com.nhaarman.acorn.state.ContainerState
 import com.nhaarman.acorn.state.containerState
 import com.nhaarman.acorn.state.get
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class HelloStateRestorationSceneTest {
 
@@ -31,26 +31,26 @@ class HelloStateRestorationSceneTest {
 
     @Test
     fun `counter value is set`() {
-        /* Given */
+        // Given
         val scene = HelloStateRestorationScene.create(3, listener)
 
-        /* When */
+        // When
         scene.attach(container)
 
-        /* Then */
+        // Then
         expect(container.counterValue).toBe(3)
     }
 
     @Test
     fun `clicking next notifies listener`() {
-        /* Given */
+        // Given
         val scene = HelloStateRestorationScene.create(3, listener)
         scene.attach(container)
 
-        /* When */
+        // When
         container.clickNext()
 
-        /* Then */
+        // Then
         verify(listener).nextRequested()
     }
 
@@ -62,25 +62,25 @@ class HelloStateRestorationSceneTest {
 
         val container2 = TestContainer()
 
-        /* When */
+        // When
         scene.detach(container)
         scene.attach(container2)
 
-        /* Then */
+        // Then
         expect(container2.state).toBe(42)
     }
 
     @Test
     fun `restoring scene from state`() {
-        /* Given */
+        // Given
         val scene = HelloStateRestorationScene.create(1337, listener)
         val savedState = scene.saveInstanceState()
 
-        /* When */
+        // When
         val scene2 = HelloStateRestorationScene.create(savedState, listener)
         scene2.attach(container)
 
-        /* Then */
+        // Then
         expect(container.counterValue).toBe(1337)
     }
 

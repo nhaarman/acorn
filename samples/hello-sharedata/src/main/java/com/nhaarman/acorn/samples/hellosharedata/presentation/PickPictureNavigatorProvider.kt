@@ -21,7 +21,7 @@ import com.nhaarman.acorn.samples.hellosharedata.pictures.PicturesProvider
 import com.nhaarman.acorn.state.NavigatorState
 
 class PickPictureNavigatorProvider(
-    private val picturesProvider: PicturesProvider
+    private val picturesProvider: PicturesProvider,
 ) : AbstractNavigatorProvider<PickPictureNavigator>() {
 
     override fun createNavigator(savedState: NavigatorState?): PickPictureNavigator {

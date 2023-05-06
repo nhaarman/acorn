@@ -1,13 +1,17 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
 }
 
 android {
     defaultConfig {
         minSdkVersion(21)
     }
+    buildFeatures {
+        viewBinding true
+    }
+
+    namespace "com.nhaarman.acorn.notesapp.android"
 
     lintOptions {
         /*
@@ -30,7 +34,6 @@ dependencies {
 
     implementation project(":samples:notes-app")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "androidx.core:core-ktx"
 
     implementation "com.google.android.material:material"
@@ -44,9 +47,6 @@ dependencies {
     implementation "com.jakewharton.rxbinding3:rxbinding"
     implementation "com.jakewharton.rxbinding3:rxbinding-appcompat"
 
-    implementation "com.squareup.sqlbrite3:sqlbrite-kotlin"
-    implementation "android.arch.persistence:db-framework"
-
     implementation "com.jakewharton.timber:timber"
 
     debugImplementation project(":ext-acorn-android-testing")
@@ -56,8 +56,4 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib"
     androidTestImplementation "androidx.test:runner"
     androidTestImplementation "androidx.test:rules"
-}
-
-androidExtensions {
-    experimental = true
 }

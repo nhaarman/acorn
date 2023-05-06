@@ -30,7 +30,7 @@ import com.nhaarman.acorn.util.lazyVar
  */
 class UIStateUIHandler private constructor(
     private val root: ViewGroup,
-    private val transitionFactory: SceneTransitionFactory
+    private val transitionFactory: SceneTransitionFactory,
 ) : UIHandler {
 
     private var state by lazyVar {
@@ -52,7 +52,7 @@ class UIStateUIHandler private constructor(
     override fun withScene(
         scene: Scene<out Container>,
         viewControllerFactory: ViewControllerFactory,
-        data: TransitionData?
+        data: TransitionData?,
     ) {
         state = state.withScene(scene, viewControllerFactory, data)
     }
@@ -65,11 +65,11 @@ class UIStateUIHandler private constructor(
 
         fun create(
             root: ViewGroup,
-            transitionFactory: SceneTransitionFactory
+            transitionFactory: SceneTransitionFactory,
         ): UIStateUIHandler {
             return UIStateUIHandler(
                 root,
-                transitionFactory
+                transitionFactory,
             )
         }
 
@@ -78,15 +78,15 @@ class UIStateUIHandler private constructor(
                 "Use create(ViewGroup, SceneTransitionFactory) " +
                 "instead and provide the root ViewGroup to use.\n" +
                 "This method uses the android.R.id.content ViewGroup, which can result in theming issues.",
-            level = DeprecationLevel.WARNING
+            level = DeprecationLevel.WARNING,
         )
         fun create(
             activity: Activity,
-            transitionFactory: SceneTransitionFactory
+            transitionFactory: SceneTransitionFactory,
         ): UIStateUIHandler {
             return UIStateUIHandler(
                 activity.findViewById(android.R.id.content),
-                transitionFactory
+                transitionFactory,
             )
         }
     }

@@ -52,12 +52,13 @@ class PickPictureActivity : AcornAppCompatActivity(), PickPictureNavigator.Event
             Activity.RESULT_OK,
             Intent().apply {
                 data = PictureContentProvider.uriFor(picture.file)
-            }
+            },
         )
         finish()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         picturesProvider.onPermissionChanged()
     }
 

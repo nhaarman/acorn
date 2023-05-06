@@ -16,6 +16,7 @@
 
 package com.nhaarman.acorn.notesapp.android.ui.transition
 
+import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import androidx.core.animation.addListener
@@ -23,7 +24,6 @@ import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.util.inflateView
 import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.android.ui.createitem.CreateItemViewController
-import kotlinx.android.synthetic.main.itemlist_scene.view.*
 
 /**
  * A [SceneTransition] that shows a circular reveal animation to transition from
@@ -36,12 +36,13 @@ object ItemListCreateItemTransition : SceneTransition {
         val view = parent.inflateView(R.layout.itemlistcreateitem_reveal)
         parent.addView(view)
 
+        val createButton = parent.findViewById<View>(R.id.createButton)
         val anim = ViewAnimationUtils.createCircularReveal(
             view,
-            (parent.createButton.x.toInt() + parent.createButton.width / 2),
-            parent.createButton.y.toInt() + parent.createButton.height / 2,
+            (createButton.x.toInt() + createButton.width / 2),
+            createButton.y.toInt() + createButton.height / 2,
             0f,
-            Math.hypot(parent.width.toDouble(), parent.height.toDouble()).toFloat()
+            Math.hypot(parent.width.toDouble(), parent.height.toDouble()).toFloat(),
         )
 
         anim.duration = parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
@@ -61,7 +62,7 @@ object ItemListCreateItemTransition : SceneTransition {
                         parent.removeView(view)
                         callback.onComplete(viewController)
                     }
-            }
+            },
         )
         anim.start()
     }

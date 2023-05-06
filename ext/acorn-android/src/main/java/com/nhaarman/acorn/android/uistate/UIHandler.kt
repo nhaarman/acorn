@@ -66,7 +66,7 @@ interface UIHandler {
     fun withScene(
         scene: Scene<out Container>,
         viewControllerFactory: ViewControllerFactory,
-        data: TransitionData?
+        data: TransitionData?,
     )
 
     /**

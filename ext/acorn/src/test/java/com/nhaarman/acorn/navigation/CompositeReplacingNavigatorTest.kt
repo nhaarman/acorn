@@ -22,19 +22,19 @@ import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SavedState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.atLeastOnce
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import kotlin.reflect.KClass
 
 internal class CompositeReplacingNavigatorTest {
@@ -57,76 +57,76 @@ internal class CompositeReplacingNavigatorTest {
 
             @Test
             fun `navigator is not finished`() {
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `navigator is not destroyed`() {
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
 
             @Test
             fun `added listener does not get notified of scene`() {
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), any())
             }
 
             @Test
             fun `pushing a navigator does not notify listeners of scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.replace(navigator2)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), any())
             }
 
             @Test
             fun `onBackPressed notifies listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 verify(listener).finished()
             }
 
             @Test
             fun `onBackPressed does not notify screen`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 verify(listener, never()).scene(any(), any())
             }
 
             @Test
             fun `onBackPressed for replaced navigator does not notify screen`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 verify(listener, never()).scene(any(), any())
             }
@@ -137,102 +137,102 @@ internal class CompositeReplacingNavigatorTest {
 
             @Test
             fun `navigator is not finished`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `navigator is not destroyed`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
 
             @Test
             fun `added listener gets notified of scene`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 verify(listener).scene(navigator1Scene1, null)
             }
 
             @Test
             fun `removed listener does not get notified of scene`() {
-                /* Given */
+                // Given
                 val disposable = navigator.addNavigatorEventsListener(listener)
                 disposable.dispose()
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), anyOrNull())
             }
 
             @Test
             fun `non disposed listener is not disposed`() {
-                /* Given */
+                // Given
                 val disposable = navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 expect(disposable.isDisposed()).toBe(false)
             }
 
             @Test
             fun `disposed listener is disposed`() {
-                /* Given */
+                // Given
                 val disposable = navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 disposable.dispose()
 
-                /* Then */
+                // Then
                 expect(disposable.isDisposed()).toBe(true)
             }
 
             @Test
             fun `starting navigator notifies listeners of scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener).scene(navigator1Scene1, null)
             }
 
             @Test
             fun `starting navigator multiple times notifies listeners of scene only once`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, times(1)).scene(any(), anyOrNull())
             }
 
             @Test
             fun `starting navigator second time in a callback only notifies listener once`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(object : Navigator.Events {
                     override fun scene(scene: Scene<out Container>, data: TransitionData?) {
                         navigator.onStart()
@@ -243,84 +243,84 @@ internal class CompositeReplacingNavigatorTest {
                 })
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, times(1)).scene(any(), anyOrNull())
             }
 
             @Test
             fun `starting navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `replacing a navigator notifies listeners of scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.replace(navigator2)
 
-                /* Then */
+                // Then
                 verify(listener).scene(eq(navigator2Scene1), anyOrNull())
             }
 
             @Test
             fun `start navigator after navigator replaced notifies pushed scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener).scene(navigator2Scene1)
             }
 
             @Test
             fun `onBackPressed for a single scene notifies finished`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 verify(listener).finished()
             }
 
             @Test
             fun `finish notifies listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.finish()
 
-                /* Then */
+                // Then
                 verify(listener).finished()
             }
 
             @Test
             fun `onBackPressed for a single scene does not notify screen`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 listener.inOrder {
                     verify().scene(navigator1Scene1)
@@ -331,15 +331,15 @@ internal class CompositeReplacingNavigatorTest {
 
             @Test
             fun `onBackPressed for multiple navigators notifies proper scenes`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 listener.inOrder {
                     verify().scene(eq(navigator1Scene1), anyOrNull())
@@ -351,16 +351,16 @@ internal class CompositeReplacingNavigatorTest {
 
             @Test
             fun `forwards from nested navigator is propagated`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
 
-                /* When */
+                // When
                 navigator2.push(navigator2Scene2)
 
-                /* Then */
-                /* Then */
+                // Then
+                // Then
                 argumentCaptor<TransitionData> {
                     verify(listener, atLeastOnce()).scene(any(), capture())
                     expect(lastValue.isBackwards).toBe(false)
@@ -369,17 +369,17 @@ internal class CompositeReplacingNavigatorTest {
 
             @Test
             fun `backwards from nested navigator is propagated`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
                 navigator.replace(navigator2)
                 navigator2.push(navigator2Scene2)
 
-                /* When */
+                // When
                 navigator.onBackPressed()
 
-                /* Then */
-                /* Then */
+                // Then
+                // Then
                 argumentCaptor<TransitionData> {
                     verify(listener, atLeastOnce()).scene(any(), capture())
                     expect(lastValue.isBackwards).toBe(true)
@@ -388,30 +388,30 @@ internal class CompositeReplacingNavigatorTest {
 
             @Test
             fun `onBackPressed after navigator is destroyed does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.onDestroy()
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(false)
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `finish after navigator is destroyed does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.onDestroy()
 
-                /* When */
+                // When
                 navigator.finish()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
         }
@@ -421,22 +421,22 @@ internal class CompositeReplacingNavigatorTest {
 
             @Test
             fun `stopping navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStop()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `stopped navigator is not destroyed`() {
-                /* When */
+                // When
                 navigator.onStop()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
         }
@@ -446,49 +446,49 @@ internal class CompositeReplacingNavigatorTest {
 
             @Test
             fun `destroying navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onDestroy()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `isDestroyed returns true`() {
-                /* When */
+                // When
                 navigator.onDestroy()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(true)
             }
 
             @Test
             fun `pushing a scene for destroyed navigator does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onDestroy()
 
-                /* When */
+                // When
                 navigator.replace(navigator2)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), any())
             }
 
             @Test
             fun `onBackPressed for replaced Navigator for destroyed navigator does not notify scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onDestroy()
                 navigator.replace(navigator2)
 
-                /* When */
+                // When
                 navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), any())
             }
         }
@@ -499,10 +499,10 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `starting navigator starts child navigator`() {
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             navigator1.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -511,32 +511,32 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `starting navigator multiple times starts child navigator only once`() {
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(navigator1, times(1)).onStart()
         }
 
         @Test
         fun `stopping an inactive navigator does not stop child navigator`() {
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `stopping an active navigator stops child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             navigator1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -545,31 +545,31 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `destroy an inactive navigator does not stop child navigator`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `destroy an inactive navigator does destroy child navigator`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1).onDestroy()
         }
 
         @Test
         fun `destroy an active navigator stops and destroys child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             navigator1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -579,39 +579,39 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `starting a destroyed navigator does not start child navigator`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(navigator1).onDestroy()
             verify(navigator1, never()).onStart()
         }
 
         @Test
         fun `stopping a destroyed navigator does not stop child navigator`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(navigator1).onDestroy()
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `destroying a destroyed navigator only destroys child navigator once`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1, times(1)).onDestroy()
         }
     }
@@ -621,40 +621,40 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `onBackPressed for inactive navigator destroys child navigator`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(navigator1).onDestroy()
         }
 
         @Test
         fun `onBackPressed for inactive navigator destroys parent navigator`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test
         fun `onBackPressed for inactive navigator does not stop child navigator`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `onBackPressed for active navigator stops and destroys child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             navigator1.inOrder {
                 verify().onStop()
                 verify().onDestroy()
@@ -663,55 +663,55 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `onBackPressed for active navigator destroys parent navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test
         fun `replacing for inactive navigator does not stop previous child navigator`() {
-            /* When */
+            // When
             navigator.replace(navigator2)
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `replacing for inactive navigator does not start pushed navigator`() {
-            /* When */
+            // When
             navigator.replace(navigator2)
 
-            /* Then */
+            // Then
             verify(navigator2, never()).onStart()
         }
 
         @Test
         fun `replacing for destroyed navigator does not start pushed navigator`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.replace(navigator2)
 
-            /* Then */
+            // Then
             verify(navigator2, never()).onStart()
         }
 
         @Test
         fun `replacing for started navigator stops and destroys previous child navigator and starts pushed child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.replace(navigator2)
 
-            /* Then */
+            // Then
             inOrder(navigator1, navigator2) {
                 verify(navigator1).onStart()
                 verify(navigator1).onStop()
@@ -738,26 +738,26 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `CompositeReplacingNavigator does not implement SavableNavigator by default`() {
-            /* Given */
+            // Given
             val navigator: Navigator = TestCompositeReplacingNavigator(savableChildNavigator)
 
-            /* Then */
+            // Then
             expect(navigator is SavableNavigator).toBe(false)
         }
 
         @Test
         fun `saving and restoring state for single navigator stack`() {
-            /* Given */
+            // Given
             navigator.onStart()
             savableScene.foo = 3
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             val restoredNavigator = SavableCompositeReplacingNavigator(savableChildNavigator, bundle)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toNotBeTheSameAs(savableScene)
@@ -769,7 +769,7 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `saved state from callback is the same as saved state _after_ callback`() {
-            /* Given */
+            // Given
             var state1: SavedState? = null
             navigator.addNavigatorEventsListener(object : Navigator.Events {
                 override fun scene(scene: Scene<out Container>, data: TransitionData?) {
@@ -781,28 +781,28 @@ internal class CompositeReplacingNavigatorTest {
             })
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.replace(navigator2)
             val state2 = navigator.saveInstanceState()
 
-            /* Then */
+            // Then
             expect(state1).toBe(state2)
         }
 
         @Test
         fun `saving and restoring state for non savable initial child navigator`() {
-            /* Given */
+            // Given
             val navigator = SavableCompositeReplacingNavigator(childNavigator, null)
             navigator.onStart()
 
-            /* When */
+            // When
             val state = navigator.saveInstanceState()
             savableScene.foo = 3
             val restoredNavigator = SavableCompositeReplacingNavigator(childNavigator2, state)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toBe(savableScene2)
@@ -811,19 +811,19 @@ internal class CompositeReplacingNavigatorTest {
 
         @Test
         fun `saving and restoring state for replaced non savable scene`() {
-            /* Given */
+            // Given
             val navigator = SavableCompositeReplacingNavigator(childNavigator, null)
             navigator.onStart()
             navigator.replace(childNavigator2)
             savableScene2.foo = 42
 
-            /* When */
+            // When
             val state = navigator.saveInstanceState()
             val restoredNavigator = SavableCompositeReplacingNavigator(childNavigator3, state)
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toBe(savableScene3)
@@ -832,7 +832,7 @@ internal class CompositeReplacingNavigatorTest {
     }
 
     class TestCompositeReplacingNavigator(
-        private val initialNavigator: Navigator
+        private val initialNavigator: Navigator,
     ) : CompositeReplacingNavigator(null) {
 
         override fun initialNavigator(): Navigator {
@@ -841,7 +841,7 @@ internal class CompositeReplacingNavigatorTest {
 
         override fun instantiateNavigator(
             navigatorClass: KClass<out Navigator>,
-            state: NavigatorState?
+            state: NavigatorState?,
         ): Navigator {
             error("Not supported")
         }
@@ -849,7 +849,7 @@ internal class CompositeReplacingNavigatorTest {
 
     open class TestSingleSceneNavigator(
         private val scene: Scene<out Container>,
-        savedState: NavigatorState? = null
+        savedState: NavigatorState? = null,
     ) : SingleSceneNavigator(savedState) {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
@@ -859,7 +859,7 @@ internal class CompositeReplacingNavigatorTest {
 
     open class TestStackNavigator(
         private val initialStack: List<SavableTestScene>,
-        savedState: NavigatorState? = null
+        savedState: NavigatorState? = null,
     ) : StackNavigator(savedState) {
 
         override fun initialStack(): List<Scene<out Container>> {
@@ -876,7 +876,7 @@ internal class CompositeReplacingNavigatorTest {
 
     class SavableCompositeReplacingNavigator(
         private val initialNavigator: Navigator,
-        savedState: NavigatorState?
+        savedState: NavigatorState?,
     ) : CompositeReplacingNavigator(savedState) {
 
         override fun initialNavigator(): Navigator {
@@ -885,7 +885,7 @@ internal class CompositeReplacingNavigatorTest {
 
         override fun instantiateNavigator(
             navigatorClass: KClass<out Navigator>,
-            state: NavigatorState?
+            state: NavigatorState?,
         ): Navigator {
             return when (navigatorClass) {
                 TestStackNavigator::class -> TestStackNavigator(emptyList(), state)
@@ -897,7 +897,7 @@ internal class CompositeReplacingNavigatorTest {
 
     open class SavableTestSingleSceneNavigator(
         private val scene: Scene<out Container>,
-        savedState: NavigatorState? = null
+        savedState: NavigatorState? = null,
     ) : SingleSceneNavigator(savedState), SavableNavigator {
 
         override fun createScene(state: SceneState?): Scene<out Container> {

@@ -31,7 +31,7 @@ import com.nhaarman.acorn.android.transition.internal.doOnPreDraw
  * wil be removed.
  */
 class FadeInFromBottomTransition(
-    private val viewController: (ViewGroup) -> ViewController
+    private val viewController: (ViewGroup) -> ViewController,
 ) : SceneTransition {
 
     override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {

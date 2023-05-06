@@ -17,9 +17,10 @@
 package com.nhaarman.acorn.presentation
 
 import androidx.annotation.CallSuper
-import arrow.core.Option
-import arrow.core.toOption
+import com.nhaarman.acorn.Option
+import com.nhaarman.acorn.orNull
 import com.nhaarman.acorn.state.SceneState
+import com.nhaarman.acorn.toOption
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -45,7 +46,7 @@ import io.reactivex.subjects.BehaviorSubject
  * @constructor Creates a new [RxScene], restoring view state when available.
  */
 abstract class RxScene<V : Container>(
-    savedState: SceneState?
+    savedState: SceneState?,
 ) : BasicScene<V>(savedState) {
 
     /**

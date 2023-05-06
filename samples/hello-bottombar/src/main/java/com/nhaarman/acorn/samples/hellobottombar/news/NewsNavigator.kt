@@ -25,7 +25,7 @@ import com.nhaarman.acorn.state.SceneState
 
 class NewsNavigator(
     private val listener: Events,
-    savedState: NavigatorState?
+    savedState: NavigatorState?,
 ) : SingleSceneNavigator(savedState), SavableNavigator {
 
     override fun createScene(state: SceneState?): Scene<out Container> {

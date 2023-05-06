@@ -29,12 +29,12 @@ val viewFactory = bindViews {
     bind(
         SceneKey.defaultKey<PictureGalleryScene>(),
         R.layout.picturegallery_scene,
-        ::PictureGalleryViewController
+        ::PictureGalleryViewController,
     )
 
     bind(
         SceneKey.defaultKey<PictureDetailScene>(),
         R.layout.picturedetail_scene,
-        ::PictureDetailViewController
+        ::PictureDetailViewController,
     )
 }

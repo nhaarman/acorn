@@ -54,7 +54,7 @@ class ViewControllerFactoryBuilder internal constructor() {
     fun bindView(
         sceneKey: SceneKey,
         @LayoutRes layoutResId: Int,
-        wrapper: (View) -> ViewController
+        wrapper: (View) -> ViewController,
     ) {
         bindings[sceneKey] = InflatingViewControllerFactory(layoutResId, wrapper)
     }
@@ -72,7 +72,7 @@ class ViewControllerFactoryBuilder internal constructor() {
     fun bindViewGroup(
         sceneKey: SceneKey,
         @LayoutRes layoutResId: Int,
-        wrapper: (ViewGroup) -> ViewController
+        wrapper: (ViewGroup) -> ViewController,
     ) {
         bindings[sceneKey] = InflatingViewControllerFactory(layoutResId, wrapper)
     }
@@ -92,7 +92,7 @@ class ViewControllerFactoryBuilder internal constructor() {
     fun <V : View> bind(
         sceneKey: SceneKey,
         @LayoutRes layoutResId: Int,
-        wrapper: (V) -> ViewController
+        wrapper: (V) -> ViewController,
     ) {
         bindings[sceneKey] = InflatingViewControllerFactory(layoutResId, wrapper)
     }

@@ -37,7 +37,7 @@ import com.nhaarman.acorn.state.get
 class HelloStateRestorationScene private constructor(
     private val counter: Int,
     private val listener: Events,
-    savedState: SceneState?
+    savedState: SceneState?,
 ) : BasicScene<HelloStateRestorationContainer>(savedState),
     SavableScene,
     ProvidesView {

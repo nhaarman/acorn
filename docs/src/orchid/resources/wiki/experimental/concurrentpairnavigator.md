@@ -245,7 +245,7 @@ First though, we need to provide a ViewController implementation.
 In this case we implement the CombinedContainer implementation:
 
 {% highlight 'kotlin' %}
-@UseExperimental(ExperimentalConcurrentPairNavigator::class)
+@OptIn(ExperimentalConcurrentPairNavigator::class)
 class FirstSecondViewController(
     override val view: ViewGroup
 ) : ViewController, CombinedContainer {

@@ -34,7 +34,7 @@ import kotlin.reflect.KClass
  * worth saving.
  */
 class HelloStartActivityNavigator(
-    savedState: NavigatorState?
+    savedState: NavigatorState?,
 ) : StackNavigator(savedState),
     FirstScene.Events,
     AppSettingsScene.Events {

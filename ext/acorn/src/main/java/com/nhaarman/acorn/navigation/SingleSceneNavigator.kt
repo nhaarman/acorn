@@ -41,7 +41,7 @@ import com.nhaarman.acorn.util.lazyVar
  * by [saveInstanceState].
  */
 abstract class SingleSceneNavigator(
-    private val savedState: NavigatorState?
+    private val savedState: NavigatorState?,
 ) : Navigator, OnBackPressListener {
 
     /**
@@ -159,7 +159,7 @@ abstract class SingleSceneNavigator(
 
         class Inactive(
             private val scene: Scene<out Container>,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : LifecycleState() {
 
             override fun addListener(listener: Navigator.Events) {
@@ -197,7 +197,7 @@ abstract class SingleSceneNavigator(
 
         class Active(
             private val scene: Scene<out Container>,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : LifecycleState() {
 
             override fun addListener(listener: Navigator.Events) {
@@ -265,7 +265,7 @@ abstract class SingleSceneNavigator(
 
     private class StateTransition(
         val newState: LifecycleState,
-        val action: (() -> Unit)? = null
+        val action: (() -> Unit)? = null,
     )
 
     companion object {

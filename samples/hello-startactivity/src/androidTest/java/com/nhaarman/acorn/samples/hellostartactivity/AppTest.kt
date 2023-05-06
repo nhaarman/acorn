@@ -57,8 +57,8 @@ class AppTest {
         onView(withText("OPEN SETTINGS")).check(matches(isDisplayed()))
     }
 
-    @Test
     // Rotating results in a new Activity
+    @Test
     fun clickThroughAppWithRotation() {
         setPortrait()
 
@@ -77,8 +77,8 @@ class AppTest {
         onView(withText("OPEN SETTINGS")).check(matches(isDisplayed()))
     }
 
-    @Test
     // Force stopping the app simulates process death.
+    @Test
     fun clickThroughAppWithStoppedApp() {
         setPortrait()
 
@@ -122,20 +122,20 @@ class AppTest {
 
         device.wait(
             Until.hasObject(By.pkg(appPackage)),
-            3000
+            3000,
         )
     }
 
     private fun clickSettingsButton() {
         val settingsButton = device.findObject(
-            UiSelector().text("OPEN SETTINGS").className("android.widget.Button")
+            UiSelector().text("OPEN SETTINGS").className("android.widget.Button"),
         )
 
         settingsButton.click()
 
         device.wait(
             Until.hasObject(By.pkg("com.android.settings")),
-            3000
+            3000,
         )
     }
 
@@ -143,14 +143,14 @@ class AppTest {
         device.pressBack()
         val isAppPackage = device.wait(
             Until.hasObject(By.pkg(appPackage)),
-            3000
+            3000,
         )
 
         if (isAppPackage != true) {
             device.pressBack()
             device.wait(
                 Until.hasObject(By.pkg(appPackage)),
-                3000
+                3000,
             )
         }
     }

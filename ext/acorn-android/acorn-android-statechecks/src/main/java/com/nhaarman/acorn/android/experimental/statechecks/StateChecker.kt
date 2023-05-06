@@ -77,7 +77,7 @@ internal class StateChecker {
         } catch (t: Throwable) {
             throw StateRestorationFailedException(
                 state = state,
-                cause = t
+                cause = t,
             )
         }
     }

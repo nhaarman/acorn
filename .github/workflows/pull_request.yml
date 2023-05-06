@@ -1,0 +1,29 @@
+name: Pull request
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: ktlint
+        run: bash ./ktlint "**/src/**/*.kt" --color
+
+      - name: Test
+        run: |
+          .github/workflows/test.sh

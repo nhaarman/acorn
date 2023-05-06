@@ -29,5 +29,5 @@ interface HelloViewFactoryContainer : Container
  * A [ViewController] implementation implementing the [HelloViewFactoryContainer].
  */
 class HelloViewFactoryViewController(
-    override val view: View
+    override val view: View,
 ) : HelloViewFactoryContainer, ViewController

@@ -21,19 +21,17 @@ import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.navigation.experimental.CombinedContainer
 import com.nhaarman.acorn.navigation.experimental.ExperimentalConcurrentPairNavigator
 import com.nhaarman.acorn.presentation.Container
-import kotlinx.android.synthetic.main.first_scene.view.*
-import kotlinx.android.synthetic.main.second_scene.view.*
 
-@UseExperimental(ExperimentalConcurrentPairNavigator::class)
+@OptIn(ExperimentalConcurrentPairNavigator::class)
 class FirstSecondViewController(
-    override val view: ViewGroup
+    override val view: ViewGroup,
 ) : ViewController, CombinedContainer {
 
     override val firstContainer: Container by lazy {
-        FirstSceneViewController(view.firstSceneRoot)
+        FirstSceneViewController(view.findViewById(R.id.firstSceneRoot))
     }
 
     override val secondContainer: Container by lazy {
-        SecondSceneViewController(view.secondSceneRoot)
+        SecondSceneViewController(view.findViewById(R.id.secondSceneRoot))
     }
 }

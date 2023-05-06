@@ -36,47 +36,47 @@ class LifecycleSceneTest {
     @Test
     @UiThreadTest
     fun afterOnStartTheStateIsStarted() {
-        /* When */
+        // When
         scene.onStart()
 
-        /* Then */
+        // Then
         expect(currentState).toBe(Lifecycle.State.STARTED)
     }
 
     @Test
     @UiThreadTest
     fun afterOnStopTheStateIsCreated() {
-        /* When */
+        // When
         scene.onStart()
         scene.onStop()
 
-        /* Then */
+        // Then
         expect(currentState).toBe(Lifecycle.State.CREATED)
     }
 
     @Test
     @UiThreadTest
     fun afterOnStopAndOnStartTheStateIsStarted() {
-        /* When */
+        // When
         scene.onStart()
         scene.onStop()
         scene.onStart()
 
-        /* Then */
+        // Then
         expect(currentState).toBe(Lifecycle.State.STARTED)
     }
 
     @Test
     @UiThreadTest
     fun afterOnDestroyTheStateIsDestroyed() {
-        /* When */
+        // When
         scene.onDestroy()
 
-        /* Then */
+        // Then
         expect(currentState).toBe(Lifecycle.State.DESTROYED)
     }
 
     private class TestLifecycleScene(
-        savedState: SceneState? = null
+        savedState: SceneState? = null,
     ) : LifecycleScene<RestorableContainer>(savedState)
 }

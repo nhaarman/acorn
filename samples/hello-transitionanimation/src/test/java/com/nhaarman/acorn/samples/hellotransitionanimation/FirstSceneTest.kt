@@ -16,9 +16,9 @@
 
 package com.nhaarman.acorn.samples.hellotransitionanimation
 
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class FirstSceneTest {
 
@@ -28,13 +28,13 @@ class FirstSceneTest {
 
     @Test
     fun `clicking button notifies listener`() {
-        /* Given */
+        // Given
         scene.attach(container)
 
-        /* When */
+        // When
         container.clickSecondScene()
 
-        /* Then */
+        // Then
         verify(listener).secondSceneRequested()
     }
 

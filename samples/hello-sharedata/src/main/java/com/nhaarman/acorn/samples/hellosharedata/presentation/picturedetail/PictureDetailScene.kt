@@ -27,7 +27,7 @@ class PictureDetailScene private constructor(
     private val isPicking: Boolean,
     private val picture: Picture,
     private val listener: Events,
-    savedState: SceneState? = null
+    savedState: SceneState? = null,
 ) : BasicScene<PictureDetailContainer>(savedState),
     SavableScene {
 

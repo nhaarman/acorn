@@ -24,17 +24,16 @@ import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.presentation.Container
 import com.nhaarman.acorn.presentation.RxScene
+import com.nhaarman.acorn.samples.helloconcurrentpairnavigator.databinding.FirstSceneBinding
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.first_scene.*
 import java.util.concurrent.TimeUnit
 
 class FirstScene(
     private val listener: Events,
-    scheduler: Scheduler = AndroidSchedulers.mainThread()
+    scheduler: Scheduler = AndroidSchedulers.mainThread(),
 ) : RxScene<FirstSceneContainer>(null),
     ProvidesView {
 
@@ -75,17 +74,17 @@ interface FirstSceneContainer : Container {
 }
 
 class FirstSceneViewController(
-    override val view: View
-) : RestorableViewController, FirstSceneContainer, LayoutContainer {
+    override val view: View,
+) : RestorableViewController, FirstSceneContainer {
+
+    private val binding = FirstSceneBinding.bind(view)
 
     override var count: Long = 0
         set(value) {
-            counterTV.text = value.toString()
+            binding.counterTV.text = value.toString()
         }
 
     override fun onActionClicked(f: () -> Unit) {
-        secondSceneButton.setOnClickListener { f() }
+        binding.secondSceneButton.setOnClickListener { f() }
     }
-
-    override val containerView = view
 }

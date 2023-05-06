@@ -23,7 +23,7 @@ import com.nhaarman.acorn.presentation.Scene
  * A [ViewControllerFactory] implementation that can delegate to other implementations.
  */
 class ComposingViewControllerFactory private constructor(
-    private val sources: List<ViewControllerFactory>
+    private val sources: List<ViewControllerFactory>,
 ) : ViewControllerFactory {
 
     override fun supports(scene: Scene<*>): Boolean {

@@ -19,16 +19,17 @@ package com.nhaarman.acorn.notesapp.android.ui.itemlist
 import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.itemlist_itemview.view.*
+import com.nhaarman.acorn.notesapp.android.databinding.ItemlistItemviewBinding
 
 class ItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
-    defStyle: Int = 0
+    defStyle: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyle) {
 
     var text: String? = null
         set(value) {
-            itemTextView.text = value
+            ItemlistItemviewBinding.bind(this)
+                .itemTextView.text = value
         }
 }

@@ -35,7 +35,8 @@ import java.lang.Thread.sleep
 
 class HelloStateRestorationTest {
 
-    @Rule @JvmField val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    @Rule @JvmField
+    val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
 
     @Test
     fun navigatingThroughScenes() {

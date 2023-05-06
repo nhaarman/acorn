@@ -28,188 +28,188 @@ internal class BaseSavedStateTest {
 
     @Test
     fun `missing String value`() {
-        /* Given */
+        // Given
         state.clear("key")
 
-        /* When */
+        // When
         val result: String? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBeNull()
     }
 
     @Test
     fun `clearing value`() {
-        /* Given */
+        // Given
         state["key"] = "test"
         state.clear("key")
 
-        /* When */
+        // When
         val result: String? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBeNull()
     }
 
     @Test
     fun `valid String value`() {
-        /* Given */
+        // Given
         state["key"] = "Hello!"
 
-        /* When */
+        // When
         val result: String? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe("Hello!")
     }
 
     @Test
     fun `retrieving String value from Int`() {
-        /* Given */
+        // Given
         state["key"] = 3
 
-        /* When */
+        // When
         val result: String? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBeNull()
     }
 
     @Test
     fun `valid Boolean value`() {
-        /* Given */
+        // Given
         state["key"] = true
 
-        /* When */
+        // When
         val result: Boolean? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe(true)
     }
 
     @Test
     fun `valid Byte value`() {
-        /* Given */
+        // Given
         state["key"] = 3
 
-        /* When */
+        // When
         val result: Byte? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe(3)
     }
 
     @Test
     fun `valid Char value`() {
-        /* Given */
+        // Given
         state["key"] = 'a'
 
-        /* When */
+        // When
         val result: Char? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe('a')
     }
 
     @Test
     fun `valid Double value`() {
-        /* Given */
+        // Given
         state["key"] = 3.0
 
-        /* When */
+        // When
         val result: Double? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe(3.0)
     }
 
     @Test
     fun `valid Float value`() {
-        /* Given */
+        // Given
         state["key"] = 3f
 
-        /* When */
+        // When
         val result: Float? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe(3f)
     }
 
     @Test
     fun `valid Int value`() {
-        /* Given */
+        // Given
         state["key"] = 3
 
-        /* When */
+        // When
         val result: Int? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe(3)
     }
 
     @Test
     fun `valid Long value`() {
-        /* Given */
+        // Given
         state["key"] = 3L
 
-        /* When */
+        // When
         val result: Long? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe(3L)
     }
 
     @Test
     fun `valid Short value`() {
-        /* Given */
+        // Given
         state["key"] = 3
 
-        /* When */
+        // When
         val result: Short? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe(3)
     }
 
     @Test
     fun `retrieving Int value from String`() {
-        /* Given */
+        // Given
         state["key"] = 3
 
-        /* When */
+        // When
         val result: String? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBeNull()
     }
 
     @Test
     fun `valid SavedState`() {
-        /* Given */
+        // Given
         state["key"] = savedState { it["foo"] = 3 }
 
-        /* When */
+        // When
         val result: SavedState? = state["key"]
 
-        /* Then */
+        // Then
         expect(result).toBe(savedState { it["foo"] = 3 })
     }
 
     @Test
     fun `entries contains proper values`() {
-        /* Given */
+        // Given
         state["key1"] = "test"
         state["key2"] = 3
 
-        /* When */
+        // When
         val result = state.entries
 
-        /* Then */
+        // Then
         expect(result).toBe(
             mapOf(
                 "key1" to "test",
-                "key2" to 3
-            ).entries
+                "key2" to 3,
+            ).entries,
         )
     }
 }

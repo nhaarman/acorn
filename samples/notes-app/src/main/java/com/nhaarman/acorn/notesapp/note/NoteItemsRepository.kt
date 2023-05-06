@@ -16,7 +16,7 @@
 
 package com.nhaarman.acorn.notesapp.note
 
-import arrow.core.Option
+import com.nhaarman.acorn.Option
 import io.reactivex.Observable
 import io.reactivex.Single
 

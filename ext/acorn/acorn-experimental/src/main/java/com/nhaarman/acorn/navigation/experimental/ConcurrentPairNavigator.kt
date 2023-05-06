@@ -57,7 +57,7 @@ import kotlin.reflect.KClass
  */
 @ExperimentalConcurrentPairNavigator
 abstract class ConcurrentPairNavigator(
-    private val savedState: NavigatorState?
+    private val savedState: NavigatorState?,
 ) : Navigator, OnBackPressListener {
 
     /**
@@ -97,12 +97,14 @@ abstract class ConcurrentPairNavigator(
         }
 
         fun initialScenes(): Scenes {
-            if (savedState == null) return Scenes(
-                createInitialScene()
-            )
+            if (savedState == null) {
+                return Scenes(
+                    createInitialScene(),
+                )
+            }
 
             val baseScene = baseScene(savedState) ?: return Scenes(
-                createInitialScene()
+                createInitialScene(),
             )
             val secondScene = secondScene(savedState)
 
@@ -254,14 +256,14 @@ abstract class ConcurrentPairNavigator(
             fun create(initialScenes: Scenes): State {
                 return Inactive(
                     initialScenes,
-                    emptyList()
+                    emptyList(),
                 )
             }
         }
 
         class Inactive(
             override val scenes: Scenes,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : State() {
 
             override fun addListener(listener: Navigator.Events) {
@@ -276,8 +278,8 @@ abstract class ConcurrentPairNavigator(
                 return StateTransition(
                     Active(
                         scenes,
-                        listeners
-                    )
+                        listeners,
+                    ),
                 ) {
                     scenes.baseScene.onStart()
                     scenes.secondScene?.onStart()
@@ -289,8 +291,8 @@ abstract class ConcurrentPairNavigator(
                 return StateTransition(
                     Inactive(
                         scenes,
-                        listeners
-                    )
+                        listeners,
+                    ),
                 )
             }
 
@@ -305,8 +307,8 @@ abstract class ConcurrentPairNavigator(
                 return StateTransition(
                     Inactive(
                         Scenes(scenes.baseScene, scene),
-                        listeners
-                    )
+                        listeners,
+                    ),
                 ) {
                     scenes.secondScene?.onDestroy()
                 }
@@ -330,8 +332,8 @@ abstract class ConcurrentPairNavigator(
                 return StateTransition(
                     Inactive(
                         Scenes(scenes.baseScene),
-                        listeners
-                    )
+                        listeners,
+                    ),
                 ) {
                     poppedScene.onDestroy()
                 }
@@ -348,7 +350,7 @@ abstract class ConcurrentPairNavigator(
 
         class Active(
             override val scenes: Scenes,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : State() {
 
             override fun addListener(listener: Navigator.Events) {
@@ -368,8 +370,8 @@ abstract class ConcurrentPairNavigator(
                 return StateTransition(
                     Inactive(
                         scenes,
-                        listeners
-                    )
+                        listeners,
+                    ),
                 ) {
                     scenes.secondScene?.onStop()
                     scenes.baseScene.onStop()
@@ -392,8 +394,8 @@ abstract class ConcurrentPairNavigator(
                 return StateTransition(
                     Active(
                         newScenes,
-                        listeners
-                    )
+                        listeners,
+                    ),
                 ) {
                     scenes.secondScene?.onStop()
                     scenes.secondScene?.onDestroy()
@@ -412,8 +414,8 @@ abstract class ConcurrentPairNavigator(
                 return StateTransition(
                     Active(
                         Scenes(scenes.baseScene),
-                        listeners
-                    )
+                        listeners,
+                    ),
                 ) {
                     poppedScene.onStop()
                     poppedScene.onDestroy()
@@ -434,8 +436,8 @@ abstract class ConcurrentPairNavigator(
                 return StateTransition(
                     Active(
                         Scenes(scenes.baseScene),
-                        listeners
-                    )
+                        listeners,
+                    ),
                 ) {
                     poppedScene.onStop()
                     poppedScene.onDestroy()
@@ -505,7 +507,7 @@ abstract class ConcurrentPairNavigator(
 
     private class Scenes(
         val baseScene: Scene<out Container>,
-        val secondScene: Scene<out Container>? = null
+        val secondScene: Scene<out Container>? = null,
     ) {
 
         fun scene(): Scene<*> {
@@ -519,6 +521,6 @@ abstract class ConcurrentPairNavigator(
 
     private class StateTransition(
         val newState: State,
-        val action: (() -> Unit)? = null
+        val action: (() -> Unit)? = null,
     )
 }

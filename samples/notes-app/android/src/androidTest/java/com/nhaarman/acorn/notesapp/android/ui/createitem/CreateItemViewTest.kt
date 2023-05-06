@@ -37,41 +37,42 @@ import org.junit.Test
 
 class CreateItemViewTest {
 
-    @Rule @JvmField val rule = AcornViewTestRule<CreateItemContainer>(
+    @Rule @JvmField
+    val rule = AcornViewTestRule<CreateItemContainer>(
         ViewFactoryProvider.viewFactory,
-        CreateItemScene.key
+        CreateItemScene.key,
     )
 
     @Test
     fun settingInitialText() {
-        /* When */
+        // When
         rule.onUiThread { container.setInitialText("Hello!") }
 
-        /* Then */
+        // Then
         onView(withText("Hello!")).check(matches(isDisplayed()))
     }
 
     @Test
     fun inputText() {
-        /* Given */
+        // Given
         val observer = rule.container.textChanges.test()
 
-        /* When */
+        // When
         onView(withHint("Take a note")).perform(typeText("Hello, world!"))
 
-        /* Then */
+        // Then
         expect(observer.lastValue.trim()).toBe("Hello, world!")
     }
 
     @Test
     fun clickCreate() {
-        /* Given */
+        // Given
         val observer = rule.container.createClicks.subscribeOn(AndroidSchedulers.mainThread()).test()
 
-        /* When */
+        // When
         onView(withId(R.id.save)).perform(click())
 
-        /* Then */
+        // Then
         expect(observer.valueCount()).toBe(1)
     }
 }

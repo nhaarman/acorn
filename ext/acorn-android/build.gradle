@@ -2,23 +2,37 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
 
-    id("org.jetbrains.dokka-android")
     id("digital.wup.android-maven-publish")
     id("signing")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 android {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
     defaultConfig {
         minSdkVersion(21)
     }
+
+    namespace "com.nhaarman.acorn.android"
 }
 
 dependencies {
     api project(":ext-acorn")
     api project(":acorn-android")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
+    
     implementation "androidx.interpolator:interpolator"
 
     compileOnly "androidx.annotation:annotation"
@@ -26,7 +40,7 @@ dependencies {
     lintChecks project(":ext-acorn-android-lint")
 
     testImplementation "com.nhaarman:expect.kt"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.mockito.kotlin:mockito-kotlin"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 
@@ -45,8 +59,3 @@ task install(type: Copy) {
     into System.getProperty('user.home') + '/.android/lint/'
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        freeCompilerArgs = ["-Xuse-experimental=kotlin.Experimental"]
-    }
-}

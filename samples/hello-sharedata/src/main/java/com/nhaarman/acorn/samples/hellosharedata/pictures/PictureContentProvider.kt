@@ -38,7 +38,7 @@ class PictureContentProvider : ContentProvider() {
         projection: Array<String>?,
         selection: String?,
         selectionArgs: Array<String>?,
-        sortOrder: String?
+        sortOrder: String?,
     ): Cursor? {
         error("Unsupported")
     }
@@ -58,7 +58,7 @@ class PictureContentProvider : ContentProvider() {
     override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
         return ParcelFileDescriptor.open(
             File(uri.path),
-            ParcelFileDescriptor.MODE_READ_ONLY
+            ParcelFileDescriptor.MODE_READ_ONLY,
         )
     }
 

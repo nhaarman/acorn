@@ -19,15 +19,15 @@ package com.nhaarman.acorn.android.dispatching.internal
 import android.content.Intent
 import com.nhaarman.acorn.android.presentation.ActivityController
 import com.nhaarman.acorn.android.util.TestScene
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 
 internal class DefaultActivityHandlerTest {
 
@@ -47,44 +47,44 @@ internal class DefaultActivityHandlerTest {
 
         private val activityHandler = DefaultActivityHandler(
             callback,
-            null
+            null,
         )
 
         @Test
         fun `withScene starts Intent`() {
-            /* When */
+            // When
             activityHandler.withScene(scene, activityController)
 
-            /* Then */
+            // Then
             verify(callback).startForResult(intent)
         }
 
         @Test
         fun `withoutScene does not start Intent`() {
-            /* When */
+            // When
             activityHandler.withoutScene()
 
-            /* Then */
+            // Then
             verify(callback, never()).startForResult(any())
         }
 
         @Test
         fun `withScene twice with the same scene starts Intent only once`() {
-            /* When */
+            // When
             activityHandler.withScene(scene, activityController)
             activityHandler.withScene(scene, activityController)
 
-            /* Then */
+            // Then
             verify(callback, times(1)).startForResult(intent)
         }
 
         @Test
         fun `withScene twice with different scene starts Intent twice`() {
-            /* When */
+            // When
             activityHandler.withScene(scene, activityController)
             activityHandler.withScene(scene2, activityController2)
 
-            /* Then */
+            // Then
             callback.inOrder {
                 verify().startForResult(intent)
                 verify().startForResult(intent2)
@@ -93,12 +93,12 @@ internal class DefaultActivityHandlerTest {
 
         @Test
         fun `withScene allows starting twice with different scene in between`() {
-            /* When */
+            // When
             activityHandler.withScene(scene, activityController)
             activityHandler.withScene(scene2, activityController2)
             activityHandler.withScene(scene, activityController)
 
-            /* Then */
+            // Then
             callback.inOrder {
                 verify().startForResult(intent)
                 verify().startForResult(intent2)
@@ -108,12 +108,12 @@ internal class DefaultActivityHandlerTest {
 
         @Test
         fun `withScene allows starting twice with no scene in between`() {
-            /* When */
+            // When
             activityHandler.withScene(scene, activityController)
             activityHandler.withoutScene()
             activityHandler.withScene(scene, activityController)
 
-            /* Then */
+            // Then
             verify(callback, times(2)).startForResult(intent)
         }
     }
@@ -130,38 +130,38 @@ internal class DefaultActivityHandlerTest {
 
         @Test
         fun `withScene for same scene does not start Intent`() {
-            /* When */
+            // When
             activityHandler.withScene(scene, activityController)
 
-            /* Then */
+            // Then
             verify(callback, never()).startForResult(any())
         }
 
         @Test
         fun `withScene for different scene does start Intent`() {
-            /* When */
+            // When
             activityHandler.withScene(scene2, activityController2)
 
-            /* Then */
+            // Then
             verify(callback).startForResult(intent2)
         }
 
         @Test
         fun `withoutScene does not start Intent`() {
-            /* When */
+            // When
             activityHandler.withoutScene()
 
-            /* Then */
+            // Then
             verify(callback, never()).startForResult(any())
         }
 
         @Test
         fun `withScene twice with different second scene only starts Intent once`() {
-            /* When */
+            // When
             activityHandler.withScene(scene, activityController)
             activityHandler.withScene(scene2, activityController2)
 
-            /* Then */
+            // Then
             callback.inOrder {
                 verify().startForResult(intent2)
             }
@@ -169,11 +169,11 @@ internal class DefaultActivityHandlerTest {
 
         @Test
         fun `withScene allows starting saved scene after different scene`() {
-            /* When */
+            // When
             activityHandler.withScene(scene2, activityController2)
             activityHandler.withScene(scene, activityController)
 
-            /* Then */
+            // Then
             callback.inOrder {
                 verify().startForResult(intent2)
                 verify().startForResult(intent)
@@ -182,11 +182,11 @@ internal class DefaultActivityHandlerTest {
 
         @Test
         fun `withScene allows starting saved scene after no scene`() {
-            /* When */
+            // When
             activityHandler.withoutScene()
             activityHandler.withScene(scene, activityController)
 
-            /* Then */
+            // Then
             verify(callback).startForResult(intent)
         }
     }
@@ -196,18 +196,18 @@ internal class DefaultActivityHandlerTest {
 
         private val activityHandler = DefaultActivityHandler(
             callback,
-            null
+            null,
         )
 
         @Test
         fun `onActivityResult attaches and notifies activityController`() {
-            /* Given */
+            // Given
             activityHandler.withScene(scene, activityController)
 
-            /* When */
+            // When
             activityHandler.onActivityResult(42, 3, null)
 
-            /* Then */
+            // Then
             inOrder(scene, activityController) {
                 verify(scene).attach(activityController)
                 verify(activityController).onResult(3, null)
@@ -225,16 +225,16 @@ internal class DefaultActivityHandlerTest {
                 DefaultActivityHandler(callback, state)
             }
 
-            @Test
             // https://github.com/nhaarman/acorn/issues/165
+            @Test
             fun `onActivityResult notifies activityController for restored state`() {
-                /* Given */
+                // Given
                 activityHandler.withScene(scene, activityController)
 
-                /* When */
+                // When
                 activityHandler.onActivityResult(42, 3, null)
 
-                /* Then */
+                // Then
                 inOrder(scene, activityController) {
                     verify(scene).attach(activityController)
                     verify(activityController).onResult(3, null)

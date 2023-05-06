@@ -28,7 +28,7 @@ import io.reactivex.rxkotlin.plusAssign
 class ItemListScene(
     private val noteItemsRepository: NoteItemsRepository,
     private val listener: Events,
-    savedState: SceneState?
+    savedState: SceneState?,
 ) : RxScene<ItemListContainer>(savedState),
     SavableScene {
 
