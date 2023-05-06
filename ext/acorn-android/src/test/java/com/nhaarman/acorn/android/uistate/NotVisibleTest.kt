@@ -19,10 +19,10 @@ package com.nhaarman.acorn.android.uistate
 import com.nhaarman.acorn.android.util.RootViewGroup
 import com.nhaarman.acorn.android.util.TestSceneTransitionFactory
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verifyNoInteractions
 
 internal class NotVisibleTest {
 
@@ -30,7 +30,7 @@ internal class NotVisibleTest {
 
     val state = NotVisible(
         root,
-        TestSceneTransitionFactory()
+        TestSceneTransitionFactory(),
     )
 
     @Test
@@ -55,10 +55,10 @@ internal class NotVisibleTest {
 
     @Test
     fun `'withScene' does not touch root viewgroup`() {
-        /* When */
+        // When
         state.withScene(mock(), mock(), null)
 
-        /* Then */
-        verifyZeroInteractions(root)
+        // Then
+        verifyNoInteractions(root)
     }
 }

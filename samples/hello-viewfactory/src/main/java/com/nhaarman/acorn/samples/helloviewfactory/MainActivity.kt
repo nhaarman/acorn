@@ -33,7 +33,7 @@ class MainActivity : AcornActivity() {
             bind(
                 SceneKey.defaultKey<HelloViewFactoryScene>(),
                 R.layout.myscene,
-                ::HelloViewFactoryViewController
+                ::HelloViewFactoryViewController,
             )
         }
     }

@@ -21,17 +21,17 @@ import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 
 class SingleSceneNavigatorTest {
 
@@ -44,227 +44,227 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `inactive navigator is not finished`() {
-            /* When */
+            // When
             navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `inactive navigator is not destroyed`() {
-            /* Then */
+            // Then
             expect(navigator.isDestroyed()).toBe(false)
         }
 
         @Test
         fun `active navigator is not destroyed`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* Then */
+            // Then
             expect(navigator.isDestroyed()).toBe(false)
         }
 
         @Test
         fun `stopped navigator is not destroyed`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             expect(navigator.isDestroyed()).toBe(false)
         }
 
         @Test
         fun `destroyed navigator is destroyed`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test
         fun `inactive navigator does not notify newly added listener of scene`() {
-            /* When */
+            // When
             navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBeNull()
         }
 
         @Test
         fun `active navigator does notify newly added listener of scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBe(navigator.scene)
         }
 
         @Test
         fun `starting navigator notifies listeners of scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             expect(listener.lastScene).toBe(navigator.scene)
         }
 
         @Test
         fun `removed listener does not get notified of scene`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
             disposable.dispose()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener, never()).scene(any(), anyOrNull())
         }
 
         @Test
         fun `non disposed listener is not disposed`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             expect(disposable.isDisposed()).toBe(false)
         }
 
         @Test
         fun `disposed listener is disposed`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             disposable.dispose()
 
-            /* Then */
+            // Then
             expect(disposable.isDisposed()).toBe(true)
         }
 
         @Test
         fun `starting navigator does not finish`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `stopping navigator does not finish`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `destroying navigator does not finish`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `onBackPressed notifies listeners of finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(true)
             expect(listener.finished).toBe(true)
         }
 
         @Test
         fun `finish notifies listeners of finished`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(true)
         }
 
         @Test
         fun `onBackPressed after navigator is destroyed does not notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onDestroy()
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(false)
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `finish after navigator is destroyed does not notify listeners`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.finish()
 
-            /* Then */
+            // Then
             expect(listener.finished).toBe(false)
         }
 
         @Test
         fun `starting navigator twice only notifies listener once`() {
-            /* Given */
+            // Given
             val listener = mock<Navigator.Events>()
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener, times(1)).scene(any(), anyOrNull())
         }
 
         @Test
         fun `starting navigator second time in a callback only notifies listener once`() {
-            /* Given */
+            // Given
             val listener = mock<Navigator.Events>()
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.addNavigatorEventsListener(object : Navigator.Events {
                 override fun scene(scene: Scene<out Container>, data: TransitionData?) {
                     navigator.onStart()
@@ -275,7 +275,7 @@ class SingleSceneNavigatorTest {
             })
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener, times(1)).scene(any(), anyOrNull())
         }
     }
@@ -285,10 +285,10 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `starting navigator starts Scene`() {
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             navigator.scene.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -297,11 +297,11 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `starting navigator multiple times starts Scene only once`() {
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             navigator.scene.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -310,22 +310,22 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `stopping an inactive navigator does not stop Scene`() {
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verifyNoMoreInteractions(navigator.scene)
         }
 
         @Test
         fun `stopping an active navigator stops Scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             navigator.scene.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -335,31 +335,31 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `destroy an inactive navigator does not stop Scene`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator.scene, never()).onStop()
         }
 
         @Test
         fun `destroy an inactive navigator does destroy Scene`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator.scene).onDestroy()
         }
 
         @Test
         fun `destroy an active navigator stops and destroys Scene`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             navigator.scene.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -370,45 +370,45 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `starting a destroyed navigator does not start Scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(navigator.scene).onDestroy()
             verify(navigator.scene, never()).onStart()
         }
 
         @Test
         fun `stopping a destroyed navigator does not start Scene`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(navigator.scene).onDestroy()
             verify(navigator.scene, never()).onStop()
         }
 
         @Test
         fun `destroying a destroyed navigator only destroys Scene once`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator.scene, times(1)).onDestroy()
         }
 
         @Test
         fun `starting and stopping navigator multiple times and finally destroying`() {
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStop()
             navigator.onStart()
@@ -416,7 +416,7 @@ class SingleSceneNavigatorTest {
             navigator.onStart()
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             navigator.scene.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -435,27 +435,27 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `SingleSceneNavigator does not implement SavableNavigator by default`() {
-            /* Given */
+            // Given
             val navigator: Navigator = TestSingleSceneNavigator()
 
-            /* Then */
+            // Then
             expect(navigator is SavableNavigator).toBe(false)
         }
 
         @Test
         fun `saving and restoring state for savable navigator and scene`() {
-            /* Given */
+            // Given
             val scene1 = SavableTestScene(foo = 3)
             val navigator = SavableSingleSceneNavigator(null) { scene1 }
             navigator.onStart()
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             scene1.foo = 4
             val restoredNavigator = SavableSingleSceneNavigator(bundle) { SavableTestScene.create(it) }
             restoredNavigator.onStart()
 
-            /* Then */
+            // Then
             expect(restoredNavigator.scene).toBeInstanceOf<SavableTestScene> {
                 expect(it.foo).toBe(3)
             }
@@ -463,12 +463,12 @@ class SingleSceneNavigatorTest {
 
         @Test
         fun `saving and restoring state for savable navigator and non savable scene`() {
-            /* Given */
+            // Given
             val scene1 = TestScene(foo = 3)
             val navigator = SavableSingleSceneNavigator(null) { scene1 }
             navigator.onStart()
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             scene1.foo = 4
             val restoredNavigator = SavableSingleSceneNavigator(bundle) {
@@ -476,7 +476,7 @@ class SingleSceneNavigatorTest {
             }
             restoredNavigator.onStart()
 
-            /* Then */
+            // Then
             expect(restoredNavigator.scene).toBeInstanceOf<TestScene> {
                 expect(it.foo).toBe(5)
             }
@@ -510,7 +510,7 @@ class SingleSceneNavigatorTest {
 
     class SavableSingleSceneNavigator(
         savedState: NavigatorState?,
-        private val sceneCreator: (SceneState?) -> Scene<out Container>
+        private val sceneCreator: (SceneState?) -> Scene<out Container>,
     ) : SingleSceneNavigator(savedState),
         SavableNavigator {
 

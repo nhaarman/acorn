@@ -16,6 +16,7 @@
 
 package com.nhaarman.acorn.samples.hellosharedata.presentation.picturegallery
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.AttributeSet
@@ -28,18 +29,18 @@ import com.nhaarman.acorn.samples.hellosharedata.R
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
-import kotlinx.android.synthetic.main.picturegallery_scene.view.*
 
 class PictureGalleryRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : androidx.recyclerview.widget.RecyclerView(context, attrs, defStyleAttr) {
+    defStyleAttr: Int = 0,
+) : RecyclerView(context, attrs, defStyleAttr) {
 
     var pictures: List<Picture> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
-            picturesRecyclerView.adapter?.notifyDataSetChanged()
+            adapter?.notifyDataSetChanged()
         }
 
     override fun onFinishInflate() {
@@ -47,7 +48,7 @@ class PictureGalleryRecyclerView @JvmOverloads constructor(
 
         if (isInEditMode) return
 
-        layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 2)
+        layoutManager = GridLayoutManager(context, 2)
         adapter = PicturesAdapter()
     }
 
@@ -56,7 +57,7 @@ class PictureGalleryRecyclerView @JvmOverloads constructor(
         listeners += f
     }
 
-    private inner class PicturesAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<MyViewHolder>() {
+    private inner class PicturesAdapter : RecyclerView.Adapter<MyViewHolder>() {
 
         override fun getItemCount(): Int {
             return pictures.size
@@ -73,7 +74,7 @@ class PictureGalleryRecyclerView @JvmOverloads constructor(
         }
     }
 
-    private inner class MyViewHolder(val imageView: ImageView) : androidx.recyclerview.widget.RecyclerView.ViewHolder(imageView) {
+    private inner class MyViewHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
 
         var picture: Picture? = null
             set(value) {
@@ -96,7 +97,7 @@ class PictureGalleryRecyclerView @JvmOverloads constructor(
     }
 
     private class SquareTransformation(
-        private val maxWidth: Int
+        private val maxWidth: Int,
     ) : Transformation {
 
         private var size = 0

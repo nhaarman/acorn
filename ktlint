@@ -1,5 +1,5 @@
 #!/bin/bash
-ktlint_version="0.41.0"
+ktlint_version="0.49.0"
 
 ########################################################################
 # A wrapper for ktlint which automatically downloads and runs ktlint.
@@ -28,7 +28,7 @@ if [[ "$*" == *--update* ]]; then
   mv build/ktlint/ktlint.tmp ktlint
 fi
 
-folder="build/ktlint/$ktlint_version"
+folder="$HOME/.ktlint/$ktlint_version"
 current_sha256=$(cat $folder/ktlint 2> /dev/null | openssl dgst -sha256 | sed 's/^.* //')
 ktlint_sha256="$(cat $folder/ktlint.sha 2> /dev/null )"
 

@@ -30,51 +30,51 @@ class BasicSceneTest {
 
     @Test
     fun `view state is restored when new view attaches`() {
-        /* Given */
+        // Given
         val scene = TestBasicScene(null)
         scene.attach(view1)
         view1.state = 3
 
-        /* When */
+        // When
         scene.detach(view1)
         scene.attach(view2)
 
-        /* Then */
+        // Then
         expect(view2.state).toBe(3)
     }
 
     @Test
     fun `view state is restored from scene state`() {
-        /* Given */
+        // Given
         val scene1 = TestBasicScene(null)
 
         scene1.attach(view1)
         view1.state = 3
 
-        /* When */
+        // When
         scene1.detach(view1)
         val state = scene1.saveInstanceState()
         val scene2 = TestBasicScene(state)
         scene2.attach(view2)
 
-        /* Then */
+        // Then
         expect(view2.state).toBe(3)
     }
 
     @Test
     fun `view state is restored from scene state -- without detach`() {
-        /* Given */
+        // Given
         val scene1 = TestBasicScene(null)
 
         scene1.attach(view1)
         view1.state = 3
 
-        /* When */
+        // When
         val state = scene1.saveInstanceState()
         val scene2 = TestBasicScene(state)
         scene2.attach(view2)
 
-        /* Then */
+        // Then
         expect(view2.state).toBe(3)
     }
 

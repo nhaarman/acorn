@@ -31,7 +31,7 @@ class NewsViewControllerFactory : ViewControllerFactory {
 
     override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
         return NewsViewController(
-            MainLayout.inflateWith(R.layout.news_scene, parent)
+            MainLayout.inflateWith(R.layout.news_scene, parent),
         )
     }
 }

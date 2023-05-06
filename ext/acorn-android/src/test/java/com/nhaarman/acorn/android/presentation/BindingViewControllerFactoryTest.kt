@@ -22,8 +22,8 @@ import com.nhaarman.acorn.android.util.TestScene
 import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.expect.expect
 import com.nhaarman.expect.expectErrorWithMessage
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
 
 internal class BindingViewControllerFactoryTest {
 
@@ -32,56 +32,54 @@ internal class BindingViewControllerFactoryTest {
 
     @Test
     fun `empty factory does not support`() {
-        /* Given */
+        // Given
         val factory = BindingViewControllerFactory(emptyMap())
 
-        /* When */
+        // When
         val result = factory.supports(scene1)
 
-        /* Then */
+        // Then
         expect(result).toBe(false)
     }
 
     @Test
     fun `empty factory throws for non-supported key`() {
-        /* Given */
+        // Given
         val factory = BindingViewControllerFactory(emptyMap())
 
-        /* Expect */
+        // Expect
         expectErrorWithMessage("Could not create") on {
-
-            /* When */
+            // When
             factory.viewControllerFor(scene1, mock())
         }
     }
 
     @Test
     fun `factory with missing key throws`() {
-        /* Given */
+        // Given
         val factory = BindingViewControllerFactory(
-            mapOf(scene1.key to MyViewControllerFactory())
+            mapOf(scene1.key to MyViewControllerFactory()),
         )
 
-        /* Expect */
+        // Expect
         expectErrorWithMessage("Could not create") on {
-
-            /* When */
+            // When
             factory.viewControllerFor(scene2, mock())
         }
     }
 
     @Test
     fun `proper result`() {
-        /* Given */
+        // Given
         val myViewCreator = MyViewControllerFactory()
         val factory = BindingViewControllerFactory(
-            mapOf(scene1.key to myViewCreator)
+            mapOf(scene1.key to myViewCreator),
         )
 
-        /* When */
+        // When
         val result = factory.viewControllerFor(scene1, mock())
 
-        /* Then */
+        // Then
         expect(result).toBe(myViewCreator.result)
     }
 

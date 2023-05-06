@@ -81,7 +81,7 @@ class RxSceneDisposablesUsageDetector : Detector(), Detector.UastScanner {
                     RxSceneDisposablesUsageDetector.issue,
                     receiver,
                     context.getLocation(receiver),
-                    "`disposables` property must only be used from `onStart()`"
+                    "`disposables` property must only be used from `onStart()`",
                 )
             }
 
@@ -109,7 +109,7 @@ class RxSceneDisposablesUsageDetector : Detector(), Detector.UastScanner {
                     RxSceneDisposablesUsageDetector.issue,
                     node.leftOperand,
                     context.getLocation(node.leftOperand),
-                    "`disposables` property must only be used from `onStart()`"
+                    "`disposables` property must only be used from `onStart()`",
                 )
             }
 
@@ -144,8 +144,8 @@ class RxSceneDisposablesUsageDetector : Detector(), Detector.UastScanner {
             Severity.WARNING,
             Implementation(
                 RxSceneDisposablesUsageDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
+                Scope.JAVA_FILE_SCOPE,
+            ),
         )
     }
 }

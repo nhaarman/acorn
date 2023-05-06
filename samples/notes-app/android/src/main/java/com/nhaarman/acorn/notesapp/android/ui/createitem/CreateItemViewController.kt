@@ -17,6 +17,8 @@
 package com.nhaarman.acorn.notesapp.android.ui.createitem
 
 import android.view.View
+import android.widget.EditText
+import androidx.appcompat.widget.Toolbar
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.nhaarman.acorn.android.presentation.RestorableViewController
@@ -24,29 +26,27 @@ import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.presentation.createitem.CreateItemContainer
 import com.nhaarman.acorn.state.ContainerState
 import io.reactivex.Observable
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.createitem_scene.*
 
 class CreateItemViewController(
-    override val view: View
-) : CreateItemContainer, RestorableViewController, LayoutContainer {
+    override val view: View,
+) : CreateItemContainer, RestorableViewController {
 
     private var stateRestored = false
 
     override fun setInitialText(text: String?) {
         if (!stateRestored) {
-            editText.setText(text)
-            editText.setSelection(text?.length ?: 0)
+            view.findViewById<EditText>(R.id.editText).setText(text)
+            view.findViewById<EditText>(R.id.editText).setSelection(text?.length ?: 0)
         }
     }
 
     private val menuClicks by lazy {
-        createItemToolbar.itemClicks()
+        view.findViewById<Toolbar>(R.id.createItemToolbar).itemClicks()
             .share()
     }
 
-    override val textChanges: Observable<String>by lazy {
-        editText.textChanges().map { it.toString() }
+    override val textChanges: Observable<String> by lazy {
+        view.findViewById<EditText>(R.id.editText).textChanges().map { it.toString() }
     }
 
     override val createClicks: Observable<Unit> by lazy {
@@ -60,6 +60,4 @@ class CreateItemViewController(
         super.restoreInstanceState(bundle)
         stateRestored = true
     }
-
-    override val containerView = view
 }

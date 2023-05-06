@@ -66,7 +66,7 @@ publishing {
     }
 }
 
-tasks.withType(PublishToMavenRepository) {
+tasks.withType(PublishToMavenRepository).configureEach {
     onlyIf {
         git.versionName().contains("SNAPSHOT") && repository == publishing.repositories["SonatypeSnapshots"] ||
                 !git.versionName().contains("SNAPSHOT") && repository == publishing.repositories["Sonatype"]
@@ -76,5 +76,7 @@ tasks.withType(PublishToMavenRepository) {
 signing {
     if (findProperty("signing.keyId") != null) {
         sign(publishing.publications["maven"])
+    } else {
+        println "No signing keyId found, skipping signing."
     }
 }

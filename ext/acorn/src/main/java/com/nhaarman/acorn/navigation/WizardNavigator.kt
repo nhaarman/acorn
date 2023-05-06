@@ -49,7 +49,7 @@ import kotlin.reflect.KClass
  * by [saveInstanceState].
  */
 abstract class WizardNavigator(
-    private val savedState: NavigatorState?
+    private val savedState: NavigatorState?,
 ) : Navigator, OnBackPressListener {
 
     /**
@@ -91,7 +91,7 @@ abstract class WizardNavigator(
                 } else {
                     instantiateScene(
                         sceneClass = Class.forName(className).kotlin as KClass<out Scene<*>>,
-                        state = savedState["${index}_state"]
+                        state = savedState["${index}_state"],
                     )
                 }
             }
@@ -263,7 +263,7 @@ abstract class WizardNavigator(
             fun create(
                 scenes: List<Scene<out Container>>,
                 initialIndex: Int,
-                factory: (Int) -> Scene<out Container>?
+                factory: (Int) -> Scene<out Container>?,
             ): State {
                 return Inactive(scenes, initialIndex, emptyList(), factory)
             }
@@ -273,7 +273,7 @@ abstract class WizardNavigator(
             override val scenes: List<Scene<out Container>>,
             override val activeIndex: Int,
             override var listeners: List<Navigator.Events>,
-            private val factory: (Int) -> Scene<out Container>?
+            private val factory: (Int) -> Scene<out Container>?,
         ) : State() {
 
             init {
@@ -335,7 +335,7 @@ abstract class WizardNavigator(
             override val scenes: List<Scene<out Container>>,
             override val activeIndex: Int,
             override var listeners: List<Navigator.Events>,
-            private val factory: (Int) -> Scene<out Container>?
+            private val factory: (Int) -> Scene<out Container>?,
         ) : State() {
 
             init {
@@ -455,13 +455,13 @@ abstract class WizardNavigator(
 
     private class StateTransition(
         val newState: State,
-        val action: (() -> Unit)? = null
+        val action: (() -> Unit)? = null,
     ) {
 
         fun andThen(f: (State) -> StateTransition): StateTransition {
             val newTransition = f(newState)
             return StateTransition(
-                newTransition.newState
+                newTransition.newState,
             ) {
                 action?.invoke()
                 newTransition.action?.invoke()

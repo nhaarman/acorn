@@ -22,7 +22,7 @@ import com.nhaarman.acorn.navigation.TransitionData
 import com.nhaarman.acorn.presentation.Scene
 
 internal class BindingSceneTransitionFactory(
-    private val bindings: Sequence<TransitionBinding>
+    private val bindings: Sequence<TransitionBinding>,
 ) : SceneTransitionFactory {
 
     override fun supports(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Boolean {

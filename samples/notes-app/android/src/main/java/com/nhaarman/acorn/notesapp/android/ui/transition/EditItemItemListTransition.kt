@@ -26,7 +26,6 @@ import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.android.ui.itemlist.ItemListViewController
-import kotlinx.android.synthetic.main.edititem_scene.view.*
 
 /**
  * Shows a 'shared element transition' that reverses the transition animation
@@ -56,11 +55,11 @@ object EditItemItemListTransition : SceneTransition {
 
         val shortAnimationDuration = parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
 
-        val editItemToolbar = editItemLayout.editItemToolbar
-        val scrollView = editItemLayout.scrollView
+        val editItemToolbar = editItemLayout.findViewById<View>(R.id.editItemToolbar)
+        val scrollView = editItemLayout.findViewById<View>(R.id.scrollView)
         scrollView.setBackgroundColor(Color.WHITE)
 
-        editItemLayout.editText.visibility = View.INVISIBLE
+        editItemLayout.findViewById<View>(R.id.editText).visibility = View.INVISIBLE
 
         parent.doOnPreDraw {
             editItemToolbar.animate()

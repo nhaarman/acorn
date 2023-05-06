@@ -29,7 +29,7 @@ import android.view.ViewGroup
  */
 class DoBeforeTransition private constructor(
     private val delegate: SceneTransition,
-    private val action: (ViewGroup) -> Unit
+    private val action: (ViewGroup) -> Unit,
 ) : SceneTransition {
 
     override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {

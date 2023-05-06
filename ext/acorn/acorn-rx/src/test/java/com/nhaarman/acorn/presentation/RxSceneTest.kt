@@ -16,7 +16,7 @@
 
 package com.nhaarman.acorn.presentation
 
-import arrow.core.Option
+import com.nhaarman.acorn.Option
 import com.nhaarman.acorn.state.ContainerState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.containerState
@@ -32,63 +32,63 @@ class RxSceneTest {
 
     @Test
     fun `initially there is no view`() {
-        /* When */
+        // When
         val observer = scene.viewObservable.test()
 
-        /* Then */
+        // Then
         expect(observer.lastValue).toBe(Option.empty())
     }
 
     @Test
     fun `attaching a view notifies observers`() {
-        /* Given */
+        // Given
         val observer = scene.viewObservable.test()
 
-        /* When */
+        // When
         scene.attach(testView)
 
-        /* Then */
+        // Then
         expect(observer.lastValue).toBe(Option.just(testView))
     }
 
     @Test
     fun `subscribing after view attach`() {
-        /* Given */
+        // Given
         scene.attach(testView)
 
-        /* When */
+        // When
         val observer = scene.viewObservable.test()
 
-        /* Then */
+        // Then
         expect(observer.lastValue).toBe(Option.just(testView))
     }
 
     @Test
     fun `detaching a view notifies observers`() {
-        /* Given */
+        // Given
         val observer = scene.viewObservable.test()
 
-        /* When */
+        // When
         scene.attach(testView)
         scene.detach(testView)
 
-        /* Then */
+        // Then
         expect(observer.lastValue).toBe(Option.empty())
     }
 
     @Test
     fun `view state is restored between views`() {
-        /* Given */
+        // Given
         val view1 = TestView(1)
         val view2 = TestView(2)
 
-        /* When */
+        // When
         scene.attach(view1)
         view1.state = 3
         scene.detach(view1)
         scene.attach(view2)
 
-        /* Then */
+        // Then
         expect(view2.state).toBe(3)
     }
 

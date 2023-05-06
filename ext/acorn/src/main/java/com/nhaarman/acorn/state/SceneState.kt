@@ -34,7 +34,7 @@ fun sceneState(init: (SceneState) -> Unit): SceneState {
 }
 
 private data class DefaultSceneState(
-    private val delegate: SavedState
+    private val delegate: SavedState,
 ) : SceneState, SavedState by delegate {
 
     override fun set(key: String, value: ContainerState?) {

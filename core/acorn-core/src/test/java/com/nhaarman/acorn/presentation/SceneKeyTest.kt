@@ -26,10 +26,10 @@ internal class SceneKeyTest {
 
     @Test
     fun `sceneKey value`() {
-        /* When */
+        // When
         val key = SceneKey("test")
 
-        /* Then */
+        // Then
         expect(key.value).toBe("test")
     }
 
@@ -73,10 +73,10 @@ internal class SceneKeyTest {
 
     @Test
     fun `test toString`() {
-        /* Given */
+        // Given
         val key = SceneKey("test")
 
-        /* Then */
+        // Then
         expect(key.toString()).toBe("SceneKey(value=test)")
     }
 

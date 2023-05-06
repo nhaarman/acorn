@@ -45,7 +45,7 @@ import kotlin.reflect.KClass
  * by [saveInstanceState].
  */
 abstract class StackNavigator(
-    private val savedState: NavigatorState?
+    private val savedState: NavigatorState?,
 ) : Navigator, OnBackPressListener {
 
     /**
@@ -67,7 +67,7 @@ abstract class StackNavigator(
      */
     protected abstract fun instantiateScene(
         sceneClass: KClass<out Scene<*>>,
-        state: SceneState?
+        state: SceneState?,
     ): Scene<out Container>
 
     private var state by lazyVar {
@@ -82,7 +82,7 @@ abstract class StackNavigator(
                 .map { index ->
                     instantiateScene(
                         sceneClass = Class.forName(savedState["${index}_class"]).kotlin as KClass<out Scene<*>>,
-                        state = savedState["${index}_state"]
+                        state = savedState["${index}_state"],
                     )
                 }
         }
@@ -260,7 +260,7 @@ abstract class StackNavigator(
 
         class Inactive(
             override val scenes: List<Scene<out Container>>,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : State() {
 
             init {
@@ -319,7 +319,7 @@ abstract class StackNavigator(
 
             override fun replace(
                 scene: Scene<out Container>,
-                data: TransitionData?
+                data: TransitionData?,
             ): StateTransition {
                 val newScenes = scenes.dropLast(1) + scene
 
@@ -331,7 +331,7 @@ abstract class StackNavigator(
 
         class Active(
             override val scenes: List<Scene<out Container>>,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : State() {
 
             init {
@@ -394,7 +394,7 @@ abstract class StackNavigator(
 
             override fun replace(
                 scene: Scene<out Container>,
-                data: TransitionData?
+                data: TransitionData?,
             ): StateTransition {
                 val poppedScene = scenes.last()
                 val newScenes = scenes.dropLast(1) + scene
@@ -431,7 +431,7 @@ abstract class StackNavigator(
             override fun start(): StateTransition {
                 w(
                     "StackNavigator.State",
-                    "Warning: Cannot start state after navigator is destroyed."
+                    "Warning: Cannot start state after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -447,7 +447,7 @@ abstract class StackNavigator(
             override fun push(scene: Scene<out Container>, data: TransitionData?): StateTransition {
                 w(
                     "StackNavigator.State",
-                    "Warning: Cannot push scene after navigator is destroyed."
+                    "Warning: Cannot push scene after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -459,11 +459,11 @@ abstract class StackNavigator(
 
             override fun replace(
                 scene: Scene<out Container>,
-                data: TransitionData?
+                data: TransitionData?,
             ): StateTransition {
                 w(
                     "StackNavigator.State",
-                    "Warning: Cannot replace scene after navigator is destroyed."
+                    "Warning: Cannot replace scene after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -471,7 +471,7 @@ abstract class StackNavigator(
             override fun finish(): StateTransition {
                 w(
                     "StackNavigator.State",
-                    "Warning: Cannot finish navigator after navigator is destroyed."
+                    "Warning: Cannot finish navigator after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -480,13 +480,13 @@ abstract class StackNavigator(
 
     private class StateTransition(
         val newState: State,
-        val action: (() -> Unit)? = null
+        val action: (() -> Unit)? = null,
     ) {
 
         fun andThen(f: (State) -> StateTransition): StateTransition {
             val newTransition = f(newState)
             return StateTransition(
-                newTransition.newState
+                newTransition.newState,
             ) {
                 action?.invoke()
                 newTransition.action?.invoke()

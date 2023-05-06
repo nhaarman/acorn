@@ -23,39 +23,39 @@ class DisposableHandleTest {
 
     @Test
     fun `resulting disposable mirrors non disposed state`() {
-        /* Given */
+        // Given
         val handle = SimpleDisposableHandle()
 
-        /* When */
+        // When
         val disposable = handle.asDisposable()
 
-        /* Then */
+        // Then
         expect(disposable.isDisposed).toBe(false)
     }
 
     @Test
     fun `resulting disposable mirrors disposed state`() {
-        /* Given */
+        // Given
         val handle = SimpleDisposableHandle()
 
-        /* When */
+        // When
         val disposable = handle.asDisposable()
         handle.dispose()
 
-        /* Then */
+        // Then
         expect(disposable.isDisposed).toBe(true)
     }
 
     @Test
     fun `resulting disposable delegates disposing to handle`() {
-        /* Given */
+        // Given
         val handle = SimpleDisposableHandle()
 
-        /* When */
+        // When
         val disposable = handle.asDisposable()
         disposable.dispose()
 
-        /* Then */
+        // Then
         expect(handle.isDisposed()).toBe(true)
     }
 

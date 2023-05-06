@@ -21,7 +21,7 @@ import com.nhaarman.acorn.presentation.Scene
 import com.nhaarman.acorn.presentation.SceneKey
 
 open class TestScene(
-    sceneKey: SceneKey? = null
+    sceneKey: SceneKey? = null,
 ) : Scene<Container> {
 
     override val key: SceneKey = sceneKey ?: super.key

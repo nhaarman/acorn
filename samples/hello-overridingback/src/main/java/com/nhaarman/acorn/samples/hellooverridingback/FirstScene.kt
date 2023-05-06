@@ -25,8 +25,7 @@ import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewProvidingScene
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.presentation.Container
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.first_scene.*
+import com.nhaarman.acorn.samples.hellooverridingback.databinding.FirstSceneBinding
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
 
@@ -43,11 +42,12 @@ interface FirstSceneContainer : Container {
 }
 
 class FirstSceneViewController(
-    override val view: View
+    override val view: View,
 ) : RestorableViewController,
     FirstSceneContainer,
-    LayoutContainer,
     OnBackPressListener {
+
+    private val binding = FirstSceneBinding.bind(view)
 
     private var backPressListener: (() -> Unit)? = null
 
@@ -56,7 +56,7 @@ class FirstSceneViewController(
     }
 
     override fun onBackPressed(): Boolean {
-        konfettiView.build()
+        binding.konfettiView.build()
             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
             .setDirection(0.0, 359.0)
             .setSpeed(1f, 5f)
@@ -64,11 +64,9 @@ class FirstSceneViewController(
             .setTimeToLive(2000L)
             .addShapes(Shape.RECT, Shape.CIRCLE)
             .addSizes(Size(12))
-            .setPosition(-50f, konfettiView.width + 50f, -50f, -50f)
+            .setPosition(-50f, binding.konfettiView.width + 50f, -50f, -50f)
             .streamFor(300, 1000L)
 
         return true
     }
-
-    override val containerView = view
 }

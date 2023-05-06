@@ -25,15 +25,15 @@ import com.nhaarman.acorn.android.util.TestView
 import com.nhaarman.acorn.android.util.TestViewController
 import com.nhaarman.acorn.android.util.TestViewControllerFactory
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 internal class VisibleWithDestinationTest {
 
@@ -49,7 +49,7 @@ internal class VisibleWithDestinationTest {
     val uiDestination = Destination(
         scene,
         TestViewControllerFactory(),
-        null
+        null,
     )
 
     val scene2 = spy(TestScene())
@@ -66,7 +66,7 @@ internal class VisibleWithDestinationTest {
         root,
         transitionFactory,
         uiDestination,
-        sceneViewController
+        sceneViewController,
     )
 
     @BeforeEach
@@ -88,13 +88,13 @@ internal class VisibleWithDestinationTest {
 
         @Test
         fun `'onBackPressed' delegates to current ViewController`() {
-            /* Given */
+            // Given
             whenever(sceneViewController.onBackPressed()).thenReturn(true)
 
-            /* When */
+            // When
             val result = state.onBackPressed()
 
-            /* Then */
+            // Then
             verify(sceneViewController).onBackPressed()
             expect(result).toBe(true)
         }
@@ -106,10 +106,10 @@ internal class VisibleWithDestinationTest {
 
         @Test
         fun `'uiNotVisible' detaches view controller`() {
-            /* When */
+            // When
             state.uiNotVisible()
 
-            /* Then */
+            // Then
             verify(scene).detach(sceneViewController)
         }
 
@@ -120,28 +120,28 @@ internal class VisibleWithDestinationTest {
 
         @Test
         fun `'withoutScene' detaches current view controller`() {
-            /* When */
+            // When
             state.withoutScene()
 
-            /* Then */
+            // Then
             verify(scene).detach(sceneViewController)
         }
 
         @Test
         fun `'withScene' detaches current view controller`() {
-            /* When */
+            // When
             state.withScene(scene2, sceneViewControllerFactory2, null)
 
-            /* Then */
+            // Then
             verify(scene).detach(sceneViewController)
         }
 
         @Test
         fun `'withScene' executes transition`() {
-            /* When */
+            // When
             state.withScene(scene2, sceneViewControllerFactory2, null)
 
-            /* Then */
+            // Then
             expect(transitionTo2.isStarted()).toHold()
         }
     }
@@ -156,73 +156,73 @@ internal class VisibleWithDestinationTest {
 
         @Test
         fun `'onBackPressed' does not delegate`() {
-            /* Given */
+            // Given
             whenever(sceneViewController.onBackPressed()).thenReturn(true)
 
-            /* When */
+            // When
             val result = state.onBackPressed()
 
-            /* Then */
+            // Then
             verify(sceneViewController, never()).onBackPressed()
             expect(result).toBe(false)
         }
 
         @Test
         fun `transition requesting 'attach' actually attaches`() {
-            /* When */
+            // When
             transitionTo2.attach(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2).attach(sceneViewController2)
         }
 
         @Test
         fun `transition requesting 'attach' multiple times only attaches once`() {
-            /* When */
+            // When
             transitionTo2.attach(sceneViewController2)
             transitionTo2.attach(sceneViewController2)
             transitionTo2.attach(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2, times(1)).attach(sceneViewController2)
         }
 
         @Test
         fun `transition requesting 'onComplete' without 'attach' attaches`() {
-            /* When */
+            // When
             transitionTo2.complete(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2).attach(sceneViewController2)
         }
 
         @Test
         fun `transition requesting 'onComplete' twice without 'attach' only attaches once`() {
-            /* When */
+            // When
             transitionTo2.complete(sceneViewController2)
             transitionTo2.complete(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2, times(1)).attach(sceneViewController2)
         }
 
         @Test
         fun `transition requesting 'onComplete' after 'attach' only attaches once`() {
-            /* When */
+            // When
             transitionTo2.attach(sceneViewController2)
             transitionTo2.complete(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2, times(1)).attach(sceneViewController2)
         }
 
         @Test
         fun `transition requesting 'attach' after 'onComplete' only attaches once`() {
-            /* When */
+            // When
             transitionTo2.complete(sceneViewController2)
             transitionTo2.attach(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2, times(1)).attach(sceneViewController2)
         }
     }
@@ -240,125 +240,125 @@ internal class VisibleWithDestinationTest {
 
         @Test
         fun `'onBackPressed' does not delegate`() {
-            /* Given */
+            // Given
             whenever(sceneViewController.onBackPressed()).thenReturn(true)
 
-            /* When */
+            // When
             val result = state.onBackPressed()
 
-            /* Then */
+            // Then
             verify(sceneViewController, never()).onBackPressed()
             expect(result).toBe(false)
         }
 
         @Test
         fun `transition requesting 'attach' after 'uiNotVisible' does not attach`() {
-            /* Given */
+            // Given
             state.uiNotVisible()
 
-            /* When */
+            // When
             transitionTo2.attach(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2, never()).attach(sceneViewController2)
         }
 
         @Test
         fun `transition requesting 'onComplete' after 'uiNotVisible' does not attach`() {
-            /* Given */
+            // Given
             state.uiNotVisible()
 
-            /* When */
+            // When
             transitionTo2.complete(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2, never()).attach(sceneViewController2)
         }
 
         @Test
         fun `transition requesting 'attach' after 'withoutScene' does not attach`() {
-            /* Given */
+            // Given
             state.withoutScene()
 
-            /* When */
+            // When
             transitionTo2.attach(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2, never()).attach(sceneViewController2)
         }
 
         @Test
         fun `transition requesting 'onComplete' after 'withoutScene' does not attach`() {
-            /* Given */
+            // Given
             state.withoutScene()
 
-            /* When */
+            // When
             transitionTo2.complete(sceneViewController2)
 
-            /* Then */
+            // Then
             verify(scene2, never()).attach(sceneViewController2)
         }
 
         @Test
         fun `'withScene' schedules transition`() {
-            /* When */
+            // When
             state.withScene(scene3, sceneViewControllerFactory3, null)
 
-            /* Then */
+            // Then
             expect(transition2To3.isStarted()).notToHold()
         }
 
         @Test
         fun `first transition completed executes scheduled transition`() {
-            /* Given */
+            // Given
             state.withScene(scene3, sceneViewControllerFactory3, null)
 
-            /* When */
+            // When
             transitionTo2.complete(sceneViewController2)
 
-            /* Then */
+            // Then
             expect(transition2To3.isStarted()).toHold()
         }
 
         @Test
         fun `'withoutScene' does not detach current view controller for a second time`() {
-            /* When */
+            // When
             state.withoutScene()
 
-            /* Then */
+            // Then
             verify(scene, times(1)).detach(sceneViewController)
         }
 
         @Test
         fun `'uiNotVisible' during a transition remembers the transition's destination`() {
-            /* When */
+            // When
             val newState = state.uiNotVisible()
 
-            /* Then */
+            // Then
             verify(scene2, never()).attach(any())
 
-            /* When */
+            // When
             newState.uiVisible()
 
-            /* Then */
+            // Then
             verify(scene2).attach(sceneViewController2)
         }
 
         @Test
         fun `'uiNotVisible' during a transition with a scheduled remembers the scheduled transition's destination`() {
-            /* Given */
+            // Given
             state.withScene(scene3, sceneViewControllerFactory3, null)
 
-            /* When */
+            // When
             val newState = state.uiNotVisible()
 
-            /* Then */
+            // Then
             verify(scene3, never()).attach(any())
 
-            /* When */
+            // When
             newState.uiVisible()
 
-            /* Then */
+            // Then
             verify(scene3).attach(sceneViewController3)
         }
     }
@@ -374,14 +374,14 @@ internal class VisibleWithDestinationTest {
 
         @Test
         fun `'onBackPressed' delegates to new ViewController`() {
-            /* Given */
+            // Given
             whenever(sceneViewController.onBackPressed()).thenReturn(false)
             whenever(sceneViewController2.onBackPressed()).thenReturn(true)
 
-            /* When */
+            // When
             val result = state.onBackPressed()
 
-            /* Then */
+            // Then
             verify(sceneViewController, never()).onBackPressed()
             verify(sceneViewController2).onBackPressed()
             expect(result).toBe(true)

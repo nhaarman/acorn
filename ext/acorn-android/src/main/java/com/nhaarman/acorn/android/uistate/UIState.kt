@@ -82,14 +82,14 @@ sealed class UIState {
     fun withScene(
         scene: Scene<out Container>,
         viewControllerFactory: ViewControllerFactory,
-        data: TransitionData?
+        data: TransitionData?,
     ): UIState {
         return withDestination(
             Destination(
                 scene,
                 viewControllerFactory,
-                data
-            )
+                data,
+            ),
         )
     }
 
@@ -115,7 +115,7 @@ sealed class UIState {
          */
         fun create(
             root: ViewGroup,
-            transitionFactory: SceneTransitionFactory
+            transitionFactory: SceneTransitionFactory,
         ): UIState = NotVisible(root, transitionFactory)
     }
 }
@@ -126,7 +126,7 @@ sealed class UIState {
  */
 internal class NotVisible(
     private val root: ViewGroup,
-    private val transitionFactory: SceneTransitionFactory
+    private val transitionFactory: SceneTransitionFactory,
 ) : UIState() {
 
     /**
@@ -155,7 +155,7 @@ internal class NotVisible(
             root,
             transitionFactory,
             destination,
-            null
+            null,
         )
     }
 
@@ -171,7 +171,7 @@ internal class NotVisibleWithDestination(
     private val root: ViewGroup,
     private val transitionFactory: SceneTransitionFactory,
     private val destination: Destination,
-    private val existingViewController: ViewController?
+    private val existingViewController: ViewController?,
 ) : UIState() {
 
     /**
@@ -182,7 +182,7 @@ internal class NotVisibleWithDestination(
         if (existingViewController != null) {
             v(
                 "UIState.NotVisibleWithDestination",
-                "UI becomes visible, attaching container to ${destination.scene}."
+                "UI becomes visible, attaching container to ${destination.scene}.",
             )
 
             destination.forceAttach(existingViewController)
@@ -190,13 +190,13 @@ internal class NotVisibleWithDestination(
                 root,
                 transitionFactory,
                 destination,
-                existingViewController
+                existingViewController,
             )
         }
 
         v(
             "UIState.NotVisibleWithDestination",
-            "UI becomes visible with active destination: $destination"
+            "UI becomes visible with active destination: $destination",
         )
         v("UIState.NotVisibleWithDestination", "Showing destination UI without animation.")
 
@@ -212,7 +212,7 @@ internal class NotVisibleWithDestination(
             root,
             transitionFactory,
             destination,
-            viewController
+            viewController,
         )
     }
 
@@ -235,7 +235,7 @@ internal class NotVisibleWithDestination(
             root,
             transitionFactory,
             destination,
-            null
+            null,
         )
     }
 
@@ -252,7 +252,7 @@ internal class NotVisibleWithDestination(
  */
 internal class Visible(
     private val root: ViewGroup,
-    private val transitionFactory: SceneTransitionFactory
+    private val transitionFactory: SceneTransitionFactory,
 ) : UIState() {
 
     /**
@@ -280,7 +280,7 @@ internal class Visible(
         v("UIState.Visible", "Destination changed with UI visible to: $destination.")
         v(
             "UIState.Visible",
-            "No current scene active, showing scene without animation."
+            "No current scene active, showing scene without animation.",
         )
 
         val viewController = destination.viewControllerFactory.viewControllerFor(destination.scene, root)
@@ -293,7 +293,7 @@ internal class Visible(
             root,
             transitionFactory,
             destination,
-            viewController
+            viewController,
         )
     }
 
@@ -313,7 +313,7 @@ internal class VisibleWithDestination(
     private val root: ViewGroup,
     private val transitionFactory: SceneTransitionFactory,
     private var currentDestination: Destination,
-    private var currentViewController: ViewController
+    private var currentViewController: ViewController,
 ) : UIState() {
 
     private var transitionCallback: CancellableTransitionCallback? = null
@@ -336,7 +336,7 @@ internal class VisibleWithDestination(
     override fun uiNotVisible(): UIState {
         v(
             "VisibleWithDestination",
-            "UI becomes invisible, detaching container from ${currentDestination.scene}."
+            "UI becomes invisible, detaching container from ${currentDestination.scene}.",
         )
         currentDestination.forceDetach(currentViewController)
 
@@ -348,13 +348,13 @@ internal class VisibleWithDestination(
         if (pendingDestination != null) {
             v(
                 "VisibleWithDestination",
-                "There is a pending destination, dropping existing ViewController (pending: $pendingDestination)"
+                "There is a pending destination, dropping existing ViewController (pending: $pendingDestination)",
             )
             return NotVisibleWithDestination(
                 root,
                 transitionFactory,
                 pendingDestination,
-                existingViewController = null
+                existingViewController = null,
             )
         }
 
@@ -362,7 +362,7 @@ internal class VisibleWithDestination(
             root,
             transitionFactory,
             currentDestination,
-            currentViewController
+            currentViewController,
         )
     }
 
@@ -386,12 +386,12 @@ internal class VisibleWithDestination(
         if (transitionCallback != null) {
             v(
                 "UIState.VisibleWithDestination",
-                "Transition already in progress, scheduling transition to $destination."
+                "Transition already in progress, scheduling transition to $destination.",
             )
             if (scheduledDestination != null) {
                 w(
                     "UIState.VisibleWithDestination",
-                    "Dropping transition to $scheduledDestination."
+                    "Dropping transition to $scheduledDestination.",
                 )
             }
             scheduledDestination = destination
@@ -403,7 +403,7 @@ internal class VisibleWithDestination(
 
         v(
             "UIState.VisibleWithDestination",
-            "Starting transition from $currentDestination to $destination."
+            "Starting transition from $currentDestination to $destination.",
         )
         val callback = MyCallback(destination).also { transitionCallback = it }
         transitionFactory.transitionFor(currentDestination.scene, destination.scene, destination.transitionData)
@@ -427,7 +427,7 @@ internal class VisibleWithDestination(
     }
 
     private inner class MyCallback(
-        private val newDestination: Destination
+        private val newDestination: Destination,
     ) : CancellableTransitionCallback {
 
         override val pendingDestination: Destination
@@ -447,7 +447,7 @@ internal class VisibleWithDestination(
 
             v(
                 "UIState.VisibleWithDestination",
-                "Transition to $newDestination cancelled."
+                "Transition to $newDestination cancelled.",
             )
         }
 
@@ -458,7 +458,7 @@ internal class VisibleWithDestination(
 
             v(
                 "UIState.VisibleWithDestination",
-                "Attaching container to ${newDestination.scene} before transition end."
+                "Attaching container to ${newDestination.scene} before transition end.",
             )
             attached = true
 
@@ -476,7 +476,7 @@ internal class VisibleWithDestination(
             if (!attached) {
                 v(
                     "UIState.VisibleWithDestination",
-                    "Container not attached to ${newDestination.scene}; attaching."
+                    "Container not attached to ${newDestination.scene}; attaching.",
                 )
                 currentDestination = newDestination
                 currentViewController = viewController

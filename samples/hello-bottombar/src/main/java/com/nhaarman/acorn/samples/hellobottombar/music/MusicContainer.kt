@@ -40,7 +40,7 @@ interface MusicContainer : Container {
 }
 
 class MusicViewController(
-    override val view: View
+    override val view: View,
 ) : ViewController, MusicContainer {
 
     init {

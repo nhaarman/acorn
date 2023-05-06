@@ -20,27 +20,26 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.util.inflateView
-import com.nhaarman.acorn.navigation.experimental.ExperimentalConcurrentPairNavigator
-import kotlinx.android.synthetic.main.second_scene.view.*
+import com.nhaarman.acorn.samples.helloconcurrentpairnavigator.databinding.SecondSceneBinding
 
-@UseExperimental(ExperimentalConcurrentPairNavigator::class)
 object FirstSecondTransition : SceneTransition {
 
     override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val secondScene = parent.inflateView(R.layout.second_scene)
+        val secondSceneBinding = SecondSceneBinding.bind(secondScene)
         parent.addView(secondScene)
 
         val viewController = FirstSecondViewController(parent)
         callback.attach(viewController)
 
         parent.doOnPreDraw {
-            secondScene.overlayView
+            secondSceneBinding.overlayView
                 .apply {
                     alpha = 0f
                     animate().alpha(1f)
                 }
 
-            secondScene.cardView.apply {
+            secondSceneBinding.cardView.apply {
                 translationY = height.toFloat()
                 animate().translationY(0f)
                     .withEndAction {

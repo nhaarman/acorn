@@ -23,11 +23,11 @@ import com.nhaarman.acorn.android.util.TestView
 import com.nhaarman.acorn.android.util.TestViewController
 import com.nhaarman.acorn.android.util.TestViewControllerFactory
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verify
 
 internal class VisibleTest {
 
@@ -39,7 +39,7 @@ internal class VisibleTest {
 
     val state = Visible(
         root,
-        TestSceneTransitionFactory()
+        TestSceneTransitionFactory(),
     )
 
     @BeforeEach
@@ -69,19 +69,19 @@ internal class VisibleTest {
 
     @Test
     fun `'withScene' replaces root children with new Scene view`() {
-        /* When */
+        // When
         state.withScene(scene, viewControllerFactory, null)
 
-        /* Then */
+        // Then
         expect(root.views).toBe(listOf(sceneView))
     }
 
     @Test
     fun `'withScene' attaches container to scene`() {
-        /* When */
+        // When
         state.withScene(scene, viewControllerFactory, null)
 
-        /* Then */
+        // Then
         verify(scene).attach(any())
     }
 }

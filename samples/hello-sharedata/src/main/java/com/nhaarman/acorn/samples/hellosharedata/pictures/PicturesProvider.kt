@@ -39,7 +39,7 @@ interface PicturesProvider {
 }
 
 class DevicePicturesProvider(
-    private val context: Context
+    private val context: Context,
 ) : PicturesProvider {
 
     private val refreshSubject = PublishSubject.create<Unit>()

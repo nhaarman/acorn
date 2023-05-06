@@ -25,7 +25,7 @@ import kotlin.reflect.KClass
 
 class NotesAppNavigator(
     private val notesAppComponent: NotesAppComponent,
-    savedState: NavigatorState?
+    savedState: NavigatorState?,
 ) : CompositeStackNavigator(savedState),
     PrimaryNavigator.Events,
     CreateItemNavigator.Events {
@@ -36,19 +36,19 @@ class NotesAppNavigator(
 
     override fun instantiateNavigator(
         navigatorClass: KClass<out Navigator>,
-        state: NavigatorState?
+        state: NavigatorState?,
     ): Navigator {
         return when (navigatorClass) {
             PrimaryNavigator::class -> PrimaryNavigator(
                 notesAppComponent,
                 this,
-                state
+                state,
             )
             CreateItemNavigator::class -> CreateItemNavigator(
                 null,
                 notesAppComponent,
                 state,
-                this
+                this,
             )
             else -> error("Could not instantiate navigator for class $navigatorClass.")
         }

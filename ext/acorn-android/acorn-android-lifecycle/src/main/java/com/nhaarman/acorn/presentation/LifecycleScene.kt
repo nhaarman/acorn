@@ -36,18 +36,14 @@ import com.nhaarman.acorn.state.SceneState
  * available.
  */
 abstract class LifecycleScene<V : Container>(
-    savedState: SceneState?
+    savedState: SceneState?,
 ) : BasicScene<V>(savedState), LifecycleOwner {
 
-    private val lifecycle by lazy {
+    override val lifecycle by lazy {
         LifecycleRegistry(this)
             .also {
                 it.currentState = Lifecycle.State.CREATED
             }
-    }
-
-    override fun getLifecycle(): Lifecycle {
-        return lifecycle
     }
 
     @CallSuper

@@ -55,7 +55,7 @@ class MySceneTransitionFactory : SceneTransitionFactory {
                         NewsScene.key -> R.layout.news_scene
                         else -> error("Unknown scene: $newScene")
                     },
-                    true
+                    true,
                 )
 
                 callback.onComplete(
@@ -65,7 +65,7 @@ class MySceneTransitionFactory : SceneTransitionFactory {
                         FavoritesScene.key -> FavoritesViewController(parent)
                         NewsScene.key -> NewsViewController(parent)
                         else -> error("Unknown scene: $newScene")
-                    }
+                    },
                 )
             }
         }

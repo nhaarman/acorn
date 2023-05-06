@@ -23,11 +23,10 @@ import com.nhaarman.acorn.android.presentation.ViewController
 import com.nhaarman.acorn.android.presentation.ViewProvidingScene
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.presentation.Container
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.second_scene.*
+import com.nhaarman.acorn.samples.hellotransitionanimation.databinding.SecondSceneBinding
 
 class SecondScene(
-    private val listener: Events
+    private val listener: Events,
 ) : ViewProvidingScene<SecondSceneContainer> {
 
     override fun createViewController(parent: ViewGroup): ViewController {
@@ -50,12 +49,12 @@ interface SecondSceneContainer : Container {
 }
 
 class SecondSceneViewController(
-    override val view: View
-) : RestorableViewController, SecondSceneContainer, LayoutContainer {
+    override val view: View,
+) : RestorableViewController, SecondSceneContainer {
+
+    private val binding = SecondSceneBinding.bind(view)
 
     override fun onFirstSceneClicked(f: () -> Unit) {
-        firstSceneButton.setOnClickListener { f() }
+        binding.firstSceneButton.setOnClickListener { f() }
     }
-
-    override val containerView = view
 }

@@ -25,10 +25,10 @@ import com.nhaarman.acorn.navigation.Navigator
  * A [SceneDispatcher] that wraps an existing instance, notifying the
  * experimental [AcornEvents] class of dispatching events.
  */
-@UseExperimental(ExperimentalAcornEvents::class)
+@OptIn(ExperimentalAcornEvents::class)
 class HookingSceneDispatcher private constructor(
     private val delegate: SceneDispatcher,
-    private val navigatorProvider: NavigatorProvider
+    private val navigatorProvider: NavigatorProvider,
 ) : SceneDispatcher by delegate {
 
     override fun dispatchScenesFor(navigator: Navigator): DisposableHandle {
@@ -52,11 +52,11 @@ class HookingSceneDispatcher private constructor(
 
         fun create(
             delegate: SceneDispatcher,
-            navigatorProvider: NavigatorProvider
+            navigatorProvider: NavigatorProvider,
         ): HookingSceneDispatcher {
             return HookingSceneDispatcher(
                 delegate,
-                navigatorProvider
+                navigatorProvider,
             )
         }
     }

@@ -47,7 +47,7 @@ open class SavableTestScene(var foo: Int) : Scene<Container>, SavableScene {
         Created,
         Started,
         Stopped,
-        Destroyed
+        Destroyed,
     }
 
     override fun saveInstanceState(): SceneState {
@@ -73,7 +73,7 @@ open class SavableTestScene(var foo: Int) : Scene<Container>, SavableScene {
 
         fun create(state: SceneState?): SavableTestScene {
             return SavableTestScene(
-                foo = state?.get("foo") ?: 0
+                foo = state?.get("foo") ?: 0,
             )
         }
     }

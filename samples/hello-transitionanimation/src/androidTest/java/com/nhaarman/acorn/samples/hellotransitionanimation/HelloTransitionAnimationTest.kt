@@ -27,7 +27,8 @@ import org.junit.Test
 
 class HelloTransitionAnimationTest {
 
-    @Rule @JvmField val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    @Rule @JvmField
+    val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
 
     @Test
     fun navigatingThroughScenes() {

@@ -5,11 +5,6 @@ if (!hasAndroid) {
         useJUnitPlatform {
             systemProperties = ['junit.jupiter.extensions.autodetection.enabled': 'true']
         }
-
-        reports {
-            html.enabled true
-            junitXml.enabled true
-        }
     }
 } else {
     project.apply plugin: "de.mannodermaus.android-junit5"

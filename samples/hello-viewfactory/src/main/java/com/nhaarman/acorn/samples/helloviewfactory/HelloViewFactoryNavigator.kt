@@ -23,7 +23,7 @@ import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.SceneState
 
 class HelloViewFactoryNavigator(
-    savedState: NavigatorState?
+    savedState: NavigatorState?,
 ) : SingleSceneNavigator(savedState) {
 
     override fun createScene(state: SceneState?): Scene<out Container> {

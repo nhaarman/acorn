@@ -23,61 +23,61 @@ internal class SavedStateGetTest {
 
     @Test
     fun `retrieving a byte`() {
-        /* Given */
+        // Given
         val value: Byte = 3
         val state = savedState {
             it["value"] = value
         }
 
-        /* When */
+        // When
         val result: Byte? = state["value"]
 
-        /* Then */
+        // Then
         expect(result).toBe(value)
     }
 
     @Test
     fun `retrieving a byte entered as int`() {
-        /* Given */
+        // Given
         val value: Int = 3
         val state = savedState {
             it["value"] = value
         }
 
-        /* When */
+        // When
         val result: Byte? = state["value"]
 
-        /* Then */
+        // Then
         expect(result).toBe(3)
     }
 
     @Test
     fun `retrieving a short`() {
-        /* Given */
+        // Given
         val value: Short = 3
         val state = savedState {
             it["value"] = value
         }
 
-        /* When */
+        // When
         val result: Short? = state["value"]
 
-        /* Then */
+        // Then
         expect(result).toBe(value)
     }
 
     @Test
     fun `retrieving an unchecked item`() {
-        /* Given */
+        // Given
         val value = "Test"
         val state = savedState {
             it["value"] = value
         }
 
-        /* When */
+        // When
         val result: String? = state["value"]
 
-        /* Then */
+        // Then
         expect(result).toBe("Test")
     }
 }

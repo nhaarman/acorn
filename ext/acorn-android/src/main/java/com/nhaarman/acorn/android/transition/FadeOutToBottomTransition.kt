@@ -38,7 +38,7 @@ import com.nhaarman.acorn.presentation.Scene
  * wil be removed.
  */
 class FadeOutToBottomTransition(
-    private val viewController: (ViewGroup) -> ViewController
+    private val viewController: (ViewGroup) -> ViewController,
 ) : SceneTransition {
 
     override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {

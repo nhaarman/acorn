@@ -24,13 +24,13 @@ import com.nhaarman.acorn.android.util.TestView
 import com.nhaarman.acorn.android.util.TestViewController
 import com.nhaarman.acorn.android.util.TestViewControllerFactory
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 
 internal class NotVisibleWithDestinationTest {
 
@@ -42,14 +42,14 @@ internal class NotVisibleWithDestinationTest {
     val destination = Destination(
         scene,
         viewControllerFactory,
-        null
+        null,
     )
 
     val state = NotVisibleWithDestination(
         root,
         TestSceneTransitionFactory(),
         destination,
-        null
+        null,
     )
 
     @BeforeEach
@@ -69,11 +69,11 @@ internal class NotVisibleWithDestinationTest {
 
     @Test
     fun `'withoutScene' does not touch root view group`() {
-        /* When */
+        // When
         state.withoutScene()
 
-        /* Then */
-        verifyZeroInteractions(root)
+        // Then
+        verifyNoInteractions(root)
     }
 
     @Test
@@ -83,11 +83,11 @@ internal class NotVisibleWithDestinationTest {
 
     @Test
     fun `'withScene' does not touch root view group`() {
-        /* When */
+        // When
         state.withScene(mock(), mock(), null)
 
-        /* Then */
-        verifyZeroInteractions(root)
+        // Then
+        verifyNoInteractions(root)
     }
 
     @Test
@@ -97,25 +97,25 @@ internal class NotVisibleWithDestinationTest {
 
     @Test
     fun `'uiVisible' replaces root children with new Scene view`() {
-        /* When */
+        // When
         state.uiVisible()
 
-        /* Then */
+        // Then
         expect(root.views).toBe(listOf(sceneView))
     }
 
     @Test
     fun `'uiVisible' attaches container to scene`() {
-        /* When */
+        // When
         state.uiVisible()
 
-        /* Then */
+        // Then
         verify(scene).attach(any())
     }
 
     @Test
     fun `'uiVisible' for state with existing view controller does not manipulate root`() {
-        /* Given */
+        // Given
         val existingView = TestView()
         root.addView(existingView)
 
@@ -123,31 +123,31 @@ internal class NotVisibleWithDestinationTest {
             root,
             TestSceneTransitionFactory(),
             destination,
-            TestViewController(TestView())
+            TestViewController(TestView()),
         )
 
-        /* When */
+        // When
         state.uiVisible()
 
-        /* Then */
+        // Then
         expect(root.views).toBe(listOf(existingView))
     }
 
     @Test
     fun `'uiVisible' for state with existing view controller attaches that controller`() {
-        /* Given */
+        // Given
         val viewController = TestViewController(TestView())
         val state = NotVisibleWithDestination(
             root,
             TestSceneTransitionFactory(),
             destination,
-            viewController
+            viewController,
         )
 
-        /* When */
+        // When
         state.uiVisible()
 
-        /* Then */
+        // Then
         verify(scene).attach(viewController)
     }
 }

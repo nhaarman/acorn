@@ -27,7 +27,7 @@ interface AppSettingsContainer : Container {
 }
 
 class AppSettingsScene(
-    private val listener: Events
+    private val listener: Events,
 ) : Scene<AppSettingsContainer> {
 
     private val finishListener = { listener.settingsFinished() }

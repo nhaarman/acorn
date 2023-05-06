@@ -23,7 +23,7 @@ package com.nhaarman.acorn.android.experimental
  * The AcornEvents class has no backward compatibility guarantees
  * whatsoever.
  */
-@Experimental
+@RequiresOptIn
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalAcornEvents

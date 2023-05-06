@@ -26,7 +26,8 @@ import org.junit.Test
 
 class HelloWorldTest {
 
-    @Rule @JvmField val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    @Rule @JvmField
+    val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
 
     @Test
     fun helloWorldIsShown() {

@@ -1,22 +1,8 @@
-/*
- *    Copyright 2018 Niek Haarman
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
-package com.nhaarman.acorn.notesapp.note
+package com.nhaarman.acorn.notesapp.android
 
 import com.nhaarman.acorn.Option
+import com.nhaarman.acorn.notesapp.note.NoteItem
+import com.nhaarman.acorn.notesapp.note.NoteItemsRepository
 import com.nhaarman.acorn.toOption
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -36,6 +22,8 @@ class MemoryNoteItemsRepository : NoteItemsRepository {
                     is Event.Create -> items.also { it[event.item.id] = event.item }
                     is Event.Update -> items.also { it[event.item.id] = event.item }
                     is Event.Delete -> items.also { it.remove(event.item.id) }
+                    is Event.DeleteId -> items.also { it.remove(event.id) }
+                    is Event.Purge -> mutableMapOf()
                 }
             }
             .map { it.values.toList() }
@@ -43,15 +31,14 @@ class MemoryNoteItemsRepository : NoteItemsRepository {
     }
 
     override fun create(text: String): Single<NoteItem> {
-        return Single
-            .fromCallable {
-                NoteItem(availableId.incrementAndGet(), text)
-                    .also { eventSubject.onNext(Event.Create(it)) }
-            }
+        return Single.fromCallable {
+            NoteItem(availableId.incrementAndGet(), text)
+                .also { eventSubject.onNext(Event.Create(it)) }
+        }
     }
 
     override fun delete(itemId: Long) {
-        error("Not used")
+        eventSubject.onNext(Event.DeleteId(itemId))
     }
 
     override fun delete(item: NoteItem) {
@@ -68,20 +55,22 @@ class MemoryNoteItemsRepository : NoteItemsRepository {
     }
 
     override fun update(itemId: Long, text: String): Single<Boolean> {
-        return Single
-            .fromCallable {
-                eventSubject.onNext(Event.Update(NoteItem(itemId, text)))
-                true
-            }
+        return Single.fromCallable {
+            eventSubject.onNext(Event.Update(NoteItem(itemId, text)))
+            true
+        }
     }
 
     override fun purge() {
-        error("Not used")
+        eventSubject.onNext(Event.Purge)
     }
 
     private sealed class Event {
         class Create(val item: NoteItem) : Event()
         class Update(val item: NoteItem) : Event()
         class Delete(val item: NoteItem) : Event()
+        class DeleteId(val id: Long) : Event()
+
+        object Purge : Event()
     }
 }

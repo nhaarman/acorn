@@ -46,7 +46,7 @@ import com.nhaarman.acorn.state.sceneState
  * available.
  */
 abstract class BasicScene<V : Container>(
-    savedState: SceneState?
+    savedState: SceneState?,
 ) : Scene<V> {
 
     /**

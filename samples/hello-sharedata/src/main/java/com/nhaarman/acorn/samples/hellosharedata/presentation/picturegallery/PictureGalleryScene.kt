@@ -26,7 +26,7 @@ import io.reactivex.rxkotlin.plusAssign
 class PictureGalleryScene(
     private val picturesProvider: PicturesProvider,
     private val listener: Events,
-    savedState: SceneState? = null
+    savedState: SceneState? = null,
 ) : RxScene<PictureGalleryContainer>(savedState),
     SavableScene {
 

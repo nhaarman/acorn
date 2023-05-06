@@ -31,7 +31,7 @@ class CreateItemScene(
     private val initialText: String?,
     private val noteItemsRepository: NoteItemsRepository,
     private val listener: Events,
-    savedState: SceneState? = null
+    savedState: SceneState? = null,
 ) : RxScene<CreateItemContainer>(savedState),
     SavableScene {
 

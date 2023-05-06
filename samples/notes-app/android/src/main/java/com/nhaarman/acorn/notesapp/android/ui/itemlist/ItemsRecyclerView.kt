@@ -21,18 +21,14 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.note.NoteItem
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.itemlist_itemview.*
 
 class ItemsRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
-    defStyle: Int = 0
+    defStyle: Int = 0,
 ) : androidx.recyclerview.widget.RecyclerView(context, attrs, defStyle) {
 
     var items: List<NoteItem> = emptyList()
@@ -90,8 +86,8 @@ class ItemsRecyclerView @JvmOverloads constructor(
     }
 
     private inner class NoteViewHolder(
-        override val containerView: ItemView
-    ) : ViewHolder(containerView), LayoutContainer {
+        private val containerView: ItemView,
+    ) : ViewHolder(containerView) {
 
         var item: NoteItem? = null
             set(value) {
@@ -107,7 +103,7 @@ class ItemsRecyclerView @JvmOverloads constructor(
                 }
             }
 
-            deleteButton.setOnClickListener { _ ->
+            itemView.findViewById<View>(R.id.deleteButton).setOnClickListener { _ ->
                 item?.let {
                     listeners.forEach { listener -> listener.onDeleteClicked(it) }
                 }

@@ -33,7 +33,7 @@ interface PlacesContainer : Container {
 }
 
 class PlacesViewController(
-    override val view: View
+    override val view: View,
 ) : ViewController, PlacesContainer {
 
     init {

@@ -1,7 +1,5 @@
-apply plugin: "org.jetbrains.dokka"
 apply plugin: "maven-publish"
 
-apply from: "$rootDir/.ops/dokka.gradle"
 apply from: "$rootDir/.ops/publishing-base.gradle"
 
 java {

@@ -43,7 +43,7 @@ import kotlin.reflect.KClass
  * by [saveInstanceState].
  */
 abstract class CompositeStackNavigator(
-    private val savedState: NavigatorState?
+    private val savedState: NavigatorState?,
 ) : Navigator, Navigator.Events, OnBackPressListener {
 
     /**
@@ -66,7 +66,7 @@ abstract class CompositeStackNavigator(
      */
     protected abstract fun instantiateNavigator(
         navigatorClass: KClass<out Navigator>,
-        state: NavigatorState?
+        state: NavigatorState?,
     ): Navigator
 
     private var state by lazyVar {
@@ -81,7 +81,7 @@ abstract class CompositeStackNavigator(
                 .map { index ->
                     instantiateNavigator(
                         navigatorClass = Class.forName(savedState["${index}_class"]).kotlin as KClass<out Navigator>,
-                        state = savedState["${index}_state"]
+                        state = savedState["${index}_state"],
                     )
                 }
         }
@@ -284,7 +284,7 @@ abstract class CompositeStackNavigator(
 
         class Inactive(
             override val navigators: List<Navigator>,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : LifecycleState() {
 
             init {
@@ -359,7 +359,7 @@ abstract class CompositeStackNavigator(
 
         class Active(
             override var navigators: List<Navigator>,
-            override var listeners: List<Navigator.Events>
+            override var listeners: List<Navigator.Events>,
         ) : LifecycleState() {
 
             private var activeScene: Scene<out Container>? = null
@@ -475,7 +475,7 @@ abstract class CompositeStackNavigator(
             override fun addListener(listener: Navigator.Events) {
                 w(
                     "CompositeStackNavigator.LifecycleState",
-                    "Warning: Ignoring listener for destroyed navigator."
+                    "Warning: Ignoring listener for destroyed navigator.",
                 )
             }
 
@@ -485,7 +485,7 @@ abstract class CompositeStackNavigator(
             override fun start(): StateTransition {
                 w(
                     "CompositeStackNavigator.LifecycleState",
-                    "Warning: Cannot start state after navigator is destroyed."
+                    "Warning: Cannot start state after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -504,7 +504,7 @@ abstract class CompositeStackNavigator(
             override fun push(navigator: Navigator): StateTransition {
                 w(
                     "CompositeStackNavigator.LifecycleState",
-                    "Warning: Cannot push navigator after parent navigator is destroyed."
+                    "Warning: Cannot push navigator after parent navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -512,7 +512,7 @@ abstract class CompositeStackNavigator(
             override fun pop(): StateTransition {
                 w(
                     "CompositeStackNavigator.LifecycleState",
-                    "Warning: Cannot pop scene after navigator is destroyed."
+                    "Warning: Cannot pop scene after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -520,7 +520,7 @@ abstract class CompositeStackNavigator(
             override fun replace(navigator: Navigator): StateTransition {
                 w(
                     "CompositeStackNavigator.LifecycleState",
-                    "Warning: Cannot replace scene after navigator is destroyed."
+                    "Warning: Cannot replace scene after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -528,7 +528,7 @@ abstract class CompositeStackNavigator(
             override fun finish(): StateTransition {
                 w(
                     "CompositeStackNavigator.LifecycleState",
-                    "Warning: Cannot finish navigator after navigator is destroyed."
+                    "Warning: Cannot finish navigator after navigator is destroyed.",
                 )
                 return StateTransition(this)
             }
@@ -541,13 +541,13 @@ abstract class CompositeStackNavigator(
 
     private class StateTransition(
         val newState: LifecycleState,
-        val action: (() -> Unit)? = null
+        val action: (() -> Unit)? = null,
     ) {
 
         fun andThen(f: (LifecycleState) -> StateTransition): StateTransition {
             val newTransition = f(newState)
             return StateTransition(
-                newTransition.newState
+                newTransition.newState,
             ) {
                 action?.invoke()
                 newTransition.action?.invoke()

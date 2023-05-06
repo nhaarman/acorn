@@ -16,11 +16,9 @@
 
 package com.nhaarman.acorn.samples.helloconcurrentpairnavigator
 
+import android.view.View
 import android.view.ViewGroup
 import com.nhaarman.acorn.android.transition.SceneTransition
-import kotlinx.android.synthetic.main.first_and_second_scene.view.*
-import kotlinx.android.synthetic.main.first_scene.view.*
-import kotlinx.android.synthetic.main.second_scene.view.*
 
 object SecondFirstTransition : SceneTransition {
 
@@ -34,8 +32,9 @@ object SecondFirstTransition : SceneTransition {
         val viewController = FirstSceneViewController(parent)
         callback.attach(viewController)
 
-        val overlayView = parent.secondSceneRoot.overlayView
-        val cardView = parent.secondSceneRoot.cardView
+        val secondSceneRoot = parent.findViewById<View>(R.id.secondSceneRoot)
+        val overlayView = secondSceneRoot.findViewById<View>(R.id.overlayView)
+        val cardView = secondSceneRoot.findViewById<View>(R.id.cardView)
 
         overlayView.animate()
             .alpha(0f)
@@ -43,7 +42,7 @@ object SecondFirstTransition : SceneTransition {
         cardView.animate()
             .translationY(cardView.height.toFloat())
             .withEndAction {
-                parent.removeView(parent.secondSceneRoot)
+                parent.removeView(parent.findViewById(R.id.secondSceneRoot))
                 callback.onComplete(viewController)
             }
     }
@@ -54,14 +53,14 @@ object SecondFirstTransition : SceneTransition {
      * be when transitioning using [FirstSecondTransition].
      */
     private fun normalizeLayout(parent: ViewGroup) {
-        val firstAndSecondRoot = parent.firstAndSecondRoot
+        val firstAndSecondRoot = parent.findViewById<ViewGroup>(R.id.firstAndSecondRoot)
 
-        firstAndSecondRoot.firstSceneRoot.let {
+        firstAndSecondRoot.findViewById<View>(R.id.firstSceneRoot).let {
             firstAndSecondRoot.removeView(it)
             parent.addView(it)
         }
 
-        firstAndSecondRoot.secondSceneRoot.let {
+        firstAndSecondRoot.findViewById<View>(R.id.secondSceneRoot).let {
             firstAndSecondRoot.removeView(it)
             parent.addView(it)
         }

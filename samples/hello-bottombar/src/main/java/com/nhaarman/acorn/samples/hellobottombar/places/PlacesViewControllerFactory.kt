@@ -31,7 +31,7 @@ class PlacesViewControllerFactory : ViewControllerFactory {
 
     override fun viewControllerFor(scene: Scene<*>, parent: ViewGroup): ViewController {
         return PlacesViewController(
-            MainLayout.inflateWith(R.layout.places_scene, parent)
+            MainLayout.inflateWith(R.layout.places_scene, parent),
         )
     }
 }

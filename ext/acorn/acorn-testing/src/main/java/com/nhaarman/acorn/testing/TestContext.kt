@@ -40,7 +40,7 @@ import com.nhaarman.acorn.testing.TestContext.Companion.testWith
  */
 class TestContext private constructor(
     private val navigator: Navigator,
-    private val containerProvider: ContainerProvider
+    private val containerProvider: ContainerProvider,
 ) : Navigator.Events {
 
     private var scene: Scene<out Container>? = null

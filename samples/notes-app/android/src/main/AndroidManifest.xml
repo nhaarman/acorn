@@ -1,16 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.nhaarman.acorn.notesapp.android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:name="com.nhaarman.acorn.notesapp.android.NotesApplication"
-        android:allowBackup="false"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon">
 
-        <activity android:name="com.nhaarman.acorn.notesapp.android.MainActivity">
+        <activity
+            android:name="com.nhaarman.acorn.notesapp.android.MainActivity"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -16,7 +16,6 @@
 
 package com.nhaarman.acorn.android.transition
 
-import com.nhaarman.acorn.android.presentation.ViewControllerFactory
 import com.nhaarman.acorn.android.transition.internal.BindingSceneTransitionFactory
 import com.nhaarman.acorn.android.transition.internal.ClassBinding
 import com.nhaarman.acorn.android.transition.internal.KeyBinding
@@ -32,26 +31,9 @@ import kotlin.reflect.KClass
  * @see [SceneTransitionFactoryBuilder]
  */
 fun sceneTransitionFactory(
-    init: SceneTransitionFactoryBuilder.() -> Unit
+    init: SceneTransitionFactoryBuilder.() -> Unit,
 ): SceneTransitionFactory {
     return SceneTransitionFactoryBuilder().apply(init).build()
-}
-
-/**
- * Entry point for the [SceneTransitionFactory] DSL.
- *
- * @see [SceneTransitionFactoryBuilder]
- */
-@Deprecated(
-    "Use sceneTransitionFactory(SceneTransitionFactoryBuilder.() -> Unit) instead",
-    ReplaceWith("sceneTransitionFactory(init)"),
-    DeprecationLevel.ERROR
-)
-fun sceneTransitionFactory(
-    viewControllerFactory: ViewControllerFactory,
-    init: SceneTransitionFactoryBuilder.() -> Unit
-): SceneTransitionFactory {
-    return sceneTransitionFactory(init)
 }
 
 /**

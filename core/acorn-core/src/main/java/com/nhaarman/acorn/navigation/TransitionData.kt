@@ -28,7 +28,7 @@ class TransitionData private constructor(
      *
      * @return `true` if the transition is backwards.
      */
-    val isBackwards: Boolean
+    val isBackwards: Boolean,
 ) {
 
     override fun equals(other: Any?): Boolean {

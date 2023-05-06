@@ -1,20 +1,17 @@
 plugins {
     id("org.jetbrains.kotlin.jvm")
-    id("org.gradle.java-library")
 }
 
 dependencies {
     implementation project(":ext-acorn")
     implementation project(":ext-acorn-rx")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     api "io.reactivex.rxjava2:rxjava"
     implementation "io.reactivex.rxjava2:rxkotlin"
 
     testImplementation project(":ext-acorn-testing")
     testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.mockito.kotlin:mockito-kotlin"
     testImplementation "com.nhaarman:expect.kt"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }

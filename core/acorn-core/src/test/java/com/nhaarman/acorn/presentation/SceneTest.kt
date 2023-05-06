@@ -17,11 +17,11 @@
 package com.nhaarman.acorn.presentation
 
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.spy
 
 /**
  * A set of tests to specify default Scene behavior.
@@ -32,19 +32,19 @@ class SceneTest {
 
     @Test
     fun `default scene key`() {
-        /* Given */
+        // Given
         val scene = TestScene()
 
-        /* Then */
+        // Then
         expect(scene.key).toBe(SceneKey.from(TestScene::class))
     }
 
     @Test
     fun `calling onStart does nothing`() {
-        /* When */
+        // When
         scene.onStart()
 
-        /* Then */
+        // Then
         scene.inOrder {
             verify().onStart()
             verifyNoMoreInteractions()
@@ -53,10 +53,10 @@ class SceneTest {
 
     @Test
     fun `calling attach does nothing`() {
-        /* When */
+        // When
         scene.attach(mock())
 
-        /* Then */
+        // Then
         scene.inOrder {
             verify().attach(any())
             verifyNoMoreInteractions()
@@ -65,10 +65,10 @@ class SceneTest {
 
     @Test
     fun `calling detach does nothing`() {
-        /* When */
+        // When
         scene.detach(mock())
 
-        /* Then */
+        // Then
         scene.inOrder {
             verify().detach(any())
             verifyNoMoreInteractions()
@@ -77,10 +77,10 @@ class SceneTest {
 
     @Test
     fun `calling onStop does nothing`() {
-        /* When */
+        // When
         scene.onStop()
 
-        /* Then */
+        // Then
         scene.inOrder {
             verify().onStop()
             verifyNoMoreInteractions()
@@ -89,10 +89,10 @@ class SceneTest {
 
     @Test
     fun `calling onDestroy does nothing`() {
-        /* When */
+        // When
         scene.onDestroy()
 
-        /* Then */
+        // Then
         scene.inOrder {
             verify().onDestroy()
             verifyNoMoreInteractions()

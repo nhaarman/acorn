@@ -30,9 +30,9 @@ import com.nhaarman.acorn.samples.hellobottombar.news.NewsNavigator
 import com.nhaarman.acorn.samples.hellobottombar.places.PlacesNavigator
 import com.nhaarman.acorn.state.NavigatorState
 
-@UseExperimental(ExperimentalCompositeParallelNavigator::class)
+@OptIn(ExperimentalCompositeParallelNavigator::class)
 class HelloBottomBarNavigator(
-    savedState: NavigatorState?
+    savedState: NavigatorState?,
 ) : BottomBarNavigator<MyDestination>(Favorites, savedState),
     SavableNavigator {
 
@@ -52,7 +52,7 @@ class HelloBottomBarNavigator(
                         select(destination)
                     }
                 },
-                savedState
+                savedState,
             )
             Music -> MusicNavigator(
                 object : MusicNavigator.Events {
@@ -60,7 +60,7 @@ class HelloBottomBarNavigator(
                         select(destination)
                     }
                 },
-                savedState
+                savedState,
             )
             Places -> PlacesNavigator(
                 object : PlacesNavigator.Events {
@@ -68,7 +68,7 @@ class HelloBottomBarNavigator(
                         select(destination)
                     }
                 },
-                savedState
+                savedState,
             )
             MyDestination.News -> NewsNavigator(
                 object : NewsNavigator.Events {
@@ -76,7 +76,7 @@ class HelloBottomBarNavigator(
                         select(destination)
                     }
                 },
-                savedState
+                savedState,
             )
         }
     }

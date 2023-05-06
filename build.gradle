@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlinVersion = "1.4.32"
+    ext.kotlinVersion = "1.8.21"
 
     repositories {
         google()
@@ -7,19 +7,17 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.3")
+        classpath("com.android.tools.build:gradle:8.0.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.7.1.1")
-        classpath("com.adarshr:gradle-test-logger-plugin:3.0.0")
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.18")
-        classpath("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.18")
+        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.9.3.0")
+        classpath("com.adarshr:gradle-test-logger-plugin:3.2.0")
         classpath("digital.wup:android-maven-publish:3.6.3")
-        classpath("info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.6.0")
+        classpath("info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.9.11")
     }
 }
 
 plugins {
-    id("com.github.ben-manes.versions") version "0.25.0"
+    id("com.github.ben-manes.versions") version "0.46.0"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
 }
 
@@ -31,13 +29,7 @@ subprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter {
-            content {
-                includeGroup "com.andreapivetta.kolor"
-                includeGroup "org.jetbrains.trove4j"
-                includeGroup "nl.dionsegijn"
-            }
-        }
+        jcenter()
     }
 
     project.apply from: "$rootDir/dependencies.gradle"
@@ -49,11 +41,34 @@ subprojects {
             }
         }
 
+        if (plugins.hasPlugin("kotlin")) {
+            java {
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
+            }
+
+            compileKotlin {
+                kotlinOptions {
+                    jvmTarget = "17"
+                }
+            }
+        }
+
         if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
+            java {
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
+            }
+
             android {
-                compileSdkVersion(28)
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+
+                compileSdkVersion(33)
                 defaultConfig {
-                    targetSdkVersion(28)
+                    targetSdkVersion(33)
 
                     versionName = git.versionName()
                     versionCode = git.commitCount()
@@ -72,15 +87,6 @@ subprojects {
                     ignoreTestSources true
 
                     ignore "ObsoleteLintCustomCheck", "GradleDependency"
-                }
-
-                compileOptions {
-                    sourceCompatibility 1.8
-                    targetCompatibility 1.8
-                }
-
-                kotlinOptions {
-                    jvmTarget = "1.8"
                 }
             }
 

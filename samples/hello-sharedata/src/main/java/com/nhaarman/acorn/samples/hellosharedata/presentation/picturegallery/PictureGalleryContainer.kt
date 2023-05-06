@@ -19,9 +19,8 @@ package com.nhaarman.acorn.samples.hellosharedata.presentation.picturegallery
 import android.view.View
 import com.nhaarman.acorn.android.presentation.RestorableViewController
 import com.nhaarman.acorn.presentation.RestorableContainer
+import com.nhaarman.acorn.samples.hellosharedata.databinding.PicturegallerySceneBinding
 import com.nhaarman.acorn.samples.hellosharedata.pictures.Picture
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.picturegallery_scene.*
 
 interface PictureGalleryContainer : RestorableContainer {
 
@@ -31,17 +30,17 @@ interface PictureGalleryContainer : RestorableContainer {
 }
 
 class PictureGalleryViewController(
-    override val view: View
-) : RestorableViewController, PictureGalleryContainer, LayoutContainer {
+    override val view: View,
+) : RestorableViewController, PictureGalleryContainer {
+
+    private val binding = PicturegallerySceneBinding.bind(view)
 
     override var pictures: List<Picture> = emptyList()
         set(value) {
-            picturesRecyclerView.pictures = value
+            binding.picturesRecyclerView.pictures = value
         }
 
     override fun addOnPictureSelectedListener(f: (Picture) -> Unit) {
-        picturesRecyclerView.addOnPictureSelectedListener(f)
+        binding.picturesRecyclerView.addOnPictureSelectedListener(f)
     }
-
-    override val containerView = view
 }

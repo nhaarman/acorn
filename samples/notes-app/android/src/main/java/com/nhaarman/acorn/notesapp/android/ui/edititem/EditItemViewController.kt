@@ -17,6 +17,8 @@
 package com.nhaarman.acorn.notesapp.android.ui.edititem
 
 import android.view.View
+import android.widget.EditText
+import androidx.appcompat.widget.Toolbar
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.nhaarman.acorn.android.presentation.RestorableViewController
@@ -24,12 +26,12 @@ import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.presentation.edititem.EditItemContainer
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.withLatestFrom
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.edititem_scene.*
 
 class EditItemViewController(
-    override val view: View
-) : EditItemContainer, RestorableViewController, LayoutContainer {
+    override val view: View,
+) : EditItemContainer, RestorableViewController {
+
+    private val editText = view.findViewById<EditText>(R.id.editText)
 
     override var initialText: String? = null
         set(value) {
@@ -40,7 +42,7 @@ class EditItemViewController(
         }
 
     private val menuClicks by lazy {
-        editItemToolbar.itemClicks()
+        view.findViewById<Toolbar>(R.id.editItemToolbar).itemClicks()
             .share()
     }
 
@@ -57,6 +59,4 @@ class EditItemViewController(
             .map { Unit }
             .share()
     }
-
-    override val containerView = view
 }

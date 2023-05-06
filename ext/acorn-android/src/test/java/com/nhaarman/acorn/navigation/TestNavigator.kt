@@ -17,7 +17,7 @@
 package com.nhaarman.acorn.navigation
 
 import com.nhaarman.acorn.presentation.Scene
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 
 class TestNavigator : Navigator {
 

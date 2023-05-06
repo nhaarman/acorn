@@ -25,7 +25,7 @@ import com.nhaarman.acorn.state.SceneState
 
 class FavoritesNavigator(
     private val listener: Events,
-    savedState: NavigatorState? = null
+    savedState: NavigatorState? = null,
 ) : SingleSceneNavigator(savedState),
     SavableNavigator {
 

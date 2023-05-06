@@ -26,7 +26,7 @@ import com.nhaarman.acorn.presentation.Scene
 
 internal class InflatingViewControllerFactory<V : View>(
     @LayoutRes private val layoutResId: Int,
-    private val wrapper: (V) -> ViewController
+    private val wrapper: (V) -> ViewController,
 ) : ViewControllerFactory {
 
     override fun supports(scene: Scene<*>): Boolean {

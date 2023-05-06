@@ -32,19 +32,19 @@ object ViewFactoryProvider {
             bind(
                 ItemListScene.key,
                 R.layout.itemlist_scene,
-                ::ItemListViewController
+                ::ItemListViewController,
             )
 
             bind(
                 CreateItemScene.key,
                 R.layout.createitem_scene,
-                ::CreateItemViewController
+                ::CreateItemViewController,
             )
 
             bind(
                 EditItemScene.key,
                 R.layout.edititem_scene,
-                ::EditItemViewController
+                ::EditItemViewController,
             )
         }
     }

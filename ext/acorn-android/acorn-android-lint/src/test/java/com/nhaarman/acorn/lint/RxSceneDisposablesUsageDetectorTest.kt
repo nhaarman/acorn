@@ -27,7 +27,7 @@ class RxSceneDisposablesUsageDetectorTest {
         """
        package $pkg
        class RxScene
-        """.trimIndent()
+        """.trimIndent(),
     )
 
     @Test
@@ -39,8 +39,8 @@ class RxSceneDisposablesUsageDetectorTest {
                 kt(
                     """
                         |class MyScene : $pkg.RxScene()
-                    """.trimMargin()
-                )
+                    """.trimMargin(),
+                ),
             )
             .issues(RxSceneDisposablesUsageDetector.issue)
             .run()
@@ -60,8 +60,8 @@ class RxSceneDisposablesUsageDetectorTest {
                         |    disposables.plusAssign(Observable.just(3).subscribe())
                         |  }
                         |}
-                    """.trimMargin()
-                )
+                    """.trimMargin(),
+                ),
             )
             .issues(RxSceneDisposablesUsageDetector.issue)
             .run()
@@ -81,8 +81,8 @@ class RxSceneDisposablesUsageDetectorTest {
                         |    disposables += Observable.just(3).subscribe()
                         |  }
                         |}
-                    """.trimMargin()
-                )
+                    """.trimMargin(),
+                ),
             )
             .issues(RxSceneDisposablesUsageDetector.issue)
             .run()
@@ -102,8 +102,8 @@ class RxSceneDisposablesUsageDetectorTest {
                         |    disposables.plusAssign(3)
                         |  }
                         |}
-                    """.trimMargin()
-                )
+                    """.trimMargin(),
+                ),
             )
             .issues(RxSceneDisposablesUsageDetector.issue)
             .run()
@@ -123,8 +123,8 @@ class RxSceneDisposablesUsageDetectorTest {
                         |    disposables += Observable.just(3).subscribe()
                         |  }
                         |}
-                    """.trimMargin()
-                )
+                    """.trimMargin(),
+                ),
             )
             .issues(RxSceneDisposablesUsageDetector.issue)
             .run()
@@ -144,8 +144,8 @@ class RxSceneDisposablesUsageDetectorTest {
                         |    disposables.add(3)
                         |  }
                         |}
-                    """.trimMargin()
-                )
+                    """.trimMargin(),
+                ),
             )
             .issues(RxSceneDisposablesUsageDetector.issue)
             .run()

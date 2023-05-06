@@ -18,5 +18,5 @@ package com.nhaarman.acorn.notesapp.note
 
 data class NoteItem(
     val id: Long,
-    val text: String
+    val text: String,
 )

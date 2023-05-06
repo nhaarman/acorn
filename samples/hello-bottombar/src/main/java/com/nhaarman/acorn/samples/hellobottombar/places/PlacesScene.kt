@@ -25,7 +25,7 @@ import com.nhaarman.acorn.state.SceneState
 
 class PlacesScene(
     private val listener: Events,
-    savedState: SceneState? = null
+    savedState: SceneState? = null,
 ) : BasicScene<PlacesContainer>(savedState),
     SavableScene {
 

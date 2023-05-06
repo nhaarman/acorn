@@ -25,13 +25,13 @@ class HelloWorldSceneTest {
 
     @Test
     fun `attaching container shows "Hello, world!" text`() {
-        /* Given */
+        // Given
         val container = TestContainer()
 
-        /* When */
+        // When
         scene.attach(container)
 
-        /* Then */
+        // Then
         expect(container.text).toBe("Hello, world!")
     }
 

@@ -1,19 +1,22 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
 }
 
 android {
     defaultConfig {
         minSdkVersion(21)
     }
+    buildFeatures {
+        viewBinding true
+    }
+
+    namespace "com.nhaarman.acorn.samples.helloworld"
 }
 
 dependencies {
     implementation project(":ext-acorn-android")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     implementation "com.google.android.material:material"
     implementation "androidx.constraintlayout:constraintlayout"
@@ -32,8 +35,4 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib"
     androidTestImplementation "androidx.test:runner"
     androidTestImplementation "androidx.test:rules"
-}
-
-androidExtensions {
-    experimental = true
 }

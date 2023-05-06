@@ -24,11 +24,11 @@ import com.nhaarman.acorn.state.ContainerState
 import com.nhaarman.acorn.state.containerState
 import com.nhaarman.acorn.state.get
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.subjects.PublishSubject
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 @ExtendWith(NoRxErrorsExtension::class, ImmediateMainThreadExtension::class)
 class ItemListSceneTest {
@@ -43,65 +43,65 @@ class ItemListSceneTest {
     val scene = ItemListScene(
         noteItemsRepository,
         listener,
-        null
+        null,
     )
 
     private val container = TestItemListContainer()
 
     @Test
     fun `on attach sets items`() {
-        /* Given */
+        // Given
         scene.onStart()
 
-        /* When */
+        // When
         scene.attach(container)
 
-        /* Then */
+        // Then
         expect(container.items).toBe(listOf(item1, item2))
     }
 
     @Test
     fun `on item list change updates items to container`() {
-        /* Given */
+        // Given
         scene.onStart()
         scene.attach(container)
 
-        /* When */
+        // When
         val item3 = noteItemsRepository.create("3").blockingGet()
 
-        /* Then */
+        // Then
         expect(container.items).toBe(listOf(item1, item2, item3))
     }
 
     @Test
     fun `on create item clicked`() {
-        /* Given */
+        // Given
         scene.onStart()
         scene.attach(container)
 
-        /* When */
+        // When
         container.createClicks.onNext(Unit)
 
-        /* Then */
+        // Then
         verify(listener).createItemRequested()
     }
 
     @Test
     fun `on show item clicked`() {
-        /* Given */
+        // Given
         scene.onStart()
         scene.attach(container)
 
-        /* When */
+        // When
         container.itemClicks.onNext(item2)
 
-        /* Then */
+        // Then
         verify(listener).showItemRequested(item2)
     }
 
     @Test
     fun `restoring state`() {
-        /* Given */
+        // Given
         scene.attach(container)
         container.state = 3
 
@@ -109,11 +109,11 @@ class ItemListSceneTest {
 
         val container2 = TestItemListContainer()
 
-        /* When */
+        // When
         val scene2 = ItemListScene(noteItemsRepository, listener, state)
         scene2.attach(container2)
 
-        /* Then */
+        // Then
         expect(container.state).toBe(3)
     }
 

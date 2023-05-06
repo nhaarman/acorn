@@ -21,7 +21,6 @@ adb devices | tail -n +2 | cut -sf 1 | xargs -I {} adb -s {} shell settings put 
     :samples:hello-world:lintRelease \
     :samples:notes-app:android:lintRelease \
     packageDebugAndroidTest \
-    --rerun-tasks \
     && ./gradlew cCheck --max-workers=1 \
     && ./gradlew publishToMavenLocal \
 

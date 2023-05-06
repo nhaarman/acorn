@@ -30,7 +30,7 @@ import com.nhaarman.acorn.state.savedState
 
 internal class DefaultActivityHandler(
     private val callback: Callback,
-    private val savedState: SavedState?
+    private val savedState: SavedState?,
 ) : ActivityHandler {
 
     private var lastScene: Scene<*>? = null
@@ -48,7 +48,7 @@ internal class DefaultActivityHandler(
         if (lastSceneKey == scene.key) {
             v(
                 "ActivityHandler",
-                "New external Scene has the same key as the previously dispatched Scene, not starting Activity."
+                "New external Scene has the same key as the previously dispatched Scene, not starting Activity.",
             )
 
             lastScene = scene
@@ -90,7 +90,7 @@ internal class DefaultActivityHandler(
         if (scene == null || activityController == null) {
             w(
                 "ActivityHandler",
-                "Activity result without active Scene, dropping result"
+                "Activity result without active Scene, dropping result",
             )
             return
         }

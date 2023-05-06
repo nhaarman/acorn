@@ -19,15 +19,17 @@ package com.nhaarman.acorn.notesapp.android.ui.itemlist
 import android.view.View
 import com.jakewharton.rxbinding3.view.clicks
 import com.nhaarman.acorn.android.presentation.RestorableViewController
+import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.note.NoteItem
 import com.nhaarman.acorn.notesapp.presentation.itemlist.ItemListContainer
 import io.reactivex.Observable
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.itemlist_scene.*
 
 class ItemListViewController(
-    override val view: View
-) : ItemListContainer, RestorableViewController, LayoutContainer {
+    override val view: View,
+) : ItemListContainer, RestorableViewController {
+
+    private val itemsRecyclerView = view.findViewById<ItemsRecyclerView>(R.id.itemsRecyclerView)
+    private val createButton = view.findViewById<View>(R.id.createButton)
 
     override var items: List<NoteItem> = emptyList()
         set(value) {
@@ -73,6 +75,4 @@ class ItemListViewController(
             }
             .share()
     }
-
-    override val containerView = view
 }

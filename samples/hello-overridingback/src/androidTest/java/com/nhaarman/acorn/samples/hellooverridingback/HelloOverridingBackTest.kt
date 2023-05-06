@@ -28,7 +28,8 @@ import org.junit.Test
 
 class HelloOverridingBackTest {
 
-    @Rule @JvmField val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    @Rule @JvmField
+    val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
 
     private val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 

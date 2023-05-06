@@ -29,7 +29,7 @@ import kotlin.reflect.KClass
 
 class MainNavigator(
     private val picturesProvider: PicturesProvider,
-    savedState: NavigatorState? = null
+    savedState: NavigatorState? = null,
 ) : StackNavigator(savedState),
     PictureGalleryScene.Events,
     PictureDetailScene.Events {

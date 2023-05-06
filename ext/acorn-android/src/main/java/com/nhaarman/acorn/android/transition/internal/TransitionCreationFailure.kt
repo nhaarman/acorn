@@ -20,7 +20,7 @@ import com.nhaarman.acorn.presentation.Scene
 
 internal class TransitionCreationFailure(
     private val previousScene: Scene<*>,
-    private val newScene: Scene<*>
+    private val newScene: Scene<*>,
 ) : RuntimeException() {
 
     override val message: String?

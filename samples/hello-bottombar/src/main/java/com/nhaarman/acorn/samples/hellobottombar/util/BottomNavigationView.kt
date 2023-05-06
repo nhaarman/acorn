@@ -32,7 +32,7 @@ fun BottomNavigationView.setDestinationSelectedListener(listener: DestinationSel
                 R.id.places -> MyDestination.Places
                 R.id.news -> MyDestination.News
                 else -> error("Invalid item: $item")
-            }
+            },
         )
         true
     }

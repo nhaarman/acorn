@@ -33,7 +33,7 @@ interface FavoritesContainer : RestorableContainer {
 }
 
 class FavoritesViewController(
-    override val view: View
+    override val view: View,
 ) : RestorableViewController, FavoritesContainer {
 
     init {

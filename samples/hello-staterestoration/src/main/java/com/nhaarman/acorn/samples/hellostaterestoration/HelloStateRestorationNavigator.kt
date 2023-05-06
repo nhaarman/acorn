@@ -33,7 +33,7 @@ import kotlin.reflect.KClass
  */
 class HelloStateRestorationNavigator private constructor(
     private var counter: Int,
-    savedState: NavigatorState?
+    savedState: NavigatorState?,
 ) : StackNavigator(savedState),
     HelloStateRestorationScene.Events {
 

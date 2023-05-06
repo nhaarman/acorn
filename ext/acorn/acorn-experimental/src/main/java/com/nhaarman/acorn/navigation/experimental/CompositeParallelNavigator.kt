@@ -30,13 +30,13 @@ import com.nhaarman.acorn.state.NavigatorState
 import com.nhaarman.acorn.state.get
 import com.nhaarman.acorn.util.lazyVar
 
-@UseExperimental(ExperimentalCompositeParallelNavigator::class)
+@OptIn(ExperimentalCompositeParallelNavigator::class)
 typealias BottomBarNavigator<Destination> = CompositeParallelNavigator<Destination>
 
 @ExperimentalCompositeParallelNavigator
 abstract class CompositeParallelNavigator<Destination>(
     private val initialDestination: Destination,
-    private val savedState: NavigatorState?
+    private val savedState: NavigatorState?,
 ) : Navigator, OnBackPressListener {
 
     abstract fun serialize(destination: Destination): String
@@ -56,7 +56,7 @@ abstract class CompositeParallelNavigator<Destination>(
             return LifecycleState.create(
                 this,
                 initialDestination,
-                mapOf(initialDestination to createNavigatorInternal(initialDestination, null))
+                mapOf(initialDestination to createNavigatorInternal(initialDestination, null)),
             )
         }
 
@@ -88,7 +88,7 @@ abstract class CompositeParallelNavigator<Destination>(
         LifecycleState.create(
             this,
             selectedDestination,
-            map
+            map,
         )
     }
 
@@ -171,7 +171,7 @@ abstract class CompositeParallelNavigator<Destination>(
     }
 
     private inner class ChildNavigatorListener(
-        private val childDestination: Destination
+        private val childDestination: Destination,
     ) : Navigator.Events {
 
         @CallSuper
@@ -211,7 +211,7 @@ abstract class CompositeParallelNavigator<Destination>(
             fun <D> create(
                 receiver: CompositeParallelNavigator<D>,
                 selectedDestination: D,
-                navigators: Map<D, Navigator>
+                navigators: Map<D, Navigator>,
             ): LifecycleState<D> {
                 return receiver.Inactive(selectedDestination, navigators, emptyList())
             }
@@ -221,7 +221,7 @@ abstract class CompositeParallelNavigator<Destination>(
     private inner class Inactive(
         override val selectedDestination: Destination,
         override val navigators: Map<Destination, Navigator>,
-        override var listeners: List<Navigator.Events>
+        override var listeners: List<Navigator.Events>,
     ) : LifecycleState<Destination>() {
 
         init {
@@ -288,8 +288,8 @@ abstract class CompositeParallelNavigator<Destination>(
                 Inactive(
                     selectedDestination = destination,
                     navigators = newNavigators,
-                    listeners = listeners
-                )
+                    listeners = listeners,
+                ),
             )
         }
 
@@ -308,7 +308,7 @@ abstract class CompositeParallelNavigator<Destination>(
     private inner class Active(
         override val selectedDestination: Destination,
         override val navigators: Map<Destination, Navigator>,
-        override var listeners: List<Navigator.Events>
+        override var listeners: List<Navigator.Events>,
     ) : LifecycleState<Destination>() {
 
         private var activeScene: Scene<out Container>? = null
@@ -331,8 +331,8 @@ abstract class CompositeParallelNavigator<Destination>(
                 Inactive(
                     selectedDestination,
                     navigators,
-                    listeners
-                )
+                    listeners,
+                ),
             ) {
                 navigators.getValue(selectedDestination).onStop()
             }
@@ -382,8 +382,8 @@ abstract class CompositeParallelNavigator<Destination>(
                 Active(
                     destination,
                     newNavigators,
-                    listeners
-                )
+                    listeners,
+                ),
             ) {
                 navigators.getValue(selectedDestination).onStop()
                 newNavigators.getValue(destination).onStart()
@@ -416,7 +416,7 @@ abstract class CompositeParallelNavigator<Destination>(
         override fun addListener(listener: Navigator.Events) {
             w(
                 "CompositeParallelNavigator.LifecycleState",
-                "Warning: Ignoring listener for destroyed navigator."
+                "Warning: Ignoring listener for destroyed navigator.",
             )
         }
 
@@ -456,7 +456,7 @@ abstract class CompositeParallelNavigator<Destination>(
 
     private class StateTransition<D>(
         val newState: LifecycleState<D>,
-        val action: (() -> Unit) = {}
+        val action: (() -> Unit) = {},
     ) {
 
         fun andThen(f: (LifecycleState<D>) -> StateTransition<D>): StateTransition<D> {

@@ -21,8 +21,8 @@ import com.nhaarman.acorn.android.util.TestScene
 import com.nhaarman.acorn.presentation.SceneKey
 import com.nhaarman.expect.expect
 import com.nhaarman.expect.expectErrorWithMessage
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
 
 internal class BindingSceneTransitionFactoryTest {
 
@@ -34,86 +34,85 @@ internal class BindingSceneTransitionFactoryTest {
 
     @Test
     fun `factory without bindings supports no transition`() {
-        /* Given */
+        // Given
         val factory = BindingSceneTransitionFactory(bindings = emptySequence())
 
-        /* When */
+        // When
         val result = factory.supports(scene1, scene2, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(false)
     }
 
     @Test
     fun `requesting transition without bindings throws error`() {
-        /* Given */
+        // Given
         val factory = BindingSceneTransitionFactory(bindings = emptySequence())
 
-        /* Expect */
+        // Expect
         expectErrorWithMessage("Could not create transition") on {
-
-            /* When */
+            // When
             factory.transitionFor(mock(), mock(), null)
         }
     }
 
     @Test
     fun `factory with single binding supports that transition`() {
-        /* Given */
+        // Given
         val factory = BindingSceneTransitionFactory(
             bindings = sequenceOf(
                 KeyBinding(
                     scene1.key,
                     scene2.key,
-                    transition1
-                )
-            )
+                    transition1,
+                ),
+            ),
         )
 
-        /* When */
+        // When
         val result = factory.supports(scene1, scene2, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(true)
     }
 
     @Test
     fun `factory with single binding returns proper transition`() {
-        /* Given */
+        // Given
         val factory = BindingSceneTransitionFactory(
             bindings = sequenceOf(
                 KeyBinding(
                     scene1.key,
                     scene2.key,
-                    transition1
-                )
-            )
+                    transition1,
+                ),
+            ),
         )
 
-        /* When */
+        // When
         val result = factory.transitionFor(scene1, scene2, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(transition1)
     }
 
     @Test
     fun `factory with single binding doesn't support other transition`() {
-        /* Given */
+        // Given
         val factory = BindingSceneTransitionFactory(
             bindings = sequenceOf(
                 KeyBinding(
                     scene1.key,
                     scene2.key,
-                    transition1
-                )
-            )
+                    transition1,
+                ),
+            ),
         )
 
-        /* When */
+        // When
         val result = factory.supports(scene2, scene3, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(false)
     }
 }

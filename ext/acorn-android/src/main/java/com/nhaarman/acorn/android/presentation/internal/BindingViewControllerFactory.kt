@@ -27,7 +27,7 @@ import com.nhaarman.acorn.presentation.SceneKey
  * [ViewControllerFactory] instances to create views.
  */
 internal class BindingViewControllerFactory(
-    private val bindings: Map<SceneKey, ViewControllerFactory>
+    private val bindings: Map<SceneKey, ViewControllerFactory>,
 ) : ViewControllerFactory {
 
     override fun supports(scene: Scene<*>): Boolean {

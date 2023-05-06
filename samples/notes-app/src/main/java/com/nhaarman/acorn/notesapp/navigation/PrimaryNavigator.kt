@@ -34,7 +34,7 @@ import kotlin.reflect.KClass
 class PrimaryNavigator(
     private val notesAppComponent: NotesAppComponent,
     private val listener: Events,
-    savedState: NavigatorState?
+    savedState: NavigatorState?,
 ) : StackNavigator(savedState),
     ItemListScene.Events,
     EditItemScene.Events {
@@ -44,8 +44,8 @@ class PrimaryNavigator(
             ItemListScene(
                 noteItemsRepository = notesAppComponent.noteItemsRepository,
                 listener = this,
-                savedState = null
-            )
+                savedState = null,
+            ),
         )
     }
 
@@ -61,8 +61,8 @@ class PrimaryNavigator(
             EditItemScene(
                 item.id,
                 notesAppComponent.noteItemsRepository,
-                this
-            )
+                this,
+            ),
         )
     }
 
@@ -71,12 +71,12 @@ class PrimaryNavigator(
             ItemListScene::class -> ItemListScene(
                 notesAppComponent.noteItemsRepository,
                 this,
-                state
+                state,
             )
             EditItemScene::class -> EditItemScene.create(
                 notesAppComponent.noteItemsRepository,
                 this,
-                state!!
+                state!!,
             )
             else -> error("Unknown scene: $sceneClass")
         }

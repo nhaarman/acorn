@@ -29,20 +29,20 @@ internal class StateChecksInitProvider : ContentProvider() {
         projection: Array<out String>?,
         selection: String?,
         selectionArgs: Array<out String>?,
-        sortOrder: String?
+        sortOrder: String?,
     ) = error("Unsupported")
 
     override fun update(
         uri: Uri,
         values: ContentValues?,
         selection: String?,
-        selectionArgs: Array<out String>?
+        selectionArgs: Array<out String>?,
     ) = error("Unsupported")
 
     override fun delete(
         uri: Uri,
         selection: String?,
-        selectionArgs: Array<out String>?
+        selectionArgs: Array<out String>?,
     ) = error("Unsupported")
 
     override fun getType(uri: Uri) = error("Unsupported")

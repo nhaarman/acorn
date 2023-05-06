@@ -20,5 +20,5 @@ enum class MyDestination {
     Favorites,
     Music,
     Places,
-    News
+    News,
 }

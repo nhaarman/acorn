@@ -32,48 +32,48 @@ class BundleTest {
 
     @Test
     fun toAndFromBundle_empty() {
-        /* Given */
+        // Given
         val state = NavigatorState()
 
-        /* When */
+        // When
         val result = state.toBundle().toNavigatorState()
 
-        /* Then */
+        // Then
         expect(result).toBe(state)
     }
 
     @Test
     fun toAndFromBundle_numberValue() {
-        /* Given */
+        // Given
         val state = navigatorState {
             it["transformToAcorn"] = 3.14
         }
 
-        /* When */
+        // When
         val result = state.toBundle().toNavigatorState()
 
-        /* Then */
+        // Then
         expect(result).toBe(state)
     }
 
     @Test
     fun toAndFromBundle_multipleKeys() {
-        /* Given */
+        // Given
         val state = navigatorState {
             it["key1"] = 3.14
             it["key2"] = "test"
         }
 
-        /* When */
+        // When
         val result = state.toBundle().toNavigatorState()
 
-        /* Then */
+        // Then
         expect(result).toBe(state)
     }
 
     @Test
     fun toAndFromBundle_withSceneState() {
-        /* Given */
+        // Given
         val state = navigatorState {
             it["transformToAcorn"] = 3.14
             it["scene"] = sceneState {
@@ -81,16 +81,16 @@ class BundleTest {
             }
         }
 
-        /* When */
+        // When
         val result = state.toBundle().toNavigatorState()
 
-        /* Then */
+        // Then
         expect(result).toBe(state)
     }
 
     @Test
     fun toAndFromBundle_withContainerState() {
-        /* Given */
+        // Given
         val state = navigatorState {
             it["transformToAcorn"] = 3.14
             it["scene"] = sceneState {
@@ -101,16 +101,16 @@ class BundleTest {
             }
         }
 
-        /* When */
+        // When
         val result = state.toBundle().toNavigatorState()
 
-        /* Then */
+        // Then
         expect(result).toBe(state)
     }
 
     @Test
     fun toAndFromBundle_sparseParcelableArray() {
-        /* Given */
+        // Given
         val array = SparseArray<Parcelable>(3)
         array.put(0, MyParcelable(3))
 
@@ -118,16 +118,16 @@ class BundleTest {
             it.setUnchecked("array", array)
         }
 
-        /* When */
+        // When
         val result = state.toBundle().toNavigatorState()
 
-        /* Then */
+        // Then
         expect(result).toBe(state)
     }
 
     @Test
     fun fullBundle_toParcelAndBack() {
-        /* Given */
+        // Given
         val state = navigatorState {
             it["transformToAcorn"] = 3.14
             it["scene"] = sceneState {
@@ -141,13 +141,13 @@ class BundleTest {
             }
         }
 
-        /* When */
+        // When
         val parcel = Parcel.obtain()
         parcel.writeBundle(state.toBundle())
         parcel.setDataPosition(0)
         val result = parcel.readBundle()?.toNavigatorState()
 
-        /* Then */
+        // Then
         expect(result).toBe(state)
     }
 

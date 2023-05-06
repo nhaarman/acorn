@@ -1,20 +1,23 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
 }
 
 android {
     defaultConfig {
         minSdkVersion(23)
     }
+    buildFeatures {
+        viewBinding true
+    }
+
+    namespace "com.nhaarman.acorn.samples.hellosharedata"
 }
 
 dependencies {
     implementation project(":ext-acorn-android-appcompat")
     implementation project(":ext-acorn-rx")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     implementation "androidx.core:core-ktx"
 
@@ -29,7 +32,7 @@ dependencies {
     implementation "com.squareup.picasso:picasso"
 
     testImplementation "com.nhaarman:expect.kt"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.mockito.kotlin:mockito-kotlin"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 
@@ -40,8 +43,4 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib"
     androidTestImplementation "androidx.test:runner"
     androidTestImplementation "androidx.test:rules"
-}
-
-androidExtensions {
-    experimental = true
 }

@@ -23,7 +23,7 @@ import com.nhaarman.acorn.presentation.Scene
 internal class Destination(
     val scene: Scene<*>,
     val viewControllerFactory: ViewControllerFactory,
-    val transitionData: TransitionData?
+    val transitionData: TransitionData?,
 ) {
 
     override fun toString(): String {

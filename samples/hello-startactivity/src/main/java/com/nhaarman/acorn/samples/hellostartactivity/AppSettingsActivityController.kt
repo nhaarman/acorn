@@ -23,7 +23,7 @@ import android.provider.Settings
 import com.nhaarman.acorn.android.presentation.ActivityController
 
 class AppSettingsActivityController(
-    private val context: Context
+    private val context: Context,
 ) : AppSettingsContainer, ActivityController {
 
     private var done = false

@@ -34,7 +34,7 @@ fun navigatorState(init: (NavigatorState) -> Unit): NavigatorState {
 }
 
 private data class DefaultNavigatorState(
-    private val delegate: SavedState
+    private val delegate: SavedState,
 ) : NavigatorState, SavedState by delegate {
 
     override fun set(key: String, value: SceneState?) {

@@ -17,7 +17,6 @@
 package com.nhaarman.acorn.android.util
 
 import android.os.Binder
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Size
@@ -71,19 +70,23 @@ private fun Bundle.put(key: String, value: Any?) {
                 Parcelable::class.java.isAssignableFrom(componentType) -> {
                     putParcelableArray(key, value as Array<Parcelable>)
                 }
+
                 String::class.java.isAssignableFrom(componentType) -> {
                     putStringArray(key, value as Array<String>)
                 }
+
                 CharSequence::class.java.isAssignableFrom(componentType) -> {
                     putCharSequenceArray(key, value as Array<CharSequence>)
                 }
+
                 Serializable::class.java.isAssignableFrom(componentType) -> {
                     putSerializable(key, value)
                 }
+
                 else -> {
                     val valueType = componentType.canonicalName
                     throw IllegalArgumentException(
-                        "Illegal value array type $valueType for key \"$key\""
+                        "Illegal value array type $valueType for key \"$key\"",
                     )
                 }
             }
@@ -100,14 +103,14 @@ private fun Bundle.put(key: String, value: Any?) {
 
         else -> {
             if (value is SparseArray<*>) {
-                /* This is arguably a Bad Thing(TM), but we need this for view state saving. */
+                // This is arguably a Bad Thing(TM), but we need this for view state saving.
                 @Suppress("UNCHECKED_CAST")
                 putSparseParcelableArray(key, value as SparseArray<out Parcelable>)
             } else if (value is Binder) {
                 putBinder(key, value)
-            } else if (Build.VERSION.SDK_INT >= 21 && value is Size) {
+            } else if (value is Size) {
                 putSize(key, value)
-            } else if (Build.VERSION.SDK_INT >= 21 && value is SizeF) {
+            } else if (value is SizeF) {
                 putSizeF(key, value)
             } else {
                 val valueType = value.javaClass.canonicalName
@@ -167,6 +170,7 @@ private fun transformToAcorn(it: Any?): Any? {
                 else -> it
             }
         }
+
         else -> it
     }
 }

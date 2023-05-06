@@ -26,8 +26,7 @@ import com.nhaarman.acorn.android.transition.SceneTransition
 import com.nhaarman.acorn.android.util.inflate
 import com.nhaarman.acorn.notesapp.android.R
 import com.nhaarman.acorn.notesapp.android.ui.edititem.EditItemViewController
-import kotlinx.android.synthetic.main.edititem_scene.view.*
-import kotlinx.android.synthetic.main.itemlist_scene.view.*
+import com.nhaarman.acorn.notesapp.android.ui.itemlist.ItemsRecyclerView
 
 /**
  * Shows a 'shared element transition' that originates from the clicked view.
@@ -36,7 +35,7 @@ object ItemListEditItemTransition : SceneTransition {
 
     override fun execute(parent: ViewGroup, callback: SceneTransition.Callback) {
         val itemListLayout = parent.getChildAt(0)
-        val itemsRecyclerView = itemListLayout.itemsRecyclerView
+        val itemsRecyclerView = itemListLayout.findViewById<ItemsRecyclerView>(R.id.itemsRecyclerView)
         val clickedView = itemsRecyclerView.clickedView
         if (clickedView == null) {
             FadeInFromBottomTransition {
@@ -54,10 +53,10 @@ object ItemListEditItemTransition : SceneTransition {
         parent.doOnPreDraw {
             val shortAnimationDuration = parent.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
 
-            val editItemToolbar = editItemLayout.editItemToolbar
+            val editItemToolbar = editItemLayout.findViewById<View>(R.id.editItemToolbar)
             editItemToolbar.translationY = (-editItemToolbar.height).toFloat()
 
-            val scrollView = editItemLayout.scrollView
+            val scrollView = editItemLayout.findViewById<View>(R.id.scrollView)
             scrollView.setBackgroundColor(Color.WHITE)
 
             val clickedViewHeight = clickedView.height
@@ -68,10 +67,10 @@ object ItemListEditItemTransition : SceneTransition {
             val scrollViewY = IntArray(2).also { scrollView.getLocationInWindow(it) }[1]
             scrollView.translationY = ((clickedViewY - scrollViewY).toFloat())
 
-            val editItemET = editItemLayout.editText
+            val editItemET = editItemLayout.findViewById<View>(R.id.editText)
             editItemET.visibility = View.INVISIBLE
 
-            val createButton = itemListLayout.createButton
+            val createButton = itemListLayout.findViewById<View>(R.id.createButton)
             createButton.animate()
                 .translationY(createButton.height.toFloat() * 2)
                 .setDuration(shortAnimationDuration)

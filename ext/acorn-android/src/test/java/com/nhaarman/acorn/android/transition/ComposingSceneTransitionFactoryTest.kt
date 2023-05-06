@@ -40,113 +40,111 @@ internal class ComposingSceneTransitionFactoryTest {
 
     @Test
     fun `no sources results in false for supports call`() {
-        /* Given */
+        // Given
         val factory = ComposingSceneTransitionFactory.from(emptyList())
 
-        /* When */
+        // When
         val result = factory.supports(scene1, scene2, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(false)
     }
 
     @Test
     fun `no sources results in exception for transition call`() {
-        /* Given */
+        // Given
         val factory = ComposingSceneTransitionFactory.from(emptyList())
 
-        /* Expect */
+        // Expect
         expectErrorWithMessage("Could not create transition") on {
-
-            /* When */
+            // When
             factory.transitionFor(scene1, scene2, null)
         }
     }
 
     @Test
     fun `single source with matching transition supports true`() {
-        /* Given */
+        // Given
         val factory = ComposingSceneTransitionFactory.from(
-            transitionFactory12
+            transitionFactory12,
         )
 
-        /* When */
+        // When
         val result = factory.supports(scene1, scene2, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(true)
     }
 
     @Test
     fun `single source with matching transition results in proper transition`() {
-        /* Given */
+        // Given
         val factory = ComposingSceneTransitionFactory.from(
-            transitionFactory12
+            transitionFactory12,
         )
 
-        /* When */
+        // When
         val result = factory.transitionFor(scene1, scene2, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(transition1)
     }
 
     @Test
     fun `single source with non matching transition supports false`() {
-        /* Given */
+        // Given
         val factory = ComposingSceneTransitionFactory.from(
-            transitionFactory12
+            transitionFactory12,
         )
 
-        /* When */
+        // When
         val result = factory.supports(scene1, scene3, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(false)
     }
 
     @Test
     fun `single source with non matching transition results in exception`() {
-        /* Given */
+        // Given
         val factory = ComposingSceneTransitionFactory.from(
-            transitionFactory12
+            transitionFactory12,
         )
 
-        /* Expect */
+        // Expect
         expectErrorWithMessage("Could not create transition") on {
-
-            /* When */
+            // When
             factory.transitionFor(scene1, scene3, null)
         }
     }
 
     @Test
     fun `two sources with matching transition in second supports true`() {
-        /* Given */
+        // Given
         val factory = ComposingSceneTransitionFactory.from(
             transitionFactory12,
-            transitionFactory23
+            transitionFactory23,
         )
 
-        /* When */
+        // When
         val result = factory.supports(scene2, scene3, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(true)
     }
 
     @Test
     fun `single source with matching transition in second results in proper transition`() {
-        /* Given */
+        // Given
         val factory = ComposingSceneTransitionFactory.from(
             transitionFactory12,
-            transitionFactory23
+            transitionFactory23,
         )
 
-        /* When */
+        // When
         val result = factory.transitionFor(scene2, scene3, null)
 
-        /* Then */
+        // Then
         expect(result).toBe(transition2)
     }
 
@@ -155,16 +153,16 @@ internal class ComposingSceneTransitionFactoryTest {
 
         @Test
         fun `a binding factory in a composing factory does not block second factory`() {
-            /* Given */
+            // Given
             val factory = ComposingSceneTransitionFactory.from(
                 sceneTransitionFactory { },
-                transitionFactory12
+                transitionFactory12,
             )
 
-            /* When */
+            // When
             val result = factory.transitionFor(scene1, scene2, null)
 
-            /* Then */
+            // Then
             expect(result).toBe(transition1)
         }
     }
@@ -172,7 +170,7 @@ internal class ComposingSceneTransitionFactoryTest {
     private class TestSceneTransitionFactory(
         private val fromScene: Scene<*>,
         private val toScene: Scene<*>,
-        private val transition: SceneTransition
+        private val transition: SceneTransition,
     ) : SceneTransitionFactory {
 
         override fun supports(previousScene: Scene<*>, newScene: Scene<*>, data: TransitionData?): Boolean {
@@ -182,7 +180,7 @@ internal class ComposingSceneTransitionFactoryTest {
         override fun transitionFor(
             previousScene: Scene<*>,
             newScene: Scene<*>,
-            data: TransitionData?
+            data: TransitionData?,
         ): SceneTransition {
             return transition
         }

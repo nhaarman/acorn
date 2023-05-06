@@ -27,33 +27,34 @@ import org.junit.Test
 
 class ViewApplyWindowBackgroundTest {
 
-    @JvmField @Rule val rule = ActivityTestRule<TestActivity>(TestActivity::class.java)
+    @JvmField @Rule
+    val rule = ActivityTestRule<TestActivity>(TestActivity::class.java)
 
     val activity get() = rule.activity
 
     @Test
     fun nullWindowBackground() {
-        /* Given */
+        // Given
         activity.setTheme(R.style.NullWindowBackground)
         val view = View(rule.activity)
 
-        /* When */
+        // When
         view.applyWindowBackground()
 
-        /* Then */
+        // Then
         expect(view.background).toBeNull()
     }
 
     @Test
     fun noWindowBackground() {
-        /* Given */
+        // Given
         activity.setTheme(R.style.NullWindowBackground)
         val view = View(rule.activity)
 
-        /* When */
+        // When
         view.applyWindowBackground()
 
-        /* Then */
+        // Then
         expect(view.background).toBeNull()
     }
 
@@ -61,7 +62,7 @@ class ViewApplyWindowBackgroundTest {
     fun whiteColorWindowBackground() {
         rule.activity.setTheme(R.style.WhiteColorWindowBackground)
 
-        /* Given */
+        // Given
         val view = View(rule.activity)
         view.applyWindowBackground()
 
@@ -74,7 +75,7 @@ class ViewApplyWindowBackgroundTest {
     fun rgb8ColorWindowBackground() {
         rule.activity.setTheme(R.style.Rgb8ColorWindowBackground)
 
-        /* Given */
+        // Given
         val view = View(rule.activity)
         view.applyWindowBackground()
 
@@ -85,7 +86,7 @@ class ViewApplyWindowBackgroundTest {
     fun drawableWindowBackground() {
         rule.activity.setTheme(R.style.DrawableWindowBackground)
 
-        /* Given */
+        // Given
         val view = View(rule.activity)
         view.applyWindowBackground()
 

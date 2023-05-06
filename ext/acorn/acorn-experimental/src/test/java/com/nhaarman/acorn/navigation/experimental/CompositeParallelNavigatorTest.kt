@@ -33,20 +33,20 @@ import com.nhaarman.acorn.state.SavedState
 import com.nhaarman.acorn.state.SceneState
 import com.nhaarman.acorn.state.navigatorState
 import com.nhaarman.expect.expect
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 import kotlin.reflect.KClass
 
 @ExperimentalCompositeParallelNavigator
@@ -75,91 +75,91 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `navigator is not finished`() {
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `navigator is not destroyed`() {
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
 
             @Test
             fun `added listener does not get notified of scene`() {
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), any())
             }
 
             @Test
             fun `selecting a destination does not notify listeners of scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.select(Destination2)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), any())
             }
 
             @Test
             fun `onBackPressed for a single scene notifies listeners of finished`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 verify(listener).finished()
             }
 
             @Test
             fun `onBackPressed for a single scene does not notify scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 verify(listener, never()).scene(any(), any())
             }
 
             @Test
             fun `onBackPressed after navigator is destroyed does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.onDestroy()
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(false)
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `onBackPressed for two scenes in first destination does notify scenes`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator1.push(navigator1Scene2)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 listener.inOrder {
                     verifyNoMoreInteractions()
@@ -172,102 +172,102 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `navigator is not finished`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `navigator is not destroyed`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
 
             @Test
             fun `added listener gets notified of initial scene`() {
-                /* Given */
+                // Given
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 verify(listener).scene(navigator1Scene1, null)
             }
 
             @Test
             fun `removed listener does not get notified of scene`() {
-                /* Given */
+                // Given
                 val disposable = navigator.addNavigatorEventsListener(listener)
                 disposable.dispose()
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), anyOrNull())
             }
 
             @Test
             fun `non disposed listener is not disposed`() {
-                /* Given */
+                // Given
                 val disposable = navigator.addNavigatorEventsListener(listener)
 
-                /* Then */
+                // Then
                 expect(disposable.isDisposed()).toBe(false)
             }
 
             @Test
             fun `disposed listener is disposed`() {
-                /* Given */
+                // Given
                 val disposable = navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 disposable.dispose()
 
-                /* Then */
+                // Then
                 expect(disposable.isDisposed()).toBe(true)
             }
 
             @Test
             fun `starting navigator notifies listeners of initial scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener).scene(navigator1Scene1, null)
             }
 
             @Test
             fun `starting navigator multiple times notifies listeners of scene only once`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, times(1)).scene(any(), anyOrNull())
             }
 
             @Test
             fun `starting navigator second time in a callback only notifies listener once`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.addNavigatorEventsListener(object : Navigator.Events {
                     override fun scene(scene: Scene<out Container>, data: TransitionData?) {
                         navigator.onStart()
@@ -278,101 +278,101 @@ internal class CompositeParallelNavigatorTest {
                 })
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, times(1)).scene(any(), anyOrNull())
             }
 
             @Test
             fun `starting navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `changing destination notifies listeners of scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.select(Destination2)
 
-                /* Then */
+                // Then
                 verify(listener).scene(eq(navigator2Scene1), anyOrNull())
             }
 
             @Test
             fun `changing to the same destination twice notifies listeners of scene only once`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator.select(Destination2)
                 navigator.select(Destination2)
 
-                /* Then */
+                // Then
                 verify(listener, times(1)).scene(eq(navigator2Scene1), anyOrNull())
             }
 
             @Test
             fun `start navigator after destination changed notifies pushed scene`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 verify(listener).scene(navigator2Scene1)
             }
 
             @Test
             fun `onBackPressed for a single scene in first destination notifies finished`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 verify(listener).finished()
             }
 
             @Test
             fun `onBackPressed for a single scene in second destination does not notify finished`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `onBackPressed for a single scene in first destination does not notify scene`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 listener.inOrder {
                     verify().scene(navigator1Scene1)
@@ -383,15 +383,15 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `onBackPressed for a single scene in second destination does notify scene`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 listener.inOrder {
                     verify().scene(navigator1Scene1)
@@ -403,15 +403,15 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `onBackPressed for two scenes in first destination does notify scene`() {
-                /* Given */
+                // Given
                 navigator.onStart()
                 navigator.addNavigatorEventsListener(listener)
                 navigator1.push(navigator1Scene2)
 
-                /* When */
+                // When
                 val result = navigator.onBackPressed()
 
-                /* Then */
+                // Then
                 expect(result).toBe(true)
                 listener.inOrder {
                     verify().scene(navigator1Scene1)
@@ -427,22 +427,22 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `stopping navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onStop()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `stopped navigator is not destroyed`() {
-                /* When */
+                // When
                 navigator.onStop()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(false)
             }
         }
@@ -452,35 +452,35 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `destroying navigator does not finish`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator.onDestroy()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `isDestroyed returns true`() {
-                /* When */
+                // When
                 navigator.onDestroy()
 
-                /* Then */
+                // Then
                 expect(navigator.isDestroyed()).toBe(true)
             }
 
             @Test
             fun `changing destination for destroyed navigator does not notify listeners`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onDestroy()
 
-                /* When */
+                // When
                 navigator.select(Destination2)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(any(), any())
             }
         }
@@ -491,10 +491,10 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `starting navigator starts initial navigator`() {
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             navigator1.inOrder {
                 verify().onStart()
                 verifyNoMoreInteractions()
@@ -503,32 +503,32 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `starting navigator multiple times starts initial navigator only once`() {
-            /* When */
+            // When
             navigator.onStart()
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(navigator1, times(1)).onStart()
         }
 
         @Test
         fun `stopping an inactive navigator does not stop child navigator`() {
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `stopping an active navigator stops child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             navigator1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -537,31 +537,31 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `destroy an inactive navigator does not stop child navigator`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `destroy an inactive navigator does destroy child navigator`() {
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1).onDestroy()
         }
 
         @Test
         fun `destroy an active navigator stops and destroys child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             navigator1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -571,77 +571,77 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `starting a destroyed navigator does not start child navigator`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(navigator1).onDestroy()
             verify(navigator1, never()).onStart()
         }
 
         @Test
         fun `stopping a destroyed navigator does not start child navigator`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(navigator1).onDestroy()
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `destroying a destroyed navigator only destroys child navigator once`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1, times(1)).onDestroy()
         }
 
         @Test
         fun `starting an inactive navigator results in scene emission`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener).scene(eq(navigator1Scene1), anyOrNull())
             verifyNoMoreInteractions(listener)
         }
 
         @Test
         fun `an inactive navigator does not propagate child navigator emitting scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             navigator1.push(navigator1Scene2)
 
-            /* Then */
+            // Then
             verify(listener, never()).scene(any(), anyOrNull())
         }
 
         @Test
         fun `an active navigator propagates child navigator emitting scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator1.push(navigator1Scene2)
 
-            /* Then */
+            // Then
             listener.inOrder {
                 verify().scene(eq(navigator1Scene1), anyOrNull())
                 verify().scene(eq(navigator1Scene2), anyOrNull())
@@ -650,62 +650,62 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `a destroyed navigator does not propagate child navigator emitting scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onStop()
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator1.push(navigator1Scene2)
 
-            /* Then */
+            // Then
             verify(listener, never()).scene(eq(navigator1Scene2), anyOrNull())
         }
 
         @Test
         fun `a stopped navigator propagates child navigator emitting scene when started`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             navigator.onStop()
 
-            /* When */
+            // When
             navigator1.push(navigator1Scene2)
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener).scene(eq(navigator1Scene2), anyOrNull())
         }
 
         @Test
         fun `a stopped navigator propagates child navigator emitting scene when started for late listeners`() {
-            /* Given */
+            // Given
             navigator.onStart()
             navigator.addNavigatorEventsListener(listener)
             navigator.onStop()
 
-            /* When */
+            // When
             navigator1.push(navigator1Scene2)
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener).scene(eq(navigator1Scene2), anyOrNull())
         }
 
         @Test
         fun `a removed listener during active state does not get notified of scenes anymore when stopped and started`() {
-            /* Given */
+            // Given
             val disposable = navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
             disposable.dispose()
             navigator.onStop()
 
-            /* When */
+            // When
             navigator1.push(navigator1Scene2)
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener, never()).scene(eq(navigator1Scene2), anyOrNull())
         }
     }
@@ -715,71 +715,71 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `changing destination for inactive navigator does not start selected child navigator`() {
-            /* When */
+            // When
             navigator.select(Destination2)
 
-            /* Then */
+            // Then
             verify(navigator2, never()).onStart()
         }
 
         @Test
         fun `starting navigator after destination change starts selected child navigator`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(navigator2).onStart()
         }
 
         @Test
         fun `changing destination after navigator started starts selected child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.select(Destination2)
 
-            /* Then */
+            // Then
             verify(navigator2).onStart()
         }
 
         @Test
         fun `changing to the same destination twice after navigator started starts selected child navigator only once`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.select(Destination2)
             navigator.select(Destination2)
 
-            /* Then */
+            // Then
             verify(navigator2, times(1)).onStart()
         }
 
         @Test
         fun `starting navigator after destination change does not start initial child navigator`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStart()
         }
 
         @Test
         fun `changing destination after navigator started stops initial child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.select(Destination2)
 
-            /* Then */
+            // Then
             navigator1.inOrder {
                 verify().onStart()
                 verify().onStop()
@@ -789,27 +789,27 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `stopping inactive navigator does not stop children`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
             verify(navigator2, never()).onStop()
         }
 
         @Test
         fun `stopping active navigator stops only selected navigator`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
             navigator2.inOrder {
                 verify().onStart()
@@ -819,27 +819,27 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `stopping destroyed navigator does not stop children`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onStop()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
             verify(navigator2, never()).onStop()
         }
 
         @Test
         fun `destroying inactive navigator destroys all children but does not stop them`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
             verify(navigator1).onDestroy()
             verify(navigator2, never()).onStop()
@@ -848,14 +848,14 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `destroying active navigator stops selected child and destroys all children`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1, never()).onStop()
             verify(navigator1).onDestroy()
             verify(navigator2).onStop()
@@ -864,28 +864,28 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `destroying destroyed navigator does not destroy child navigators again`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
             navigator.onDestroy()
 
-            /* When */
+            // When
             navigator.onDestroy()
 
-            /* Then */
+            // Then
             verify(navigator1, times(1)).onDestroy()
             verify(navigator2, times(1)).onDestroy()
         }
 
         @Test
         fun `changing destination propagates scene for selected destination`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.select(Destination2)
 
-            /* Then */
+            // Then
             listener.inOrder {
                 verify().scene(eq(navigator1Scene1), anyOrNull())
                 verify().scene(eq(navigator2Scene1), anyOrNull())
@@ -894,15 +894,15 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `changing destination multiple times propagates scene for selected destinations`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.select(Destination2)
             navigator.select(Destination1)
 
-            /* Then */
+            // Then
             listener.inOrder {
                 verify().scene(eq(navigator1Scene1), anyOrNull())
                 verify().scene(eq(navigator2Scene1), anyOrNull())
@@ -912,29 +912,29 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `an active navigator propagates selected child navigator emitting scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.select(Destination2)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator2.push(navigator2Scene2)
 
-            /* Then */
+            // Then
             verify(listener).scene(eq(navigator2Scene2), anyOrNull())
         }
 
         @Test
         fun `an active navigator does not propagate non-selected child navigator emitting scene`() {
-            /* Given */
+            // Given
             navigator.addNavigatorEventsListener(listener)
             navigator.select(Destination2)
             navigator.onStart()
 
-            /* When */
+            // When
             navigator1.push(navigator1Scene2)
 
-            /* Then */
+            // Then
             verify(listener).scene(eq(navigator2Scene1), anyOrNull())
             verify(listener, never()).scene(eq(navigator1Scene2), anyOrNull())
         }
@@ -945,52 +945,52 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `onBackPressed for a single scene in first destination for inactive navigator destroys child navigator`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* Then */
+            // Then
             verify(navigator1).onDestroy()
         }
 
         @Test
         fun `onBackPressed for a single scene in first destination for inactive navigator destroys parent navigator`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test
         fun `onBackPressed for a single scene in first destination for inactive navigator does not stop child navigator`() {
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(navigator1, never()).onStop()
         }
 
         @Test
         fun `onBackPressed for a single scene in second destination for inactive navigator destroys second child navigator`() {
-            /* Given */
+            // Given
             navigator.select(Destination2)
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(navigator2).onDestroy()
         }
 
         @Test
         fun `onBackPressed for a single scene in first destination for active navigator stops and destroys child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             navigator1.inOrder {
                 verify().onStop()
                 verify().onDestroy()
@@ -999,26 +999,26 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `onBackPressed for a single scene in first destination for active navigator destroys parent navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             expect(navigator.isDestroyed()).toBe(true)
         }
 
         @Test
         fun `onBackPressed for a single scene in second destination for active navigator stops and destroys second child navigator, and starts current child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
             navigator.select(Destination2)
 
-            /* When */
+            // When
             navigator.onBackPressed()
 
-            /* When */
+            // When
             inOrder(navigator1, navigator2) {
                 verify(navigator2).onStop()
                 verify(navigator2).onDestroy()
@@ -1028,85 +1028,85 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `onBackPressed for a single scene in second destination active navigator does not stop or destroy second child navigator`() {
-            /* Given */
+            // Given
             navigator.onStart()
             navigator.select(Destination2)
 
-            /* When */
+            // When
             navigator2.push(navigator2Scene2)
             navigator.onBackPressed()
 
-            /* When */
+            // When
             verify(navigator2, never()).onStop()
         }
 
         @Test
         fun `onBackPressed for a primary child navigator that does not support back press during inactive state`() {
-            /* Given */
+            // Given
             val childNavigator = NonBackPressableNavigator()
             val navigator = SavableTestCompositeParallelNavigator(mapOf(Destination1 to childNavigator))
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(true)
             verify(listener).finished()
         }
 
         @Test
         fun `onBackPressed for non-primary child navigator that does not support back press during inactive state`() {
-            /* Given */
+            // Given
             val childNavigator = NonBackPressableNavigator()
             val navigator = SavableTestCompositeParallelNavigator(
                 mapOf(
                     Destination1 to navigator1,
-                    Destination2 to childNavigator
-                )
+                    Destination2 to childNavigator,
+                ),
             )
             navigator.select(Destination2)
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(true)
             verify(listener, never()).finished()
 
-            /* When */
+            // When
             navigator.onStart()
 
-            /* Then */
+            // Then
             verify(listener).scene(eq(navigator1Scene1), anyOrNull())
         }
 
         @Test
         fun `onBackPressed for a primary child navigator that does not support back press during active state`() {
-            /* Given */
+            // Given
             val childNavigator = NonBackPressableNavigator()
             val navigator = SavableTestCompositeParallelNavigator(mapOf(Destination1 to childNavigator))
             navigator.onStart()
             navigator.addNavigatorEventsListener(listener)
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(true)
             verify(listener).finished()
         }
 
         @Test
         fun `onBackPressed for a destroyed navigator returns false`() {
-            /* Given */
+            // Given
             navigator.onDestroy()
 
-            /* When */
+            // When
             val result = navigator.onBackPressed()
 
-            /* Then */
+            // Then
             expect(result).toBe(false)
         }
     }
@@ -1119,85 +1119,85 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `the primary destination finishing while selected finishes parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator1.finish()
 
-                /* Then */
+                // Then
                 verify(listener).finished()
             }
 
             @Test
             fun `the primary destination finishing while selected destroys child navigator for parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator1.finish()
 
-                /* Then */
+                // Then
                 verify(navigator1).onDestroy()
             }
 
             @Test
             fun `the primary destination finishing while not selected does not finish parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
 
-                /* When */
+                // When
                 navigator1.finish()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `a non-primary, non-selected destination finishing does not finish parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.select(Destination1)
 
-                /* When */
+                // When
                 navigator2.finish()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `a non-primary, non-selected destination finishing destroys child navigator for parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.select(Destination1)
 
-                /* When */
+                // When
                 navigator2.finish()
 
-                /* Then */
+                // Then
                 verify(navigator2).onDestroy()
             }
 
             @Test
             fun `a non-primary, selected destination finishing selects initial navigator when started`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
 
-                /* When */
+                // When
                 navigator2.finish()
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(eq(navigator1Scene1), anyOrNull())
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 listener.inOrder {
                     verify().scene(eq(navigator1Scene1), anyOrNull())
                     verifyNoMoreInteractions()
@@ -1206,22 +1206,22 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `selecting a finished primary navigator recreates it when started`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
 
-                /* When */
+                // When
                 navigator1.finish()
                 navigator1 = spy(SavableTestStackNavigator(listOf(extraNavigator)))
                 navigator.select(Destination1)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(eq(extraNavigator), anyOrNull())
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 listener.inOrder {
                     verify().scene(eq(extraNavigator), anyOrNull())
                     verifyNoMoreInteractions()
@@ -1230,23 +1230,23 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `selecting a finished non-primary navigator recreates it when started`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.select(Destination1)
 
-                /* When */
+                // When
                 navigator2.finish()
                 navigator2 = spy(SavableTestStackNavigator(listOf(extraNavigator)))
                 navigator.select(Destination2)
 
-                /* Then */
+                // Then
                 verify(listener, never()).scene(eq(extraNavigator), anyOrNull())
 
-                /* When */
+                // When
                 navigator.onStart()
 
-                /* Then */
+                // Then
                 listener.inOrder {
                     verify().scene(eq(extraNavigator), anyOrNull())
                     verifyNoMoreInteractions()
@@ -1259,27 +1259,27 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `the primary destination finishing while selected finishes parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator1.finish()
 
-                /* Then */
+                // Then
                 verify(listener).finished()
             }
 
             @Test
             fun `the primary destination finishing while selected stops and destroys child navigator for parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator1.finish()
 
-                /* Then */
+                // Then
                 navigator1.inOrder {
                     verify().onStop()
                     verify().onDestroy()
@@ -1288,45 +1288,45 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `the primary destination finishing while not selected does not finish parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.onStart()
                 navigator.select(Destination2)
 
-                /* When */
+                // When
                 navigator1.finish()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `a non-primary, non-selected destination finishing does not finish parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.select(Destination1)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator2.finish()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `a non-primary, non-selected destination finishing stops and destroys child navigator for parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.select(Destination1)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator2.finish()
 
-                /* Then */
+                // Then
                 navigator2.inOrder {
                     verify().onStop()
                     verify().onDestroy()
@@ -1335,15 +1335,15 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `a non-primary, selected destination finishing selects initial navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator2.finish()
 
-                /* Then */
+                // Then
                 listener.inOrder {
                     verify().scene(eq(navigator2Scene1), anyOrNull())
                     verify().scene(eq(navigator1Scene1), anyOrNull())
@@ -1352,16 +1352,16 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `a non-primary, non-selected destination finishing does not select initial navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination3)
                 navigator.select(Destination2)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator3.finish()
 
-                /* Then */
+                // Then
                 listener.inOrder {
                     verify().scene(eq(navigator2Scene1), anyOrNull())
                     verifyNoMoreInteractions()
@@ -1370,15 +1370,15 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `a non-primary, selected destination finishing starts initial navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator2.finish()
 
-                /* Then */
+                // Then
                 inOrder(navigator1, navigator2) {
                     verify(navigator2).onStop()
                     verify(navigator2).onDestroy()
@@ -1388,17 +1388,17 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `selecting a finished primary navigator recreates it`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator1.finish()
                 navigator1 = spy(SavableTestStackNavigator(listOf(extraNavigator)))
                 navigator.select(Destination1)
 
-                /* Then */
+                // Then
                 listener.inOrder {
                     verify().scene(eq(extraNavigator), anyOrNull())
                     verifyNoMoreInteractions()
@@ -1407,18 +1407,18 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `selecting a finished non-primary navigator recreates it`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.select(Destination1)
                 navigator.onStart()
 
-                /* When */
+                // When
                 navigator2.finish()
                 navigator2 = spy(SavableTestStackNavigator(listOf(extraNavigator)))
                 navigator.select(Destination2)
 
-                /* Then */
+                // Then
                 listener.inOrder {
                     verify().scene(eq(extraNavigator), anyOrNull())
                     verifyNoMoreInteractions()
@@ -1436,27 +1436,27 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `the primary destination finishing does not notify listener`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
 
-                /* When */
+                // When
                 navigator1.finish()
 
-                /* Then */
+                // Then
                 verifyNoMoreInteractions(listener)
             }
 
             @Test
             fun `the primary destination finishing does not stop or destroy child navigator`() {
-                /* Given */
+                // Given
                 inOrder(navigator1) {
                     verify(navigator1).onDestroy()
                     navigator.addNavigatorEventsListener(listener)
 
-                    /* When */
+                    // When
                     navigator1.finish()
 
-                    /* Then */
+                    // Then
                     verify(navigator1, never()).onStop()
                     verify(navigator1, never()).onDestroy()
                 }
@@ -1464,28 +1464,28 @@ internal class CompositeParallelNavigatorTest {
 
             @Test
             fun `the primary destination finishing while not selected does not finish parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
 
-                /* When */
+                // When
                 navigator1.finish()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
 
             @Test
             fun `a non-primary, non-selected destination finishing does not finish parent navigator`() {
-                /* Given */
+                // Given
                 navigator.addNavigatorEventsListener(listener)
                 navigator.select(Destination2)
                 navigator.select(Destination1)
 
-                /* When */
+                // When
                 navigator2.finish()
 
-                /* Then */
+                // Then
                 verify(listener, never()).finished()
             }
         }
@@ -1504,35 +1504,35 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `CompositeParallelNavigator does not implement SavableNavigator by default`() {
-            /* Given */
+            // Given
             val navigator: Navigator = TestCompositeParallelNavigator()
 
-            /* Then */
+            // Then
             expect(navigator is SavableNavigator).toBe(false)
         }
 
         @Test
         fun `saving and restoring state for single savable navigator`() {
-            /* Given */
+            // Given
             val navigator = SavableTestCompositeParallelNavigator(
                 mapOf(Destination1 to savableNavigator1),
-                null
+                null,
             )
             navigator.onStart()
             navigator1Scene1.foo = 3
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             navigator1Scene1.foo = 42
 
             val restoredNavigator = SavableTestCompositeParallelNavigator(
                 mapOf(Destination1 to savableNavigator1),
-                bundle
+                bundle,
             )
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toNotBeTheSameAs(navigator1Scene1)
@@ -1544,26 +1544,26 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `saving and restoring state for single non savable navigator`() {
-            /* Given */
+            // Given
             val navigator = SavableTestCompositeParallelNavigator(
                 mapOf(Destination1 to navigator1),
-                null
+                null,
             )
             navigator.onStart()
             navigator1Scene1.foo = 3
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             navigator1Scene1.foo = 42
 
             val restoredNavigator = SavableTestCompositeParallelNavigator(
                 mapOf(Destination1 to navigator2),
-                bundle
+                bundle,
             )
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toBeInstanceOf<SavableTestScene> {
@@ -1574,34 +1574,34 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `saving and restoring state for multiple savable navigators`() {
-            /* Given */
+            // Given
             val navigator = SavableTestCompositeParallelNavigator(
                 mapOf(
                     Destination1 to savableNavigator1,
-                    Destination2 to savableNavigator2
+                    Destination2 to savableNavigator2,
                 ),
-                null
+                null,
             )
             navigator.onStart()
             navigator1Scene1.foo = 3
             navigator.select(Destination2)
             navigator2Scene1.foo = 4
 
-            /* When */
+            // When
             val bundle = navigator.saveInstanceState()
             navigator2Scene1.foo = 42
 
             val restoredNavigator = SavableTestCompositeParallelNavigator(
                 mapOf(
                     Destination1 to savableNavigator1,
-                    Destination2 to savableNavigator2
+                    Destination2 to savableNavigator2,
                 ),
-                bundle
+                bundle,
             )
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toNotBeTheSameAs(navigator2Scene1)
@@ -1613,21 +1613,21 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `restoring from malformed state falls back to initial state - empty state`() {
-            /* Given */
+            // Given
             val bundle = NavigatorState()
 
-            /* When */
+            // When
             val restoredNavigator = SavableTestCompositeParallelNavigator(
                 mapOf(
                     Destination1 to savableNavigator1,
-                    Destination2 to savableNavigator2
+                    Destination2 to savableNavigator2,
                 ),
-                bundle
+                bundle,
             )
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toBeTheSameAs(navigator1Scene1)
@@ -1639,23 +1639,23 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `restoring from malformed state falls back to initial state - wrong size`() {
-            /* Given */
+            // Given
             val bundle = navigatorState {
                 it["size"] = 2
             }
 
-            /* When */
+            // When
             val restoredNavigator = SavableTestCompositeParallelNavigator(
                 mapOf(
                     Destination1 to savableNavigator1,
-                    Destination2 to savableNavigator2
+                    Destination2 to savableNavigator2,
                 ),
-                bundle
+                bundle,
             )
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toBeTheSameAs(navigator1Scene1)
@@ -1667,25 +1667,25 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `restoring from malformed state falls back to initial state - missing destination`() {
-            /* Given */
+            // Given
             val bundle = navigatorState {
                 it["size"] = 1
                 it["0_state"] = NavigatorState()
                 it["0_destination"] = "0"
             }
 
-            /* When */
+            // When
             val restoredNavigator = SavableTestCompositeParallelNavigator(
                 mapOf(
                     Destination1 to savableNavigator1,
-                    Destination2 to savableNavigator2
+                    Destination2 to savableNavigator2,
                 ),
-                bundle
+                bundle,
             )
             restoredNavigator.onStart()
             restoredNavigator.addNavigatorEventsListener(listener)
 
-            /* Then */
+            // Then
             argumentCaptor<Scene<out Container>> {
                 verify(listener).scene(capture(), anyOrNull())
                 expect(lastValue).toBeTheSameAs(navigator1Scene1)
@@ -1697,13 +1697,13 @@ internal class CompositeParallelNavigatorTest {
 
         @Test
         fun `saved state from callback is the same as saved state _after_ callback`() {
-            /* Given */
+            // Given
             val navigator = SavableTestCompositeParallelNavigator(
                 mapOf(
                     Destination1 to savableNavigator1,
-                    Destination2 to savableNavigator2
+                    Destination2 to savableNavigator2,
                 ),
-                null
+                null,
             )
 
             var state1: SavedState? = null
@@ -1717,29 +1717,29 @@ internal class CompositeParallelNavigatorTest {
             })
             navigator.onStart()
 
-            /* When */
+            // When
             navigator.select(Destination2)
             val state2 = navigator.saveInstanceState()
 
-            /* Then */
+            // Then
             expect(state1).toBe(state2)
         }
 
         @Test
         fun `saving a destroyed navigator results in empty state`() {
-            /* Given */
+            // Given
             val navigator = SavableTestCompositeParallelNavigator(
                 mapOf(Destination1 to savableNavigator1),
-                null
+                null,
             )
             navigator.onStart()
             navigator.onStop()
             navigator.onDestroy()
 
-            /* When */
+            // When
             val state = navigator.saveInstanceState()
 
-            /* Then */
+            // Then
             expect(state.entries.size).toBe(0)
         }
     }
@@ -1747,7 +1747,7 @@ internal class CompositeParallelNavigatorTest {
     private enum class TestDestination {
         Destination1,
         Destination2,
-        Destination3
+        Destination3,
     }
 
     private inner class TestCompositeParallelNavigator : CompositeParallelNavigator<TestDestination>(Destination1, null) {
@@ -1771,7 +1771,7 @@ internal class CompositeParallelNavigatorTest {
 
     private inner class SavableTestCompositeParallelNavigator(
         private val navigators: Map<TestDestination, Navigator>,
-        savedState: NavigatorState? = null
+        savedState: NavigatorState? = null,
     ) : CompositeParallelNavigator<TestDestination>(Destination1, savedState), SavableNavigator {
 
         override fun serialize(destination: TestDestination): String {
@@ -1828,7 +1828,7 @@ internal class CompositeParallelNavigatorTest {
 
     private open class SavableTestStackNavigator(
         private val initialStack: List<SavableTestScene>,
-        savedState: NavigatorState? = null
+        savedState: NavigatorState? = null,
     ) : StackNavigator(savedState), SavableNavigator {
 
         override fun initialStack(): List<Scene<out Container>> {
@@ -1844,7 +1844,7 @@ internal class CompositeParallelNavigatorTest {
     }
 
     open class TestSingleSceneNavigator(
-        private val scene: Scene<out Container>
+        private val scene: Scene<out Container>,
     ) : SingleSceneNavigator(null) {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
@@ -1854,7 +1854,7 @@ internal class CompositeParallelNavigatorTest {
 
     open class SavableTestSingleSceneNavigator(
         private val scene: Scene<out Container>,
-        savedState: NavigatorState? = null
+        savedState: NavigatorState? = null,
     ) : SingleSceneNavigator(savedState), SavableNavigator {
 
         override fun createScene(state: SceneState?): Scene<out Container> {
