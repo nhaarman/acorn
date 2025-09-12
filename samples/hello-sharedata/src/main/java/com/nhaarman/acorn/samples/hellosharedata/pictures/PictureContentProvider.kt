@@ -21,6 +21,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import androidx.core.net.toUri
 import java.io.File
 
 class PictureContentProvider : ContentProvider() {
@@ -67,7 +68,7 @@ class PictureContentProvider : ContentProvider() {
         private const val authority = "com.nhaarman.acorn.samples.hellosharedata"
 
         fun uriFor(file: File): Uri {
-            return Uri.parse("content://${PictureContentProvider.authority}${file.absolutePath}")
+            return ("content://${PictureContentProvider.authority}${file.absolutePath}").toUri()
         }
     }
 }

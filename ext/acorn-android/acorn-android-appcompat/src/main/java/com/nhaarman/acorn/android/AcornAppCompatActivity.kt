@@ -18,9 +18,12 @@ package com.nhaarman.acorn.android
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.window.OnBackInvokedDispatcher
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.nhaarman.acorn.android.navigation.NavigatorProvider
@@ -164,6 +167,31 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         acornDelegate.onCreate(savedInstanceState)
+
+        // Handle back navigation for Android 13+ (API 33+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+            ) {
+                acornDelegate.onBackPressed()
+            }
+        }
+
+        // Handle back navigation for older Android versions using OnBackPressedDispatcher
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (acornDelegate.onBackPressed()) {
+                        return
+                    }
+
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
+                }
+            },
+        )
     }
 
     @CallSuper
@@ -178,6 +206,8 @@ abstract class AcornAppCompatActivity : AppCompatActivity() {
         acornDelegate.onActivityResult(requestCode, resultCode, data)
     }
 
+    @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
+    @SuppressLint("GestureBackNavigation")
     @CallSuper
     override fun onBackPressed() {
         if (!acornDelegate.onBackPressed()) {

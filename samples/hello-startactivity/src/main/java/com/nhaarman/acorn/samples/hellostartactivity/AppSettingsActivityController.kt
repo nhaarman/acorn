@@ -18,8 +18,8 @@ package com.nhaarman.acorn.samples.hellostartactivity
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.provider.Settings
+import androidx.core.net.toUri
 import com.nhaarman.acorn.android.presentation.ActivityController
 
 class AppSettingsActivityController(
@@ -34,7 +34,7 @@ class AppSettingsActivityController(
         return Intent().apply {
             action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
             addCategory(Intent.CATEGORY_DEFAULT)
-            data = Uri.parse("package:" + context.getPackageName())
+            data = ("package:" + context.packageName).toUri()
         }
     }
 

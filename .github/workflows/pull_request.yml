@@ -21,6 +21,15 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Install Android SDK components
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          yes | sdkmanager --licenses
+
       - name: ktlint
         run: bash ./ktlint "**/src/**/*.kt" --color
 

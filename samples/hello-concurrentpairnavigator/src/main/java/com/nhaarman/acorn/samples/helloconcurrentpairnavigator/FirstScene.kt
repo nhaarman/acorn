@@ -79,6 +79,7 @@ class FirstSceneViewController(
 
     private val binding = FirstSceneBinding.bind(view)
 
+    @android.annotation.SuppressLint("SetTextI18n")
     override var count: Long = 0
         set(value) {
             binding.counterTV.text = value.toString()
