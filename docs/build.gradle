@@ -19,7 +19,7 @@ repositories {
 orchid {
     theme = "Editorial"
     baseUrl = "https://nhaarman.github.io/acorn"
-    version = git.versionName()
+    version = project.rootProject.version.toString()
 
     githubToken = "${System.getenv('GITHUB_TOKEN')}"
 }

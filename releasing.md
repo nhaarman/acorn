@@ -1,63 +1,53 @@
 # Releasing
 
-## Publishing (Central Portal)
-1) Prepare the release
-- Ensure version is a non‑SNAPSHOT (e.g., 1.2.3) and that POM metadata is correct (configured in .ops/publishing.gradle).
-- Update changelog and tag the commit if desired: `git tag -a 1.2.3 -m 1.2.3 && git push --tags`.
+## Requirements
+- Sonatype Central account and ownership of the `com.nhaarman.acorn` namespace.
+- Central Publishing Token (username/password).
+- PGP signing key and a secret key ring file (secring.gpg).
 
-2) Publish from your machine
-- Run: `./gradlew publish`
-- The build uploads to Central using your Publishing Token and signs all artifacts.
+## Create secring.gpg
+1) Find your key ID:
+- `gpg --list-secret-keys --keyid-format LONG`
 
-3) Monitor validation and availability
-- Go to https://central.sonatype.com/ → Publishing Activity to see validation results.
-- Once processing completes, artifacts will be visible on Central and then searchable on search.maven.org (indexing can take a few minutes).
+2) Export the secret key ring file (binary):
+- macOS/Linux:
+  - `gpg --export-secret-keys YOUR_KEY_ID > ~/.gnupg/secring.gpg`
+  - `chmod 600 ~/.gnupg/secring.gpg`
+- Windows (PowerShell):
+  - `gpg --export-secret-keys YOUR_KEY_ID | Set-Content -Encoding Byte "$env:APPDATA\gnupg\secring.gpg"`
 
-## Verify before releasing (recommended)
-- Local dry run: `./gradlew publishToMavenLocal -x test -x check` and inspect `~/.m2/repository/` to confirm artifacts and `.asc` signatures.
-- Sanity check: build a small sample project depending on the new version from Maven Central once it appears.
+Keep `secring.gpg` private (never commit it). Do NOT paste your private key into gradle.properties.
 
-## Documentation website
-- Deploy the docs: `./gradlew orchidDeploy`
-  - Force version name: `./gradlew orchidDeploy -PversionName=1.0.0`
-
-## Troubleshooting
-- 401/403 during upload: check Central token (username/password), token scope, and that centralPortal=true is set.
-- Rejected by Central validations: open the item in Publishing Activity for details (common issues: missing javadoc/sources, invalid POM fields). Android modules ship an empty javadoc jar via our Gradle config.
-- Missing signatures: ensure signingKey/signingPassword are configured; Gradle must sign every published artifact.
-- Wrong coordinates/ownership: ensure your Central namespace claim for `com.nhaarman.acorn` is verified and matches your module group IDs.
-
-## Setting up
-
-Prerequisites
-- Sonatype Central account: https://central.sonatype.com/
-- Namespace ownership: Claim `com.nhaarman.acorn` and complete the ownership verification (usually a DNS TXT record for the parent domain).
-- Publishing Token: Create a token in the Central Portal.
-- PGP signing key: Maven Central requires signatures for all artifacts.
-  - Generate: `gpg --full-generate-key` (RSA 4096 or Ed25519)
-  - Export private key (ASCII‑armored) for Gradle: `gpg --armor --export-secret-keys <KEYID>`
-  - Optional: upload your public key to `keys.openpgp.org` or `keyserver.ubuntu.com` so others can verify signatures.
-
-Local Gradle configuration (~/.gradle/gradle.properties)
+## Configure Gradle (~/.gradle/gradle.properties)
 ```properties
-# Enable Central Publishing Portal
-centralPortal=true
+# Central Publishing Portal
 centralPortalUsername=YOUR_PUBLISHING_TOKEN_USERNAME
 centralPortalPassword=YOUR_PUBLISHING_TOKEN_PASSWORD
-# Optional endpoint override (usually not needed)
-# centralPortalUrl=https://central.sonatype.com/api/v1/publisher/deploy/maven2
 
-# PGP signing (required)
-signingKey=-----BEGIN PGP PRIVATE KEY BLOCK-----\n... your multi-line key with \n newlines ...\n-----END PGP PRIVATE KEY BLOCK-----
-signingPassword=YOUR_KEY_PASSPHRASE
+# PGP signing (secret key ring file)
+signing.keyId=YOUR_KEY_ID
+signing.password=YOUR_KEY_PASSPHRASE
+signing.secretKeyRingFile=/absolute/path/to/secring.gpg
 ```
 
-Environment variable alternatives (optional)
-- CENTRAL_PORTAL=true
-- CENTRAL_PORTAL_USERNAME / CENTRAL_PORTAL_PASSWORD
-- CENTRAL_PORTAL_URL
-- SIGNING_KEY / SIGNING_PASSWORD
+## Versioning
+- You must pass the version at build time. Use `-PversionName=1.2.3` (or `-Pversion=1.2.3`).
+- Android modules can optionally specify a version code with `-PversionCode=123`.
+- Snapshot builds must end with `-SNAPSHOT`, e.g. `-PversionName=1.2.4-SNAPSHOT`.
 
-Notes
-- Central Portal does not use staging; validations run server‑side after upload.
-- Central Portal does not accept versions ending with -SNAPSHOT. For preview builds, use publishToMavenLocal or a private repository.
+## Publish a release (Central Publishing Portal)
+1) Choose a release version (no `-SNAPSHOT`) and ensure POM metadata is correct (configured in `.ops/publishing.gradle`).
+2) Run: `./gradlew publish -PversionName=1.2.3 -PcentralPortal=true`.
+3) Monitor https://central.sonatype.com/ → Publishing Activity until processing completes (artifacts appear on search.maven.org shortly after).
+
+## Publish a snapshot (OSSRH snapshots repository)
+1) Use a snapshot version: `-PversionName=1.2.4-SNAPSHOT`.
+2) Run: `./gradlew publish -PversionName=1.2.4-SNAPSHOT` (do NOT pass `-PcentralPortal=true`).
+3) Artifacts will be uploaded to `s01.oss.sonatype.org` snapshots and are not listed on search.maven.org.
+
+## Troubleshooting
+- Missing required project property: If you see `Missing required project property: versionName (or version)`, pass a version via `-PversionName=1.2.3` (or `-Pversion=1.2.3`).
+- Central Portal rejects SNAPSHOT: Central Publishing Portal does not accept `-SNAPSHOT` versions. Use a release version and `-PcentralPortal=true`, or publish snapshots without `-PcentralPortal`.
+- 401/403 during upload: check token credentials and ensure Central Publishing is enabled (`-PcentralPortal=true`).
+- Missing signatures: ensure `signing.keyId`, `signing.password`, and `signing.secretKeyRingFile` are set as above.
+- Validation failures: open the item in Publishing Activity for details.

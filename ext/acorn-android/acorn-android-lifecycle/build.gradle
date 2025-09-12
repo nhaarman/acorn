@@ -29,20 +29,19 @@ android {
 dependencies {
     api project(':ext-acorn')
 
-    api "androidx.lifecycle:lifecycle-runtime"
+    api libs.androidx.lifecycle.runtime
 
+    compileOnly libs.androidx.annotation
 
-    compileOnly "androidx.annotation:annotation"
+    testImplementation libs.expectkt
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter.engine
 
-    testImplementation "com.nhaarman:expect.kt"
-    testImplementation "org.mockito.kotlin:mockito-kotlin"
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-
-    androidTestImplementation "junit:junit"
-    androidTestImplementation "com.nhaarman:expect.kt"
-    androidTestImplementation "androidx.test.espresso:espresso-core"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib"
-    androidTestImplementation "androidx.test:runner"
-    androidTestImplementation "androidx.test:rules"
+    androidTestImplementation libs.junit4
+    androidTestImplementation libs.expectkt
+    androidTestImplementation libs.androidx.espresso.core
+    androidTestImplementation libs.androidx.espresso.contrib
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.rules
 }

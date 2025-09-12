@@ -1,3 +1,17 @@
+// Typesafe project accessors are disabled for now to avoid accessor name collisions
+// enableFeaturePreview('TYPESAFE_PROJECT_ACCESSORS')
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    versionCatalogs {
+        create("libs") { /* TOML-backed; definitions live in gradle/libs.versions.toml */ }
+    }
+}
+
 include(":core")
 include(":acorn")
 include(":acorn-android")

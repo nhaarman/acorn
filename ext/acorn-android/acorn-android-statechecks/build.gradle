@@ -29,11 +29,10 @@ android {
 dependencies {
     api project(':ext-acorn-android')
 
+    compileOnly libs.androidx.annotation
 
-    compileOnly "androidx.annotation:annotation"
-
-    testImplementation "com.nhaarman:expect.kt"
-    testImplementation "org.mockito.kotlin:mockito-kotlin"
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation libs.expectkt
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter.engine
 }

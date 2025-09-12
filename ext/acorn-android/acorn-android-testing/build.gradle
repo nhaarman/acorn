@@ -29,6 +29,5 @@ android {
 dependencies {
     api project(":ext-acorn-android")
 
-
-    compileOnly "androidx.test:rules"
+    compileOnly libs.androidx.test.rules
 }

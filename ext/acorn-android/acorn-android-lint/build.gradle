@@ -14,13 +14,13 @@ compileKotlin {
 }
 
 dependencies {
-    compileOnly "com.android.tools.lint:lint-api"
-    compileOnly "com.android.tools.lint:lint-checks"
+    compileOnly libs.android.lint.api
+    compileOnly libs.android.lint.checks
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine"
-    testImplementation "com.android.tools.lint:lint"
-    testImplementation "com.android.tools.lint:lint-tests"
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.android.lint
+    testImplementation libs.android.lint.tests
 }
 
 jar {

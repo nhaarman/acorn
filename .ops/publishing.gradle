@@ -151,14 +151,7 @@ publishing {
 
 // Configure signing (only if keys are available)
 signing {
-    def signingKey = findProperty("signingKey") ?: System.getenv("SIGNING_KEY")
-    def signingPassword = findProperty("signingPassword") ?: System.getenv("SIGNING_PASSWORD")
-
-    if (signingKey && signingPassword) {
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign publishing.publications
-    } else if (findProperty("signing.secretKeyRingFile") || findProperty("signing.keyId")) {
-        // Fall back to Gradle's default signing properties if configured via file-based keys
+    if (findProperty("signing.secretKeyRingFile") || findProperty("signing.keyId")) {
         sign publishing.publications
     } else {
         logger.lifecycle("[publishing] Signing is not configured; publications will not be signed.")

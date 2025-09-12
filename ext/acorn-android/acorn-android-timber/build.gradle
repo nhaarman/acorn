@@ -30,5 +30,5 @@ dependencies {
     api project(":ext-acorn")
 
 
-    implementation "com.jakewharton.timber:timber"
+    implementation libs.timber
 }
