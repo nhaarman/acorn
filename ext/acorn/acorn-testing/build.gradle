@@ -19,5 +19,5 @@ compileKotlin {
 dependencies {
     api project(':ext-acorn')
 
-    compileOnly "androidx.annotation:annotation"
+    compileOnly libs.androidx.annotation
 }

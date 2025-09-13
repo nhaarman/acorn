@@ -18,29 +18,28 @@ dependencies {
     implementation project(":ext-acorn-android-appcompat")
     implementation project(":ext-acorn-rx")
 
+    implementation libs.androidx.core.ktx
 
-    implementation "androidx.core:core-ktx"
+    implementation libs.rxjava2
+    implementation libs.rxkotlin2
+    implementation libs.rxandroid2
 
-    implementation "io.reactivex.rxjava2:rxjava"
-    implementation "io.reactivex.rxjava2:rxkotlin"
-    implementation "io.reactivex.rxjava2:rxandroid"
+    implementation libs.material
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.appcompat
 
-    implementation "com.google.android.material:material"
-    implementation "androidx.constraintlayout:constraintlayout"
-    implementation "androidx.appcompat:appcompat"
+    implementation libs.picasso
 
-    implementation "com.squareup.picasso:picasso"
-
-    testImplementation "com.nhaarman:expect.kt"
-    testImplementation "org.mockito.kotlin:mockito-kotlin"
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation libs.expectkt
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter.engine
 
     debugImplementation project(":ext-acorn-android-testing")
-    androidTestImplementation "junit:junit"
-    androidTestImplementation "com.nhaarman:expect.kt"
-    androidTestImplementation "androidx.test.espresso:espresso-core"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib"
-    androidTestImplementation "androidx.test:runner"
-    androidTestImplementation "androidx.test:rules"
+    androidTestImplementation libs.junit4
+    androidTestImplementation libs.expectkt
+    androidTestImplementation libs.androidx.espresso.core
+    androidTestImplementation libs.androidx.espresso.contrib
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.rules
 }

@@ -20,11 +20,10 @@ compileKotlin {
 dependencies {
     api project(":acorn")
 
-    
-    compileOnly "androidx.annotation:annotation"
+    compileOnly libs.androidx.annotation
 
-    testImplementation "com.nhaarman:expect.kt"
-    testImplementation "org.mockito.kotlin:mockito-kotlin"
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation libs.expectkt
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
 }

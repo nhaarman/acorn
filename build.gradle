@@ -1,5 +1,6 @@
 buildscript {
-    ext.kotlinVersion = "1.8.21"
+    // Kotlin version managed via version catalog
+    ext.kotlinVersion = libs.versions.kotlin.plugin.get()
 
     repositories {
         google()
@@ -7,37 +8,41 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.0.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.9.3.0")
-        classpath("com.adarshr:gradle-test-logger-plugin:3.2.0")
-        classpath("digital.wup:android-maven-publish:3.6.3")
-        classpath("info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.9.11")
+        classpath("com.android.tools.build:gradle:${libs.versions.android.gradle.get()}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.plugin.get()}")
+        classpath("de.mannodermaus.gradle.plugins:android-junit5:${libs.versions.android.junit5.plugin.get()}")
+        classpath("com.adarshr:gradle-test-logger-plugin:${libs.versions.test.logger.plugin.get()}")
+        classpath("info.solidsoft.gradle.pitest:gradle-pitest-plugin:${libs.versions.gradle.pitest.plugin.get()}")
     }
 }
 
 plugins {
-    id("com.github.ben-manes.versions") version "0.46.0"
-    id("io.spring.dependency-management") version "1.0.8.RELEASE"
+    alias(libs.plugins.ben.manes.versions)
+}
+
+def suppliedVersion = project.findProperty("versionName") ?: project.findProperty("version")
+if (!suppliedVersion) {
+    throw new GradleException("Missing required project property: versionName (or version). Pass with -PversionName=1.2.3")
 }
 
 allprojects {
-    apply from: "$rootDir/.ops/git.gradle"
+    // Use parameter-based versioning for all modules
+    version = suppliedVersion
 }
 
 subprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 
-    project.apply from: "$rootDir/dependencies.gradle"
 
     afterEvaluate { project ->
         tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
             kotlinOptions {
                 freeCompilerArgs += ["-progressive"]
+                // Ensure all Kotlin compile tasks (including tests) target JVM 17
+                jvmTarget = "17"
             }
         }
 
@@ -66,12 +71,12 @@ subprojects {
                     targetCompatibility JavaVersion.VERSION_17
                 }
 
-                compileSdkVersion(33)
+                compileSdkVersion(36)
                 defaultConfig {
-                    targetSdkVersion(33)
+                    targetSdkVersion(36)
 
-                    versionName = git.versionName()
-                    versionCode = git.commitCount()
+                    versionName = suppliedVersion
+                    versionCode = (project.findProperty("versionCode") ?: 1) as int
 
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
@@ -89,25 +94,45 @@ subprojects {
                     ignore "ObsoleteLintCustomCheck", "GradleDependency"
                 }
             }
-
-            if (project.hasProperty("publishing")) {
-                project.apply from: "$rootDir/.ops/publishing-android.gradle"
-            }
-        } else {
-            if (project.hasProperty("publishing")) {
-                project.apply from: "$rootDir/.ops/publishing-kotlin.gradle"
-            }
         }
 
         if (project.name != "docs" && (project.hasProperty("test") || project.hasProperty("android"))) {
             project.apply from: "$rootDir/.ops/testing.gradle"
             project.apply from: "$rootDir/.ops/pitest.gradle"
         }
+
+        // Apply publishing configuration for modules that define Maven coordinates
+        if (project.hasProperty("groupId") && project.hasProperty("artifactId")) {
+            project.apply from: "$rootDir/.ops/publishing.gradle"
+        }
     }
 }
 
-task clean(type: Delete) {
-    delete(rootProject.buildDir)
+println("Version ${project.version}")
+
+allprojects { project ->
+    project.configurations.all {
+        resolutionStrategy {
+            eachDependency { dependency ->
+                if (dependency.requested.name in ["kotlin-stdlib", "kotlin-stdlib-jdk7", "kotlin-stdlib-jdk8", "kotlin-reflect"]) {
+                    dependency.useVersion(kotlinVersion)
+                }
+            }
+            // Ensure consistent resolution of androidx.annotation across configurations
+            force "androidx.annotation:annotation:${libs.versions.androidx.annotation.get()}"
+        }
+    }
 }
 
-println("Version ${git.versionName()}")
+rootProject.dependencyUpdates.resolutionStrategy {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}

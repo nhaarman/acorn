@@ -1,0 +1,159 @@
+// Shared Maven Central publishing configuration for Acorn
+// Applies to subprojects that define `groupId` and `artifactId` in their gradle.properties.
+
+ext.isAndroidLibrary = { project.plugins.hasPlugin("com.android.library") }
+ext.isJvmLibrary = { project.plugins.hasPlugin("org.gradle.java-library") || project.plugins.hasPlugin("org.jetbrains.kotlin.jvm") }
+
+// Apply plugins if not already applied
+plugins.withId("org.gradle.maven-publish") {}
+if (!plugins.hasPlugin("org.gradle.maven-publish")) {
+    apply plugin: "maven-publish"
+}
+if (!plugins.hasPlugin("signing")) {
+    apply plugin: "signing"
+}
+
+// Set group and artifact from module gradle.properties
+if (project.hasProperty("groupId")) {
+    group = project.property("groupId")
+}
+
+// Ensure sources and javadoc artifacts exist
+if (isJvmLibrary()) {
+    // Ensure Java convention is present to register sources/javadoc jars
+    plugins.withId("org.gradle.java") {
+        java {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+    plugins.withId("org.gradle.java-library") {
+        java {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+// For Android libraries, use AGP's publishing DSL to configure the release variant with sources
+plugins.withId("com.android.library") {
+    android {
+        publishing {
+            singleVariant("release") {
+                withSourcesJar()
+            }
+        }
+    }
+
+    // Provide a minimal javadoc jar to satisfy Maven Central requirements
+    // This creates an empty javadoc jar, which is acceptable for Android/Kotlin libraries
+    tasks.register("androidJavadocJar", Jar) {
+        archiveClassifier.set("javadoc")
+    }
+}
+
+publishing {
+    publications {
+        def pub = publications.findByName("maven") as MavenPublication
+        if (pub == null) {
+            maven(MavenPublication) {
+                if (isAndroidLibrary()) {
+                    // Publish the release variant for Android libraries
+                    afterEvaluate {
+                        from components.findByName("release")
+                    }
+                    // Sources are added via AGP publishing DSL (singleVariant + withSourcesJar)
+                    // Provide a minimal javadoc jar as required by Maven Central
+                    artifact tasks.named("androidJavadocJar")
+                } else {
+                    // JVM libraries
+                    if (components.findByName("java") != null) {
+                        from components.java
+                    }
+                }
+
+                if (project.hasProperty("artifactId")) {
+                    artifactId = project.property("artifactId")
+                }
+
+                pom {
+                    name = "Acorn"
+                    description = "Mastering Android Navigation"
+                    url = "https://github.com/nhaarman/Acorn"
+
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                            distribution = "repo"
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = "nhaarman"
+                            name = "Niek Haarman"
+                        }
+                    }
+
+                    scm {
+                        url = "https://github.com/nhaarman/Acorn"
+                        connection = "scm:git:git://github.com/nhaarman/Acorn.git"
+                        developerConnection = "scm:git:ssh://github.com/nhaarman/Acorn.git"
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        // Prefer Central Publishing Portal if configured; otherwise fall back to OSSRH
+        def isSnapshot = project.version?.toString()?.endsWith("-SNAPSHOT")
+        def useCentral = (findProperty("centralPortal")?.toString()?.toBoolean() ?: false)
+                || (System.getenv("CENTRAL_PORTAL")?.toBoolean() ?: false)
+
+        if (useCentral) {
+            if (isSnapshot) {
+                throw new GradleException("Central Publishing Portal does not accept SNAPSHOT versions. Remove -SNAPSHOT or disable centralPortal.")
+            }
+            maven {
+                name = "CentralPortal"
+                def centralUrl = findProperty("centralPortalUrl") ?: System.getenv("CENTRAL_PORTAL_URL")
+                if (!centralUrl) {
+                    // Default upload endpoint for Central Portal (token-based)
+                    centralUrl = "https://central.sonatype.com/api/v1/publisher/deploy/maven2"
+                }
+                url = uri(centralUrl)
+                credentials {
+                    username = findProperty("centralPortalUsername") ?: System.getenv("CENTRAL_PORTAL_USERNAME")
+                    password = findProperty("centralPortalPassword") ?: System.getenv("CENTRAL_PORTAL_PASSWORD")
+                }
+            }
+        } else {
+            // Legacy OSSRH repositories for releases and snapshots
+            maven {
+                name = "OSSRH"
+                def releasesUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                def snapshotsUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                url = isSnapshot ? snapshotsUrl : releasesUrl
+
+                credentials {
+                    // Support multiple property names and environment variables
+                    username = findProperty("ossrhUsername") ?: findProperty("mavenCentralUsername")
+                            ?: System.getenv("OSSRH_USERNAME") ?: System.getenv("MAVEN_CENTRAL_USERNAME")
+                    password = findProperty("ossrhPassword") ?: findProperty("mavenCentralPassword")
+                            ?: System.getenv("OSSRH_PASSWORD") ?: System.getenv("MAVEN_CENTRAL_PASSWORD")
+                }
+            }
+        }
+    }
+}
+
+// Configure signing (only if keys are available)
+signing {
+    if (findProperty("signing.secretKeyRingFile") || findProperty("signing.keyId")) {
+        sign publishing.publications
+    } else {
+        logger.lifecycle("[publishing] Signing is not configured; publications will not be signed.")
+    }
+}

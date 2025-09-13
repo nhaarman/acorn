@@ -6,12 +6,12 @@ dependencies {
     implementation project(":ext-acorn")
     implementation project(":ext-acorn-rx")
 
-    api "io.reactivex.rxjava2:rxjava"
-    implementation "io.reactivex.rxjava2:rxkotlin"
+    api libs.rxjava2
+    implementation libs.rxkotlin2
 
     testImplementation project(":ext-acorn-testing")
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.mockito.kotlin:mockito-kotlin"
-    testImplementation "com.nhaarman:expect.kt"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.expectkt
+    testImplementation libs.junit.jupiter.engine
 }

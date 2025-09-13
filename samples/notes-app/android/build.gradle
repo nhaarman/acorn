@@ -34,26 +34,26 @@ dependencies {
 
     implementation project(":samples:notes-app")
 
-    implementation "androidx.core:core-ktx"
+    implementation libs.androidx.core.ktx
 
-    implementation "com.google.android.material:material"
-    implementation "androidx.constraintlayout:constraintlayout"
-    implementation "androidx.appcompat:appcompat"
+    implementation libs.material
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.appcompat
 
-    implementation "io.reactivex.rxjava2:rxjava"
-    implementation "io.reactivex.rxjava2:rxkotlin"
-    implementation "io.reactivex.rxjava2:rxandroid"
+    implementation libs.rxjava2
+    implementation libs.rxkotlin2
+    implementation libs.rxandroid2
 
-    implementation "com.jakewharton.rxbinding3:rxbinding"
-    implementation "com.jakewharton.rxbinding3:rxbinding-appcompat"
+    implementation libs.rxbinding3
+    implementation libs.rxbinding3.appcompat
 
-    implementation "com.jakewharton.timber:timber"
+    implementation libs.timber
 
     debugImplementation project(":ext-acorn-android-testing")
-    androidTestImplementation "junit:junit"
-    androidTestImplementation "com.nhaarman:expect.kt"
-    androidTestImplementation "androidx.test.espresso:espresso-core"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib"
-    androidTestImplementation "androidx.test:runner"
-    androidTestImplementation "androidx.test:rules"
+    androidTestImplementation libs.junit4
+    androidTestImplementation libs.expectkt
+    androidTestImplementation libs.androidx.espresso.core
+    androidTestImplementation libs.androidx.espresso.contrib
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.rules
 }
